@@ -3,6 +3,7 @@
   "version": "0.6.6",
   "description": "Javascript SDK for Pryzmatics",
   "author": "amin <amin@refractedlabs.com>",
+  "packageManager": "pnpm@^9.5.0",
   "homepage": "https://github.com/pryzm-finance/pryzmaticsjs#readme",
   "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
@@ -17,8 +18,8 @@
     "README.md"
   ],
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "restricted"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -32,8 +33,8 @@
     "@improbable-eng/grpc-web": "0.15.0",
     "@improbable-eng/grpc-web-node-http-transport": "0.15.0",
     "@keplr-wallet/unit": "^0.12.53",
-    "@refractedlabs/cosmology-lcd-fork": "0.13.3",
-    "@refractedlabs/utils": "0.4.1",
+    "@refractedlabs/cosmology-lcd-fork": "0.13.7",
+    "@refractedlabs/internal-js-utils": "0.6.5",
     "browser-headers": "0.4.1"
   },
   "devDependencies": {
