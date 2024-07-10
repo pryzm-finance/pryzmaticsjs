@@ -1,0 +1,46 @@
+{
+  "name": "@pryzm-finance/pryzmaticsjs",
+  "version": "0.6.6",
+  "description": "Javascript SDK for Pryzmatics",
+  "author": "amin <amin@refractedlabs.com>",
+  "homepage": "https://github.com/pryzm-finance/pryzmaticsjs#readme",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "scripts": {
+    "compile": "rm -rf lib && tsc",
+    "codegen": "node scripts/codegen.js"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*",
+    "LICENSE.md",
+    "README.md"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pryzm-finance/pryzmaticsjs"
+  },
+  "dependencies": {
+    "@cosmjs/math": "0.32.4",
+    "@cosmjs/proto-signing": "0.32.4",
+    "@cosmjs/stargate": "0.32.4",
+    "@cosmjs/tendermint-rpc": "0.32.4",
+    "@improbable-eng/grpc-web": "0.15.0",
+    "@improbable-eng/grpc-web-node-http-transport": "0.15.0",
+    "@keplr-wallet/unit": "^0.12.53",
+    "@refractedlabs/cosmology-lcd-fork": "0.13.3",
+    "@refractedlabs/utils": "0.4.1",
+    "browser-headers": "0.4.1"
+  },
+  "devDependencies": {
+    "@refractedlabs/telescope": "1.4.1-rc24",
+    "@types/node": "^20.10.5",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
