@@ -20,6 +20,8 @@ import { QueryJoinAllTokensExactLptSimulationRequest, QueryJoinAllTokensExactLpt
 import { QueryJoinExactTokensSimulationRequest, QueryJoinExactTokensSimulationResponseSDKType } from "./trade/join_exact_tokens_simulation";
 import { QueryJoinTokenExactLptSimulationRequest, QueryJoinTokenExactLptSimulationResponseSDKType } from "./trade/join_token_exact_lpt_simulation";
 import { QueryZeroImpactJoinYammSimulationRequest, QueryZeroImpactJoinYammSimulationResponseSDKType } from "./trade/zero_impact_join_yamm_simulation";
+import { QueryZeroImpactJoinAssetToNestedSimulationRequest, QueryZeroImpactJoinAssetToNestedSimulationResponseSDKType } from "./trade/zero_impact_join_asset_to_nested_simulation";
+import { QueryZeroImpactJoinAssetToYammSimulationRequest, QueryZeroImpactJoinAssetToYammSimulationResponseSDKType } from "./trade/zero_impact_join_asset_to_yamm_simulation";
 import { QueryExitTokenExactLptSimulationRequest, QueryExitTokenExactLptSimulationResponseSDKType } from "./trade/exit_token_exact_lpt_simulation";
 import { QueryExitExactTokensSimulationRequest, QueryExitExactTokensSimulationResponseSDKType } from "./trade/exit_exact_tokens_simulation";
 import { QueryExitAllTokensExactLptSimulationRequest, QueryExitAllTokensExactLptSimulationResponseSDKType } from "./trade/exit_all_tokens_exact_lpt_simulation";
@@ -78,6 +80,8 @@ export class LCDQueryClient {
     this.joinExactTokensSimulation = this.joinExactTokensSimulation.bind(this);
     this.joinTokenExactLptSimulation = this.joinTokenExactLptSimulation.bind(this);
     this.zeroImpactJoinYammSimulation = this.zeroImpactJoinYammSimulation.bind(this);
+    this.zeroImpactJoinAssetToNestedSimulation = this.zeroImpactJoinAssetToNestedSimulation.bind(this);
+    this.zeroImpactJoinAssetToYammSimulation = this.zeroImpactJoinAssetToYammSimulation.bind(this);
     this.exitTokenExactLptSimulation = this.exitTokenExactLptSimulation.bind(this);
     this.exitExactTokensSimulation = this.exitExactTokensSimulation.bind(this);
     this.exitAllTokensExactLptSimulation = this.exitAllTokensExactLptSimulation.bind(this);
@@ -400,6 +404,43 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/trade/zero_impact_join_yamm_simulation`;
     return await this.req.get<QueryZeroImpactJoinYammSimulationResponseSDKType>(endpoint, options);
+  }
+  /* ZeroImpactJoinAssetToNestedSimulation */
+  async zeroImpactJoinAssetToNestedSimulation(params: QueryZeroImpactJoinAssetToNestedSimulationRequest): Promise<QueryZeroImpactJoinAssetToNestedSimulationResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.amountIn !== "undefined") {
+      options.params.amount_in = params.amountIn;
+    }
+    if (typeof params?.hostChainId !== "undefined") {
+      options.params.host_chain_id = params.hostChainId;
+    }
+    if (typeof params?.transferChannel !== "undefined") {
+      options.params.transfer_channel = params.transferChannel;
+    }
+    if (typeof params?.poolId !== "undefined") {
+      options.params.pool_id = params.poolId;
+    }
+    const endpoint = `pryzmatics/trade/zero_impact_join_asset_to_nested_simulation`;
+    return await this.req.get<QueryZeroImpactJoinAssetToNestedSimulationResponseSDKType>(endpoint, options);
+  }
+  /* ZeroImpactJoinAssetToYammSimulation */
+  async zeroImpactJoinAssetToYammSimulation(params: QueryZeroImpactJoinAssetToYammSimulationRequest): Promise<QueryZeroImpactJoinAssetToYammSimulationResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.amountIn !== "undefined") {
+      options.params.amount_in = params.amountIn;
+    }
+    if (typeof params?.hostChainId !== "undefined") {
+      options.params.host_chain_id = params.hostChainId;
+    }
+    if (typeof params?.transferChannel !== "undefined") {
+      options.params.transfer_channel = params.transferChannel;
+    }
+    const endpoint = `pryzmatics/trade/zero_impact_join_asset_to_yamm_simulation`;
+    return await this.req.get<QueryZeroImpactJoinAssetToYammSimulationResponseSDKType>(endpoint, options);
   }
   /* ExitTokenExactLptSimulation */
   async exitTokenExactLptSimulation(params: QueryExitTokenExactLptSimulationRequest): Promise<QueryExitTokenExactLptSimulationResponseSDKType> {

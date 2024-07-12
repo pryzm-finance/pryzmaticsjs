@@ -1,0 +1,29 @@
+syntax = "proto3";
+package pryzmatics.server.trade;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/trade";
+
+message QueryZeroImpactJoinAssetToYammSimulationRequest {
+  cosmos.base.v1beta1.Coin amount_in = 1 [(gogoproto.nullable) = false];
+  string host_chain_id = 2;
+  string transfer_channel = 3;
+}
+
+message QueryZeroImpactJoinAssetToYammSimulationResponse {
+  cosmos.base.v1beta1.Coin amount_in = 1 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin lpt_out = 2 [(gogoproto.nullable) = false];
+  repeated cosmos.base.v1beta1.Coin y_out = 3 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+  cosmos.base.v1beta1.Coin fee_amount = 4 [(gogoproto.nullable) = false];
+  string fee_percentage = 5 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+}

@@ -28,6 +28,8 @@ import "pryzmatics/server/trade/join_all_tokens_exact_lpt_simulation.proto";
 import "pryzmatics/server/trade/join_exact_tokens_simulation.proto";
 import "pryzmatics/server/trade/join_token_exact_lpt_simulation.proto";
 import "pryzmatics/server/trade/zero_impact_join_yamm_simulation.proto";
+import "pryzmatics/server/trade/zero_impact_join_asset_to_nested_simulation.proto";
+import "pryzmatics/server/trade/zero_impact_join_asset_to_yamm_simulation.proto";
 import "pryzmatics/server/trade/exit_token_exact_lpt_simulation.proto";
 import "pryzmatics/server/trade/exit_exact_tokens_simulation.proto";
 import "pryzmatics/server/trade/exit_all_tokens_exact_lpt_simulation.proto";
@@ -163,6 +165,14 @@ service Query {
 
   rpc ZeroImpactJoinYammSimulation(pryzmatics.server.trade.QueryZeroImpactJoinYammSimulationRequest) returns (pryzmatics.server.trade.QueryZeroImpactJoinYammSimulationResponse) {
     option (google.api.http).get = "/pryzmatics/trade/zero_impact_join_yamm_simulation";
+  }
+
+  rpc ZeroImpactJoinAssetToNestedSimulation(pryzmatics.server.trade.QueryZeroImpactJoinAssetToNestedSimulationRequest) returns (pryzmatics.server.trade.QueryZeroImpactJoinAssetToNestedSimulationResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/zero_impact_join_asset_to_nested_simulation";
+  }
+
+  rpc ZeroImpactJoinAssetToYammSimulation(pryzmatics.server.trade.QueryZeroImpactJoinAssetToYammSimulationRequest) returns (pryzmatics.server.trade.QueryZeroImpactJoinAssetToYammSimulationResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/zero_impact_join_asset_to_yamm_simulation";
   }
 
   rpc ExitTokenExactLptSimulation(pryzmatics.server.trade.QueryExitTokenExactLptSimulationRequest) returns (pryzmatics.server.trade.QueryExitTokenExactLptSimulationResponse) {
