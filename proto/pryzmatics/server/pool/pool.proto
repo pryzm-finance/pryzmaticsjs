@@ -9,12 +9,26 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 
 option go_package = "github.com/pryzm-finance/pryzmatics/server/pool";
 
+enum ZeroImpactJoinMethod{
+  option (gogoproto.goproto_enum_prefix) = false;
+  ZIJ_YAMM = 0 [(gogoproto.enumvalue_customname) = "METHOD_ZIJ_YAMM"];
+  ZIJ_ASSET_TO_YAMM = 1 [(gogoproto.enumvalue_customname) = "METHOD_ZIJ_ASSET_TO_YAMM"];
+  ZIJ_ASSET_TO_NESTED = 2 [(gogoproto.enumvalue_customname) = "METHOD_ZIJ_ASSET_TO_NESTED"];
+}
+
+message ZeroImpactJoinCapability {
+  string denom = 1;
+  ZeroImpactJoinMethod method = 2;
+  string provider = 3;
+}
+
 message QueryPoolRequest {
   uint64 pool_id = 1;
 }
 
 message QueryPoolResponse {
   pryzmatics.pool.ExtendedPool pool = 1 [(gogoproto.nullable) = false];
+  repeated ZeroImpactJoinCapability zero_impact_join_capabilities = 2 [(gogoproto.nullable) = false];
 }
 
 message QueryPoolsRequest {

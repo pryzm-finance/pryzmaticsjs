@@ -1,8 +1,69 @@
 import { ExtendedPool, ExtendedPoolAmino, ExtendedPoolSDKType } from "../../pool/extended_pool";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
-import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { GlobalDecoderRegistry } from "../../../registry";
+export enum ZeroImpactJoinMethod {
+  ZIJ_YAMM = 0,
+  ZIJ_ASSET_TO_YAMM = 1,
+  ZIJ_ASSET_TO_NESTED = 2,
+  UNRECOGNIZED = -1,
+}
+export const ZeroImpactJoinMethodSDKType = ZeroImpactJoinMethod;
+export const ZeroImpactJoinMethodAmino = ZeroImpactJoinMethod;
+export function zeroImpactJoinMethodFromJSON(object: any): ZeroImpactJoinMethod {
+  switch (object) {
+    case 0:
+    case "ZIJ_YAMM":
+      return ZeroImpactJoinMethod.ZIJ_YAMM;
+    case 1:
+    case "ZIJ_ASSET_TO_YAMM":
+      return ZeroImpactJoinMethod.ZIJ_ASSET_TO_YAMM;
+    case 2:
+    case "ZIJ_ASSET_TO_NESTED":
+      return ZeroImpactJoinMethod.ZIJ_ASSET_TO_NESTED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ZeroImpactJoinMethod.UNRECOGNIZED;
+  }
+}
+export function zeroImpactJoinMethodToJSON(object: ZeroImpactJoinMethod): string {
+  switch (object) {
+    case ZeroImpactJoinMethod.ZIJ_YAMM:
+      return "ZIJ_YAMM";
+    case ZeroImpactJoinMethod.ZIJ_ASSET_TO_YAMM:
+      return "ZIJ_ASSET_TO_YAMM";
+    case ZeroImpactJoinMethod.ZIJ_ASSET_TO_NESTED:
+      return "ZIJ_ASSET_TO_NESTED";
+    case ZeroImpactJoinMethod.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+export interface ZeroImpactJoinCapability {
+  denom: string;
+  method: ZeroImpactJoinMethod;
+  provider: string;
+}
+export interface ZeroImpactJoinCapabilityProtoMsg {
+  typeUrl: "/pryzmatics.server.pool.ZeroImpactJoinCapability";
+  value: Uint8Array;
+}
+export interface ZeroImpactJoinCapabilityAmino {
+  denom?: string;
+  method?: ZeroImpactJoinMethod;
+  provider?: string;
+}
+export interface ZeroImpactJoinCapabilityAminoMsg {
+  type: "/pryzmatics.server.pool.ZeroImpactJoinCapability";
+  value: ZeroImpactJoinCapabilityAmino;
+}
+export interface ZeroImpactJoinCapabilitySDKType {
+  denom: string;
+  method: ZeroImpactJoinMethod;
+  provider: string;
+}
 export interface QueryPoolRequest {
   poolId: bigint;
 }
@@ -22,6 +83,7 @@ export interface QueryPoolRequestSDKType {
 }
 export interface QueryPoolResponse {
   pool: ExtendedPool;
+  zeroImpactJoinCapabilities: ZeroImpactJoinCapability[];
 }
 export interface QueryPoolResponseProtoMsg {
   typeUrl: "/pryzmatics.server.pool.QueryPoolResponse";
@@ -29,6 +91,7 @@ export interface QueryPoolResponseProtoMsg {
 }
 export interface QueryPoolResponseAmino {
   pool?: ExtendedPoolAmino;
+  zero_impact_join_capabilities?: ZeroImpactJoinCapabilityAmino[];
 }
 export interface QueryPoolResponseAminoMsg {
   type: "/pryzmatics.server.pool.QueryPoolResponse";
@@ -36,6 +99,7 @@ export interface QueryPoolResponseAminoMsg {
 }
 export interface QueryPoolResponseSDKType {
   pool: ExtendedPoolSDKType;
+  zero_impact_join_capabilities: ZeroImpactJoinCapabilitySDKType[];
 }
 export interface QueryPoolsRequest {
   pagination?: PageRequest;
@@ -74,6 +138,117 @@ export interface QueryPoolsResponseSDKType {
   pools: ExtendedPoolSDKType[];
   pagination?: PageResponseSDKType;
 }
+function createBaseZeroImpactJoinCapability(): ZeroImpactJoinCapability {
+  return {
+    denom: "",
+    method: 0,
+    provider: ""
+  };
+}
+export const ZeroImpactJoinCapability = {
+  typeUrl: "/pryzmatics.server.pool.ZeroImpactJoinCapability",
+  is(o: any): o is ZeroImpactJoinCapability {
+    return o && (o.$typeUrl === ZeroImpactJoinCapability.typeUrl || typeof o.denom === "string" && isSet(o.method) && typeof o.provider === "string");
+  },
+  isSDK(o: any): o is ZeroImpactJoinCapabilitySDKType {
+    return o && (o.$typeUrl === ZeroImpactJoinCapability.typeUrl || typeof o.denom === "string" && isSet(o.method) && typeof o.provider === "string");
+  },
+  isAmino(o: any): o is ZeroImpactJoinCapabilityAmino {
+    return o && (o.$typeUrl === ZeroImpactJoinCapability.typeUrl || typeof o.denom === "string" && isSet(o.method) && typeof o.provider === "string");
+  },
+  encode(message: ZeroImpactJoinCapability, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.denom !== "") {
+      writer.uint32(10).string(message.denom);
+    }
+    if (message.method !== 0) {
+      writer.uint32(16).int32(message.method);
+    }
+    if (message.provider !== "") {
+      writer.uint32(26).string(message.provider);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): ZeroImpactJoinCapability {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseZeroImpactJoinCapability();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.denom = reader.string();
+          break;
+        case 2:
+          message.method = (reader.int32() as any);
+          break;
+        case 3:
+          message.provider = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): ZeroImpactJoinCapability {
+    return {
+      denom: isSet(object.denom) ? String(object.denom) : "",
+      method: isSet(object.method) ? zeroImpactJoinMethodFromJSON(object.method) : -1,
+      provider: isSet(object.provider) ? String(object.provider) : ""
+    };
+  },
+  toJSON(message: ZeroImpactJoinCapability): unknown {
+    const obj: any = {};
+    message.denom !== undefined && (obj.denom = message.denom);
+    message.method !== undefined && (obj.method = zeroImpactJoinMethodToJSON(message.method));
+    message.provider !== undefined && (obj.provider = message.provider);
+    return obj;
+  },
+  fromPartial(object: Partial<ZeroImpactJoinCapability>): ZeroImpactJoinCapability {
+    const message = createBaseZeroImpactJoinCapability();
+    message.denom = object.denom ?? "";
+    message.method = object.method ?? 0;
+    message.provider = object.provider ?? "";
+    return message;
+  },
+  fromAmino(object: ZeroImpactJoinCapabilityAmino): ZeroImpactJoinCapability {
+    const message = createBaseZeroImpactJoinCapability();
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = object.denom;
+    }
+    if (object.method !== undefined && object.method !== null) {
+      message.method = object.method;
+    }
+    if (object.provider !== undefined && object.provider !== null) {
+      message.provider = object.provider;
+    }
+    return message;
+  },
+  toAmino(message: ZeroImpactJoinCapability, useInterfaces: boolean = true): ZeroImpactJoinCapabilityAmino {
+    const obj: any = {};
+    obj.denom = message.denom === "" ? undefined : message.denom;
+    obj.method = message.method === 0 ? undefined : message.method;
+    obj.provider = message.provider === "" ? undefined : message.provider;
+    return obj;
+  },
+  fromAminoMsg(object: ZeroImpactJoinCapabilityAminoMsg): ZeroImpactJoinCapability {
+    return ZeroImpactJoinCapability.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ZeroImpactJoinCapabilityProtoMsg, useInterfaces: boolean = true): ZeroImpactJoinCapability {
+    return ZeroImpactJoinCapability.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: ZeroImpactJoinCapability): Uint8Array {
+    return ZeroImpactJoinCapability.encode(message).finish();
+  },
+  toProtoMsg(message: ZeroImpactJoinCapability): ZeroImpactJoinCapabilityProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.pool.ZeroImpactJoinCapability",
+      value: ZeroImpactJoinCapability.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(ZeroImpactJoinCapability.typeUrl, ZeroImpactJoinCapability);
 function createBaseQueryPoolRequest(): QueryPoolRequest {
   return {
     poolId: BigInt(0)
@@ -159,23 +334,27 @@ export const QueryPoolRequest = {
 GlobalDecoderRegistry.register(QueryPoolRequest.typeUrl, QueryPoolRequest);
 function createBaseQueryPoolResponse(): QueryPoolResponse {
   return {
-    pool: ExtendedPool.fromPartial({})
+    pool: ExtendedPool.fromPartial({}),
+    zeroImpactJoinCapabilities: []
   };
 }
 export const QueryPoolResponse = {
   typeUrl: "/pryzmatics.server.pool.QueryPoolResponse",
   is(o: any): o is QueryPoolResponse {
-    return o && (o.$typeUrl === QueryPoolResponse.typeUrl || ExtendedPool.is(o.pool));
+    return o && (o.$typeUrl === QueryPoolResponse.typeUrl || ExtendedPool.is(o.pool) && Array.isArray(o.zeroImpactJoinCapabilities) && (!o.zeroImpactJoinCapabilities.length || ZeroImpactJoinCapability.is(o.zeroImpactJoinCapabilities[0])));
   },
   isSDK(o: any): o is QueryPoolResponseSDKType {
-    return o && (o.$typeUrl === QueryPoolResponse.typeUrl || ExtendedPool.isSDK(o.pool));
+    return o && (o.$typeUrl === QueryPoolResponse.typeUrl || ExtendedPool.isSDK(o.pool) && Array.isArray(o.zero_impact_join_capabilities) && (!o.zero_impact_join_capabilities.length || ZeroImpactJoinCapability.isSDK(o.zero_impact_join_capabilities[0])));
   },
   isAmino(o: any): o is QueryPoolResponseAmino {
-    return o && (o.$typeUrl === QueryPoolResponse.typeUrl || ExtendedPool.isAmino(o.pool));
+    return o && (o.$typeUrl === QueryPoolResponse.typeUrl || ExtendedPool.isAmino(o.pool) && Array.isArray(o.zero_impact_join_capabilities) && (!o.zero_impact_join_capabilities.length || ZeroImpactJoinCapability.isAmino(o.zero_impact_join_capabilities[0])));
   },
   encode(message: QueryPoolResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pool !== undefined) {
       ExtendedPool.encode(message.pool, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.zeroImpactJoinCapabilities) {
+      ZeroImpactJoinCapability.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -189,6 +368,9 @@ export const QueryPoolResponse = {
         case 1:
           message.pool = ExtendedPool.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 2:
+          message.zeroImpactJoinCapabilities.push(ZeroImpactJoinCapability.decode(reader, reader.uint32(), useInterfaces));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -198,17 +380,24 @@ export const QueryPoolResponse = {
   },
   fromJSON(object: any): QueryPoolResponse {
     return {
-      pool: isSet(object.pool) ? ExtendedPool.fromJSON(object.pool) : undefined
+      pool: isSet(object.pool) ? ExtendedPool.fromJSON(object.pool) : undefined,
+      zeroImpactJoinCapabilities: Array.isArray(object?.zeroImpactJoinCapabilities) ? object.zeroImpactJoinCapabilities.map((e: any) => ZeroImpactJoinCapability.fromJSON(e)) : []
     };
   },
   toJSON(message: QueryPoolResponse): unknown {
     const obj: any = {};
     message.pool !== undefined && (obj.pool = message.pool ? ExtendedPool.toJSON(message.pool) : undefined);
+    if (message.zeroImpactJoinCapabilities) {
+      obj.zeroImpactJoinCapabilities = message.zeroImpactJoinCapabilities.map(e => e ? ZeroImpactJoinCapability.toJSON(e) : undefined);
+    } else {
+      obj.zeroImpactJoinCapabilities = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<QueryPoolResponse>): QueryPoolResponse {
     const message = createBaseQueryPoolResponse();
     message.pool = object.pool !== undefined && object.pool !== null ? ExtendedPool.fromPartial(object.pool) : undefined;
+    message.zeroImpactJoinCapabilities = object.zeroImpactJoinCapabilities?.map(e => ZeroImpactJoinCapability.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: QueryPoolResponseAmino): QueryPoolResponse {
@@ -216,11 +405,17 @@ export const QueryPoolResponse = {
     if (object.pool !== undefined && object.pool !== null) {
       message.pool = ExtendedPool.fromAmino(object.pool);
     }
+    message.zeroImpactJoinCapabilities = object.zero_impact_join_capabilities?.map(e => ZeroImpactJoinCapability.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: QueryPoolResponse, useInterfaces: boolean = true): QueryPoolResponseAmino {
     const obj: any = {};
     obj.pool = message.pool ? ExtendedPool.toAmino(message.pool, useInterfaces) : undefined;
+    if (message.zeroImpactJoinCapabilities) {
+      obj.zero_impact_join_capabilities = message.zeroImpactJoinCapabilities.map(e => e ? ZeroImpactJoinCapability.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.zero_impact_join_capabilities = message.zeroImpactJoinCapabilities;
+    }
     return obj;
   },
   fromAminoMsg(object: QueryPoolResponseAminoMsg): QueryPoolResponse {
