@@ -6,7 +6,6 @@ import "cosmos_proto/cosmos.proto";
 import "pryzmatics/pool/extended_pool.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 
-
 option go_package = "github.com/pryzm-finance/pryzmatics/server/pool";
 
 enum ZeroImpactJoinMethod{
@@ -16,10 +15,16 @@ enum ZeroImpactJoinMethod{
   ZIJ_ASSET_TO_NESTED = 2 [(gogoproto.enumvalue_customname) = "METHOD_ZIJ_ASSET_TO_NESTED"];
 }
 
+message ZeroImpactJoinAssetParameters {
+  string host_chain_id = 1;
+  string transfer_channel = 2;
+}
+
 message ZeroImpactJoinCapability {
   string denom = 1;
   ZeroImpactJoinMethod method = 2;
   string provider = 3;
+  ZeroImpactJoinAssetParameters zij_asset_params = 4;
 }
 
 message QueryPoolRequest {

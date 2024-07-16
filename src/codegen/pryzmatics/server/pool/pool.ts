@@ -1,7 +1,7 @@
 import { ExtendedPool, ExtendedPoolAmino, ExtendedPoolSDKType } from "../../pool/extended_pool";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
-import { isSet } from "../../../helpers";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet } from "../../../helpers";
 import { GlobalDecoderRegistry } from "../../../registry";
 export enum ZeroImpactJoinMethod {
   ZIJ_YAMM = 0,
@@ -41,10 +41,31 @@ export function zeroImpactJoinMethodToJSON(object: ZeroImpactJoinMethod): string
       return "UNRECOGNIZED";
   }
 }
+export interface ZeroImpactJoinAssetParameters {
+  hostChainId: string;
+  transferChannel: string;
+}
+export interface ZeroImpactJoinAssetParametersProtoMsg {
+  typeUrl: "/pryzmatics.server.pool.ZeroImpactJoinAssetParameters";
+  value: Uint8Array;
+}
+export interface ZeroImpactJoinAssetParametersAmino {
+  host_chain_id?: string;
+  transfer_channel?: string;
+}
+export interface ZeroImpactJoinAssetParametersAminoMsg {
+  type: "/pryzmatics.server.pool.ZeroImpactJoinAssetParameters";
+  value: ZeroImpactJoinAssetParametersAmino;
+}
+export interface ZeroImpactJoinAssetParametersSDKType {
+  host_chain_id: string;
+  transfer_channel: string;
+}
 export interface ZeroImpactJoinCapability {
   denom: string;
   method: ZeroImpactJoinMethod;
   provider: string;
+  zijAssetParams?: ZeroImpactJoinAssetParameters;
 }
 export interface ZeroImpactJoinCapabilityProtoMsg {
   typeUrl: "/pryzmatics.server.pool.ZeroImpactJoinCapability";
@@ -54,6 +75,7 @@ export interface ZeroImpactJoinCapabilityAmino {
   denom?: string;
   method?: ZeroImpactJoinMethod;
   provider?: string;
+  zij_asset_params?: ZeroImpactJoinAssetParametersAmino;
 }
 export interface ZeroImpactJoinCapabilityAminoMsg {
   type: "/pryzmatics.server.pool.ZeroImpactJoinCapability";
@@ -63,6 +85,7 @@ export interface ZeroImpactJoinCapabilitySDKType {
   denom: string;
   method: ZeroImpactJoinMethod;
   provider: string;
+  zij_asset_params?: ZeroImpactJoinAssetParametersSDKType;
 }
 export interface QueryPoolRequest {
   poolId: bigint;
@@ -138,11 +161,109 @@ export interface QueryPoolsResponseSDKType {
   pools: ExtendedPoolSDKType[];
   pagination?: PageResponseSDKType;
 }
+function createBaseZeroImpactJoinAssetParameters(): ZeroImpactJoinAssetParameters {
+  return {
+    hostChainId: "",
+    transferChannel: ""
+  };
+}
+export const ZeroImpactJoinAssetParameters = {
+  typeUrl: "/pryzmatics.server.pool.ZeroImpactJoinAssetParameters",
+  is(o: any): o is ZeroImpactJoinAssetParameters {
+    return o && (o.$typeUrl === ZeroImpactJoinAssetParameters.typeUrl || typeof o.hostChainId === "string" && typeof o.transferChannel === "string");
+  },
+  isSDK(o: any): o is ZeroImpactJoinAssetParametersSDKType {
+    return o && (o.$typeUrl === ZeroImpactJoinAssetParameters.typeUrl || typeof o.host_chain_id === "string" && typeof o.transfer_channel === "string");
+  },
+  isAmino(o: any): o is ZeroImpactJoinAssetParametersAmino {
+    return o && (o.$typeUrl === ZeroImpactJoinAssetParameters.typeUrl || typeof o.host_chain_id === "string" && typeof o.transfer_channel === "string");
+  },
+  encode(message: ZeroImpactJoinAssetParameters, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.hostChainId !== "") {
+      writer.uint32(10).string(message.hostChainId);
+    }
+    if (message.transferChannel !== "") {
+      writer.uint32(18).string(message.transferChannel);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): ZeroImpactJoinAssetParameters {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseZeroImpactJoinAssetParameters();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hostChainId = reader.string();
+          break;
+        case 2:
+          message.transferChannel = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): ZeroImpactJoinAssetParameters {
+    return {
+      hostChainId: isSet(object.hostChainId) ? String(object.hostChainId) : "",
+      transferChannel: isSet(object.transferChannel) ? String(object.transferChannel) : ""
+    };
+  },
+  toJSON(message: ZeroImpactJoinAssetParameters): unknown {
+    const obj: any = {};
+    message.hostChainId !== undefined && (obj.hostChainId = message.hostChainId);
+    message.transferChannel !== undefined && (obj.transferChannel = message.transferChannel);
+    return obj;
+  },
+  fromPartial(object: Partial<ZeroImpactJoinAssetParameters>): ZeroImpactJoinAssetParameters {
+    const message = createBaseZeroImpactJoinAssetParameters();
+    message.hostChainId = object.hostChainId ?? "";
+    message.transferChannel = object.transferChannel ?? "";
+    return message;
+  },
+  fromAmino(object: ZeroImpactJoinAssetParametersAmino): ZeroImpactJoinAssetParameters {
+    const message = createBaseZeroImpactJoinAssetParameters();
+    if (object.host_chain_id !== undefined && object.host_chain_id !== null) {
+      message.hostChainId = object.host_chain_id;
+    }
+    if (object.transfer_channel !== undefined && object.transfer_channel !== null) {
+      message.transferChannel = object.transfer_channel;
+    }
+    return message;
+  },
+  toAmino(message: ZeroImpactJoinAssetParameters, useInterfaces: boolean = true): ZeroImpactJoinAssetParametersAmino {
+    const obj: any = {};
+    obj.host_chain_id = message.hostChainId === "" ? undefined : message.hostChainId;
+    obj.transfer_channel = message.transferChannel === "" ? undefined : message.transferChannel;
+    return obj;
+  },
+  fromAminoMsg(object: ZeroImpactJoinAssetParametersAminoMsg): ZeroImpactJoinAssetParameters {
+    return ZeroImpactJoinAssetParameters.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ZeroImpactJoinAssetParametersProtoMsg, useInterfaces: boolean = true): ZeroImpactJoinAssetParameters {
+    return ZeroImpactJoinAssetParameters.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: ZeroImpactJoinAssetParameters): Uint8Array {
+    return ZeroImpactJoinAssetParameters.encode(message).finish();
+  },
+  toProtoMsg(message: ZeroImpactJoinAssetParameters): ZeroImpactJoinAssetParametersProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.pool.ZeroImpactJoinAssetParameters",
+      value: ZeroImpactJoinAssetParameters.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(ZeroImpactJoinAssetParameters.typeUrl, ZeroImpactJoinAssetParameters);
 function createBaseZeroImpactJoinCapability(): ZeroImpactJoinCapability {
   return {
     denom: "",
     method: 0,
-    provider: ""
+    provider: "",
+    zijAssetParams: undefined
   };
 }
 export const ZeroImpactJoinCapability = {
@@ -166,6 +287,9 @@ export const ZeroImpactJoinCapability = {
     if (message.provider !== "") {
       writer.uint32(26).string(message.provider);
     }
+    if (message.zijAssetParams !== undefined) {
+      ZeroImpactJoinAssetParameters.encode(message.zijAssetParams, writer.uint32(34).fork()).ldelim();
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): ZeroImpactJoinCapability {
@@ -184,6 +308,9 @@ export const ZeroImpactJoinCapability = {
         case 3:
           message.provider = reader.string();
           break;
+        case 4:
+          message.zijAssetParams = ZeroImpactJoinAssetParameters.decode(reader, reader.uint32(), useInterfaces);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -195,7 +322,8 @@ export const ZeroImpactJoinCapability = {
     return {
       denom: isSet(object.denom) ? String(object.denom) : "",
       method: isSet(object.method) ? zeroImpactJoinMethodFromJSON(object.method) : -1,
-      provider: isSet(object.provider) ? String(object.provider) : ""
+      provider: isSet(object.provider) ? String(object.provider) : "",
+      zijAssetParams: isSet(object.zijAssetParams) ? ZeroImpactJoinAssetParameters.fromJSON(object.zijAssetParams) : undefined
     };
   },
   toJSON(message: ZeroImpactJoinCapability): unknown {
@@ -203,6 +331,7 @@ export const ZeroImpactJoinCapability = {
     message.denom !== undefined && (obj.denom = message.denom);
     message.method !== undefined && (obj.method = zeroImpactJoinMethodToJSON(message.method));
     message.provider !== undefined && (obj.provider = message.provider);
+    message.zijAssetParams !== undefined && (obj.zijAssetParams = message.zijAssetParams ? ZeroImpactJoinAssetParameters.toJSON(message.zijAssetParams) : undefined);
     return obj;
   },
   fromPartial(object: Partial<ZeroImpactJoinCapability>): ZeroImpactJoinCapability {
@@ -210,6 +339,7 @@ export const ZeroImpactJoinCapability = {
     message.denom = object.denom ?? "";
     message.method = object.method ?? 0;
     message.provider = object.provider ?? "";
+    message.zijAssetParams = object.zijAssetParams !== undefined && object.zijAssetParams !== null ? ZeroImpactJoinAssetParameters.fromPartial(object.zijAssetParams) : undefined;
     return message;
   },
   fromAmino(object: ZeroImpactJoinCapabilityAmino): ZeroImpactJoinCapability {
@@ -223,6 +353,9 @@ export const ZeroImpactJoinCapability = {
     if (object.provider !== undefined && object.provider !== null) {
       message.provider = object.provider;
     }
+    if (object.zij_asset_params !== undefined && object.zij_asset_params !== null) {
+      message.zijAssetParams = ZeroImpactJoinAssetParameters.fromAmino(object.zij_asset_params);
+    }
     return message;
   },
   toAmino(message: ZeroImpactJoinCapability, useInterfaces: boolean = true): ZeroImpactJoinCapabilityAmino {
@@ -230,6 +363,7 @@ export const ZeroImpactJoinCapability = {
     obj.denom = message.denom === "" ? undefined : message.denom;
     obj.method = message.method === 0 ? undefined : message.method;
     obj.provider = message.provider === "" ? undefined : message.provider;
+    obj.zij_asset_params = message.zijAssetParams ? ZeroImpactJoinAssetParameters.toAmino(message.zijAssetParams, useInterfaces) : undefined;
     return obj;
   },
   fromAminoMsg(object: ZeroImpactJoinCapabilityAminoMsg): ZeroImpactJoinCapability {
