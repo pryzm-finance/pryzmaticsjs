@@ -9,6 +9,7 @@ option go_package = "github.com/pryzm-finance/pryzmatics/server/trade";
 
 message QueryZeroImpactJoinAssetToNestedSimulationRequest {
   cosmos.base.v1beta1.Coin amount_in = 1 [(gogoproto.nullable) = false];
+  // leave the host_chain, and channel empty for contract staking
   string host_chain_id = 2;
   string transfer_channel = 3;
   uint64 pool_id = 4;

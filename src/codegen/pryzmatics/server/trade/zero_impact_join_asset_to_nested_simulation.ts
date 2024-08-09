@@ -5,6 +5,7 @@ import { GlobalDecoderRegistry } from "../../../registry";
 import { Decimal } from "@cosmjs/math";
 export interface QueryZeroImpactJoinAssetToNestedSimulationRequest {
   amountIn: Coin;
+  /** leave the host_chain, and channel empty for contract staking */
   hostChainId: string;
   transferChannel: string;
   poolId: bigint;
@@ -15,6 +16,7 @@ export interface QueryZeroImpactJoinAssetToNestedSimulationRequestProtoMsg {
 }
 export interface QueryZeroImpactJoinAssetToNestedSimulationRequestAmino {
   amount_in?: CoinAmino;
+  /** leave the host_chain, and channel empty for contract staking */
   host_chain_id?: string;
   transfer_channel?: string;
   pool_id?: string;

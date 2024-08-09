@@ -24,6 +24,7 @@ message ZeroImpactJoinCapability {
   string denom = 1;
   ZeroImpactJoinMethod method = 2;
   string provider = 3;
+  // this property will be nil for ZeroImpactJoinYAMM, and for contract assets
   ZeroImpactJoinAssetParameters zij_asset_params = 4;
 }
 

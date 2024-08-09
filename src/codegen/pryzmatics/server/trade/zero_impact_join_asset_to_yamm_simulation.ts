@@ -5,6 +5,7 @@ import { GlobalDecoderRegistry } from "../../../registry";
 import { Decimal } from "@cosmjs/math";
 export interface QueryZeroImpactJoinAssetToYammSimulationRequest {
   amountIn: Coin;
+  /** leave the host_chain, and channel empty for contract staking */
   hostChainId: string;
   transferChannel: string;
 }
@@ -14,6 +15,7 @@ export interface QueryZeroImpactJoinAssetToYammSimulationRequestProtoMsg {
 }
 export interface QueryZeroImpactJoinAssetToYammSimulationRequestAmino {
   amount_in?: CoinAmino;
+  /** leave the host_chain, and channel empty for contract staking */
   host_chain_id?: string;
   transfer_channel?: string;
 }

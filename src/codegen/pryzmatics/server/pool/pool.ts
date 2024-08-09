@@ -65,6 +65,7 @@ export interface ZeroImpactJoinCapability {
   denom: string;
   method: ZeroImpactJoinMethod;
   provider: string;
+  /** this property will be nil for ZeroImpactJoinYAMM, and for contract assets */
   zijAssetParams?: ZeroImpactJoinAssetParameters;
 }
 export interface ZeroImpactJoinCapabilityProtoMsg {
@@ -75,6 +76,7 @@ export interface ZeroImpactJoinCapabilityAmino {
   denom?: string;
   method?: ZeroImpactJoinMethod;
   provider?: string;
+  /** this property will be nil for ZeroImpactJoinYAMM, and for contract assets */
   zij_asset_params?: ZeroImpactJoinAssetParametersAmino;
 }
 export interface ZeroImpactJoinCapabilityAminoMsg {
