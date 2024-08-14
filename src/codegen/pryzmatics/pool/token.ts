@@ -73,6 +73,10 @@ export interface TokenMetrics {
   yieldChangePercentage24h?: string;
   yieldChangePercentage7d?: string;
   yieldChangePercentage30d?: string;
+  priceUnderlyingTermsChangePercentage1h?: string;
+  priceUnderlyingTermsChangePercentage24h?: string;
+  priceUnderlyingTermsChangePercentage7d?: string;
+  priceUnderlyingTermsChangePercentage30d?: string;
 }
 export interface TokenMetricsProtoMsg {
   typeUrl: "/pryzmatics.pool.TokenMetrics";
@@ -92,6 +96,10 @@ export interface TokenMetricsAmino {
   yield_change_percentage_24h?: string;
   yield_change_percentage_7d?: string;
   yield_change_percentage_30d?: string;
+  price_underlying_terms_change_percentage_1h?: string;
+  price_underlying_terms_change_percentage_24h?: string;
+  price_underlying_terms_change_percentage_7d?: string;
+  price_underlying_terms_change_percentage_30d?: string;
 }
 export interface TokenMetricsAminoMsg {
   type: "/pryzmatics.pool.TokenMetrics";
@@ -111,6 +119,10 @@ export interface TokenMetricsSDKType {
   yield_change_percentage_24h?: string;
   yield_change_percentage_7d?: string;
   yield_change_percentage_30d?: string;
+  price_underlying_terms_change_percentage_1h?: string;
+  price_underlying_terms_change_percentage_24h?: string;
+  price_underlying_terms_change_percentage_7d?: string;
+  price_underlying_terms_change_percentage_30d?: string;
 }
 export interface Token {
   denom: string;
@@ -118,6 +130,8 @@ export interface Token {
   yield?: TokenYield;
   price?: string;
   metrics: TokenMetrics;
+  underlyingTokenDenom: string;
+  underlyingTokenTermsPrice?: string;
   error: string;
 }
 export interface TokenProtoMsg {
@@ -130,6 +144,8 @@ export interface TokenAmino {
   yield?: TokenYieldAmino;
   price?: string;
   metrics?: TokenMetricsAmino;
+  underlying_token_denom?: string;
+  underlying_token_terms_price?: string;
   error?: string;
 }
 export interface TokenAminoMsg {
@@ -142,6 +158,8 @@ export interface TokenSDKType {
   yield?: TokenYieldSDKType;
   price?: string;
   metrics: TokenMetricsSDKType;
+  underlying_token_denom: string;
+  underlying_token_terms_price?: string;
   error: string;
 }
 function createBaseTokenMetrics(): TokenMetrics {
@@ -158,7 +176,11 @@ function createBaseTokenMetrics(): TokenMetrics {
     price52wHigh: undefined,
     yieldChangePercentage24h: undefined,
     yieldChangePercentage7d: undefined,
-    yieldChangePercentage30d: undefined
+    yieldChangePercentage30d: undefined,
+    priceUnderlyingTermsChangePercentage1h: undefined,
+    priceUnderlyingTermsChangePercentage24h: undefined,
+    priceUnderlyingTermsChangePercentage7d: undefined,
+    priceUnderlyingTermsChangePercentage30d: undefined
   };
 }
 export const TokenMetrics = {
@@ -212,6 +234,18 @@ export const TokenMetrics = {
     if (message.yieldChangePercentage30d !== undefined) {
       writer.uint32(106).string(Decimal.fromUserInput(message.yieldChangePercentage30d, 18).atomics);
     }
+    if (message.priceUnderlyingTermsChangePercentage1h !== undefined) {
+      writer.uint32(114).string(Decimal.fromUserInput(message.priceUnderlyingTermsChangePercentage1h, 18).atomics);
+    }
+    if (message.priceUnderlyingTermsChangePercentage24h !== undefined) {
+      writer.uint32(122).string(Decimal.fromUserInput(message.priceUnderlyingTermsChangePercentage24h, 18).atomics);
+    }
+    if (message.priceUnderlyingTermsChangePercentage7d !== undefined) {
+      writer.uint32(130).string(Decimal.fromUserInput(message.priceUnderlyingTermsChangePercentage7d, 18).atomics);
+    }
+    if (message.priceUnderlyingTermsChangePercentage30d !== undefined) {
+      writer.uint32(138).string(Decimal.fromUserInput(message.priceUnderlyingTermsChangePercentage30d, 18).atomics);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): TokenMetrics {
@@ -260,6 +294,18 @@ export const TokenMetrics = {
         case 13:
           message.yieldChangePercentage30d = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
+        case 14:
+          message.priceUnderlyingTermsChangePercentage1h = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 15:
+          message.priceUnderlyingTermsChangePercentage24h = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 16:
+          message.priceUnderlyingTermsChangePercentage7d = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 17:
+          message.priceUnderlyingTermsChangePercentage30d = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -281,7 +327,11 @@ export const TokenMetrics = {
       price52wHigh: isSet(object.price52wHigh) ? String(object.price52wHigh) : undefined,
       yieldChangePercentage24h: isSet(object.yieldChangePercentage24h) ? String(object.yieldChangePercentage24h) : undefined,
       yieldChangePercentage7d: isSet(object.yieldChangePercentage7d) ? String(object.yieldChangePercentage7d) : undefined,
-      yieldChangePercentage30d: isSet(object.yieldChangePercentage30d) ? String(object.yieldChangePercentage30d) : undefined
+      yieldChangePercentage30d: isSet(object.yieldChangePercentage30d) ? String(object.yieldChangePercentage30d) : undefined,
+      priceUnderlyingTermsChangePercentage1h: isSet(object.priceUnderlyingTermsChangePercentage1h) ? String(object.priceUnderlyingTermsChangePercentage1h) : undefined,
+      priceUnderlyingTermsChangePercentage24h: isSet(object.priceUnderlyingTermsChangePercentage24h) ? String(object.priceUnderlyingTermsChangePercentage24h) : undefined,
+      priceUnderlyingTermsChangePercentage7d: isSet(object.priceUnderlyingTermsChangePercentage7d) ? String(object.priceUnderlyingTermsChangePercentage7d) : undefined,
+      priceUnderlyingTermsChangePercentage30d: isSet(object.priceUnderlyingTermsChangePercentage30d) ? String(object.priceUnderlyingTermsChangePercentage30d) : undefined
     };
   },
   toJSON(message: TokenMetrics): unknown {
@@ -299,6 +349,10 @@ export const TokenMetrics = {
     message.yieldChangePercentage24h !== undefined && (obj.yieldChangePercentage24h = message.yieldChangePercentage24h);
     message.yieldChangePercentage7d !== undefined && (obj.yieldChangePercentage7d = message.yieldChangePercentage7d);
     message.yieldChangePercentage30d !== undefined && (obj.yieldChangePercentage30d = message.yieldChangePercentage30d);
+    message.priceUnderlyingTermsChangePercentage1h !== undefined && (obj.priceUnderlyingTermsChangePercentage1h = message.priceUnderlyingTermsChangePercentage1h);
+    message.priceUnderlyingTermsChangePercentage24h !== undefined && (obj.priceUnderlyingTermsChangePercentage24h = message.priceUnderlyingTermsChangePercentage24h);
+    message.priceUnderlyingTermsChangePercentage7d !== undefined && (obj.priceUnderlyingTermsChangePercentage7d = message.priceUnderlyingTermsChangePercentage7d);
+    message.priceUnderlyingTermsChangePercentage30d !== undefined && (obj.priceUnderlyingTermsChangePercentage30d = message.priceUnderlyingTermsChangePercentage30d);
     return obj;
   },
   fromPartial(object: Partial<TokenMetrics>): TokenMetrics {
@@ -316,6 +370,10 @@ export const TokenMetrics = {
     message.yieldChangePercentage24h = object.yieldChangePercentage24h ?? undefined;
     message.yieldChangePercentage7d = object.yieldChangePercentage7d ?? undefined;
     message.yieldChangePercentage30d = object.yieldChangePercentage30d ?? undefined;
+    message.priceUnderlyingTermsChangePercentage1h = object.priceUnderlyingTermsChangePercentage1h ?? undefined;
+    message.priceUnderlyingTermsChangePercentage24h = object.priceUnderlyingTermsChangePercentage24h ?? undefined;
+    message.priceUnderlyingTermsChangePercentage7d = object.priceUnderlyingTermsChangePercentage7d ?? undefined;
+    message.priceUnderlyingTermsChangePercentage30d = object.priceUnderlyingTermsChangePercentage30d ?? undefined;
     return message;
   },
   fromAmino(object: TokenMetricsAmino): TokenMetrics {
@@ -359,6 +417,18 @@ export const TokenMetrics = {
     if (object.yield_change_percentage_30d !== undefined && object.yield_change_percentage_30d !== null) {
       message.yieldChangePercentage30d = object.yield_change_percentage_30d;
     }
+    if (object.price_underlying_terms_change_percentage_1h !== undefined && object.price_underlying_terms_change_percentage_1h !== null) {
+      message.priceUnderlyingTermsChangePercentage1h = object.price_underlying_terms_change_percentage_1h;
+    }
+    if (object.price_underlying_terms_change_percentage_24h !== undefined && object.price_underlying_terms_change_percentage_24h !== null) {
+      message.priceUnderlyingTermsChangePercentage24h = object.price_underlying_terms_change_percentage_24h;
+    }
+    if (object.price_underlying_terms_change_percentage_7d !== undefined && object.price_underlying_terms_change_percentage_7d !== null) {
+      message.priceUnderlyingTermsChangePercentage7d = object.price_underlying_terms_change_percentage_7d;
+    }
+    if (object.price_underlying_terms_change_percentage_30d !== undefined && object.price_underlying_terms_change_percentage_30d !== null) {
+      message.priceUnderlyingTermsChangePercentage30d = object.price_underlying_terms_change_percentage_30d;
+    }
     return message;
   },
   toAmino(message: TokenMetrics, useInterfaces: boolean = true): TokenMetricsAmino {
@@ -376,6 +446,10 @@ export const TokenMetrics = {
     obj.yield_change_percentage_24h = padDecimal(message.yieldChangePercentage24h) === null ? undefined : padDecimal(message.yieldChangePercentage24h);
     obj.yield_change_percentage_7d = padDecimal(message.yieldChangePercentage7d) === null ? undefined : padDecimal(message.yieldChangePercentage7d);
     obj.yield_change_percentage_30d = padDecimal(message.yieldChangePercentage30d) === null ? undefined : padDecimal(message.yieldChangePercentage30d);
+    obj.price_underlying_terms_change_percentage_1h = padDecimal(message.priceUnderlyingTermsChangePercentage1h) === null ? undefined : padDecimal(message.priceUnderlyingTermsChangePercentage1h);
+    obj.price_underlying_terms_change_percentage_24h = padDecimal(message.priceUnderlyingTermsChangePercentage24h) === null ? undefined : padDecimal(message.priceUnderlyingTermsChangePercentage24h);
+    obj.price_underlying_terms_change_percentage_7d = padDecimal(message.priceUnderlyingTermsChangePercentage7d) === null ? undefined : padDecimal(message.priceUnderlyingTermsChangePercentage7d);
+    obj.price_underlying_terms_change_percentage_30d = padDecimal(message.priceUnderlyingTermsChangePercentage30d) === null ? undefined : padDecimal(message.priceUnderlyingTermsChangePercentage30d);
     return obj;
   },
   fromAminoMsg(object: TokenMetricsAminoMsg): TokenMetrics {
@@ -402,19 +476,21 @@ function createBaseToken(): Token {
     yield: undefined,
     price: undefined,
     metrics: TokenMetrics.fromPartial({}),
+    underlyingTokenDenom: "",
+    underlyingTokenTermsPrice: undefined,
     error: ""
   };
 }
 export const Token = {
   typeUrl: "/pryzmatics.pool.Token",
   is(o: any): o is Token {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.error === "string");
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.underlyingTokenDenom === "string" && typeof o.error === "string");
   },
   isSDK(o: any): o is TokenSDKType {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.error === "string");
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.error === "string");
   },
   isAmino(o: any): o is TokenAmino {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.error === "string");
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.error === "string");
   },
   encode(message: Token, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
@@ -432,8 +508,14 @@ export const Token = {
     if (message.metrics !== undefined) {
       TokenMetrics.encode(message.metrics, writer.uint32(42).fork()).ldelim();
     }
+    if (message.underlyingTokenDenom !== "") {
+      writer.uint32(50).string(message.underlyingTokenDenom);
+    }
+    if (message.underlyingTokenTermsPrice !== undefined) {
+      writer.uint32(58).string(Decimal.fromUserInput(message.underlyingTokenTermsPrice, 18).atomics);
+    }
     if (message.error !== "") {
-      writer.uint32(50).string(message.error);
+      writer.uint32(66).string(message.error);
     }
     return writer;
   },
@@ -460,6 +542,12 @@ export const Token = {
           message.metrics = TokenMetrics.decode(reader, reader.uint32(), useInterfaces);
           break;
         case 6:
+          message.underlyingTokenDenom = reader.string();
+          break;
+        case 7:
+          message.underlyingTokenTermsPrice = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 8:
           message.error = reader.string();
           break;
         default:
@@ -476,6 +564,8 @@ export const Token = {
       yield: isSet(object.yield) ? TokenYield.fromJSON(object.yield) : undefined,
       price: isSet(object.price) ? String(object.price) : undefined,
       metrics: isSet(object.metrics) ? TokenMetrics.fromJSON(object.metrics) : undefined,
+      underlyingTokenDenom: isSet(object.underlyingTokenDenom) ? String(object.underlyingTokenDenom) : "",
+      underlyingTokenTermsPrice: isSet(object.underlyingTokenTermsPrice) ? String(object.underlyingTokenTermsPrice) : undefined,
       error: isSet(object.error) ? String(object.error) : ""
     };
   },
@@ -486,6 +576,8 @@ export const Token = {
     message.yield !== undefined && (obj.yield = message.yield ? TokenYield.toJSON(message.yield) : undefined);
     message.price !== undefined && (obj.price = message.price);
     message.metrics !== undefined && (obj.metrics = message.metrics ? TokenMetrics.toJSON(message.metrics) : undefined);
+    message.underlyingTokenDenom !== undefined && (obj.underlyingTokenDenom = message.underlyingTokenDenom);
+    message.underlyingTokenTermsPrice !== undefined && (obj.underlyingTokenTermsPrice = message.underlyingTokenTermsPrice);
     message.error !== undefined && (obj.error = message.error);
     return obj;
   },
@@ -496,6 +588,8 @@ export const Token = {
     message.yield = object.yield !== undefined && object.yield !== null ? TokenYield.fromPartial(object.yield) : undefined;
     message.price = object.price ?? undefined;
     message.metrics = object.metrics !== undefined && object.metrics !== null ? TokenMetrics.fromPartial(object.metrics) : undefined;
+    message.underlyingTokenDenom = object.underlyingTokenDenom ?? "";
+    message.underlyingTokenTermsPrice = object.underlyingTokenTermsPrice ?? undefined;
     message.error = object.error ?? "";
     return message;
   },
@@ -516,6 +610,12 @@ export const Token = {
     if (object.metrics !== undefined && object.metrics !== null) {
       message.metrics = TokenMetrics.fromAmino(object.metrics);
     }
+    if (object.underlying_token_denom !== undefined && object.underlying_token_denom !== null) {
+      message.underlyingTokenDenom = object.underlying_token_denom;
+    }
+    if (object.underlying_token_terms_price !== undefined && object.underlying_token_terms_price !== null) {
+      message.underlyingTokenTermsPrice = object.underlying_token_terms_price;
+    }
     if (object.error !== undefined && object.error !== null) {
       message.error = object.error;
     }
@@ -528,6 +628,8 @@ export const Token = {
     obj.yield = message.yield ? TokenYield.toAmino(message.yield, useInterfaces) : undefined;
     obj.price = padDecimal(message.price) === null ? undefined : padDecimal(message.price);
     obj.metrics = message.metrics ? TokenMetrics.toAmino(message.metrics, useInterfaces) : undefined;
+    obj.underlying_token_denom = message.underlyingTokenDenom === "" ? undefined : message.underlyingTokenDenom;
+    obj.underlying_token_terms_price = padDecimal(message.underlyingTokenTermsPrice) === null ? undefined : padDecimal(message.underlyingTokenTermsPrice);
     obj.error = message.error === "" ? undefined : message.error;
     return obj;
   },
