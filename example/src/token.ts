@@ -9,19 +9,27 @@ async function main() {
         denom: "c:uosmo",
         tokenIn: ""
     })).token
+
+    console.log(token.underlying_token_denom)
+    console.log(token.underlying_token_terms_price)
+
     console.log(token.metrics.price_change_percentage_1h)
     console.log(token.metrics.price_change_percentage_24h)
     console.log(token.metrics.price_change_percentage_7d)
     console.log(token.metrics.price_change_percentage_30d)
-    console.log(token.metrics.trade_volume_1h )
-    console.log(token.metrics.trade_volume_24h )
-    console.log(token.metrics.trade_volume_7d )
-    console.log(token.metrics.trade_volume_30d )
-    console.log(token.metrics.price_52w_low )
-    console.log(token.metrics.price_52w_high )
+    console.log(token.metrics.trade_volume_1h)
+    console.log(token.metrics.trade_volume_24h)
+    console.log(token.metrics.trade_volume_7d)
+    console.log(token.metrics.trade_volume_30d)
+    console.log(token.metrics.price_52w_low)
+    console.log(token.metrics.price_52w_high)
     console.log(token.metrics.yield_change_percentage_24h)
     console.log(token.metrics.yield_change_percentage_7d)
     console.log(token.metrics.yield_change_percentage_30d)
+    console.log(token.metrics.price_underlying_terms_change_percentage_1h)
+    console.log(token.metrics.price_underlying_terms_change_percentage_24h)
+    console.log(token.metrics.price_underlying_terms_change_percentage_7d)
+    console.log(token.metrics.price_underlying_terms_change_percentage_30d)
 }
 
 main().catch(console.error)
