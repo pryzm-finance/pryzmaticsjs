@@ -15,8 +15,8 @@ importers:
         specifier: 0.32.4
         version: 0.32.4
       '@pryzm-finance/pryzmaticsjs':
-        specifier: 0.6.11
-        version: 0.6.11(google-protobuf@3.21.2)
+        specifier: 0.6.12
+        version: 0.6.12(google-protobuf@3.21.2)
       '@refractedlabs/internal-js-utils':
         specifier: 0.6.5
         version: 0.6.5
@@ -28,8 +28,8 @@ importers:
         version: 0.9.0
     devDependencies:
       typescript:
-        specifier: ^5.1.6
-        version: 5.5.3
+        specifier: ^5.5.4
+        version: 5.5.4
 
 packages:
 
@@ -135,8 +135,8 @@ packages:
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
 
-  '@pryzm-finance/pryzmaticsjs@0.6.11':
-    resolution: {integrity: sha512-AUG1FksVL6StBOf8ZS3D7aCeYBOR9pIckknoPg3wXfONid8ebKjZ6oJUpAl14JqC/9iiRvJ8PtyIN+Us7fIfRA==}
+  '@pryzm-finance/pryzmaticsjs@0.6.12':
+    resolution: {integrity: sha512-pPo6YNTZEnz5uj1CTpysNApGdZ45WrgAaxMdut8jBTVS/yghqPFSOkHm566Yg/WNnA3RPxHlM10/kbH3uiiOAA==}
 
   '@refractedlabs/cosmology-lcd-fork@0.13.7':
     resolution: {integrity: sha512-5DEQy8DHzSIsTfl+amlISteWCWmAokWC1pJkMit8H16Mx1ycaDfSrvREHHJlB5bfOkTkc3YHMmd8e8izihEHng==}
@@ -147,8 +147,8 @@ packages:
   '@types/long@4.0.2':
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
 
-  '@types/node@20.14.10':
-    resolution: {integrity: sha512-MdiXf+nDuMvY0gJKxyfZ7/6UFsETO7mGKF54MVD/ekJS6HdFtpZFBgrh6Pseu64XTb2MLyFPlbW6hj8HYRQNOQ==}
+  '@types/node@22.3.0':
+    resolution: {integrity: sha512-nrWpWVaDZuaVc5X84xJ0vNrLvomM205oQyLsRt7OHNZbSHslcWsvgFR7O7hire2ZonjLrWBbedmotmIlJDVd6g==}
 
   '@types/triple-beam@1.3.5':
     resolution: {integrity: sha512-6WaYesThRMCl19iryMYP7/x2OVgCtbIVflDGFpWnb9irXI3UjYE4AzmYuiUKY1AJstGijoY+MgUszMgRxIYTYw==}
@@ -227,8 +227,8 @@ packages:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
 
-  elliptic@6.5.5:
-    resolution: {integrity: sha512-7EjbcmUm17NQFu4Pmgmq2olYMj8nwMnpcddByChSUjArp8F5DQWcIcpriwO4ZToLNAJig0yiyjswfyGNje/ixw==}
+  elliptic@6.5.7:
+    resolution: {integrity: sha512-ESVCtTwiA+XhY3wyh24QqRGBoP3rEdDUl3EDUUo9tft074fi19IrdpH7hLCMMP3CIj7jb3W96rn8lt/BqIlt5Q==}
 
   enabled@2.0.0:
     resolution: {integrity: sha512-AKrN98kuwOzMIdAizXGI86UFBoo26CL21UM763y1h/GMSJ4/OHU9k2YlsmBpyScFo/wbLzWQJBMCW4+IO3/+OQ==}
@@ -333,11 +333,11 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  libsodium-sumo@0.7.14:
-    resolution: {integrity: sha512-2nDge6qlAjcwyslAhWfVumlkeSNK5+WCfKa2/VEq9prvlT5vP2FR0m0o5hmKaYqfsZ4TQVj5czQsimZvXDB1CQ==}
+  libsodium-sumo@0.7.15:
+    resolution: {integrity: sha512-5tPmqPmq8T8Nikpm1Nqj0hBHvsLFCXvdhBFV7SGOitQPZAA6jso8XoL0r4L7vmfKXr486fiQInvErHtEvizFMw==}
 
-  libsodium-wrappers-sumo@0.7.14:
-    resolution: {integrity: sha512-0lm7ZwN5a95J2yUi8R1rgQeeaVDIWnvNzgVmXmZswis4mC+bQtbDrB+QpJlL4qklaKx3hVpJjoc6ubzJFiv64Q==}
+  libsodium-wrappers-sumo@0.7.15:
+    resolution: {integrity: sha512-aSWY8wKDZh5TC7rMvEdTHoyppVq/1dTSAeAR7H6pzd6QRT3vQWcT5pGwCotLcpPEOLXX6VvqihSPkpEhYAjANA==}
 
   lodash.clone@4.5.0:
     resolution: {integrity: sha512-GhrVeweiTD6uTmmn5hV/lzgCQhccwReIVRLHp7LT4SopOjqEZ5BbX8b5WWEtAKasjmy8hR7ZPwsYlxRCku5odg==}
@@ -434,13 +434,13 @@ packages:
     resolution: {integrity: sha512-aZbgViZrg1QNcG+LULa7nhZpJTZSLm/mXnHXnbAbjmN5aSa0y7V+wvv6+4WaBtpISJzThKy+PIPxc1Nq1EJ9mg==}
     engines: {node: '>= 14.0.0'}
 
-  typescript@5.5.3:
-    resolution: {integrity: sha512-/hreyEujaB0w76zKo6717l3L0o/qEUtRgdvUBvlkhoWeOVMjMuHNHk0BRBzikzuGDqNmPQbg5ifMEqsHLiIUcQ==}
+  typescript@5.5.4:
+    resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
     engines: {node: '>=14.17'}
     hasBin: true
 
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+  undici-types@6.18.2:
+    resolution: {integrity: sha512-5ruQbENj95yDYJNS3TvcaxPMshV7aizdv/hWYjGIKoANWKjhWNBsr2YEuYZKodQulB1b8l7ILOuDQep3afowQQ==}
 
   unix-dgram@2.0.6:
     resolution: {integrity: sha512-AURroAsb73BZ6CdAyMrTk/hYKNj3DuYYEuOaB8bYMOHGKupRNScw90Q5C71tWJc3uE7dIeXRyuwN0xLLq3vDTg==}
@@ -459,8 +459,8 @@ packages:
     peerDependencies:
       winston: ^3
 
-  winston-syslog@2.7.0:
-    resolution: {integrity: sha512-w+V0lHO2W6XqcYlvVi4DrblwJShvQbAaruRvUlMPzH1Z+dYvUvo4ra2hhoF6UNTFmC9LBltcTG05ypYL6S/B8A==}
+  winston-syslog@2.7.1:
+    resolution: {integrity: sha512-MrU5gSwXgEbHwz5wFhn1rZtSCbRcP1PEB8zU49tgsfjQ63EjIVAkQpXmMocdbTLnTJ2cW3gLW6gmoOOOhyJZgg==}
     engines: {node: '>= 8'}
     peerDependencies:
       winston: ^3.8.2
@@ -469,8 +469,8 @@ packages:
     resolution: {integrity: sha512-wQCXXVgfv/wUPOfb2x0ruxzwkcZfxcktz6JIMUaPLmcNhO4bZTwA/WtDWK74xV3F2dKu8YadrFv0qhwYjVEwhA==}
     engines: {node: '>= 12.0.0'}
 
-  winston@3.13.1:
-    resolution: {integrity: sha512-SvZit7VFNvXRzbqGHsv5KSmgbEYR5EiQfDAL9gxYkRqa934Hnk++zze0wANKtMHcy/gI4W/3xmSDwlhf865WGw==}
+  winston@3.14.2:
+    resolution: {integrity: sha512-CO8cdpBB2yqzEf8v895L+GNKYJiEq8eKlHU38af3snQBQ+sdAIUepjMSguOIJC7ICbzm0ZI+Af2If4vIJrtmOg==}
     engines: {node: '>= 12.0.0'}
 
   ws@7.5.10:
@@ -511,8 +511,8 @@ snapshots:
       '@cosmjs/utils': 0.32.4
       '@noble/hashes': 1.4.0
       bn.js: 5.2.1
-      elliptic: 6.5.5
-      libsodium-wrappers-sumo: 0.7.14
+      elliptic: 6.5.7
+      libsodium-wrappers-sumo: 0.7.15
 
   '@cosmjs/encoding@0.32.2':
     dependencies:
@@ -659,7 +659,7 @@ snapshots:
 
   '@protobufjs/utf8@1.1.0': {}
 
-  '@pryzm-finance/pryzmaticsjs@0.6.11(google-protobuf@3.21.2)':
+  '@pryzm-finance/pryzmaticsjs@0.6.12(google-protobuf@3.21.2)':
     dependencies:
       '@cosmjs/math': 0.32.4
       '@cosmjs/proto-signing': 0.32.4
@@ -691,9 +691,9 @@ snapshots:
       '@protobufjs/eventemitter': 1.1.0
       jackson-js: 1.1.0
       js-yaml: 4.1.0
-      winston: 3.13.1
-      winston-daily-rotate-file: 4.7.1(winston@3.13.1)
-      winston-syslog: 2.7.0(winston@3.13.1)
+      winston: 3.14.2
+      winston-daily-rotate-file: 4.7.1(winston@3.14.2)
+      winston-syslog: 2.7.1(winston@3.14.2)
       xstream: 11.14.0
     transitivePeerDependencies:
       - bufferutil
@@ -701,9 +701,9 @@ snapshots:
 
   '@types/long@4.0.2': {}
 
-  '@types/node@20.14.10':
+  '@types/node@22.3.0':
     dependencies:
-      undici-types: 5.26.5
+      undici-types: 6.18.2
 
   '@types/triple-beam@1.3.5': {}
 
@@ -783,7 +783,7 @@ snapshots:
 
   delayed-stream@1.0.0: {}
 
-  elliptic@6.5.5:
+  elliptic@6.5.7:
     dependencies:
       bn.js: 4.12.0
       brorand: 1.1.0
@@ -889,11 +889,11 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  libsodium-sumo@0.7.14: {}
+  libsodium-sumo@0.7.15: {}
 
-  libsodium-wrappers-sumo@0.7.14:
+  libsodium-wrappers-sumo@0.7.15:
     dependencies:
-      libsodium-sumo: 0.7.14
+      libsodium-sumo: 0.7.15
 
   lodash.clone@4.5.0: {}
 
@@ -950,7 +950,7 @@ snapshots:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 20.14.10
+      '@types/node': 22.3.0
       long: 4.0.0
 
   proxy-from-env@1.1.0: {}
@@ -985,9 +985,9 @@ snapshots:
 
   triple-beam@1.4.1: {}
 
-  typescript@5.5.3: {}
+  typescript@5.5.4: {}
 
-  undici-types@5.26.5: {}
+  undici-types@6.18.2: {}
 
   unix-dgram@2.0.6:
     dependencies:
@@ -999,18 +999,20 @@ snapshots:
 
   utility-types@3.11.0: {}
 
-  winston-daily-rotate-file@4.7.1(winston@3.13.1):
+  winston-daily-rotate-file@4.7.1(winston@3.14.2):
     dependencies:
       file-stream-rotator: 0.6.1
       object-hash: 2.2.0
       triple-beam: 1.4.1
-      winston: 3.13.1
+      winston: 3.14.2
       winston-transport: 4.7.1
 
-  winston-syslog@2.7.0(winston@3.13.1):
+  winston-syslog@2.7.1(winston@3.14.2):
     dependencies:
       glossy: 0.1.7
-      winston: 3.13.1
+      triple-beam: 1.4.1
+      winston: 3.14.2
+      winston-transport: 4.7.1
     optionalDependencies:
       unix-dgram: 2.0.6
 
@@ -1020,7 +1022,7 @@ snapshots:
       readable-stream: 3.6.2
       triple-beam: 1.4.1
 
-  winston@3.13.1:
+  winston@3.14.2:
     dependencies:
       '@colors/colors': 1.6.0
       '@dabh/diagnostics': 2.0.3
