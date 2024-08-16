@@ -8,9 +8,10 @@ import "cosmos_proto/cosmos.proto";
 option go_package = "github.com/pryzm-finance/pryzmatics/types/ystaking";
 
 message UserStake {
-  string address = 1;
-  string denom = 2;
-  string bonded_amount = 3 [
+  uint64 id = 1;
+  string address = 2;
+  string denom = 3;
+  string bonded_amount = 4 [
     (cosmos_proto.scalar) = "cosmos.Int",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
     (gogoproto.nullable) = false

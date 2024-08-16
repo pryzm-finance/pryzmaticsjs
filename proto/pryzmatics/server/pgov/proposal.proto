@@ -1,0 +1,29 @@
+syntax = "proto3";
+package pryzmatics.server.pgov;
+
+import "gogoproto/gogo.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "pryzmatics/pgov/proposal.proto";
+import "pryzmatics/database/pgov/proposal.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/pgov";
+
+message QueryPGovProposalsRequest {
+  string asset_id = 1;
+  pryzmatics.database.pgov.ProposalOrderBy order_by = 2 [(gogoproto.nullable) = true];
+  cosmos.base.query.v1beta1.PageRequest pagination = 3 [(gogoproto.nullable) = true];
+}
+
+message QueryPGovProposalsResponse {
+  repeated pryzmatics.pgov.Proposal proposals = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}
+
+message QueryPGovProposalRequest {
+  string asset_id = 1;
+  uint64 proposal_id = 2;
+}
+
+message QueryPGovProposalResponse {
+  pryzmatics.pgov.Proposal proposal = 1 [(gogoproto.nullable) = false];
+}

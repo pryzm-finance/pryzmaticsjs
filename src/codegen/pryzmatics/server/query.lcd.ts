@@ -4,7 +4,8 @@ import { setPaginationParams } from "../../helpers";
 import { LCDClient } from "@refractedlabs/cosmology-lcd-fork";
 import { QueryAssetRequest, QueryAssetResponseSDKType } from "./asset/asset";
 import { QueryAllMaturitiesRequest, QueryAllMaturitiesResponseSDKType } from "./maturity/maturity";
-import { QueryProposalSubmissionMsgsRequest, QueryProposalSubmissionMsgsResponseSDKType, QueryAssetProposalRequest, QueryAssetProposalResponseSDKType } from "./pgov/pgov";
+import { QueryPGovProposalsRequest, QueryPGovProposalsResponseSDKType, QueryPGovProposalRequest, QueryPGovProposalResponseSDKType } from "./pgov/proposal";
+import { QueryPGovVotesRequest, QueryPGovVotesResponseSDKType } from "./pgov/vote";
 import { QueryPoolTokenRequest, QueryPoolTokenResponseSDKType, QueryAllPoolTokenRequest, QueryAllPoolTokenResponseSDKType } from "./pool/pool_token";
 import { QueryPoolRequest, QueryPoolResponseSDKType, QueryPoolsRequest, QueryPoolsResponseSDKType } from "./pool/pool";
 import { QueryTokenRequest, QueryTokenResponseSDKType, QueryTokensRequest, QueryTokensResponseSDKType } from "./pool/token";
@@ -59,8 +60,9 @@ export class LCDQueryClient {
     this.req = requestClient;
     this.asset = this.asset.bind(this);
     this.maturityAll = this.maturityAll.bind(this);
-    this.proposalSubmissionMsgs = this.proposalSubmissionMsgs.bind(this);
-    this.assetProposals = this.assetProposals.bind(this);
+    this.pGovProposals = this.pGovProposals.bind(this);
+    this.pGovProposal = this.pGovProposal.bind(this);
+    this.pGovVotes = this.pGovVotes.bind(this);
     this.poolToken = this.poolToken.bind(this);
     this.poolTokens = this.poolTokens.bind(this);
     this.pool = this.pool.bind(this);
@@ -148,15 +150,44 @@ export class LCDQueryClient {
     const endpoint = `pryzmatics/maturity`;
     return await this.req.get<QueryAllMaturitiesResponseSDKType>(endpoint, options);
   }
-  /* ProposalSubmissionMsgs */
-  async proposalSubmissionMsgs(params: QueryProposalSubmissionMsgsRequest): Promise<QueryProposalSubmissionMsgsResponseSDKType> {
-    const endpoint = `pryzmatics/pgov/proposal_submission_msgs/${params.assetId}/${params.proposalId}/${params.creator}`;
-    return await this.req.get<QueryProposalSubmissionMsgsResponseSDKType>(endpoint);
+  /* PGovProposals */
+  async pGovProposals(params: QueryPGovProposalsRequest): Promise<QueryPGovProposalsResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.assetId !== "undefined") {
+      options.params.asset_id = params.assetId;
+    }
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `pryzmatics/pgov/proposal`;
+    return await this.req.get<QueryPGovProposalsResponseSDKType>(endpoint, options);
   }
-  /* AssetProposals */
-  async assetProposals(params: QueryAssetProposalRequest): Promise<QueryAssetProposalResponseSDKType> {
-    const endpoint = `pryzmatics/pgov/asset_proposals/${params.assetId}`;
-    return await this.req.get<QueryAssetProposalResponseSDKType>(endpoint);
+  /* PGovProposal */
+  async pGovProposal(params: QueryPGovProposalRequest): Promise<QueryPGovProposalResponseSDKType> {
+    const endpoint = `pryzmatics/pgov/proposal/${params.assetId}/${params.proposalId}`;
+    return await this.req.get<QueryPGovProposalResponseSDKType>(endpoint);
+  }
+  /* PGovVotes */
+  async pGovVotes(params: QueryPGovVotesRequest): Promise<QueryPGovVotesResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.voter !== "undefined") {
+      options.params.voter = params.voter;
+    }
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `pryzmatics/pgov/vote/${params.assetId}/${params.proposalId}`;
+    return await this.req.get<QueryPGovVotesResponseSDKType>(endpoint, options);
   }
   /* PoolToken */
   async poolToken(params: QueryPoolTokenRequest): Promise<QueryPoolTokenResponseSDKType> {
@@ -881,6 +912,12 @@ export class LCDQueryClient {
     }
     if (typeof params?.denom !== "undefined") {
       options.params.denom = params.denom;
+    }
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
     }
     const endpoint = `pryzmatics/ystaking/user_stake`;
     return await this.req.get<QueryUserStakesResponseSDKType>(endpoint, options);

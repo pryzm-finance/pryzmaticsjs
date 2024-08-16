@@ -2,6 +2,7 @@ import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet } from "../../helpers";
 import { GlobalDecoderRegistry } from "../../registry";
 export interface UserStake {
+  id: bigint;
   address: string;
   denom: string;
   bondedAmount: string;
@@ -11,6 +12,7 @@ export interface UserStakeProtoMsg {
   value: Uint8Array;
 }
 export interface UserStakeAmino {
+  id?: string;
   address?: string;
   denom?: string;
   bonded_amount?: string;
@@ -20,12 +22,14 @@ export interface UserStakeAminoMsg {
   value: UserStakeAmino;
 }
 export interface UserStakeSDKType {
+  id: bigint;
   address: string;
   denom: string;
   bonded_amount: string;
 }
 function createBaseUserStake(): UserStake {
   return {
+    id: BigInt(0),
     address: "",
     denom: "",
     bondedAmount: ""
@@ -34,23 +38,26 @@ function createBaseUserStake(): UserStake {
 export const UserStake = {
   typeUrl: "/pryzmatics.ystaking.UserStake",
   is(o: any): o is UserStake {
-    return o && (o.$typeUrl === UserStake.typeUrl || typeof o.address === "string" && typeof o.denom === "string" && typeof o.bondedAmount === "string");
+    return o && (o.$typeUrl === UserStake.typeUrl || typeof o.id === "bigint" && typeof o.address === "string" && typeof o.denom === "string" && typeof o.bondedAmount === "string");
   },
   isSDK(o: any): o is UserStakeSDKType {
-    return o && (o.$typeUrl === UserStake.typeUrl || typeof o.address === "string" && typeof o.denom === "string" && typeof o.bonded_amount === "string");
+    return o && (o.$typeUrl === UserStake.typeUrl || typeof o.id === "bigint" && typeof o.address === "string" && typeof o.denom === "string" && typeof o.bonded_amount === "string");
   },
   isAmino(o: any): o is UserStakeAmino {
-    return o && (o.$typeUrl === UserStake.typeUrl || typeof o.address === "string" && typeof o.denom === "string" && typeof o.bonded_amount === "string");
+    return o && (o.$typeUrl === UserStake.typeUrl || typeof o.id === "bigint" && typeof o.address === "string" && typeof o.denom === "string" && typeof o.bonded_amount === "string");
   },
   encode(message: UserStake, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
+      writer.uint32(8).uint64(message.id);
+    }
     if (message.address !== "") {
-      writer.uint32(10).string(message.address);
+      writer.uint32(18).string(message.address);
     }
     if (message.denom !== "") {
-      writer.uint32(18).string(message.denom);
+      writer.uint32(26).string(message.denom);
     }
     if (message.bondedAmount !== "") {
-      writer.uint32(26).string(message.bondedAmount);
+      writer.uint32(34).string(message.bondedAmount);
     }
     return writer;
   },
@@ -62,12 +69,15 @@ export const UserStake = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.address = reader.string();
+          message.id = reader.uint64();
           break;
         case 2:
-          message.denom = reader.string();
+          message.address = reader.string();
           break;
         case 3:
+          message.denom = reader.string();
+          break;
+        case 4:
           message.bondedAmount = reader.string();
           break;
         default:
@@ -79,6 +89,7 @@ export const UserStake = {
   },
   fromJSON(object: any): UserStake {
     return {
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       address: isSet(object.address) ? String(object.address) : "",
       denom: isSet(object.denom) ? String(object.denom) : "",
       bondedAmount: isSet(object.bondedAmount) ? String(object.bondedAmount) : ""
@@ -86,6 +97,7 @@ export const UserStake = {
   },
   toJSON(message: UserStake): unknown {
     const obj: any = {};
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.address !== undefined && (obj.address = message.address);
     message.denom !== undefined && (obj.denom = message.denom);
     message.bondedAmount !== undefined && (obj.bondedAmount = message.bondedAmount);
@@ -93,6 +105,7 @@ export const UserStake = {
   },
   fromPartial(object: Partial<UserStake>): UserStake {
     const message = createBaseUserStake();
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.address = object.address ?? "";
     message.denom = object.denom ?? "";
     message.bondedAmount = object.bondedAmount ?? "";
@@ -100,6 +113,9 @@ export const UserStake = {
   },
   fromAmino(object: UserStakeAmino): UserStake {
     const message = createBaseUserStake();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = BigInt(object.id);
+    }
     if (object.address !== undefined && object.address !== null) {
       message.address = object.address;
     }
@@ -113,6 +129,7 @@ export const UserStake = {
   },
   toAmino(message: UserStake, useInterfaces: boolean = true): UserStakeAmino {
     const obj: any = {};
+    obj.id = message.id ? message.id.toString() : undefined;
     obj.address = message.address === "" ? undefined : message.address;
     obj.denom = message.denom === "" ? undefined : message.denom;
     obj.bonded_amount = message.bondedAmount === "" ? undefined : message.bondedAmount;

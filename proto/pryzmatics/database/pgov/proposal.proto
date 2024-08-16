@@ -1,0 +1,18 @@
+syntax = "proto3";
+package pryzmatics.database.pgov;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/database/pgov";
+
+enum ProposalOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  ORDER_BY_PROPERTY_ASSET_ID = 0;
+  ORDER_BY_PROPERTY_PROPOSAL_ID = 1;
+  ORDER_BY_PROPERTY_END_TIME = 2;
+}
+
+message ProposalOrderBy {
+  ProposalOrderByProperty property = 1;
+  bool descending = 2;
+}

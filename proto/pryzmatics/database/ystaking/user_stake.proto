@@ -1,0 +1,17 @@
+syntax = "proto3";
+package pryzmatics.database.ystaking;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/database/ystaking";
+
+enum UserStakeOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  ORDER_BY_PROPERTY_ID = 0;
+  ORDER_BY_PROPERTY_ADDRESS = 1;
+}
+
+message UserStakeOrderBy {
+  UserStakeOrderByProperty property = 1;
+  bool descending = 2;
+}

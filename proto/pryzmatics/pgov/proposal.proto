@@ -1,0 +1,43 @@
+syntax = "proto3";
+package pryzmatics.pgov;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "google/protobuf/timestamp.proto";
+import "cosmos/gov/v1/gov.proto";
+import "pryzm/pgov/v1/proposal.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/pgov";
+
+message Proposal {
+  string asset_id = 1;
+  uint64 proposal_id = 2;
+  google.protobuf.Timestamp start_time = 3 [
+    (gogoproto.stdtime) = true,
+    (gogoproto.nullable) = true
+  ];
+  google.protobuf.Timestamp end_time = 4 [
+    (gogoproto.stdtime) = true,
+    (gogoproto.nullable) = false
+  ];
+  pryzm.pgov.v1.ProposalStatus status = 5;
+  string yes_weight = 6 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec"
+  ];
+  string abstain_weight = 7 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec"
+  ];
+  string no_weight = 8 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec"
+  ];
+  string no_with_veto_weight = 9 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec"
+  ];
+  google.protobuf.Timestamp host_end_time = 10 [(gogoproto.stdtime) = true];
+  bool host_finalized = 11;
+  string raw_proposal = 12;
+}

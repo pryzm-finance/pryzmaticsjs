@@ -7,7 +7,8 @@ import "pryzmatics/server/asset/asset.proto";
 
 import "pryzmatics/server/maturity/maturity.proto";
 
-import "pryzmatics/server/pgov/pgov.proto";
+import "pryzmatics/server/pgov/proposal.proto";
+import "pryzmatics/server/pgov/vote.proto";
 
 import "pryzmatics/server/pool/pool_token.proto";
 import "pryzmatics/server/pool/pool.proto";
@@ -79,12 +80,16 @@ service Query {
     option (google.api.http).get = "/pryzmatics/maturity";
   }
 
-  rpc ProposalSubmissionMsgs(pryzmatics.server.pgov.QueryProposalSubmissionMsgsRequest) returns (pryzmatics.server.pgov.QueryProposalSubmissionMsgsResponse) {
-    option (google.api.http).get = "/pryzmatics/pgov/proposal_submission_msgs/{asset_id}/{proposal_id}/{creator}";
+  rpc PGovProposals(pryzmatics.server.pgov.QueryPGovProposalsRequest) returns (pryzmatics.server.pgov.QueryPGovProposalsResponse) {
+    option (google.api.http).get = "/pryzmatics/pgov/proposal";
   }
 
-  rpc AssetProposals(pryzmatics.server.pgov.QueryAssetProposalRequest) returns (pryzmatics.server.pgov.QueryAssetProposalResponse) {
-    option (google.api.http).get = "/pryzmatics/pgov/asset_proposals/{asset_id}";
+  rpc PGovProposal(pryzmatics.server.pgov.QueryPGovProposalRequest) returns (pryzmatics.server.pgov.QueryPGovProposalResponse) {
+    option (google.api.http).get = "/pryzmatics/pgov/proposal/{asset_id}/{proposal_id}";
+  }
+
+  rpc PGovVotes(pryzmatics.server.pgov.QueryPGovVotesRequest) returns (pryzmatics.server.pgov.QueryPGovVotesResponse) {
+    option (google.api.http).get = "/pryzmatics/pgov/vote/{asset_id}/{proposal_id}";
   }
 
   rpc PoolToken(pryzmatics.server.pool.QueryPoolTokenRequest) returns (pryzmatics.server.pool.QueryPoolTokenResponse) {

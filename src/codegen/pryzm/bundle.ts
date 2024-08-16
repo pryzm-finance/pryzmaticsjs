@@ -43,15 +43,15 @@ import * as _190 from "./pgov/v1/reply";
 import * as _191 from "./pgov/v1/staked_p_asset";
 import * as _192 from "./pgov/v1/tx";
 import * as _193 from "./pgov/v1/vote";
-import * as _335 from "./amm/v1/tx.amino";
-import * as _336 from "./icstaking/v1/tx.amino";
-import * as _337 from "./pgov/v1/tx.amino";
-import * as _338 from "./amm/v1/tx.registry";
-import * as _339 from "./icstaking/v1/tx.registry";
-import * as _340 from "./pgov/v1/tx.registry";
-import * as _341 from "./amm/v1/query.lcd";
-import * as _342 from "./icstaking/v1/query.lcd";
-import * as _343 from "./pgov/v1/query.lcd";
+import * as _338 from "./amm/v1/tx.amino";
+import * as _339 from "./icstaking/v1/tx.amino";
+import * as _340 from "./pgov/v1/tx.amino";
+import * as _341 from "./amm/v1/tx.registry";
+import * as _342 from "./icstaking/v1/tx.registry";
+import * as _343 from "./pgov/v1/tx.registry";
+import * as _344 from "./amm/v1/query.lcd";
+import * as _345 from "./icstaking/v1/query.lcd";
+import * as _346 from "./pgov/v1/query.lcd";
 export namespace pryzm {
   export namespace amm {
     export const v1 = {
@@ -78,9 +78,9 @@ export namespace pryzm {
       ..._169,
       ..._170,
       ..._171,
-      ..._335,
       ..._338,
-      ..._341
+      ..._341,
+      ..._344
     };
   }
   export namespace icstaking {
@@ -98,9 +98,9 @@ export namespace pryzm {
       ..._182,
       ..._183,
       ..._184,
-      ..._336,
       ..._339,
-      ..._342
+      ..._342,
+      ..._345
     };
   }
   export namespace pgov {
@@ -114,9 +114,9 @@ export namespace pryzm {
       ..._191,
       ..._192,
       ..._193,
-      ..._337,
       ..._340,
-      ..._343
+      ..._343,
+      ..._346
     };
   }
 }

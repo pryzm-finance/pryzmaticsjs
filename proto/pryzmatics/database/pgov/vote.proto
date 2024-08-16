@@ -1,0 +1,16 @@
+syntax = "proto3";
+package pryzmatics.database.pgov;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/database/pgov";
+
+enum VoteOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  ORDER_BY_PROPERTY_VOTER = 0;
+}
+
+message VoteOrderBy {
+  VoteOrderByProperty property = 1;
+  bool descending = 2;
+}
