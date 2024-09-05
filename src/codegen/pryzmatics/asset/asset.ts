@@ -16,8 +16,11 @@ export interface Asset {
   error: string;
   hostChainId: string;
   lastYieldBlockHeight?: string;
+  /** the yield number is in 0-100 range */
+  apr?: string;
+  /** the yield number is in 0-100 range */
   annualYieldPerYAsset?: string;
-  annualYieldPerYAssetError: string;
+  yieldError: string;
 }
 export interface AssetProtoMsg {
   typeUrl: "/pryzmatics.asset.Asset";
@@ -36,8 +39,11 @@ export interface AssetAmino {
   error?: string;
   host_chain_id?: string;
   last_yield_block_height?: string;
+  /** the yield number is in 0-100 range */
+  apr?: string;
+  /** the yield number is in 0-100 range */
   annual_yield_per_y_asset?: string;
-  annual_yield_per_y_asset_error?: string;
+  yield_error?: string;
 }
 export interface AssetAminoMsg {
   type: "/pryzmatics.asset.Asset";
@@ -56,8 +62,9 @@ export interface AssetSDKType {
   error: string;
   host_chain_id: string;
   last_yield_block_height?: string;
+  apr?: string;
   annual_yield_per_y_asset?: string;
-  annual_yield_per_y_asset_error: string;
+  yield_error: string;
 }
 function createBaseAsset(): Asset {
   return {
@@ -73,20 +80,21 @@ function createBaseAsset(): Asset {
     error: "",
     hostChainId: "",
     lastYieldBlockHeight: undefined,
+    apr: undefined,
     annualYieldPerYAsset: undefined,
-    annualYieldPerYAssetError: ""
+    yieldError: ""
   };
 }
 export const Asset = {
   typeUrl: "/pryzmatics.asset.Asset",
   is(o: any): o is Asset {
-    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.is(o.cAssetToken) && typeof o.totalRefractedCAsset === "string" && typeof o.totalPAsset === "string" && typeof o.error === "string" && typeof o.hostChainId === "string" && typeof o.annualYieldPerYAssetError === "string");
+    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.is(o.cAssetToken) && typeof o.totalRefractedCAsset === "string" && typeof o.totalPAsset === "string" && typeof o.error === "string" && typeof o.hostChainId === "string" && typeof o.yieldError === "string");
   },
   isSDK(o: any): o is AssetSDKType {
-    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isSDK(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.annual_yield_per_y_asset_error === "string");
+    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isSDK(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.yield_error === "string");
   },
   isAmino(o: any): o is AssetAmino {
-    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isAmino(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.annual_yield_per_y_asset_error === "string");
+    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isAmino(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.yield_error === "string");
   },
   encode(message: Asset, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== "") {
@@ -125,11 +133,14 @@ export const Asset = {
     if (message.lastYieldBlockHeight !== undefined) {
       writer.uint32(98).string(message.lastYieldBlockHeight);
     }
-    if (message.annualYieldPerYAsset !== undefined) {
-      writer.uint32(106).string(Decimal.fromUserInput(message.annualYieldPerYAsset, 18).atomics);
+    if (message.apr !== undefined) {
+      writer.uint32(106).string(Decimal.fromUserInput(message.apr, 18).atomics);
     }
-    if (message.annualYieldPerYAssetError !== "") {
-      writer.uint32(114).string(message.annualYieldPerYAssetError);
+    if (message.annualYieldPerYAsset !== undefined) {
+      writer.uint32(114).string(Decimal.fromUserInput(message.annualYieldPerYAsset, 18).atomics);
+    }
+    if (message.yieldError !== "") {
+      writer.uint32(122).string(message.yieldError);
     }
     return writer;
   },
@@ -177,10 +188,13 @@ export const Asset = {
           message.lastYieldBlockHeight = reader.string();
           break;
         case 13:
-          message.annualYieldPerYAsset = Decimal.fromAtomics(reader.string(), 18).toString();
+          message.apr = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 14:
-          message.annualYieldPerYAssetError = reader.string();
+          message.annualYieldPerYAsset = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 15:
+          message.yieldError = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -203,8 +217,9 @@ export const Asset = {
       error: isSet(object.error) ? String(object.error) : "",
       hostChainId: isSet(object.hostChainId) ? String(object.hostChainId) : "",
       lastYieldBlockHeight: isSet(object.lastYieldBlockHeight) ? String(object.lastYieldBlockHeight) : undefined,
+      apr: isSet(object.apr) ? String(object.apr) : undefined,
       annualYieldPerYAsset: isSet(object.annualYieldPerYAsset) ? String(object.annualYieldPerYAsset) : undefined,
-      annualYieldPerYAssetError: isSet(object.annualYieldPerYAssetError) ? String(object.annualYieldPerYAssetError) : ""
+      yieldError: isSet(object.yieldError) ? String(object.yieldError) : ""
     };
   },
   toJSON(message: Asset): unknown {
@@ -221,8 +236,9 @@ export const Asset = {
     message.error !== undefined && (obj.error = message.error);
     message.hostChainId !== undefined && (obj.hostChainId = message.hostChainId);
     message.lastYieldBlockHeight !== undefined && (obj.lastYieldBlockHeight = message.lastYieldBlockHeight);
+    message.apr !== undefined && (obj.apr = message.apr);
     message.annualYieldPerYAsset !== undefined && (obj.annualYieldPerYAsset = message.annualYieldPerYAsset);
-    message.annualYieldPerYAssetError !== undefined && (obj.annualYieldPerYAssetError = message.annualYieldPerYAssetError);
+    message.yieldError !== undefined && (obj.yieldError = message.yieldError);
     return obj;
   },
   fromPartial(object: Partial<Asset>): Asset {
@@ -239,8 +255,9 @@ export const Asset = {
     message.error = object.error ?? "";
     message.hostChainId = object.hostChainId ?? "";
     message.lastYieldBlockHeight = object.lastYieldBlockHeight ?? undefined;
+    message.apr = object.apr ?? undefined;
     message.annualYieldPerYAsset = object.annualYieldPerYAsset ?? undefined;
-    message.annualYieldPerYAssetError = object.annualYieldPerYAssetError ?? "";
+    message.yieldError = object.yieldError ?? "";
     return message;
   },
   fromAmino(object: AssetAmino): Asset {
@@ -281,11 +298,14 @@ export const Asset = {
     if (object.last_yield_block_height !== undefined && object.last_yield_block_height !== null) {
       message.lastYieldBlockHeight = object.last_yield_block_height;
     }
+    if (object.apr !== undefined && object.apr !== null) {
+      message.apr = object.apr;
+    }
     if (object.annual_yield_per_y_asset !== undefined && object.annual_yield_per_y_asset !== null) {
       message.annualYieldPerYAsset = object.annual_yield_per_y_asset;
     }
-    if (object.annual_yield_per_y_asset_error !== undefined && object.annual_yield_per_y_asset_error !== null) {
-      message.annualYieldPerYAssetError = object.annual_yield_per_y_asset_error;
+    if (object.yield_error !== undefined && object.yield_error !== null) {
+      message.yieldError = object.yield_error;
     }
     return message;
   },
@@ -303,8 +323,9 @@ export const Asset = {
     obj.error = message.error === "" ? undefined : message.error;
     obj.host_chain_id = message.hostChainId === "" ? undefined : message.hostChainId;
     obj.last_yield_block_height = message.lastYieldBlockHeight === null ? undefined : message.lastYieldBlockHeight;
+    obj.apr = padDecimal(message.apr) === null ? undefined : padDecimal(message.apr);
     obj.annual_yield_per_y_asset = padDecimal(message.annualYieldPerYAsset) === null ? undefined : padDecimal(message.annualYieldPerYAsset);
-    obj.annual_yield_per_y_asset_error = message.annualYieldPerYAssetError === "" ? undefined : message.annualYieldPerYAssetError;
+    obj.yield_error = message.yieldError === "" ? undefined : message.yieldError;
     return obj;
   },
   fromAminoMsg(object: AssetAminoMsg): Asset {

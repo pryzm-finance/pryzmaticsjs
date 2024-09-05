@@ -1,0 +1,42 @@
+syntax = "proto3";
+package pryzmatics.server.trade;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/trade";
+
+message Ticker{
+  string ticker_id = 1;
+  string base_currency = 2;
+  string target_currency = 3;
+  string last_price = 4 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string base_volume = 5 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string target_volume = 6 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string pool_id = 7;
+  string liquidity_in_usd = 8 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message QueryTickersRequest {
+}
+
+message QueryTickersResponse {
+  repeated Ticker tickers = 1 [(gogoproto.nullable) = false];
+}

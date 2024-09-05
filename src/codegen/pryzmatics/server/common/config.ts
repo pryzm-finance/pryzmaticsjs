@@ -173,6 +173,7 @@ export interface DatabaseConfig {
   poolMinConns: number;
   poolMaxConns: number;
   queryLoggerEnabled: boolean;
+  migrationDisabled: boolean;
 }
 export interface DatabaseConfigProtoMsg {
   typeUrl: "/pryzmatics.server.common.DatabaseConfig";
@@ -182,6 +183,7 @@ export interface DatabaseConfigAmino {
   pool_min_conns?: number;
   pool_max_conns?: number;
   query_logger_enabled?: boolean;
+  migration_disabled?: boolean;
 }
 export interface DatabaseConfigAminoMsg {
   type: "/pryzmatics.server.common.DatabaseConfig";
@@ -191,6 +193,7 @@ export interface DatabaseConfigSDKType {
   pool_min_conns: number;
   pool_max_conns: number;
   query_logger_enabled: boolean;
+  migration_disabled: boolean;
 }
 export interface ChainConfig {
   rpcUrl: string;
@@ -437,7 +440,7 @@ export interface StableCoinConfigSDKType {
 }
 export interface AssetConfig {
   underlyingTokenDenom: string;
-  grossExchangeRateMinDataCount: bigint;
+  yieldMinDataCount: bigint;
 }
 export interface AssetConfigProtoMsg {
   typeUrl: "/pryzmatics.server.common.AssetConfig";
@@ -445,7 +448,7 @@ export interface AssetConfigProtoMsg {
 }
 export interface AssetConfigAmino {
   underlyingTokenDenom?: string;
-  grossExchangeRateMinDataCount?: string;
+  yieldMinDataCount?: string;
 }
 export interface AssetConfigAminoMsg {
   type: "/pryzmatics.server.common.AssetConfig";
@@ -453,7 +456,7 @@ export interface AssetConfigAminoMsg {
 }
 export interface AssetConfigSDKType {
   underlyingTokenDenom: string;
-  grossExchangeRateMinDataCount: bigint;
+  yieldMinDataCount: bigint;
 }
 function createBaseQueryConfigRequest(): QueryConfigRequest {
   return {};
@@ -1247,19 +1250,20 @@ function createBaseDatabaseConfig(): DatabaseConfig {
   return {
     poolMinConns: 0,
     poolMaxConns: 0,
-    queryLoggerEnabled: false
+    queryLoggerEnabled: false,
+    migrationDisabled: false
   };
 }
 export const DatabaseConfig = {
   typeUrl: "/pryzmatics.server.common.DatabaseConfig",
   is(o: any): o is DatabaseConfig {
-    return o && (o.$typeUrl === DatabaseConfig.typeUrl || typeof o.poolMinConns === "number" && typeof o.poolMaxConns === "number" && typeof o.queryLoggerEnabled === "boolean");
+    return o && (o.$typeUrl === DatabaseConfig.typeUrl || typeof o.poolMinConns === "number" && typeof o.poolMaxConns === "number" && typeof o.queryLoggerEnabled === "boolean" && typeof o.migrationDisabled === "boolean");
   },
   isSDK(o: any): o is DatabaseConfigSDKType {
-    return o && (o.$typeUrl === DatabaseConfig.typeUrl || typeof o.pool_min_conns === "number" && typeof o.pool_max_conns === "number" && typeof o.query_logger_enabled === "boolean");
+    return o && (o.$typeUrl === DatabaseConfig.typeUrl || typeof o.pool_min_conns === "number" && typeof o.pool_max_conns === "number" && typeof o.query_logger_enabled === "boolean" && typeof o.migration_disabled === "boolean");
   },
   isAmino(o: any): o is DatabaseConfigAmino {
-    return o && (o.$typeUrl === DatabaseConfig.typeUrl || typeof o.pool_min_conns === "number" && typeof o.pool_max_conns === "number" && typeof o.query_logger_enabled === "boolean");
+    return o && (o.$typeUrl === DatabaseConfig.typeUrl || typeof o.pool_min_conns === "number" && typeof o.pool_max_conns === "number" && typeof o.query_logger_enabled === "boolean" && typeof o.migration_disabled === "boolean");
   },
   encode(message: DatabaseConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.poolMinConns !== 0) {
@@ -1270,6 +1274,9 @@ export const DatabaseConfig = {
     }
     if (message.queryLoggerEnabled === true) {
       writer.uint32(24).bool(message.queryLoggerEnabled);
+    }
+    if (message.migrationDisabled === true) {
+      writer.uint32(32).bool(message.migrationDisabled);
     }
     return writer;
   },
@@ -1289,6 +1296,9 @@ export const DatabaseConfig = {
         case 3:
           message.queryLoggerEnabled = reader.bool();
           break;
+        case 4:
+          message.migrationDisabled = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1300,7 +1310,8 @@ export const DatabaseConfig = {
     return {
       poolMinConns: isSet(object.poolMinConns) ? Number(object.poolMinConns) : 0,
       poolMaxConns: isSet(object.poolMaxConns) ? Number(object.poolMaxConns) : 0,
-      queryLoggerEnabled: isSet(object.queryLoggerEnabled) ? Boolean(object.queryLoggerEnabled) : false
+      queryLoggerEnabled: isSet(object.queryLoggerEnabled) ? Boolean(object.queryLoggerEnabled) : false,
+      migrationDisabled: isSet(object.migrationDisabled) ? Boolean(object.migrationDisabled) : false
     };
   },
   toJSON(message: DatabaseConfig): unknown {
@@ -1308,6 +1319,7 @@ export const DatabaseConfig = {
     message.poolMinConns !== undefined && (obj.poolMinConns = Math.round(message.poolMinConns));
     message.poolMaxConns !== undefined && (obj.poolMaxConns = Math.round(message.poolMaxConns));
     message.queryLoggerEnabled !== undefined && (obj.queryLoggerEnabled = message.queryLoggerEnabled);
+    message.migrationDisabled !== undefined && (obj.migrationDisabled = message.migrationDisabled);
     return obj;
   },
   fromPartial(object: Partial<DatabaseConfig>): DatabaseConfig {
@@ -1315,6 +1327,7 @@ export const DatabaseConfig = {
     message.poolMinConns = object.poolMinConns ?? 0;
     message.poolMaxConns = object.poolMaxConns ?? 0;
     message.queryLoggerEnabled = object.queryLoggerEnabled ?? false;
+    message.migrationDisabled = object.migrationDisabled ?? false;
     return message;
   },
   fromAmino(object: DatabaseConfigAmino): DatabaseConfig {
@@ -1328,6 +1341,9 @@ export const DatabaseConfig = {
     if (object.query_logger_enabled !== undefined && object.query_logger_enabled !== null) {
       message.queryLoggerEnabled = object.query_logger_enabled;
     }
+    if (object.migration_disabled !== undefined && object.migration_disabled !== null) {
+      message.migrationDisabled = object.migration_disabled;
+    }
     return message;
   },
   toAmino(message: DatabaseConfig, useInterfaces: boolean = true): DatabaseConfigAmino {
@@ -1335,6 +1351,7 @@ export const DatabaseConfig = {
     obj.pool_min_conns = message.poolMinConns === 0 ? undefined : message.poolMinConns;
     obj.pool_max_conns = message.poolMaxConns === 0 ? undefined : message.poolMaxConns;
     obj.query_logger_enabled = message.queryLoggerEnabled === false ? undefined : message.queryLoggerEnabled;
+    obj.migration_disabled = message.migrationDisabled === false ? undefined : message.migrationDisabled;
     return obj;
   },
   fromAminoMsg(object: DatabaseConfigAminoMsg): DatabaseConfig {
@@ -2548,26 +2565,26 @@ GlobalDecoderRegistry.register(StableCoinConfig.typeUrl, StableCoinConfig);
 function createBaseAssetConfig(): AssetConfig {
   return {
     underlyingTokenDenom: "",
-    grossExchangeRateMinDataCount: BigInt(0)
+    yieldMinDataCount: BigInt(0)
   };
 }
 export const AssetConfig = {
   typeUrl: "/pryzmatics.server.common.AssetConfig",
   is(o: any): o is AssetConfig {
-    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.grossExchangeRateMinDataCount === "bigint");
+    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.yieldMinDataCount === "bigint");
   },
   isSDK(o: any): o is AssetConfigSDKType {
-    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.grossExchangeRateMinDataCount === "bigint");
+    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.yieldMinDataCount === "bigint");
   },
   isAmino(o: any): o is AssetConfigAmino {
-    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.grossExchangeRateMinDataCount === "bigint");
+    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.yieldMinDataCount === "bigint");
   },
   encode(message: AssetConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.underlyingTokenDenom !== "") {
       writer.uint32(10).string(message.underlyingTokenDenom);
     }
-    if (message.grossExchangeRateMinDataCount !== BigInt(0)) {
-      writer.uint32(16).int64(message.grossExchangeRateMinDataCount);
+    if (message.yieldMinDataCount !== BigInt(0)) {
+      writer.uint32(16).int64(message.yieldMinDataCount);
     }
     return writer;
   },
@@ -2582,7 +2599,7 @@ export const AssetConfig = {
           message.underlyingTokenDenom = reader.string();
           break;
         case 2:
-          message.grossExchangeRateMinDataCount = reader.int64();
+          message.yieldMinDataCount = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2594,19 +2611,19 @@ export const AssetConfig = {
   fromJSON(object: any): AssetConfig {
     return {
       underlyingTokenDenom: isSet(object.underlyingTokenDenom) ? String(object.underlyingTokenDenom) : "",
-      grossExchangeRateMinDataCount: isSet(object.grossExchangeRateMinDataCount) ? BigInt(object.grossExchangeRateMinDataCount.toString()) : BigInt(0)
+      yieldMinDataCount: isSet(object.yieldMinDataCount) ? BigInt(object.yieldMinDataCount.toString()) : BigInt(0)
     };
   },
   toJSON(message: AssetConfig): unknown {
     const obj: any = {};
     message.underlyingTokenDenom !== undefined && (obj.underlyingTokenDenom = message.underlyingTokenDenom);
-    message.grossExchangeRateMinDataCount !== undefined && (obj.grossExchangeRateMinDataCount = (message.grossExchangeRateMinDataCount || BigInt(0)).toString());
+    message.yieldMinDataCount !== undefined && (obj.yieldMinDataCount = (message.yieldMinDataCount || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<AssetConfig>): AssetConfig {
     const message = createBaseAssetConfig();
     message.underlyingTokenDenom = object.underlyingTokenDenom ?? "";
-    message.grossExchangeRateMinDataCount = object.grossExchangeRateMinDataCount !== undefined && object.grossExchangeRateMinDataCount !== null ? BigInt(object.grossExchangeRateMinDataCount.toString()) : BigInt(0);
+    message.yieldMinDataCount = object.yieldMinDataCount !== undefined && object.yieldMinDataCount !== null ? BigInt(object.yieldMinDataCount.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: AssetConfigAmino): AssetConfig {
@@ -2614,15 +2631,15 @@ export const AssetConfig = {
     if (object.underlyingTokenDenom !== undefined && object.underlyingTokenDenom !== null) {
       message.underlyingTokenDenom = object.underlyingTokenDenom;
     }
-    if (object.grossExchangeRateMinDataCount !== undefined && object.grossExchangeRateMinDataCount !== null) {
-      message.grossExchangeRateMinDataCount = BigInt(object.grossExchangeRateMinDataCount);
+    if (object.yieldMinDataCount !== undefined && object.yieldMinDataCount !== null) {
+      message.yieldMinDataCount = BigInt(object.yieldMinDataCount);
     }
     return message;
   },
   toAmino(message: AssetConfig, useInterfaces: boolean = true): AssetConfigAmino {
     const obj: any = {};
     obj.underlyingTokenDenom = message.underlyingTokenDenom === "" ? undefined : message.underlyingTokenDenom;
-    obj.grossExchangeRateMinDataCount = message.grossExchangeRateMinDataCount ? message.grossExchangeRateMinDataCount.toString() : undefined;
+    obj.yieldMinDataCount = message.yieldMinDataCount ? message.yieldMinDataCount.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: AssetConfigAminoMsg): AssetConfig {

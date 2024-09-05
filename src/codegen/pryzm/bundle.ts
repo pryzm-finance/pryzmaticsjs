@@ -21,37 +21,41 @@ import * as _168 from "./amm/v1/weight_update_timing";
 import * as _169 from "./amm/v1/weighted_token";
 import * as _170 from "./amm/v1/whitelisted_route";
 import * as _171 from "./amm/v1/yamm_configuration";
-import * as _172 from "./icstaking/v1/event";
-import * as _173 from "./icstaking/v1/genesis";
-import * as _174 from "./icstaking/v1/host_chain";
-import * as _175 from "./icstaking/v1/loopback";
-import * as _176 from "./icstaking/v1/lsm";
-import * as _177 from "./icstaking/v1/multisig";
-import * as _178 from "./icstaking/v1/oracle_payload";
-import * as _179 from "./icstaking/v1/params";
-import * as _180 from "./icstaking/v1/query";
-import * as _181 from "./icstaking/v1/reply";
-import * as _182 from "./icstaking/v1/sweep";
-import * as _183 from "./icstaking/v1/tx";
-import * as _184 from "./icstaking/v1/undelegation";
-import * as _185 from "./pgov/v1/event";
-import * as _186 from "./pgov/v1/genesis";
-import * as _187 from "./pgov/v1/params";
-import * as _188 from "./pgov/v1/proposal";
-import * as _189 from "./pgov/v1/query";
-import * as _190 from "./pgov/v1/reply";
-import * as _191 from "./pgov/v1/staked_p_asset";
-import * as _192 from "./pgov/v1/tx";
-import * as _193 from "./pgov/v1/vote";
-import * as _338 from "./amm/v1/tx.amino";
-import * as _339 from "./icstaking/v1/tx.amino";
-import * as _340 from "./pgov/v1/tx.amino";
-import * as _341 from "./amm/v1/tx.registry";
-import * as _342 from "./icstaking/v1/tx.registry";
-import * as _343 from "./pgov/v1/tx.registry";
-import * as _344 from "./amm/v1/query.lcd";
-import * as _345 from "./icstaking/v1/query.lcd";
-import * as _346 from "./pgov/v1/query.lcd";
+import * as _172 from "./amm/v2/pair_match_proposal";
+import * as _173 from "./amm/v2/tx";
+import * as _174 from "./icstaking/v1/event";
+import * as _175 from "./icstaking/v1/genesis";
+import * as _176 from "./icstaking/v1/host_chain";
+import * as _177 from "./icstaking/v1/loopback";
+import * as _178 from "./icstaking/v1/lsm";
+import * as _179 from "./icstaking/v1/multisig";
+import * as _180 from "./icstaking/v1/oracle_payload";
+import * as _181 from "./icstaking/v1/params";
+import * as _182 from "./icstaking/v1/query";
+import * as _183 from "./icstaking/v1/reply";
+import * as _184 from "./icstaking/v1/sweep";
+import * as _185 from "./icstaking/v1/tx";
+import * as _186 from "./icstaking/v1/undelegation";
+import * as _187 from "./pgov/v1/event";
+import * as _188 from "./pgov/v1/genesis";
+import * as _189 from "./pgov/v1/params";
+import * as _190 from "./pgov/v1/proposal";
+import * as _191 from "./pgov/v1/query";
+import * as _192 from "./pgov/v1/reply";
+import * as _193 from "./pgov/v1/staked_p_asset";
+import * as _194 from "./pgov/v1/tx";
+import * as _195 from "./pgov/v1/vote";
+import * as _340 from "./amm/v1/tx.amino";
+import * as _341 from "./amm/v2/tx.amino";
+import * as _342 from "./icstaking/v1/tx.amino";
+import * as _343 from "./pgov/v1/tx.amino";
+import * as _344 from "./amm/v1/tx.registry";
+import * as _345 from "./amm/v2/tx.registry";
+import * as _346 from "./icstaking/v1/tx.registry";
+import * as _347 from "./pgov/v1/tx.registry";
+import * as _348 from "./amm/v1/query.lcd";
+import * as _349 from "./icstaking/v1/query.lcd";
+import * as _350 from "./pgov/v1/query.lcd";
 export namespace pryzm {
   export namespace amm {
     export const v1 = {
@@ -78,15 +82,19 @@ export namespace pryzm {
       ..._169,
       ..._170,
       ..._171,
-      ..._338,
+      ..._340,
+      ..._344,
+      ..._348
+    };
+    export const v2 = {
+      ..._172,
+      ..._173,
       ..._341,
-      ..._344
+      ..._345
     };
   }
   export namespace icstaking {
     export const v1 = {
-      ..._172,
-      ..._173,
       ..._174,
       ..._175,
       ..._176,
@@ -98,15 +106,15 @@ export namespace pryzm {
       ..._182,
       ..._183,
       ..._184,
-      ..._339,
+      ..._185,
+      ..._186,
       ..._342,
-      ..._345
+      ..._346,
+      ..._349
     };
   }
   export namespace pgov {
     export const v1 = {
-      ..._185,
-      ..._186,
       ..._187,
       ..._188,
       ..._189,
@@ -114,9 +122,11 @@ export namespace pryzm {
       ..._191,
       ..._192,
       ..._193,
-      ..._340,
+      ..._194,
+      ..._195,
       ..._343,
-      ..._346
+      ..._347,
+      ..._350
     };
   }
 }

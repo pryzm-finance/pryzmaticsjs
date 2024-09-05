@@ -31,6 +31,7 @@ import { QueryTokenTradeVolumeRequest, QueryTokenTradeVolumeResponseSDKType, Que
 import { QueryPulseTradablePairsRequest, QueryPulseTradablePairsResponseSDKType, QueryPulseTradablePairPriceRequest, QueryPulseTradablePairPriceResponseSDKType } from "./trade/pulse_tradable_pairs";
 import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType } from "./trade/order";
 import { QueryDirectlyConnectedTokenPairsRequest, QueryDirectlyConnectedTokenPairsResponseSDKType } from "./trade/directly_connected_token_pairs";
+import { QueryTickersRequest, QueryTickersResponseSDKType } from "./trade/tickers";
 import { QueryHostChainUnbondingTimeRequest, QueryHostChainUnbondingTimeResponseSDKType, QueryHostChainRequest, QueryHostChainResponseSDKType, QueryHostChainsRequest, QueryHostChainsResponseSDKType } from "./icstaking/host_chain";
 import { QueryValidatorRequest, QueryValidatorResponseSDKType, QueryValidatorsRequest, QueryValidatorsResponseSDKType } from "./oracle/validator";
 import { QueryVoteIntervalsRequest, QueryVoteIntervalsResponseSDKType } from "./oracle/vote_interval";
@@ -98,6 +99,7 @@ export class LCDQueryClient {
     this.matchableOrderCounts = this.matchableOrderCounts.bind(this);
     this.matchableOrdersForPair = this.matchableOrdersForPair.bind(this);
     this.directlyConnectedTokenPairs = this.directlyConnectedTokenPairs.bind(this);
+    this.tickers = this.tickers.bind(this);
     this.hostChainUnbondingTime = this.hostChainUnbondingTime.bind(this);
     this.hostChain = this.hostChain.bind(this);
     this.hostChains = this.hostChains.bind(this);
@@ -673,6 +675,11 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/trade/directly_connected_token_pair`;
     return await this.req.get<QueryDirectlyConnectedTokenPairsResponseSDKType>(endpoint, options);
+  }
+  /* in rest-api the response is an array of tickers, instead of QueryTickersResponse */
+  async tickers(_params: QueryTickersRequest = {}): Promise<QueryTickersResponseSDKType> {
+    const endpoint = `pryzmatics/trade/tickers`;
+    return await this.req.get<QueryTickersResponseSDKType>(endpoint);
   }
   /* HostChainUnbondingTime */
   async hostChainUnbondingTime(params: QueryHostChainUnbondingTimeRequest): Promise<QueryHostChainUnbondingTimeResponseSDKType> {

@@ -2,17 +2,20 @@ import { GeneratedType, Registry, OfflineSigner } from "@cosmjs/proto-signing";
 import { defaultRegistryTypes, AminoTypes, SigningStargateClient } from "@cosmjs/stargate";
 import { HttpEndpoint } from "@cosmjs/tendermint-rpc";
 import * as pryzmAmmV1TxRegistry from "./amm/v1/tx.registry";
+import * as pryzmAmmV2TxRegistry from "./amm/v2/tx.registry";
 import * as pryzmIcstakingV1TxRegistry from "./icstaking/v1/tx.registry";
 import * as pryzmPgovV1TxRegistry from "./pgov/v1/tx.registry";
 import * as pryzmAmmV1TxAmino from "./amm/v1/tx.amino";
+import * as pryzmAmmV2TxAmino from "./amm/v2/tx.amino";
 import * as pryzmIcstakingV1TxAmino from "./icstaking/v1/tx.amino";
 import * as pryzmPgovV1TxAmino from "./pgov/v1/tx.amino";
 export const pryzmAminoConverters = {
   ...pryzmAmmV1TxAmino.AminoConverter,
+  ...pryzmAmmV2TxAmino.AminoConverter,
   ...pryzmIcstakingV1TxAmino.AminoConverter,
   ...pryzmPgovV1TxAmino.AminoConverter
 };
-export const pryzmProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [...pryzmAmmV1TxRegistry.registry, ...pryzmIcstakingV1TxRegistry.registry, ...pryzmPgovV1TxRegistry.registry];
+export const pryzmProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [...pryzmAmmV1TxRegistry.registry, ...pryzmAmmV2TxRegistry.registry, ...pryzmIcstakingV1TxRegistry.registry, ...pryzmPgovV1TxRegistry.registry];
 export const getSigningPryzmClientOptions = ({
   defaultTypes = defaultRegistryTypes
 }: {
