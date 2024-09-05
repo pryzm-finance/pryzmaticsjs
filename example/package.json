@@ -6,12 +6,12 @@
   "dependencies": {
     "@cosmjs/proto-signing": "0.32.4",
     "@cosmjs/stargate": "0.32.4",
-    "@pryzm-finance/pryzmaticsjs": "0.6.11",
+    "@pryzm-finance/pryzmaticsjs": "0.6.12",
     "@refractedlabs/internal-js-utils": "0.6.5",
     "axios": "1.6.0",
     "cosmjs-types": "0.9.0"
   },
   "devDependencies": {
-    "typescript": "^5.1.6"
+    "typescript": "^5.5.4"
   }
 }
