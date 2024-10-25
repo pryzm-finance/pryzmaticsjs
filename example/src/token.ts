@@ -30,6 +30,8 @@ async function main() {
     console.log(token.metrics.price_underlying_terms_change_percentage_24h)
     console.log(token.metrics.price_underlying_terms_change_percentage_7d)
     console.log(token.metrics.price_underlying_terms_change_percentage_30d)
+
+    console.log(token.yield.p_roi)
 }
 
 main().catch(console.error)

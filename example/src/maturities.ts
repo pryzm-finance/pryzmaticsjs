@@ -47,6 +47,10 @@ async function main() {
         return [result.pagination.next_key, result.maturities]
     })
     console.log(maturities)
+
+    console.log(maturities[0].p_roi)
+    console.log(maturities[0].y_roi)
+    console.log(maturities[0].roi) // use y_roi instead
 }
 
 main().catch(console.error)
