@@ -18,10 +18,18 @@ message Maturity {
   google.protobuf.Timestamp expiration_time = 6 [(gogoproto.stdtime) = true, (gogoproto.nullable) = false];
   int64 block_height = 7;
   google.protobuf.Timestamp block_time = 8 [(gogoproto.stdtime) = true, (gogoproto.nullable) = false];
-  string roi = 9 [(cosmos_proto.scalar) = "cosmos.Dec", (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = true];
+  // use y_roi instead
+  string roi = 9 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true,
+    deprecated=true
+  ];
   string y_apy = 10 [(cosmos_proto.scalar) = "cosmos.Dec", (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = true];
   string p_apy = 11 [(cosmos_proto.scalar) = "cosmos.Dec", (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = true];
   string y_price = 12 [(cosmos_proto.scalar) = "cosmos.Dec", (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = true];
   string p_price = 13 [(cosmos_proto.scalar) = "cosmos.Dec", (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = true];
   string error = 14;
+  string y_roi = 15 [(cosmos_proto.scalar) = "cosmos.Dec", (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = true];
+  string p_roi = 16 [(cosmos_proto.scalar) = "cosmos.Dec", (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = true];
 }

@@ -47,4 +47,9 @@ message TokenYield {
     (gogoproto.nullable) = true
   ];
   string error = 10;
+  string p_roi = 11 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
 }

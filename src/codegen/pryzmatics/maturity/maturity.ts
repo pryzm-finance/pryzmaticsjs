@@ -12,12 +12,16 @@ export interface Maturity {
   expirationTime: Timestamp;
   blockHeight: bigint;
   blockTime: Timestamp;
+  /** use y_roi instead */
+  /** @deprecated */
   roi?: string;
   yApy?: string;
   pApy?: string;
   yPrice?: string;
   pPrice?: string;
   error: string;
+  yRoi?: string;
+  pRoi?: string;
 }
 export interface MaturityProtoMsg {
   typeUrl: "/pryzmatics.maturity.Maturity";
@@ -32,12 +36,16 @@ export interface MaturityAmino {
   expiration_time?: string;
   block_height?: string;
   block_time?: string;
+  /** use y_roi instead */
+  /** @deprecated */
   roi?: string;
   y_apy?: string;
   p_apy?: string;
   y_price?: string;
   p_price?: string;
   error?: string;
+  y_roi?: string;
+  p_roi?: string;
 }
 export interface MaturityAminoMsg {
   type: "/pryzmatics.maturity.Maturity";
@@ -52,12 +60,15 @@ export interface MaturitySDKType {
   expiration_time: TimestampSDKType;
   block_height: bigint;
   block_time: TimestampSDKType;
+  /** @deprecated */
   roi?: string;
   y_apy?: string;
   p_apy?: string;
   y_price?: string;
   p_price?: string;
   error: string;
+  y_roi?: string;
+  p_roi?: string;
 }
 function createBaseMaturity(): Maturity {
   return {
@@ -74,7 +85,9 @@ function createBaseMaturity(): Maturity {
     pApy: undefined,
     yPrice: undefined,
     pPrice: undefined,
-    error: ""
+    error: "",
+    yRoi: undefined,
+    pRoi: undefined
   };
 }
 export const Maturity = {
@@ -131,6 +144,12 @@ export const Maturity = {
     if (message.error !== "") {
       writer.uint32(114).string(message.error);
     }
+    if (message.yRoi !== undefined) {
+      writer.uint32(122).string(Decimal.fromUserInput(message.yRoi, 18).atomics);
+    }
+    if (message.pRoi !== undefined) {
+      writer.uint32(130).string(Decimal.fromUserInput(message.pRoi, 18).atomics);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): Maturity {
@@ -182,6 +201,12 @@ export const Maturity = {
         case 14:
           message.error = reader.string();
           break;
+        case 15:
+          message.yRoi = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 16:
+          message.pRoi = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -204,7 +229,9 @@ export const Maturity = {
       pApy: isSet(object.pApy) ? String(object.pApy) : undefined,
       yPrice: isSet(object.yPrice) ? String(object.yPrice) : undefined,
       pPrice: isSet(object.pPrice) ? String(object.pPrice) : undefined,
-      error: isSet(object.error) ? String(object.error) : ""
+      error: isSet(object.error) ? String(object.error) : "",
+      yRoi: isSet(object.yRoi) ? String(object.yRoi) : undefined,
+      pRoi: isSet(object.pRoi) ? String(object.pRoi) : undefined
     };
   },
   toJSON(message: Maturity): unknown {
@@ -223,6 +250,8 @@ export const Maturity = {
     message.yPrice !== undefined && (obj.yPrice = message.yPrice);
     message.pPrice !== undefined && (obj.pPrice = message.pPrice);
     message.error !== undefined && (obj.error = message.error);
+    message.yRoi !== undefined && (obj.yRoi = message.yRoi);
+    message.pRoi !== undefined && (obj.pRoi = message.pRoi);
     return obj;
   },
   fromPartial(object: Partial<Maturity>): Maturity {
@@ -241,6 +270,8 @@ export const Maturity = {
     message.yPrice = object.yPrice ?? undefined;
     message.pPrice = object.pPrice ?? undefined;
     message.error = object.error ?? "";
+    message.yRoi = object.yRoi ?? undefined;
+    message.pRoi = object.pRoi ?? undefined;
     return message;
   },
   fromAmino(object: MaturityAmino): Maturity {
@@ -287,6 +318,12 @@ export const Maturity = {
     if (object.error !== undefined && object.error !== null) {
       message.error = object.error;
     }
+    if (object.y_roi !== undefined && object.y_roi !== null) {
+      message.yRoi = object.y_roi;
+    }
+    if (object.p_roi !== undefined && object.p_roi !== null) {
+      message.pRoi = object.p_roi;
+    }
     return message;
   },
   toAmino(message: Maturity, useInterfaces: boolean = true): MaturityAmino {
@@ -305,6 +342,8 @@ export const Maturity = {
     obj.y_price = padDecimal(message.yPrice) === null ? undefined : padDecimal(message.yPrice);
     obj.p_price = padDecimal(message.pPrice) === null ? undefined : padDecimal(message.pPrice);
     obj.error = message.error === "" ? undefined : message.error;
+    obj.y_roi = padDecimal(message.yRoi) === null ? undefined : padDecimal(message.yRoi);
+    obj.p_roi = padDecimal(message.pRoi) === null ? undefined : padDecimal(message.pRoi);
     return obj;
   },
   fromAminoMsg(object: MaturityAminoMsg): Maturity {

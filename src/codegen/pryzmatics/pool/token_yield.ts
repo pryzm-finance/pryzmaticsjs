@@ -14,6 +14,7 @@ export interface TokenYield {
   yRoi?: string;
   stakingYield?: string;
   error: string;
+  pRoi?: string;
 }
 export interface TokenYieldProtoMsg {
   typeUrl: "/pryzmatics.pool.TokenYield";
@@ -30,6 +31,7 @@ export interface TokenYieldAmino {
   y_roi?: string;
   staking_yield?: string;
   error?: string;
+  p_roi?: string;
 }
 export interface TokenYieldAminoMsg {
   type: "/pryzmatics.pool.TokenYield";
@@ -46,6 +48,7 @@ export interface TokenYieldSDKType {
   y_roi?: string;
   staking_yield?: string;
   error: string;
+  p_roi?: string;
 }
 function createBaseTokenYield(): TokenYield {
   return {
@@ -58,7 +61,8 @@ function createBaseTokenYield(): TokenYield {
     yStakingYield: undefined,
     yRoi: undefined,
     stakingYield: undefined,
-    error: ""
+    error: "",
+    pRoi: undefined
   };
 }
 export const TokenYield = {
@@ -103,6 +107,9 @@ export const TokenYield = {
     if (message.error !== "") {
       writer.uint32(82).string(message.error);
     }
+    if (message.pRoi !== undefined) {
+      writer.uint32(90).string(Decimal.fromUserInput(message.pRoi, 18).atomics);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): TokenYield {
@@ -142,6 +149,9 @@ export const TokenYield = {
         case 10:
           message.error = reader.string();
           break;
+        case 11:
+          message.pRoi = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -160,7 +170,8 @@ export const TokenYield = {
       yStakingYield: isSet(object.yStakingYield) ? String(object.yStakingYield) : undefined,
       yRoi: isSet(object.yRoi) ? String(object.yRoi) : undefined,
       stakingYield: isSet(object.stakingYield) ? String(object.stakingYield) : undefined,
-      error: isSet(object.error) ? String(object.error) : ""
+      error: isSet(object.error) ? String(object.error) : "",
+      pRoi: isSet(object.pRoi) ? String(object.pRoi) : undefined
     };
   },
   toJSON(message: TokenYield): unknown {
@@ -175,6 +186,7 @@ export const TokenYield = {
     message.yRoi !== undefined && (obj.yRoi = message.yRoi);
     message.stakingYield !== undefined && (obj.stakingYield = message.stakingYield);
     message.error !== undefined && (obj.error = message.error);
+    message.pRoi !== undefined && (obj.pRoi = message.pRoi);
     return obj;
   },
   fromPartial(object: Partial<TokenYield>): TokenYield {
@@ -189,6 +201,7 @@ export const TokenYield = {
     message.yRoi = object.yRoi ?? undefined;
     message.stakingYield = object.stakingYield ?? undefined;
     message.error = object.error ?? "";
+    message.pRoi = object.pRoi ?? undefined;
     return message;
   },
   fromAmino(object: TokenYieldAmino): TokenYield {
@@ -223,6 +236,9 @@ export const TokenYield = {
     if (object.error !== undefined && object.error !== null) {
       message.error = object.error;
     }
+    if (object.p_roi !== undefined && object.p_roi !== null) {
+      message.pRoi = object.p_roi;
+    }
     return message;
   },
   toAmino(message: TokenYield, useInterfaces: boolean = true): TokenYieldAmino {
@@ -237,6 +253,7 @@ export const TokenYield = {
     obj.y_roi = padDecimal(message.yRoi) === null ? undefined : padDecimal(message.yRoi);
     obj.staking_yield = padDecimal(message.stakingYield) === null ? undefined : padDecimal(message.stakingYield);
     obj.error = message.error === "" ? undefined : message.error;
+    obj.p_roi = padDecimal(message.pRoi) === null ? undefined : padDecimal(message.pRoi);
     return obj;
   },
   fromAminoMsg(object: TokenYieldAminoMsg): TokenYield {

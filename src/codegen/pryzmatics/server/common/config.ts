@@ -15,6 +15,7 @@ export interface QueryConfigRequestSDKType {}
 export interface QueryConfigResponse {
   config: Config;
   gitRevision: string;
+  uptime: string;
 }
 export interface QueryConfigResponseProtoMsg {
   typeUrl: "/pryzmatics.server.common.QueryConfigResponse";
@@ -23,6 +24,7 @@ export interface QueryConfigResponseProtoMsg {
 export interface QueryConfigResponseAmino {
   config?: ConfigAmino;
   git_revision?: string;
+  uptime?: string;
 }
 export interface QueryConfigResponseAminoMsg {
   type: "/pryzmatics.server.common.QueryConfigResponse";
@@ -31,6 +33,7 @@ export interface QueryConfigResponseAminoMsg {
 export interface QueryConfigResponseSDKType {
   config: ConfigSDKType;
   git_revision: string;
+  uptime: string;
 }
 export interface Config_RpcEndpointsEntry {
   key: string;
@@ -49,26 +52,6 @@ export interface Config_RpcEndpointsEntryAminoMsg {
   value: Config_RpcEndpointsEntryAmino;
 }
 export interface Config_RpcEndpointsEntrySDKType {
-  key: string;
-  value: string;
-}
-export interface Config_ChainIdsEntry {
-  key: string;
-  value: string;
-}
-export interface Config_ChainIdsEntryProtoMsg {
-  typeUrl: string;
-  value: Uint8Array;
-}
-export interface Config_ChainIdsEntryAmino {
-  key?: string;
-  value?: string;
-}
-export interface Config_ChainIdsEntryAminoMsg {
-  type: string;
-  value: Config_ChainIdsEntryAmino;
-}
-export interface Config_ChainIdsEntrySDKType {
   key: string;
   value: string;
 }
@@ -101,9 +84,6 @@ export interface Config {
   rpcEndpoints: {
     [key: string]: string;
   };
-  chainIds: {
-    [key: string]: string;
-  };
   databaseConfig: DatabaseConfig;
   chainConfig: ChainConfig;
   loggerConfig: LoggerConfig;
@@ -128,9 +108,6 @@ export interface ConfigAmino {
   rpc_endpoints?: {
     [key: string]: string;
   };
-  chain_ids?: {
-    [key: string]: string;
-  };
   database_config?: DatabaseConfigAmino;
   chain_config?: ChainConfigAmino;
   logger_config?: LoggerConfigAmino;
@@ -153,9 +130,6 @@ export interface ConfigSDKType {
   metric_calculation_interval_blocks: number;
   enableFakePriceGenerator: boolean;
   rpc_endpoints: {
-    [key: string]: string;
-  };
-  chain_ids: {
     [key: string]: string;
   };
   database_config: DatabaseConfigSDKType;
@@ -264,6 +238,8 @@ export interface IndexerConfig {
   disableSyncForDebug: boolean;
   startBlock: bigint;
   pauseAtBlock: bigint;
+  pruner: PrunerConfig;
+  pauseAtUpgradePlanBlockHeight: bigint;
 }
 export interface IndexerConfigProtoMsg {
   typeUrl: "/pryzmatics.server.common.IndexerConfig";
@@ -274,6 +250,8 @@ export interface IndexerConfigAmino {
   disable_sync_for_debug?: boolean;
   start_block?: string;
   pause_at_block?: string;
+  pruner?: PrunerConfigAmino;
+  pause_at_upgrade_plan_block_height?: string;
 }
 export interface IndexerConfigAminoMsg {
   type: "/pryzmatics.server.common.IndexerConfig";
@@ -284,6 +262,31 @@ export interface IndexerConfigSDKType {
   disable_sync_for_debug: boolean;
   start_block: bigint;
   pause_at_block: bigint;
+  pruner: PrunerConfigSDKType;
+  pause_at_upgrade_plan_block_height: bigint;
+}
+export interface PrunerConfig {
+  pruneBlock: number;
+  pruneIntervalBlocks: number;
+  keepBlocks: number;
+}
+export interface PrunerConfigProtoMsg {
+  typeUrl: "/pryzmatics.server.common.PrunerConfig";
+  value: Uint8Array;
+}
+export interface PrunerConfigAmino {
+  prune_block?: number;
+  prune_interval_blocks?: number;
+  keep_blocks?: number;
+}
+export interface PrunerConfigAminoMsg {
+  type: "/pryzmatics.server.common.PrunerConfig";
+  value: PrunerConfigAmino;
+}
+export interface PrunerConfigSDKType {
+  prune_block: number;
+  prune_interval_blocks: number;
+  keep_blocks: number;
 }
 export interface ProfilerConfig {
   cpuEnabled: boolean;
@@ -528,19 +531,20 @@ GlobalDecoderRegistry.register(QueryConfigRequest.typeUrl, QueryConfigRequest);
 function createBaseQueryConfigResponse(): QueryConfigResponse {
   return {
     config: Config.fromPartial({}),
-    gitRevision: ""
+    gitRevision: "",
+    uptime: ""
   };
 }
 export const QueryConfigResponse = {
   typeUrl: "/pryzmatics.server.common.QueryConfigResponse",
   is(o: any): o is QueryConfigResponse {
-    return o && (o.$typeUrl === QueryConfigResponse.typeUrl || Config.is(o.config) && typeof o.gitRevision === "string");
+    return o && (o.$typeUrl === QueryConfigResponse.typeUrl || Config.is(o.config) && typeof o.gitRevision === "string" && typeof o.uptime === "string");
   },
   isSDK(o: any): o is QueryConfigResponseSDKType {
-    return o && (o.$typeUrl === QueryConfigResponse.typeUrl || Config.isSDK(o.config) && typeof o.git_revision === "string");
+    return o && (o.$typeUrl === QueryConfigResponse.typeUrl || Config.isSDK(o.config) && typeof o.git_revision === "string" && typeof o.uptime === "string");
   },
   isAmino(o: any): o is QueryConfigResponseAmino {
-    return o && (o.$typeUrl === QueryConfigResponse.typeUrl || Config.isAmino(o.config) && typeof o.git_revision === "string");
+    return o && (o.$typeUrl === QueryConfigResponse.typeUrl || Config.isAmino(o.config) && typeof o.git_revision === "string" && typeof o.uptime === "string");
   },
   encode(message: QueryConfigResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.config !== undefined) {
@@ -548,6 +552,9 @@ export const QueryConfigResponse = {
     }
     if (message.gitRevision !== "") {
       writer.uint32(18).string(message.gitRevision);
+    }
+    if (message.uptime !== "") {
+      writer.uint32(26).string(message.uptime);
     }
     return writer;
   },
@@ -564,6 +571,9 @@ export const QueryConfigResponse = {
         case 2:
           message.gitRevision = reader.string();
           break;
+        case 3:
+          message.uptime = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -574,19 +584,22 @@ export const QueryConfigResponse = {
   fromJSON(object: any): QueryConfigResponse {
     return {
       config: isSet(object.config) ? Config.fromJSON(object.config) : undefined,
-      gitRevision: isSet(object.gitRevision) ? String(object.gitRevision) : ""
+      gitRevision: isSet(object.gitRevision) ? String(object.gitRevision) : "",
+      uptime: isSet(object.uptime) ? String(object.uptime) : ""
     };
   },
   toJSON(message: QueryConfigResponse): unknown {
     const obj: any = {};
     message.config !== undefined && (obj.config = message.config ? Config.toJSON(message.config) : undefined);
     message.gitRevision !== undefined && (obj.gitRevision = message.gitRevision);
+    message.uptime !== undefined && (obj.uptime = message.uptime);
     return obj;
   },
   fromPartial(object: Partial<QueryConfigResponse>): QueryConfigResponse {
     const message = createBaseQueryConfigResponse();
     message.config = object.config !== undefined && object.config !== null ? Config.fromPartial(object.config) : undefined;
     message.gitRevision = object.gitRevision ?? "";
+    message.uptime = object.uptime ?? "";
     return message;
   },
   fromAmino(object: QueryConfigResponseAmino): QueryConfigResponse {
@@ -597,12 +610,16 @@ export const QueryConfigResponse = {
     if (object.git_revision !== undefined && object.git_revision !== null) {
       message.gitRevision = object.git_revision;
     }
+    if (object.uptime !== undefined && object.uptime !== null) {
+      message.uptime = object.uptime;
+    }
     return message;
   },
   toAmino(message: QueryConfigResponse, useInterfaces: boolean = true): QueryConfigResponseAmino {
     const obj: any = {};
     obj.config = message.config ? Config.toAmino(message.config, useInterfaces) : undefined;
     obj.git_revision = message.gitRevision === "" ? undefined : message.gitRevision;
+    obj.uptime = message.uptime === "" ? undefined : message.uptime;
     return obj;
   },
   fromAminoMsg(object: QueryConfigResponseAminoMsg): QueryConfigResponse {
@@ -702,86 +719,6 @@ export const Config_RpcEndpointsEntry = {
     return Config_RpcEndpointsEntry.encode(message).finish();
   }
 };
-function createBaseConfig_ChainIdsEntry(): Config_ChainIdsEntry {
-  return {
-    key: "",
-    value: ""
-  };
-}
-export const Config_ChainIdsEntry = {
-  encode(message: Config_ChainIdsEntry, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== "") {
-      writer.uint32(18).string(message.value);
-    }
-    return writer;
-  },
-  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): Config_ChainIdsEntry {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseConfig_ChainIdsEntry();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.key = reader.string();
-          break;
-        case 2:
-          message.value = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(object: any): Config_ChainIdsEntry {
-    return {
-      key: isSet(object.key) ? String(object.key) : "",
-      value: isSet(object.value) ? String(object.value) : ""
-    };
-  },
-  toJSON(message: Config_ChainIdsEntry): unknown {
-    const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value);
-    return obj;
-  },
-  fromPartial(object: Partial<Config_ChainIdsEntry>): Config_ChainIdsEntry {
-    const message = createBaseConfig_ChainIdsEntry();
-    message.key = object.key ?? "";
-    message.value = object.value ?? "";
-    return message;
-  },
-  fromAmino(object: Config_ChainIdsEntryAmino): Config_ChainIdsEntry {
-    const message = createBaseConfig_ChainIdsEntry();
-    if (object.key !== undefined && object.key !== null) {
-      message.key = object.key;
-    }
-    if (object.value !== undefined && object.value !== null) {
-      message.value = object.value;
-    }
-    return message;
-  },
-  toAmino(message: Config_ChainIdsEntry, useInterfaces: boolean = true): Config_ChainIdsEntryAmino {
-    const obj: any = {};
-    obj.key = message.key === "" ? undefined : message.key;
-    obj.value = message.value === "" ? undefined : message.value;
-    return obj;
-  },
-  fromAminoMsg(object: Config_ChainIdsEntryAminoMsg): Config_ChainIdsEntry {
-    return Config_ChainIdsEntry.fromAmino(object.value);
-  },
-  fromProtoMsg(message: Config_ChainIdsEntryProtoMsg, useInterfaces: boolean = true): Config_ChainIdsEntry {
-    return Config_ChainIdsEntry.decode(message.value, undefined, useInterfaces);
-  },
-  toProto(message: Config_ChainIdsEntry): Uint8Array {
-    return Config_ChainIdsEntry.encode(message).finish();
-  }
-};
 function createBaseConfig_AssetsEntry(): Config_AssetsEntry {
   return {
     key: "",
@@ -870,7 +807,6 @@ function createBaseConfig(): Config {
     metricCalculationIntervalBlocks: 0,
     enableFakePriceGenerator: false,
     rpcEndpoints: {},
-    chainIds: {},
     databaseConfig: DatabaseConfig.fromPartial({}),
     chainConfig: ChainConfig.fromPartial({}),
     loggerConfig: LoggerConfig.fromPartial({}),
@@ -884,13 +820,13 @@ function createBaseConfig(): Config {
 export const Config = {
   typeUrl: "/pryzmatics.server.common.Config",
   is(o: any): o is Config {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.productionMode === "boolean" && Array.isArray(o.stableCoins) && (!o.stableCoins.length || StableCoinConfig.is(o.stableCoins[0])) && typeof o.favoritePairsMaxCount === "number" && typeof o.metricCalculationIntervalBlocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpcEndpoints) && isSet(o.chainIds) && DatabaseConfig.is(o.databaseConfig) && ChainConfig.is(o.chainConfig) && LoggerConfig.is(o.loggerConfig) && IndexerConfig.is(o.indexerConfig) && ProfilerConfig.is(o.profilerConfig) && YieldReturnConfig.is(o.yieldReturnConfig) && FaucetConfig.is(o.faucetConfig) && isSet(o.assets));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.productionMode === "boolean" && Array.isArray(o.stableCoins) && (!o.stableCoins.length || StableCoinConfig.is(o.stableCoins[0])) && typeof o.favoritePairsMaxCount === "number" && typeof o.metricCalculationIntervalBlocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpcEndpoints) && DatabaseConfig.is(o.databaseConfig) && ChainConfig.is(o.chainConfig) && LoggerConfig.is(o.loggerConfig) && IndexerConfig.is(o.indexerConfig) && ProfilerConfig.is(o.profilerConfig) && YieldReturnConfig.is(o.yieldReturnConfig) && FaucetConfig.is(o.faucetConfig) && isSet(o.assets));
   },
   isSDK(o: any): o is ConfigSDKType {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isSDK(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && isSet(o.chain_ids) && DatabaseConfig.isSDK(o.database_config) && ChainConfig.isSDK(o.chain_config) && LoggerConfig.isSDK(o.logger_config) && IndexerConfig.isSDK(o.indexer_config) && ProfilerConfig.isSDK(o.profiler_config) && YieldReturnConfig.isSDK(o.yield_return_config) && FaucetConfig.isSDK(o.faucet_config) && isSet(o.assets));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isSDK(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isSDK(o.database_config) && ChainConfig.isSDK(o.chain_config) && LoggerConfig.isSDK(o.logger_config) && IndexerConfig.isSDK(o.indexer_config) && ProfilerConfig.isSDK(o.profiler_config) && YieldReturnConfig.isSDK(o.yield_return_config) && FaucetConfig.isSDK(o.faucet_config) && isSet(o.assets));
   },
   isAmino(o: any): o is ConfigAmino {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isAmino(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && isSet(o.chain_ids) && DatabaseConfig.isAmino(o.database_config) && ChainConfig.isAmino(o.chain_config) && LoggerConfig.isAmino(o.logger_config) && IndexerConfig.isAmino(o.indexer_config) && ProfilerConfig.isAmino(o.profiler_config) && YieldReturnConfig.isAmino(o.yield_return_config) && FaucetConfig.isAmino(o.faucet_config) && isSet(o.assets));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isAmino(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isAmino(o.database_config) && ChainConfig.isAmino(o.chain_config) && LoggerConfig.isAmino(o.logger_config) && IndexerConfig.isAmino(o.indexer_config) && ProfilerConfig.isAmino(o.profiler_config) && YieldReturnConfig.isAmino(o.yield_return_config) && FaucetConfig.isAmino(o.faucet_config) && isSet(o.assets));
   },
   encode(message: Config, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.productionMode === true) {
@@ -914,38 +850,32 @@ export const Config = {
         value
       }, writer.uint32(50).fork()).ldelim();
     });
-    Object.entries(message.chainIds).forEach(([key, value]) => {
-      Config_ChainIdsEntry.encode({
-        key: (key as any),
-        value
-      }, writer.uint32(58).fork()).ldelim();
-    });
     if (message.databaseConfig !== undefined) {
-      DatabaseConfig.encode(message.databaseConfig, writer.uint32(66).fork()).ldelim();
+      DatabaseConfig.encode(message.databaseConfig, writer.uint32(58).fork()).ldelim();
     }
     if (message.chainConfig !== undefined) {
-      ChainConfig.encode(message.chainConfig, writer.uint32(74).fork()).ldelim();
+      ChainConfig.encode(message.chainConfig, writer.uint32(66).fork()).ldelim();
     }
     if (message.loggerConfig !== undefined) {
-      LoggerConfig.encode(message.loggerConfig, writer.uint32(82).fork()).ldelim();
+      LoggerConfig.encode(message.loggerConfig, writer.uint32(74).fork()).ldelim();
     }
     if (message.indexerConfig !== undefined) {
-      IndexerConfig.encode(message.indexerConfig, writer.uint32(90).fork()).ldelim();
+      IndexerConfig.encode(message.indexerConfig, writer.uint32(82).fork()).ldelim();
     }
     if (message.profilerConfig !== undefined) {
-      ProfilerConfig.encode(message.profilerConfig, writer.uint32(98).fork()).ldelim();
+      ProfilerConfig.encode(message.profilerConfig, writer.uint32(90).fork()).ldelim();
     }
     if (message.yieldReturnConfig !== undefined) {
-      YieldReturnConfig.encode(message.yieldReturnConfig, writer.uint32(106).fork()).ldelim();
+      YieldReturnConfig.encode(message.yieldReturnConfig, writer.uint32(98).fork()).ldelim();
     }
     if (message.faucetConfig !== undefined) {
-      FaucetConfig.encode(message.faucetConfig, writer.uint32(114).fork()).ldelim();
+      FaucetConfig.encode(message.faucetConfig, writer.uint32(106).fork()).ldelim();
     }
     Object.entries(message.assets).forEach(([key, value]) => {
       Config_AssetsEntry.encode({
         key: (key as any),
         value
-      }, writer.uint32(122).fork()).ldelim();
+      }, writer.uint32(114).fork()).ldelim();
     });
     return writer;
   },
@@ -978,36 +908,30 @@ export const Config = {
           }
           break;
         case 7:
-          const entry7 = Config_ChainIdsEntry.decode(reader, reader.uint32());
-          if (entry7.value !== undefined) {
-            message.chainIds[entry7.key] = entry7.value;
-          }
-          break;
-        case 8:
           message.databaseConfig = DatabaseConfig.decode(reader, reader.uint32(), useInterfaces);
           break;
-        case 9:
+        case 8:
           message.chainConfig = ChainConfig.decode(reader, reader.uint32(), useInterfaces);
           break;
-        case 10:
+        case 9:
           message.loggerConfig = LoggerConfig.decode(reader, reader.uint32(), useInterfaces);
           break;
-        case 11:
+        case 10:
           message.indexerConfig = IndexerConfig.decode(reader, reader.uint32(), useInterfaces);
           break;
-        case 12:
+        case 11:
           message.profilerConfig = ProfilerConfig.decode(reader, reader.uint32(), useInterfaces);
           break;
-        case 13:
+        case 12:
           message.yieldReturnConfig = YieldReturnConfig.decode(reader, reader.uint32(), useInterfaces);
           break;
-        case 14:
+        case 13:
           message.faucetConfig = FaucetConfig.decode(reader, reader.uint32(), useInterfaces);
           break;
-        case 15:
-          const entry15 = Config_AssetsEntry.decode(reader, reader.uint32());
-          if (entry15.value !== undefined) {
-            message.assets[entry15.key] = entry15.value;
+        case 14:
+          const entry14 = Config_AssetsEntry.decode(reader, reader.uint32());
+          if (entry14.value !== undefined) {
+            message.assets[entry14.key] = entry14.value;
           }
           break;
         default:
@@ -1025,12 +949,6 @@ export const Config = {
       metricCalculationIntervalBlocks: isSet(object.metricCalculationIntervalBlocks) ? Number(object.metricCalculationIntervalBlocks) : 0,
       enableFakePriceGenerator: isSet(object.enableFakePriceGenerator) ? Boolean(object.enableFakePriceGenerator) : false,
       rpcEndpoints: isObject(object.rpcEndpoints) ? Object.entries(object.rpcEndpoints).reduce<{
-        [key: string]: string;
-      }>((acc, [key, value]) => {
-        acc[key] = String(value);
-        return acc;
-      }, {}) : {},
-      chainIds: isObject(object.chainIds) ? Object.entries(object.chainIds).reduce<{
         [key: string]: string;
       }>((acc, [key, value]) => {
         acc[key] = String(value);
@@ -1068,12 +986,6 @@ export const Config = {
         obj.rpcEndpoints[k] = v;
       });
     }
-    obj.chainIds = {};
-    if (message.chainIds) {
-      Object.entries(message.chainIds).forEach(([k, v]) => {
-        obj.chainIds[k] = v;
-      });
-    }
     message.databaseConfig !== undefined && (obj.databaseConfig = message.databaseConfig ? DatabaseConfig.toJSON(message.databaseConfig) : undefined);
     message.chainConfig !== undefined && (obj.chainConfig = message.chainConfig ? ChainConfig.toJSON(message.chainConfig) : undefined);
     message.loggerConfig !== undefined && (obj.loggerConfig = message.loggerConfig ? LoggerConfig.toJSON(message.loggerConfig) : undefined);
@@ -1097,14 +1009,6 @@ export const Config = {
     message.metricCalculationIntervalBlocks = object.metricCalculationIntervalBlocks ?? 0;
     message.enableFakePriceGenerator = object.enableFakePriceGenerator ?? false;
     message.rpcEndpoints = Object.entries(object.rpcEndpoints ?? {}).reduce<{
-      [key: string]: string;
-    }>((acc, [key, value]) => {
-      if (value !== undefined) {
-        acc[key] = String(value);
-      }
-      return acc;
-    }, {});
-    message.chainIds = Object.entries(object.chainIds ?? {}).reduce<{
       [key: string]: string;
     }>((acc, [key, value]) => {
       if (value !== undefined) {
@@ -1145,14 +1049,6 @@ export const Config = {
       message.enableFakePriceGenerator = object.enableFakePriceGenerator;
     }
     message.rpcEndpoints = Object.entries(object.rpc_endpoints ?? {}).reduce<{
-      [key: string]: string;
-    }>((acc, [key, value]) => {
-      if (value !== undefined) {
-        acc[key] = String(value);
-      }
-      return acc;
-    }, {});
-    message.chainIds = Object.entries(object.chain_ids ?? {}).reduce<{
       [key: string]: string;
     }>((acc, [key, value]) => {
       if (value !== undefined) {
@@ -1206,12 +1102,6 @@ export const Config = {
     if (message.rpcEndpoints) {
       Object.entries(message.rpcEndpoints).forEach(([k, v]) => {
         obj.rpc_endpoints[k] = v;
-      });
-    }
-    obj.chain_ids = {};
-    if (message.chainIds) {
-      Object.entries(message.chainIds).forEach(([k, v]) => {
-        obj.chain_ids[k] = v;
       });
     }
     obj.database_config = message.databaseConfig ? DatabaseConfig.toAmino(message.databaseConfig, useInterfaces) : undefined;
@@ -1682,19 +1572,21 @@ function createBaseIndexerConfig(): IndexerConfig {
     disable: false,
     disableSyncForDebug: false,
     startBlock: BigInt(0),
-    pauseAtBlock: BigInt(0)
+    pauseAtBlock: BigInt(0),
+    pruner: PrunerConfig.fromPartial({}),
+    pauseAtUpgradePlanBlockHeight: BigInt(0)
   };
 }
 export const IndexerConfig = {
   typeUrl: "/pryzmatics.server.common.IndexerConfig",
   is(o: any): o is IndexerConfig {
-    return o && (o.$typeUrl === IndexerConfig.typeUrl || typeof o.disable === "boolean" && typeof o.disableSyncForDebug === "boolean" && typeof o.startBlock === "bigint" && typeof o.pauseAtBlock === "bigint");
+    return o && (o.$typeUrl === IndexerConfig.typeUrl || typeof o.disable === "boolean" && typeof o.disableSyncForDebug === "boolean" && typeof o.startBlock === "bigint" && typeof o.pauseAtBlock === "bigint" && PrunerConfig.is(o.pruner) && typeof o.pauseAtUpgradePlanBlockHeight === "bigint");
   },
   isSDK(o: any): o is IndexerConfigSDKType {
-    return o && (o.$typeUrl === IndexerConfig.typeUrl || typeof o.disable === "boolean" && typeof o.disable_sync_for_debug === "boolean" && typeof o.start_block === "bigint" && typeof o.pause_at_block === "bigint");
+    return o && (o.$typeUrl === IndexerConfig.typeUrl || typeof o.disable === "boolean" && typeof o.disable_sync_for_debug === "boolean" && typeof o.start_block === "bigint" && typeof o.pause_at_block === "bigint" && PrunerConfig.isSDK(o.pruner) && typeof o.pause_at_upgrade_plan_block_height === "bigint");
   },
   isAmino(o: any): o is IndexerConfigAmino {
-    return o && (o.$typeUrl === IndexerConfig.typeUrl || typeof o.disable === "boolean" && typeof o.disable_sync_for_debug === "boolean" && typeof o.start_block === "bigint" && typeof o.pause_at_block === "bigint");
+    return o && (o.$typeUrl === IndexerConfig.typeUrl || typeof o.disable === "boolean" && typeof o.disable_sync_for_debug === "boolean" && typeof o.start_block === "bigint" && typeof o.pause_at_block === "bigint" && PrunerConfig.isAmino(o.pruner) && typeof o.pause_at_upgrade_plan_block_height === "bigint");
   },
   encode(message: IndexerConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.disable === true) {
@@ -1708,6 +1600,12 @@ export const IndexerConfig = {
     }
     if (message.pauseAtBlock !== BigInt(0)) {
       writer.uint32(32).int64(message.pauseAtBlock);
+    }
+    if (message.pruner !== undefined) {
+      PrunerConfig.encode(message.pruner, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.pauseAtUpgradePlanBlockHeight !== BigInt(0)) {
+      writer.uint32(48).int64(message.pauseAtUpgradePlanBlockHeight);
     }
     return writer;
   },
@@ -1730,6 +1628,12 @@ export const IndexerConfig = {
         case 4:
           message.pauseAtBlock = reader.int64();
           break;
+        case 5:
+          message.pruner = PrunerConfig.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 6:
+          message.pauseAtUpgradePlanBlockHeight = reader.int64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1742,7 +1646,9 @@ export const IndexerConfig = {
       disable: isSet(object.disable) ? Boolean(object.disable) : false,
       disableSyncForDebug: isSet(object.disableSyncForDebug) ? Boolean(object.disableSyncForDebug) : false,
       startBlock: isSet(object.startBlock) ? BigInt(object.startBlock.toString()) : BigInt(0),
-      pauseAtBlock: isSet(object.pauseAtBlock) ? BigInt(object.pauseAtBlock.toString()) : BigInt(0)
+      pauseAtBlock: isSet(object.pauseAtBlock) ? BigInt(object.pauseAtBlock.toString()) : BigInt(0),
+      pruner: isSet(object.pruner) ? PrunerConfig.fromJSON(object.pruner) : undefined,
+      pauseAtUpgradePlanBlockHeight: isSet(object.pauseAtUpgradePlanBlockHeight) ? BigInt(object.pauseAtUpgradePlanBlockHeight.toString()) : BigInt(0)
     };
   },
   toJSON(message: IndexerConfig): unknown {
@@ -1751,6 +1657,8 @@ export const IndexerConfig = {
     message.disableSyncForDebug !== undefined && (obj.disableSyncForDebug = message.disableSyncForDebug);
     message.startBlock !== undefined && (obj.startBlock = (message.startBlock || BigInt(0)).toString());
     message.pauseAtBlock !== undefined && (obj.pauseAtBlock = (message.pauseAtBlock || BigInt(0)).toString());
+    message.pruner !== undefined && (obj.pruner = message.pruner ? PrunerConfig.toJSON(message.pruner) : undefined);
+    message.pauseAtUpgradePlanBlockHeight !== undefined && (obj.pauseAtUpgradePlanBlockHeight = (message.pauseAtUpgradePlanBlockHeight || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<IndexerConfig>): IndexerConfig {
@@ -1759,6 +1667,8 @@ export const IndexerConfig = {
     message.disableSyncForDebug = object.disableSyncForDebug ?? false;
     message.startBlock = object.startBlock !== undefined && object.startBlock !== null ? BigInt(object.startBlock.toString()) : BigInt(0);
     message.pauseAtBlock = object.pauseAtBlock !== undefined && object.pauseAtBlock !== null ? BigInt(object.pauseAtBlock.toString()) : BigInt(0);
+    message.pruner = object.pruner !== undefined && object.pruner !== null ? PrunerConfig.fromPartial(object.pruner) : undefined;
+    message.pauseAtUpgradePlanBlockHeight = object.pauseAtUpgradePlanBlockHeight !== undefined && object.pauseAtUpgradePlanBlockHeight !== null ? BigInt(object.pauseAtUpgradePlanBlockHeight.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: IndexerConfigAmino): IndexerConfig {
@@ -1775,6 +1685,12 @@ export const IndexerConfig = {
     if (object.pause_at_block !== undefined && object.pause_at_block !== null) {
       message.pauseAtBlock = BigInt(object.pause_at_block);
     }
+    if (object.pruner !== undefined && object.pruner !== null) {
+      message.pruner = PrunerConfig.fromAmino(object.pruner);
+    }
+    if (object.pause_at_upgrade_plan_block_height !== undefined && object.pause_at_upgrade_plan_block_height !== null) {
+      message.pauseAtUpgradePlanBlockHeight = BigInt(object.pause_at_upgrade_plan_block_height);
+    }
     return message;
   },
   toAmino(message: IndexerConfig, useInterfaces: boolean = true): IndexerConfigAmino {
@@ -1783,6 +1699,8 @@ export const IndexerConfig = {
     obj.disable_sync_for_debug = message.disableSyncForDebug === false ? undefined : message.disableSyncForDebug;
     obj.start_block = message.startBlock ? message.startBlock.toString() : undefined;
     obj.pause_at_block = message.pauseAtBlock ? message.pauseAtBlock.toString() : undefined;
+    obj.pruner = message.pruner ? PrunerConfig.toAmino(message.pruner, useInterfaces) : undefined;
+    obj.pause_at_upgrade_plan_block_height = message.pauseAtUpgradePlanBlockHeight ? message.pauseAtUpgradePlanBlockHeight.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: IndexerConfigAminoMsg): IndexerConfig {
@@ -1802,6 +1720,117 @@ export const IndexerConfig = {
   }
 };
 GlobalDecoderRegistry.register(IndexerConfig.typeUrl, IndexerConfig);
+function createBasePrunerConfig(): PrunerConfig {
+  return {
+    pruneBlock: 0,
+    pruneIntervalBlocks: 0,
+    keepBlocks: 0
+  };
+}
+export const PrunerConfig = {
+  typeUrl: "/pryzmatics.server.common.PrunerConfig",
+  is(o: any): o is PrunerConfig {
+    return o && (o.$typeUrl === PrunerConfig.typeUrl || typeof o.pruneBlock === "number" && typeof o.pruneIntervalBlocks === "number" && typeof o.keepBlocks === "number");
+  },
+  isSDK(o: any): o is PrunerConfigSDKType {
+    return o && (o.$typeUrl === PrunerConfig.typeUrl || typeof o.prune_block === "number" && typeof o.prune_interval_blocks === "number" && typeof o.keep_blocks === "number");
+  },
+  isAmino(o: any): o is PrunerConfigAmino {
+    return o && (o.$typeUrl === PrunerConfig.typeUrl || typeof o.prune_block === "number" && typeof o.prune_interval_blocks === "number" && typeof o.keep_blocks === "number");
+  },
+  encode(message: PrunerConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.pruneBlock !== 0) {
+      writer.uint32(8).uint32(message.pruneBlock);
+    }
+    if (message.pruneIntervalBlocks !== 0) {
+      writer.uint32(16).uint32(message.pruneIntervalBlocks);
+    }
+    if (message.keepBlocks !== 0) {
+      writer.uint32(24).uint32(message.keepBlocks);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): PrunerConfig {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrunerConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pruneBlock = reader.uint32();
+          break;
+        case 2:
+          message.pruneIntervalBlocks = reader.uint32();
+          break;
+        case 3:
+          message.keepBlocks = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): PrunerConfig {
+    return {
+      pruneBlock: isSet(object.pruneBlock) ? Number(object.pruneBlock) : 0,
+      pruneIntervalBlocks: isSet(object.pruneIntervalBlocks) ? Number(object.pruneIntervalBlocks) : 0,
+      keepBlocks: isSet(object.keepBlocks) ? Number(object.keepBlocks) : 0
+    };
+  },
+  toJSON(message: PrunerConfig): unknown {
+    const obj: any = {};
+    message.pruneBlock !== undefined && (obj.pruneBlock = Math.round(message.pruneBlock));
+    message.pruneIntervalBlocks !== undefined && (obj.pruneIntervalBlocks = Math.round(message.pruneIntervalBlocks));
+    message.keepBlocks !== undefined && (obj.keepBlocks = Math.round(message.keepBlocks));
+    return obj;
+  },
+  fromPartial(object: Partial<PrunerConfig>): PrunerConfig {
+    const message = createBasePrunerConfig();
+    message.pruneBlock = object.pruneBlock ?? 0;
+    message.pruneIntervalBlocks = object.pruneIntervalBlocks ?? 0;
+    message.keepBlocks = object.keepBlocks ?? 0;
+    return message;
+  },
+  fromAmino(object: PrunerConfigAmino): PrunerConfig {
+    const message = createBasePrunerConfig();
+    if (object.prune_block !== undefined && object.prune_block !== null) {
+      message.pruneBlock = object.prune_block;
+    }
+    if (object.prune_interval_blocks !== undefined && object.prune_interval_blocks !== null) {
+      message.pruneIntervalBlocks = object.prune_interval_blocks;
+    }
+    if (object.keep_blocks !== undefined && object.keep_blocks !== null) {
+      message.keepBlocks = object.keep_blocks;
+    }
+    return message;
+  },
+  toAmino(message: PrunerConfig, useInterfaces: boolean = true): PrunerConfigAmino {
+    const obj: any = {};
+    obj.prune_block = message.pruneBlock === 0 ? undefined : message.pruneBlock;
+    obj.prune_interval_blocks = message.pruneIntervalBlocks === 0 ? undefined : message.pruneIntervalBlocks;
+    obj.keep_blocks = message.keepBlocks === 0 ? undefined : message.keepBlocks;
+    return obj;
+  },
+  fromAminoMsg(object: PrunerConfigAminoMsg): PrunerConfig {
+    return PrunerConfig.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PrunerConfigProtoMsg, useInterfaces: boolean = true): PrunerConfig {
+    return PrunerConfig.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: PrunerConfig): Uint8Array {
+    return PrunerConfig.encode(message).finish();
+  },
+  toProtoMsg(message: PrunerConfig): PrunerConfigProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.common.PrunerConfig",
+      value: PrunerConfig.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(PrunerConfig.typeUrl, PrunerConfig);
 function createBaseProfilerConfig(): ProfilerConfig {
   return {
     cpuEnabled: false,

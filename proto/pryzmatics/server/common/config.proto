@@ -11,6 +11,7 @@ message QueryConfigRequest {
 message QueryConfigResponse {
   Config config = 1 [(gogoproto.nullable) = false];
   string git_revision = 2;
+  string uptime = 3;
 }
 
 message Config {
@@ -20,15 +21,14 @@ message Config {
   uint32 metric_calculation_interval_blocks = 4;
   bool enableFakePriceGenerator = 5;
   map<string, string> rpc_endpoints = 6;
-  map<string, string> chain_ids = 7;
-  DatabaseConfig database_config = 8 [(gogoproto.nullable) = false];
-  ChainConfig chain_config = 9 [(gogoproto.nullable) = false];
-  LoggerConfig logger_config = 10 [(gogoproto.nullable) = false];
-  IndexerConfig indexer_config = 11 [(gogoproto.nullable) = false];
-  ProfilerConfig profiler_config = 12 [(gogoproto.nullable) = false];
-  YieldReturnConfig yield_return_config = 13 [(gogoproto.nullable) = false];
-  FaucetConfig faucet_config = 14 [(gogoproto.nullable) = false];
-  map<string, AssetConfig> assets = 15 [(gogoproto.nullable) = false];
+  DatabaseConfig database_config = 7 [(gogoproto.nullable) = false];
+  ChainConfig chain_config = 8 [(gogoproto.nullable) = false];
+  LoggerConfig logger_config = 9 [(gogoproto.nullable) = false];
+  IndexerConfig indexer_config = 10 [(gogoproto.nullable) = false];
+  ProfilerConfig profiler_config = 11 [(gogoproto.nullable) = false];
+  YieldReturnConfig yield_return_config = 12 [(gogoproto.nullable) = false];
+  FaucetConfig faucet_config = 13 [(gogoproto.nullable) = false];
+  map<string, AssetConfig> assets = 14 [(gogoproto.nullable) = false];
 }
 
 message DatabaseConfig {
@@ -61,6 +61,14 @@ message IndexerConfig {
   bool disable_sync_for_debug = 2;
   int64 start_block = 3;
   int64 pause_at_block = 4;
+  PrunerConfig pruner = 5 [(gogoproto.nullable) = false];
+  int64 pause_at_upgrade_plan_block_height = 6;
+}
+
+message PrunerConfig {
+  uint32 prune_block = 1;
+  uint32 prune_interval_blocks = 2;
+  uint32 keep_blocks = 3;
 }
 
 message ProfilerConfig {
