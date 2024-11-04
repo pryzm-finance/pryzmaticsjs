@@ -77,6 +77,10 @@ service Query {
     option (google.api.http).get = "/pryzmatics/asset/{asset_id}";
   }
 
+  rpc Assets(pryzmatics.server.asset.QueryAssetsRequest) returns (pryzmatics.server.asset.QueryAssetsResponse) {
+    option (google.api.http).get = "/pryzmatics/asset";
+  }
+
   rpc MaturityAll(pryzmatics.server.maturity.QueryAllMaturitiesRequest) returns (pryzmatics.server.maturity.QueryAllMaturitiesResponse) {
     option (google.api.http).get = "/pryzmatics/maturity";
   }

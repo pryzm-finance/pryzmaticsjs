@@ -2,7 +2,7 @@ import { QueryVoteIntervalReportRequest, QueryVoteIntervalReportResponseSDKType 
 import { QueryAllFlowRequest, QueryAllFlowResponseSDKType, QueryFlowRequest, QueryFlowResponseSDKType } from "./flowtrade/flowtrade";
 import { setPaginationParams } from "../../helpers";
 import { LCDClient } from "@refractedlabs/cosmology-lcd-fork";
-import { QueryAssetRequest, QueryAssetResponseSDKType } from "./asset/asset";
+import { QueryAssetRequest, QueryAssetResponseSDKType, QueryAssetsRequest, QueryAssetsResponseSDKType } from "./asset/asset";
 import { QueryAllMaturitiesRequest, QueryAllMaturitiesResponseSDKType } from "./maturity/maturity";
 import { QueryPGovProposalsRequest, QueryPGovProposalsResponseSDKType, QueryPGovProposalRequest, QueryPGovProposalResponseSDKType } from "./pgov/proposal";
 import { QueryPGovVotesRequest, QueryPGovVotesResponseSDKType } from "./pgov/vote";
@@ -60,6 +60,7 @@ export class LCDQueryClient {
   }) {
     this.req = requestClient;
     this.asset = this.asset.bind(this);
+    this.assets = this.assets.bind(this);
     this.maturityAll = this.maturityAll.bind(this);
     this.pGovProposals = this.pGovProposals.bind(this);
     this.pGovProposal = this.pGovProposal.bind(this);
@@ -131,6 +132,11 @@ export class LCDQueryClient {
   async asset(params: QueryAssetRequest): Promise<QueryAssetResponseSDKType> {
     const endpoint = `pryzmatics/asset/${params.assetId}`;
     return await this.req.get<QueryAssetResponseSDKType>(endpoint);
+  }
+  /* Assets */
+  async assets(_params: QueryAssetsRequest = {}): Promise<QueryAssetsResponseSDKType> {
+    const endpoint = `pryzmatics/asset`;
+    return await this.req.get<QueryAssetsResponseSDKType>(endpoint);
   }
   /* MaturityAll */
   async maturityAll(params: QueryAllMaturitiesRequest): Promise<QueryAllMaturitiesResponseSDKType> {
