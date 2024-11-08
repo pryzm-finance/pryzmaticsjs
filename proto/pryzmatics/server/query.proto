@@ -4,6 +4,7 @@ package pryzmatics.server;
 import "google/api/annotations.proto";
 
 import "pryzmatics/server/asset/asset.proto";
+import "pryzmatics/server/asset/assets_details.proto";
 
 import "pryzmatics/server/maturity/maturity.proto";
 
@@ -79,6 +80,10 @@ service Query {
 
   rpc Assets(pryzmatics.server.asset.QueryAssetsRequest) returns (pryzmatics.server.asset.QueryAssetsResponse) {
     option (google.api.http).get = "/pryzmatics/asset";
+  }
+
+  rpc AssetsDetails(pryzmatics.server.asset.QueryAssetsDetailsRequest) returns (pryzmatics.server.asset.QueryAssetsDetailsResponse) {
+    option (google.api.http).get = "/pryzmatics/asset_details";
   }
 
   rpc MaturityAll(pryzmatics.server.maturity.QueryAllMaturitiesRequest) returns (pryzmatics.server.maturity.QueryAllMaturitiesResponse) {

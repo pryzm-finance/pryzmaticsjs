@@ -444,6 +444,8 @@ export interface StableCoinConfigSDKType {
 export interface AssetConfig {
   underlyingTokenDenom: string;
   yieldMinDataCount: bigint;
+  displayName: string;
+  decimals: bigint;
 }
 export interface AssetConfigProtoMsg {
   typeUrl: "/pryzmatics.server.common.AssetConfig";
@@ -452,6 +454,8 @@ export interface AssetConfigProtoMsg {
 export interface AssetConfigAmino {
   underlyingTokenDenom?: string;
   yieldMinDataCount?: string;
+  displayName?: string;
+  decimals?: string;
 }
 export interface AssetConfigAminoMsg {
   type: "/pryzmatics.server.common.AssetConfig";
@@ -460,6 +464,8 @@ export interface AssetConfigAminoMsg {
 export interface AssetConfigSDKType {
   underlyingTokenDenom: string;
   yieldMinDataCount: bigint;
+  displayName: string;
+  decimals: bigint;
 }
 function createBaseQueryConfigRequest(): QueryConfigRequest {
   return {};
@@ -2594,19 +2600,21 @@ GlobalDecoderRegistry.register(StableCoinConfig.typeUrl, StableCoinConfig);
 function createBaseAssetConfig(): AssetConfig {
   return {
     underlyingTokenDenom: "",
-    yieldMinDataCount: BigInt(0)
+    yieldMinDataCount: BigInt(0),
+    displayName: "",
+    decimals: BigInt(0)
   };
 }
 export const AssetConfig = {
   typeUrl: "/pryzmatics.server.common.AssetConfig",
   is(o: any): o is AssetConfig {
-    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.yieldMinDataCount === "bigint");
+    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.yieldMinDataCount === "bigint" && typeof o.displayName === "string" && typeof o.decimals === "bigint");
   },
   isSDK(o: any): o is AssetConfigSDKType {
-    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.yieldMinDataCount === "bigint");
+    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.yieldMinDataCount === "bigint" && typeof o.displayName === "string" && typeof o.decimals === "bigint");
   },
   isAmino(o: any): o is AssetConfigAmino {
-    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.yieldMinDataCount === "bigint");
+    return o && (o.$typeUrl === AssetConfig.typeUrl || typeof o.underlyingTokenDenom === "string" && typeof o.yieldMinDataCount === "bigint" && typeof o.displayName === "string" && typeof o.decimals === "bigint");
   },
   encode(message: AssetConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.underlyingTokenDenom !== "") {
@@ -2614,6 +2622,12 @@ export const AssetConfig = {
     }
     if (message.yieldMinDataCount !== BigInt(0)) {
       writer.uint32(16).int64(message.yieldMinDataCount);
+    }
+    if (message.displayName !== "") {
+      writer.uint32(26).string(message.displayName);
+    }
+    if (message.decimals !== BigInt(0)) {
+      writer.uint32(32).int64(message.decimals);
     }
     return writer;
   },
@@ -2630,6 +2644,12 @@ export const AssetConfig = {
         case 2:
           message.yieldMinDataCount = reader.int64();
           break;
+        case 3:
+          message.displayName = reader.string();
+          break;
+        case 4:
+          message.decimals = reader.int64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2640,19 +2660,25 @@ export const AssetConfig = {
   fromJSON(object: any): AssetConfig {
     return {
       underlyingTokenDenom: isSet(object.underlyingTokenDenom) ? String(object.underlyingTokenDenom) : "",
-      yieldMinDataCount: isSet(object.yieldMinDataCount) ? BigInt(object.yieldMinDataCount.toString()) : BigInt(0)
+      yieldMinDataCount: isSet(object.yieldMinDataCount) ? BigInt(object.yieldMinDataCount.toString()) : BigInt(0),
+      displayName: isSet(object.displayName) ? String(object.displayName) : "",
+      decimals: isSet(object.decimals) ? BigInt(object.decimals.toString()) : BigInt(0)
     };
   },
   toJSON(message: AssetConfig): unknown {
     const obj: any = {};
     message.underlyingTokenDenom !== undefined && (obj.underlyingTokenDenom = message.underlyingTokenDenom);
     message.yieldMinDataCount !== undefined && (obj.yieldMinDataCount = (message.yieldMinDataCount || BigInt(0)).toString());
+    message.displayName !== undefined && (obj.displayName = message.displayName);
+    message.decimals !== undefined && (obj.decimals = (message.decimals || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<AssetConfig>): AssetConfig {
     const message = createBaseAssetConfig();
     message.underlyingTokenDenom = object.underlyingTokenDenom ?? "";
     message.yieldMinDataCount = object.yieldMinDataCount !== undefined && object.yieldMinDataCount !== null ? BigInt(object.yieldMinDataCount.toString()) : BigInt(0);
+    message.displayName = object.displayName ?? "";
+    message.decimals = object.decimals !== undefined && object.decimals !== null ? BigInt(object.decimals.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: AssetConfigAmino): AssetConfig {
@@ -2663,12 +2689,20 @@ export const AssetConfig = {
     if (object.yieldMinDataCount !== undefined && object.yieldMinDataCount !== null) {
       message.yieldMinDataCount = BigInt(object.yieldMinDataCount);
     }
+    if (object.displayName !== undefined && object.displayName !== null) {
+      message.displayName = object.displayName;
+    }
+    if (object.decimals !== undefined && object.decimals !== null) {
+      message.decimals = BigInt(object.decimals);
+    }
     return message;
   },
   toAmino(message: AssetConfig, useInterfaces: boolean = true): AssetConfigAmino {
     const obj: any = {};
     obj.underlyingTokenDenom = message.underlyingTokenDenom === "" ? undefined : message.underlyingTokenDenom;
     obj.yieldMinDataCount = message.yieldMinDataCount ? message.yieldMinDataCount.toString() : undefined;
+    obj.displayName = message.displayName === "" ? undefined : message.displayName;
+    obj.decimals = message.decimals ? message.decimals.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: AssetConfigAminoMsg): AssetConfig {

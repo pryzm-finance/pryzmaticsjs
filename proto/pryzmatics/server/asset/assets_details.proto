@@ -1,0 +1,29 @@
+syntax = "proto3";
+package pryzmatics.server.asset;
+
+import "gogoproto/gogo.proto";
+import "pryzmatics/pool/token.proto";
+import "pryzmatics/asset/asset.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/asset";
+
+
+message AssetDetails {
+  pryzmatics.asset.Asset asset = 1 [(gogoproto.nullable) = false];
+  pryzmatics.pool.Token c_asset_token = 2 [(gogoproto.nullable) = false];
+  pryzmatics.pool.Token underlying_asset_token = 3 [(gogoproto.nullable) = true];
+  pryzmatics.pool.Token yamm_lp_token = 4 [(gogoproto.nullable) = false];
+  pryzmatics.pool.Token boost_lp_token = 5 [(gogoproto.nullable) = true];
+  pryzmatics.pool.Token usdc_lp_token = 6 [(gogoproto.nullable) = true];
+  repeated pryzmatics.pool.Token y_tokens = 7 [(gogoproto.nullable) = false];
+  repeated pryzmatics.pool.Token p_tokens = 8 [(gogoproto.nullable) = false];
+}
+
+message QueryAssetsDetailsRequest {
+  string asset_id = 1; // optional
+}
+
+message QueryAssetsDetailsResponse {
+  repeated AssetDetails assets = 1 [(gogoproto.nullable) = false];
+}

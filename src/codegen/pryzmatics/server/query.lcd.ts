@@ -3,6 +3,7 @@ import { QueryAllFlowRequest, QueryAllFlowResponseSDKType, QueryFlowRequest, Que
 import { setPaginationParams } from "../../helpers";
 import { LCDClient } from "@refractedlabs/cosmology-lcd-fork";
 import { QueryAssetRequest, QueryAssetResponseSDKType, QueryAssetsRequest, QueryAssetsResponseSDKType } from "./asset/asset";
+import { QueryAssetsDetailsRequest, QueryAssetsDetailsResponseSDKType } from "./asset/assets_details";
 import { QueryAllMaturitiesRequest, QueryAllMaturitiesResponseSDKType } from "./maturity/maturity";
 import { QueryPGovProposalsRequest, QueryPGovProposalsResponseSDKType, QueryPGovProposalRequest, QueryPGovProposalResponseSDKType } from "./pgov/proposal";
 import { QueryPGovVotesRequest, QueryPGovVotesResponseSDKType } from "./pgov/vote";
@@ -61,6 +62,7 @@ export class LCDQueryClient {
     this.req = requestClient;
     this.asset = this.asset.bind(this);
     this.assets = this.assets.bind(this);
+    this.assetsDetails = this.assetsDetails.bind(this);
     this.maturityAll = this.maturityAll.bind(this);
     this.pGovProposals = this.pGovProposals.bind(this);
     this.pGovProposal = this.pGovProposal.bind(this);
@@ -137,6 +139,17 @@ export class LCDQueryClient {
   async assets(_params: QueryAssetsRequest = {}): Promise<QueryAssetsResponseSDKType> {
     const endpoint = `pryzmatics/asset`;
     return await this.req.get<QueryAssetsResponseSDKType>(endpoint);
+  }
+  /* AssetsDetails */
+  async assetsDetails(params: QueryAssetsDetailsRequest): Promise<QueryAssetsDetailsResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.assetId !== "undefined") {
+      options.params.asset_id = params.assetId;
+    }
+    const endpoint = `pryzmatics/asset_details`;
+    return await this.req.get<QueryAssetsDetailsResponseSDKType>(endpoint, options);
   }
   /* MaturityAll */
   async maturityAll(params: QueryAllMaturitiesRequest): Promise<QueryAllMaturitiesResponseSDKType> {

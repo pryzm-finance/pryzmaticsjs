@@ -132,6 +132,7 @@ export interface Token {
   metrics: TokenMetrics;
   underlyingTokenDenom: string;
   underlyingTokenTermsPrice?: string;
+  assetId: string;
   error: string;
 }
 export interface TokenProtoMsg {
@@ -146,6 +147,7 @@ export interface TokenAmino {
   metrics?: TokenMetricsAmino;
   underlying_token_denom?: string;
   underlying_token_terms_price?: string;
+  asset_id?: string;
   error?: string;
 }
 export interface TokenAminoMsg {
@@ -160,6 +162,7 @@ export interface TokenSDKType {
   metrics: TokenMetricsSDKType;
   underlying_token_denom: string;
   underlying_token_terms_price?: string;
+  asset_id: string;
   error: string;
 }
 function createBaseTokenMetrics(): TokenMetrics {
@@ -478,19 +481,20 @@ function createBaseToken(): Token {
     metrics: TokenMetrics.fromPartial({}),
     underlyingTokenDenom: "",
     underlyingTokenTermsPrice: undefined,
+    assetId: "",
     error: ""
   };
 }
 export const Token = {
   typeUrl: "/pryzmatics.pool.Token",
   is(o: any): o is Token {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.underlyingTokenDenom === "string" && typeof o.error === "string");
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.underlyingTokenDenom === "string" && typeof o.assetId === "string" && typeof o.error === "string");
   },
   isSDK(o: any): o is TokenSDKType {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.error === "string");
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string");
   },
   isAmino(o: any): o is TokenAmino {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.error === "string");
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string");
   },
   encode(message: Token, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
@@ -514,8 +518,11 @@ export const Token = {
     if (message.underlyingTokenTermsPrice !== undefined) {
       writer.uint32(58).string(Decimal.fromUserInput(message.underlyingTokenTermsPrice, 18).atomics);
     }
+    if (message.assetId !== "") {
+      writer.uint32(66).string(message.assetId);
+    }
     if (message.error !== "") {
-      writer.uint32(66).string(message.error);
+      writer.uint32(74).string(message.error);
     }
     return writer;
   },
@@ -548,6 +555,9 @@ export const Token = {
           message.underlyingTokenTermsPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 8:
+          message.assetId = reader.string();
+          break;
+        case 9:
           message.error = reader.string();
           break;
         default:
@@ -566,6 +576,7 @@ export const Token = {
       metrics: isSet(object.metrics) ? TokenMetrics.fromJSON(object.metrics) : undefined,
       underlyingTokenDenom: isSet(object.underlyingTokenDenom) ? String(object.underlyingTokenDenom) : "",
       underlyingTokenTermsPrice: isSet(object.underlyingTokenTermsPrice) ? String(object.underlyingTokenTermsPrice) : undefined,
+      assetId: isSet(object.assetId) ? String(object.assetId) : "",
       error: isSet(object.error) ? String(object.error) : ""
     };
   },
@@ -578,6 +589,7 @@ export const Token = {
     message.metrics !== undefined && (obj.metrics = message.metrics ? TokenMetrics.toJSON(message.metrics) : undefined);
     message.underlyingTokenDenom !== undefined && (obj.underlyingTokenDenom = message.underlyingTokenDenom);
     message.underlyingTokenTermsPrice !== undefined && (obj.underlyingTokenTermsPrice = message.underlyingTokenTermsPrice);
+    message.assetId !== undefined && (obj.assetId = message.assetId);
     message.error !== undefined && (obj.error = message.error);
     return obj;
   },
@@ -590,6 +602,7 @@ export const Token = {
     message.metrics = object.metrics !== undefined && object.metrics !== null ? TokenMetrics.fromPartial(object.metrics) : undefined;
     message.underlyingTokenDenom = object.underlyingTokenDenom ?? "";
     message.underlyingTokenTermsPrice = object.underlyingTokenTermsPrice ?? undefined;
+    message.assetId = object.assetId ?? "";
     message.error = object.error ?? "";
     return message;
   },
@@ -616,6 +629,9 @@ export const Token = {
     if (object.underlying_token_terms_price !== undefined && object.underlying_token_terms_price !== null) {
       message.underlyingTokenTermsPrice = object.underlying_token_terms_price;
     }
+    if (object.asset_id !== undefined && object.asset_id !== null) {
+      message.assetId = object.asset_id;
+    }
     if (object.error !== undefined && object.error !== null) {
       message.error = object.error;
     }
@@ -630,6 +646,7 @@ export const Token = {
     obj.metrics = message.metrics ? TokenMetrics.toAmino(message.metrics, useInterfaces) : undefined;
     obj.underlying_token_denom = message.underlyingTokenDenom === "" ? undefined : message.underlyingTokenDenom;
     obj.underlying_token_terms_price = padDecimal(message.underlyingTokenTermsPrice) === null ? undefined : padDecimal(message.underlyingTokenTermsPrice);
+    obj.asset_id = message.assetId === "" ? undefined : message.assetId;
     obj.error = message.error === "" ? undefined : message.error;
     return obj;
   },
