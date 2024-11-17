@@ -398,9 +398,6 @@ export class LCDQueryClient {
     const options: any = {
       params: {}
     };
-    if (typeof params?.swapType !== "undefined") {
-      options.params.swap_type = params.swapType;
-    }
     if (typeof params?.tokenIn !== "undefined") {
       options.params.token_in = params.tokenIn;
     }

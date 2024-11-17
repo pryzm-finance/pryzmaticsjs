@@ -43,23 +43,24 @@ import * as _237 from "./pool/token_yield";
 import * as _238 from "./pool/token";
 import * as _239 from "./price/historical_price";
 import * as _240 from "./price/token_price";
-import * as _241 from "./server/query";
-import * as _242 from "./statistics/market_cap";
-import * as _243 from "./statistics/misc";
-import * as _244 from "./statistics/treasury";
-import * as _245 from "./statistics/tvl";
-import * as _246 from "./trade/directly_connected_token_pair";
-import * as _247 from "./trade/operation_volume";
-import * as _248 from "./trade/order";
-import * as _249 from "./trade/pool_trade_history";
-import * as _250 from "./trade/pulse_tradable_pair";
-import * as _251 from "./trade/route_steps";
-import * as _252 from "./trade/swap_steps";
-import * as _253 from "./trade/token_amounts";
-import * as _254 from "./trade/trade_volume";
-import * as _255 from "./trade/user_trade_history";
-import * as _256 from "./ystaking/user_stake";
-import * as _351 from "./server/query.lcd";
+import * as _241 from "./pryzmnexus/pryzmnexus";
+import * as _242 from "./server/query";
+import * as _243 from "./statistics/market_cap";
+import * as _244 from "./statistics/misc";
+import * as _245 from "./statistics/treasury";
+import * as _246 from "./statistics/tvl";
+import * as _247 from "./trade/directly_connected_token_pair";
+import * as _248 from "./trade/operation_volume";
+import * as _249 from "./trade/order";
+import * as _250 from "./trade/pool_trade_history";
+import * as _251 from "./trade/pulse_tradable_pair";
+import * as _252 from "./trade/route_steps";
+import * as _253 from "./trade/swap_steps";
+import * as _254 from "./trade/token_amounts";
+import * as _255 from "./trade/trade_volume";
+import * as _256 from "./trade/user_trade_history";
+import * as _257 from "./ystaking/user_stake";
+import * as _352 from "./server/query.lcd";
 export namespace pryzmatics {
   export const asset = {
     ..._196
@@ -140,18 +141,20 @@ export namespace pryzmatics {
     ..._239,
     ..._240
   };
+  export const pryzmnexus = {
+    ..._241
+  };
   export const server = {
-    ..._241,
-    ..._351
+    ..._242,
+    ..._352
   };
   export const statistics = {
-    ..._242,
     ..._243,
     ..._244,
-    ..._245
+    ..._245,
+    ..._246
   };
   export const trade = {
-    ..._246,
     ..._247,
     ..._248,
     ..._249,
@@ -160,9 +163,10 @@ export namespace pryzmatics {
     ..._252,
     ..._253,
     ..._254,
-    ..._255
+    ..._255,
+    ..._256
   };
   export const ystaking = {
-    ..._256
+    ..._257
   };
 }

@@ -45,17 +45,17 @@ import * as _192 from "./pgov/v1/reply";
 import * as _193 from "./pgov/v1/staked_p_asset";
 import * as _194 from "./pgov/v1/tx";
 import * as _195 from "./pgov/v1/vote";
-import * as _340 from "./amm/v1/tx.amino";
-import * as _341 from "./amm/v2/tx.amino";
-import * as _342 from "./icstaking/v1/tx.amino";
-import * as _343 from "./pgov/v1/tx.amino";
-import * as _344 from "./amm/v1/tx.registry";
-import * as _345 from "./amm/v2/tx.registry";
-import * as _346 from "./icstaking/v1/tx.registry";
-import * as _347 from "./pgov/v1/tx.registry";
-import * as _348 from "./amm/v1/query.lcd";
-import * as _349 from "./icstaking/v1/query.lcd";
-import * as _350 from "./pgov/v1/query.lcd";
+import * as _341 from "./amm/v1/tx.amino";
+import * as _342 from "./amm/v2/tx.amino";
+import * as _343 from "./icstaking/v1/tx.amino";
+import * as _344 from "./pgov/v1/tx.amino";
+import * as _345 from "./amm/v1/tx.registry";
+import * as _346 from "./amm/v2/tx.registry";
+import * as _347 from "./icstaking/v1/tx.registry";
+import * as _348 from "./pgov/v1/tx.registry";
+import * as _349 from "./amm/v1/query.lcd";
+import * as _350 from "./icstaking/v1/query.lcd";
+import * as _351 from "./pgov/v1/query.lcd";
 export namespace pryzm {
   export namespace amm {
     export const v1 = {
@@ -82,15 +82,15 @@ export namespace pryzm {
       ..._169,
       ..._170,
       ..._171,
-      ..._340,
-      ..._344,
-      ..._348
+      ..._341,
+      ..._345,
+      ..._349
     };
     export const v2 = {
       ..._172,
       ..._173,
-      ..._341,
-      ..._345
+      ..._342,
+      ..._346
     };
   }
   export namespace icstaking {
@@ -108,9 +108,9 @@ export namespace pryzm {
       ..._184,
       ..._185,
       ..._186,
-      ..._342,
-      ..._346,
-      ..._349
+      ..._343,
+      ..._347,
+      ..._350
     };
   }
   export namespace pgov {
@@ -124,9 +124,9 @@ export namespace pryzm {
       ..._193,
       ..._194,
       ..._195,
-      ..._343,
-      ..._347,
-      ..._350
+      ..._344,
+      ..._348,
+      ..._351
     };
   }
 }

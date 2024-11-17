@@ -1,5 +1,5 @@
-import { SwapType, SwapStep, SwapStepAmino, SwapStepSDKType, swapTypeFromJSON, swapTypeToJSON } from "../../../pryzm/amm/v1/operations";
-import { RouteStep, RouteStepAmino, RouteStepSDKType } from "../../../pryzm/amm/v1/route_step";
+import { SwapType, swapTypeFromJSON, swapTypeToJSON } from "../../../pryzm/amm/v1/operations";
+import { Operation, OperationAmino, OperationSDKType } from "../../pryzmnexus/pryzmnexus";
 import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
 import { isSet, padDecimal } from "../../../helpers";
 import { BinaryReader, BinaryWriter } from "../../../binary";
@@ -10,7 +10,7 @@ export interface QueryTradeSimulationRequest {
   tokenIn: string;
   tokenOut: string;
   amount: string;
-  steps: RouteStep[];
+  steps: Operation[];
 }
 export interface QueryTradeSimulationRequestProtoMsg {
   typeUrl: "/pryzmatics.server.trade.QueryTradeSimulationRequest";
@@ -21,7 +21,7 @@ export interface QueryTradeSimulationRequestAmino {
   token_in?: string;
   token_out?: string;
   amount?: string;
-  steps?: RouteStepAmino[];
+  steps?: OperationAmino[];
 }
 export interface QueryTradeSimulationRequestAminoMsg {
   type: "/pryzmatics.server.trade.QueryTradeSimulationRequest";
@@ -32,7 +32,7 @@ export interface QueryTradeSimulationRequestSDKType {
   token_in: string;
   token_out: string;
   amount: string;
-  steps: RouteStepSDKType[];
+  steps: OperationSDKType[];
 }
 export interface QueryTradeSimulationResponse {
   priceTokenInTokenOutTerms: string;
@@ -42,7 +42,7 @@ export interface QueryTradeSimulationResponse {
   feePercentage: string;
   effectivePrice: string;
   priceImpact: string;
-  swapSteps: SwapStep[];
+  swapSteps: Operation[];
   error: string;
 }
 export interface QueryTradeSimulationResponseProtoMsg {
@@ -57,7 +57,7 @@ export interface QueryTradeSimulationResponseAmino {
   fee_percentage?: string;
   effective_price?: string;
   price_impact?: string;
-  swap_steps?: SwapStepAmino[];
+  swap_steps?: OperationAmino[];
   error?: string;
 }
 export interface QueryTradeSimulationResponseAminoMsg {
@@ -72,7 +72,7 @@ export interface QueryTradeSimulationResponseSDKType {
   fee_percentage: string;
   effective_price: string;
   price_impact: string;
-  swap_steps: SwapStepSDKType[];
+  swap_steps: OperationSDKType[];
   error: string;
 }
 function createBaseQueryTradeSimulationRequest(): QueryTradeSimulationRequest {
@@ -87,13 +87,13 @@ function createBaseQueryTradeSimulationRequest(): QueryTradeSimulationRequest {
 export const QueryTradeSimulationRequest = {
   typeUrl: "/pryzmatics.server.trade.QueryTradeSimulationRequest",
   is(o: any): o is QueryTradeSimulationRequest {
-    return o && (o.$typeUrl === QueryTradeSimulationRequest.typeUrl || isSet(o.swapType) && typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || RouteStep.is(o.steps[0])));
+    return o && (o.$typeUrl === QueryTradeSimulationRequest.typeUrl || isSet(o.swapType) && typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || Operation.is(o.steps[0])));
   },
   isSDK(o: any): o is QueryTradeSimulationRequestSDKType {
-    return o && (o.$typeUrl === QueryTradeSimulationRequest.typeUrl || isSet(o.swap_type) && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || RouteStep.isSDK(o.steps[0])));
+    return o && (o.$typeUrl === QueryTradeSimulationRequest.typeUrl || isSet(o.swap_type) && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || Operation.isSDK(o.steps[0])));
   },
   isAmino(o: any): o is QueryTradeSimulationRequestAmino {
-    return o && (o.$typeUrl === QueryTradeSimulationRequest.typeUrl || isSet(o.swap_type) && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || RouteStep.isAmino(o.steps[0])));
+    return o && (o.$typeUrl === QueryTradeSimulationRequest.typeUrl || isSet(o.swap_type) && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || Operation.isAmino(o.steps[0])));
   },
   encode(message: QueryTradeSimulationRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.swapType !== 0) {
@@ -109,7 +109,7 @@ export const QueryTradeSimulationRequest = {
       writer.uint32(34).string(message.amount);
     }
     for (const v of message.steps) {
-      RouteStep.encode(v!, writer.uint32(42).fork()).ldelim();
+      Operation.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -133,7 +133,7 @@ export const QueryTradeSimulationRequest = {
           message.amount = reader.string();
           break;
         case 5:
-          message.steps.push(RouteStep.decode(reader, reader.uint32(), useInterfaces));
+          message.steps.push(Operation.decode(reader, reader.uint32(), useInterfaces));
           break;
         default:
           reader.skipType(tag & 7);
@@ -148,7 +148,7 @@ export const QueryTradeSimulationRequest = {
       tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
       tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
       amount: isSet(object.amount) ? String(object.amount) : "",
-      steps: Array.isArray(object?.steps) ? object.steps.map((e: any) => RouteStep.fromJSON(e)) : []
+      steps: Array.isArray(object?.steps) ? object.steps.map((e: any) => Operation.fromJSON(e)) : []
     };
   },
   toJSON(message: QueryTradeSimulationRequest): unknown {
@@ -158,7 +158,7 @@ export const QueryTradeSimulationRequest = {
     message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
     message.amount !== undefined && (obj.amount = message.amount);
     if (message.steps) {
-      obj.steps = message.steps.map(e => e ? RouteStep.toJSON(e) : undefined);
+      obj.steps = message.steps.map(e => e ? Operation.toJSON(e) : undefined);
     } else {
       obj.steps = [];
     }
@@ -170,7 +170,7 @@ export const QueryTradeSimulationRequest = {
     message.tokenIn = object.tokenIn ?? "";
     message.tokenOut = object.tokenOut ?? "";
     message.amount = object.amount ?? "";
-    message.steps = object.steps?.map(e => RouteStep.fromPartial(e)) || [];
+    message.steps = object.steps?.map(e => Operation.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: QueryTradeSimulationRequestAmino): QueryTradeSimulationRequest {
@@ -187,7 +187,7 @@ export const QueryTradeSimulationRequest = {
     if (object.amount !== undefined && object.amount !== null) {
       message.amount = object.amount;
     }
-    message.steps = object.steps?.map(e => RouteStep.fromAmino(e)) || [];
+    message.steps = object.steps?.map(e => Operation.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: QueryTradeSimulationRequest, useInterfaces: boolean = true): QueryTradeSimulationRequestAmino {
@@ -197,7 +197,7 @@ export const QueryTradeSimulationRequest = {
     obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
     obj.amount = message.amount === "" ? undefined : message.amount;
     if (message.steps) {
-      obj.steps = message.steps.map(e => e ? RouteStep.toAmino(e, useInterfaces) : undefined);
+      obj.steps = message.steps.map(e => e ? Operation.toAmino(e, useInterfaces) : undefined);
     } else {
       obj.steps = message.steps;
     }
@@ -236,13 +236,13 @@ function createBaseQueryTradeSimulationResponse(): QueryTradeSimulationResponse 
 export const QueryTradeSimulationResponse = {
   typeUrl: "/pryzmatics.server.trade.QueryTradeSimulationResponse",
   is(o: any): o is QueryTradeSimulationResponse {
-    return o && (o.$typeUrl === QueryTradeSimulationResponse.typeUrl || typeof o.priceTokenInTokenOutTerms === "string" && Coin.is(o.amountIn) && Coin.is(o.amountOut) && Coin.is(o.feeAmount) && typeof o.feePercentage === "string" && typeof o.effectivePrice === "string" && typeof o.priceImpact === "string" && Array.isArray(o.swapSteps) && (!o.swapSteps.length || SwapStep.is(o.swapSteps[0])) && typeof o.error === "string");
+    return o && (o.$typeUrl === QueryTradeSimulationResponse.typeUrl || typeof o.priceTokenInTokenOutTerms === "string" && Coin.is(o.amountIn) && Coin.is(o.amountOut) && Coin.is(o.feeAmount) && typeof o.feePercentage === "string" && typeof o.effectivePrice === "string" && typeof o.priceImpact === "string" && Array.isArray(o.swapSteps) && (!o.swapSteps.length || Operation.is(o.swapSteps[0])) && typeof o.error === "string");
   },
   isSDK(o: any): o is QueryTradeSimulationResponseSDKType {
-    return o && (o.$typeUrl === QueryTradeSimulationResponse.typeUrl || typeof o.price_token_in_token_out_terms === "string" && Coin.isSDK(o.amount_in) && Coin.isSDK(o.amount_out) && Coin.isSDK(o.fee_amount) && typeof o.fee_percentage === "string" && typeof o.effective_price === "string" && typeof o.price_impact === "string" && Array.isArray(o.swap_steps) && (!o.swap_steps.length || SwapStep.isSDK(o.swap_steps[0])) && typeof o.error === "string");
+    return o && (o.$typeUrl === QueryTradeSimulationResponse.typeUrl || typeof o.price_token_in_token_out_terms === "string" && Coin.isSDK(o.amount_in) && Coin.isSDK(o.amount_out) && Coin.isSDK(o.fee_amount) && typeof o.fee_percentage === "string" && typeof o.effective_price === "string" && typeof o.price_impact === "string" && Array.isArray(o.swap_steps) && (!o.swap_steps.length || Operation.isSDK(o.swap_steps[0])) && typeof o.error === "string");
   },
   isAmino(o: any): o is QueryTradeSimulationResponseAmino {
-    return o && (o.$typeUrl === QueryTradeSimulationResponse.typeUrl || typeof o.price_token_in_token_out_terms === "string" && Coin.isAmino(o.amount_in) && Coin.isAmino(o.amount_out) && Coin.isAmino(o.fee_amount) && typeof o.fee_percentage === "string" && typeof o.effective_price === "string" && typeof o.price_impact === "string" && Array.isArray(o.swap_steps) && (!o.swap_steps.length || SwapStep.isAmino(o.swap_steps[0])) && typeof o.error === "string");
+    return o && (o.$typeUrl === QueryTradeSimulationResponse.typeUrl || typeof o.price_token_in_token_out_terms === "string" && Coin.isAmino(o.amount_in) && Coin.isAmino(o.amount_out) && Coin.isAmino(o.fee_amount) && typeof o.fee_percentage === "string" && typeof o.effective_price === "string" && typeof o.price_impact === "string" && Array.isArray(o.swap_steps) && (!o.swap_steps.length || Operation.isAmino(o.swap_steps[0])) && typeof o.error === "string");
   },
   encode(message: QueryTradeSimulationResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.priceTokenInTokenOutTerms !== "") {
@@ -267,7 +267,7 @@ export const QueryTradeSimulationResponse = {
       writer.uint32(58).string(Decimal.fromUserInput(message.priceImpact, 18).atomics);
     }
     for (const v of message.swapSteps) {
-      SwapStep.encode(v!, writer.uint32(66).fork()).ldelim();
+      Operation.encode(v!, writer.uint32(66).fork()).ldelim();
     }
     if (message.error !== "") {
       writer.uint32(74).string(message.error);
@@ -303,7 +303,7 @@ export const QueryTradeSimulationResponse = {
           message.priceImpact = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 8:
-          message.swapSteps.push(SwapStep.decode(reader, reader.uint32(), useInterfaces));
+          message.swapSteps.push(Operation.decode(reader, reader.uint32(), useInterfaces));
           break;
         case 9:
           message.error = reader.string();
@@ -324,7 +324,7 @@ export const QueryTradeSimulationResponse = {
       feePercentage: isSet(object.feePercentage) ? String(object.feePercentage) : "",
       effectivePrice: isSet(object.effectivePrice) ? String(object.effectivePrice) : "",
       priceImpact: isSet(object.priceImpact) ? String(object.priceImpact) : "",
-      swapSteps: Array.isArray(object?.swapSteps) ? object.swapSteps.map((e: any) => SwapStep.fromJSON(e)) : [],
+      swapSteps: Array.isArray(object?.swapSteps) ? object.swapSteps.map((e: any) => Operation.fromJSON(e)) : [],
       error: isSet(object.error) ? String(object.error) : ""
     };
   },
@@ -338,7 +338,7 @@ export const QueryTradeSimulationResponse = {
     message.effectivePrice !== undefined && (obj.effectivePrice = message.effectivePrice);
     message.priceImpact !== undefined && (obj.priceImpact = message.priceImpact);
     if (message.swapSteps) {
-      obj.swapSteps = message.swapSteps.map(e => e ? SwapStep.toJSON(e) : undefined);
+      obj.swapSteps = message.swapSteps.map(e => e ? Operation.toJSON(e) : undefined);
     } else {
       obj.swapSteps = [];
     }
@@ -354,7 +354,7 @@ export const QueryTradeSimulationResponse = {
     message.feePercentage = object.feePercentage ?? "";
     message.effectivePrice = object.effectivePrice ?? "";
     message.priceImpact = object.priceImpact ?? "";
-    message.swapSteps = object.swapSteps?.map(e => SwapStep.fromPartial(e)) || [];
+    message.swapSteps = object.swapSteps?.map(e => Operation.fromPartial(e)) || [];
     message.error = object.error ?? "";
     return message;
   },
@@ -381,7 +381,7 @@ export const QueryTradeSimulationResponse = {
     if (object.price_impact !== undefined && object.price_impact !== null) {
       message.priceImpact = object.price_impact;
     }
-    message.swapSteps = object.swap_steps?.map(e => SwapStep.fromAmino(e)) || [];
+    message.swapSteps = object.swap_steps?.map(e => Operation.fromAmino(e)) || [];
     if (object.error !== undefined && object.error !== null) {
       message.error = object.error;
     }
@@ -397,7 +397,7 @@ export const QueryTradeSimulationResponse = {
     obj.effective_price = padDecimal(message.effectivePrice) === "" ? undefined : padDecimal(message.effectivePrice);
     obj.price_impact = padDecimal(message.priceImpact) === "" ? undefined : padDecimal(message.priceImpact);
     if (message.swapSteps) {
-      obj.swap_steps = message.swapSteps.map(e => e ? SwapStep.toAmino(e, useInterfaces) : undefined);
+      obj.swap_steps = message.swapSteps.map(e => e ? Operation.toAmino(e, useInterfaces) : undefined);
     } else {
       obj.swap_steps = message.swapSteps;
     }
