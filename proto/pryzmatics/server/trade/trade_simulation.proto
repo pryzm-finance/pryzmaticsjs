@@ -6,6 +6,7 @@ import "cosmos_proto/cosmos.proto";
 import "pryzm/amm/v1/operations.proto";
 import "pryzm/amm/v1/route_step.proto";
 import "cosmos/base/v1beta1/coin.proto";
+import "pryzmatics/pryzmnexus/pryzmnexus.proto";
 
 
 option go_package = "github.com/pryzm-finance/pryzmatics/server/trade";
@@ -19,7 +20,7 @@ message QueryTradeSimulationRequest {
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
     (gogoproto.nullable) = false
   ];
-  repeated pryzm.amm.v1.RouteStep steps = 5 [(gogoproto.nullable) = false];
+  repeated pryzmatics.pryzmnexus.Operation steps = 5 [(gogoproto.nullable) = false];
 }
 
 message QueryTradeSimulationResponse {
@@ -46,6 +47,6 @@ message QueryTradeSimulationResponse {
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-  repeated pryzm.amm.v1.SwapStep swap_steps = 8 [(gogoproto.nullable) = false];
+  repeated pryzmatics.pryzmnexus.Operation swap_steps = 8 [(gogoproto.nullable) = false];
   string error = 9;
 }

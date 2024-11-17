@@ -1,0 +1,250 @@
+syntax = "proto3";
+package pryzmatics.pryzmnexus;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/pryzm-nexus";
+
+// Coin represents a token with an amount and denomination.
+message Coin {
+  string amount = 1;
+  string denom = 2;
+}
+
+// InstantiateMsg is an empty message.
+message InstantiateMsg {}
+
+// ExecuteMsg includes various types of executable commands.
+message ExecuteMsg {
+  ExecuteMsg_ZeroImpactJoinAssetToNested zero_impact_join_asset_to_nested = 1;
+  ExecuteMsg_ZeroImpactJoinAssetToYamm zero_impact_join_asset_to_yamm = 2;
+  ExecuteMsg_Batch batch = 3;
+  ExecuteMsg_SetStakeContract set_stake_contract = 4;
+  ExecuteMsg_RemoveStakeContract remove_stake_contract = 5;
+  ExecuteMsg_Pause pause = 6;
+  ExecuteMsg_Unpause unpause = 7;
+  ExecuteMsg_UpdateAdmin update_admin = 8;
+}
+
+// MigrateMsg is an empty message.
+message MigrateMsg {}
+
+// QueryMsg includes various types of query commands.
+message QueryMsg {
+  QueryMsg_SimulateZeroImpactJoinAssetToNested simulate_zero_impact_join_asset_to_nested = 1;
+  QueryMsg_SimulateZeroImpactJoinAssetToYamm simulate_zero_impact_join_asset_to_yamm = 2;
+  QueryMsg_SimulateBatch simulate_batch = 3;
+  QueryMsg_StakeContracts stake_contracts = 4;
+  QueryMsg_StakeContract stake_contract = 5;
+  QueryMsg_Paused paused = 6;
+  QueryMsg_Admin admin = 7;
+}
+
+// QueryMsg_SimulateBatch represents a simulation query for a batch operation.
+message QueryMsg_SimulateBatch {
+  repeated Operation operations = 1 [(gogoproto.nullable) = false];
+  repeated Coin amounts = 2 [(gogoproto.nullable) = false];
+  SimulationType simulation_type = 3;
+}
+
+enum SimulationType {
+  given_in = 0 [(gogoproto.enumvalue_customname) = "GIVEN_IN"];
+  given_out = 1 [(gogoproto.enumvalue_customname) = "GIVEN_OUT"];
+}
+
+// StakeContractsResponse holds a list of stake contracts and an optional next key.
+message StakeContractsResponse {
+  repeated StakeContract contracts = 1 [(gogoproto.nullable) = false];
+  string next_key = 2;
+}
+
+// ZeroImpactJoinAssetToYammResponse represents the response for a zero-impact join to Yamm.
+message ZeroImpactJoinAssetToYammResponse {
+  Coin refract_fee = 1 [(gogoproto.nullable) = false];
+  Coin stake_c_asset = 2 [(gogoproto.nullable) = false];
+  Coin stake_fee = 3 [(gogoproto.nullable) = false];
+  repeated Coin y_amounts_out = 4 [(gogoproto.nullable) = false];
+  Coin yamm_lpt = 5 [(gogoproto.nullable) = false];
+  repeated Coin yamm_protocol_fee = 6 [(gogoproto.nullable) = false];
+  repeated Coin yamm_swap_fee = 7 [(gogoproto.nullable) = false];
+  Coin base_amount_in = 8 [(gogoproto.nullable) = false];
+}
+
+// ExecuteMsg_ZeroImpactJoinAssetToNested command.
+message ExecuteMsg_ZeroImpactJoinAssetToNested {
+  string pool_id = 1;
+  StakingMethod staking_method = 2 [(gogoproto.nullable) = false];
+  string min_lpt_out = 3;
+}
+
+// QueryMsg_SimulateZeroImpactJoinAssetToNested command.
+message QueryMsg_SimulateZeroImpactJoinAssetToNested {
+  Coin amount_in = 1 [(gogoproto.nullable) = false];
+  string pool_id = 2;
+  StakingMethod staking_method = 3 [(gogoproto.nullable) = false];
+}
+
+// PageRequest_for_String is used for paginated requests.
+message PageRequest_for_String {
+  string key = 1;
+  int32 limit = 2;
+}
+
+// ExecuteMsg_Batch holds batch operation data.
+message ExecuteMsg_Batch {
+  repeated Coin min_amounts_out = 1 [(gogoproto.nullable) = false];
+  repeated Operation operations = 2 [(gogoproto.nullable) = false];
+}
+
+// ExecuteMsg_Unpause is an empty message.
+message ExecuteMsg_Unpause {}
+
+// ExecuteMsg_ZeroImpactJoinAssetToYamm command.
+message ExecuteMsg_ZeroImpactJoinAssetToYamm {
+  string min_lpt_out = 1;
+  StakingMethod staking_method = 2 [(gogoproto.nullable) = false];
+}
+
+// PausedResponse shows whether the contract is paused.
+message PausedResponse {
+  bool paused = 1;
+}
+
+// StakeContractResponse holds stake contract data.
+message StakeContractResponse {
+  StakeContract contract = 1 [(gogoproto.nullable) = false];
+}
+
+// AdminResponse holds admin data.
+message AdminResponse {
+  string admin = 1;
+}
+
+// StakeContract holds contract details.
+message StakeContract {
+  string address = 1;
+  StakeContractType api_type = 2;
+  string c_denom = 3;
+  string denom = 4;
+}
+
+// Operation contains details for various types of operations.
+message Operation {
+  Operation_BatchSwap batch_swap = 1;
+  Operation_Refract refract = 2;
+  Operation_Redeem redeem = 3;
+  Operation_Stake stake = 4;
+}
+
+// QueryMsg_Paused is an empty message.
+message QueryMsg_Paused {}
+
+// ZeroImpactJoinAssetToNestedResponse holds response data for the nested join.
+message ZeroImpactJoinAssetToNestedResponse {
+  Coin base_amount_to_join = 1 [(gogoproto.nullable) = false];
+  repeated Coin nested_protocol_fee = 2 [(gogoproto.nullable) = false];
+  repeated Coin nested_swap_fee = 3 [(gogoproto.nullable) = false];
+  Coin stake_fee = 4 [(gogoproto.nullable) = false];
+  repeated Coin y_amounts_out = 5 [(gogoproto.nullable) = false];
+  Coin base_amount_in = 6 [(gogoproto.nullable) = false];
+  Coin nested_lpt = 7 [(gogoproto.nullable) = false];
+  Coin refract_fee = 8 [(gogoproto.nullable) = false];
+  Coin stake_c_asset = 9 [(gogoproto.nullable) = false];
+  Coin yamm_lpt = 10 [(gogoproto.nullable) = false];
+  repeated Coin yamm_protocol_fee = 11 [(gogoproto.nullable) = false];
+  repeated Coin yamm_swap_fee = 12 [(gogoproto.nullable) = false];
+}
+
+// ExecuteMsg_SetStakeContract command.
+message ExecuteMsg_SetStakeContract {
+  StakeContract contract = 1 [(gogoproto.nullable) = false];
+}
+
+// BatchSwapStep represents a step in a batch swap operation.
+message BatchSwapStep {
+  string token_out = 1;
+  int64 pool_id = 2;
+  string token_in = 3;
+}
+
+// QueryMsg_SimulateZeroImpactJoinAssetToYamm command.
+message QueryMsg_SimulateZeroImpactJoinAssetToYamm {
+  Coin amount_in = 1 [(gogoproto.nullable) = false];
+  StakingMethod staking_method = 2 [(gogoproto.nullable) = false];
+}
+
+// QueryMsg_StakeContracts holds the request data for stake contracts.
+message QueryMsg_StakeContracts {
+  PageRequest_for_String page_request = 1;
+}
+
+// BatchResponse holds batch response data.
+message BatchResponse {
+  repeated Coin amounts_out = 1 [(gogoproto.nullable) = false];
+  repeated Coin amounts_in = 2 [(gogoproto.nullable) = false];
+  repeated Coin fees = 3 [(gogoproto.nullable) = false];
+}
+
+// ExecuteMsg_Pause is an empty message.
+message ExecuteMsg_Pause {}
+
+// ExecuteMsg_UpdateAdmin command.
+message ExecuteMsg_UpdateAdmin {
+  string address = 1;
+}
+
+// StakeContractType enumeration.
+enum StakeContractType {
+  auu_staking = 0 [(gogoproto.enumvalue_customname) = "AUU_STAKING"];
+}
+
+// StakingMethod contains the methods for staking.
+message StakingMethod {
+  StakingMethod_IcStaking ic_staking = 1;
+  StakingMethod_Contract contract = 2;
+}
+
+// QueryMsg_StakeContract command.
+message QueryMsg_StakeContract {
+  string denom = 1;
+}
+
+// QueryMsg_Admin is an empty message.
+message QueryMsg_Admin {}
+
+// ExecuteMsg_RemoveStakeContract command.
+message ExecuteMsg_RemoveStakeContract {
+  string denom = 1;
+}
+
+// Operation_BatchSwap contains batch swap steps.
+message Operation_BatchSwap {
+  repeated BatchSwapStep steps = 1 [(gogoproto.nullable) = false];
+}
+
+// Operation_Refract represents a refract operation.
+message Operation_Refract {
+  string maturity_symbol = 1;
+  string token_in = 2;
+}
+
+// Operation_Redeem represents a redeem operation.
+message Operation_Redeem {
+  string p_asset_denom = 1;
+  string y_asset_denom = 2;//FIXME should be nullable
+}
+
+// Operation_Stake represents a stake operation.
+message Operation_Stake {
+  StakingMethod staking_method = 1 [(gogoproto.nullable) = false];
+  string token_in = 2;
+}
+
+// StakingMethod_IcStaking defines fields for inter-chain staking.
+message StakingMethod_IcStaking {
+  string transfer_channel = 1;
+  string host_chain_id = 2;
+}
+
+// StakingMethod_Contract is an empty message for contract staking.
+message StakingMethod_Contract {}
