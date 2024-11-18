@@ -62,6 +62,6 @@ message Asset {
     (gogoproto.nullable) = true
   ];
   string yield_error = 15;
-  string displayName = 16;
+  string display_name = 16;
   int64 decimals = 17;
 }

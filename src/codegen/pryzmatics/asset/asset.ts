@@ -46,7 +46,7 @@ export interface AssetAmino {
   /** the yield number is in 0-100 range */
   annual_yield_per_y_asset?: string;
   yield_error?: string;
-  displayName?: string;
+  display_name?: string;
   decimals?: string;
 }
 export interface AssetAminoMsg {
@@ -69,7 +69,7 @@ export interface AssetSDKType {
   apr?: string;
   annual_yield_per_y_asset?: string;
   yield_error: string;
-  displayName: string;
+  display_name: string;
   decimals: bigint;
 }
 function createBaseAsset(): Asset {
@@ -99,10 +99,10 @@ export const Asset = {
     return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.is(o.cAssetToken) && typeof o.totalRefractedCAsset === "string" && typeof o.totalPAsset === "string" && typeof o.error === "string" && typeof o.hostChainId === "string" && typeof o.yieldError === "string" && typeof o.displayName === "string" && typeof o.decimals === "bigint");
   },
   isSDK(o: any): o is AssetSDKType {
-    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isSDK(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.yield_error === "string" && typeof o.displayName === "string" && typeof o.decimals === "bigint");
+    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isSDK(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.yield_error === "string" && typeof o.display_name === "string" && typeof o.decimals === "bigint");
   },
   isAmino(o: any): o is AssetAmino {
-    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isAmino(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.yield_error === "string" && typeof o.displayName === "string" && typeof o.decimals === "bigint");
+    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isAmino(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.yield_error === "string" && typeof o.display_name === "string" && typeof o.decimals === "bigint");
   },
   encode(message: Asset, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== "") {
@@ -333,8 +333,8 @@ export const Asset = {
     if (object.yield_error !== undefined && object.yield_error !== null) {
       message.yieldError = object.yield_error;
     }
-    if (object.displayName !== undefined && object.displayName !== null) {
-      message.displayName = object.displayName;
+    if (object.display_name !== undefined && object.display_name !== null) {
+      message.displayName = object.display_name;
     }
     if (object.decimals !== undefined && object.decimals !== null) {
       message.decimals = BigInt(object.decimals);
@@ -358,7 +358,7 @@ export const Asset = {
     obj.apr = padDecimal(message.apr) === null ? undefined : padDecimal(message.apr);
     obj.annual_yield_per_y_asset = padDecimal(message.annualYieldPerYAsset) === null ? undefined : padDecimal(message.annualYieldPerYAsset);
     obj.yield_error = message.yieldError === "" ? undefined : message.yieldError;
-    obj.displayName = message.displayName === "" ? undefined : message.displayName;
+    obj.display_name = message.displayName === "" ? undefined : message.displayName;
     obj.decimals = message.decimals ? message.decimals.toString() : undefined;
     return obj;
   },
