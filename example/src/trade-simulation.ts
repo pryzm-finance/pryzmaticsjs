@@ -17,14 +17,18 @@ async function main() {
 
     simulation = await pryzmaticsClient.pryzmatics.tradeSimulation({
         amount: "100000",
-        steps: [{
-            poolId: 0n,
-            tokenIn: "catom",
-            tokenOut: "p:atom:30Jun2024"
-        }],
         swapType: SwapType.SWAP_TYPE_GIVEN_IN,
         tokenIn: "catom",
-        tokenOut: "p:atom:30Jun2024"
+        tokenOut: "p:atom:30Jun2024",
+        steps: [{
+            batchSwap: {
+                steps: [{
+                    poolId: 0n,
+                    tokenIn: "catom",
+                    tokenOut: "p:atom:30Jun2024"
+                }]
+            }
+        }]
     })
     console.log(simulation)
 }
