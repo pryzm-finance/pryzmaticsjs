@@ -163,7 +163,7 @@ message ExecuteMsg_SetStakeContract {
 // BatchSwapStep represents a step in a batch swap operation.
 message BatchSwapStep {
   string token_out = 1;
-  int64 pool_id = 2;
+  int64 pool_id = 2 [(gogoproto.jsontag) = "pool_id"];
   string token_in = 3;
 }
 

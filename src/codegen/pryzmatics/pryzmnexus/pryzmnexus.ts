@@ -3556,7 +3556,7 @@ export const BatchSwapStep = {
   toAmino(message: BatchSwapStep, useInterfaces: boolean = true): BatchSwapStepAmino {
     const obj: any = {};
     obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
-    obj.pool_id = message.poolId ? message.poolId.toString() : undefined;
+    obj.pool_id = message.poolId ? message.poolId.toString() : "0";
     obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
     return obj;
   },
