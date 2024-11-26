@@ -15,8 +15,8 @@ importers:
         specifier: 0.32.4
         version: 0.32.4
       '@pryzm-finance/pryzmaticsjs':
-        specifier: 0.7.32
-        version: 0.7.32(google-protobuf@3.21.2)(starknet@6.11.0)
+        specifier: 0.7.38
+        version: 0.7.38(google-protobuf@3.21.2)(starknet@6.11.0)
       '@refractedlabs/internal-js-utils':
         specifier: 0.6.5
         version: 0.6.5
@@ -117,8 +117,8 @@ packages:
     resolution: {integrity: sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==}
     engines: {node: '>= 16'}
 
-  '@noble/hashes@1.5.0':
-    resolution: {integrity: sha512-1j6kQFb7QRru7eKN3ZDvRcP13rugwdxZqCjbiAVZfIJwgj2A65UmT4TgARXGlXgnRkORLTDTrO19ZErt7+QXgA==}
+  '@noble/hashes@1.6.1':
+    resolution: {integrity: sha512-pq5D8h10hHBjyqX+cfBm0i8JUXJ0UhczFc4r74zbuT9XgewFo2E3J1cOaGtdZynILNmQ685YWGzGE1Zv6io50w==}
     engines: {node: ^14.21.3 || >=16}
 
   '@protobufjs/aspromise@1.1.2':
@@ -151,8 +151,8 @@ packages:
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
 
-  '@pryzm-finance/pryzmaticsjs@0.7.32':
-    resolution: {integrity: sha512-pKfT65yFtimKBRsiUx6dYFh3xBVExDenaSaTHu57DhpvJvSv2m2PmDm5kWHcttx8RCt5YtPLDZmz7PldY655mA==}
+  '@pryzm-finance/pryzmaticsjs@0.7.38':
+    resolution: {integrity: sha512-HAMpQsBD9L1c02rFKw3LVPAWL31cJGuSUak7/kTiwz8MTLvZrI1FDGNzEy5AFJBRsK0RacfGf98jQfOMi7axfw==}
 
   '@refractedlabs/cosmology-lcd-fork@0.13.7':
     resolution: {integrity: sha512-5DEQy8DHzSIsTfl+amlISteWCWmAokWC1pJkMit8H16Mx1ycaDfSrvREHHJlB5bfOkTkc3YHMmd8e8izihEHng==}
@@ -166,8 +166,8 @@ packages:
   '@scure/starknet@1.0.0':
     resolution: {integrity: sha512-o5J57zY0f+2IL/mq8+AYJJ4Xpc1fOtDhr+mFQKbHnYFmm3WQrC+8zj2HEgxak1a+x86mhmBC1Kq305KUpVf0wg==}
 
-  '@starknet-io/types-js@0.7.7':
-    resolution: {integrity: sha512-WLrpK7LIaIb8Ymxu6KF/6JkGW1sso988DweWu7p5QY/3y7waBIiPvzh27D9bX5KIJNRDyOoOVoHVEKYUYWZ/RQ==}
+  '@starknet-io/types-js@0.7.8':
+    resolution: {integrity: sha512-mjo2WPC/U88rGCjnkWDZ43zoByBGDIT20AZ0zd6hjFeAYu3wiuS1I6RiDb2vkF8f9BMCQ55VN3kuXCm6mjuQbw==}
 
   '@types/long@4.0.2':
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
@@ -503,8 +503,8 @@ packages:
   proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
-  psl@1.10.0:
-    resolution: {integrity: sha512-KSKHEbjAnpUuAUserOq0FxGXCUrzC3WniuSJhvdbs102rL55266ZcHBqLWOsG30spQMlPdpy7icATiAQehg/iA==}
+  psl@1.13.0:
+    resolution: {integrity: sha512-BFwmFXiJoFqlUpZ5Qssolv15DMyc84gTBds1BjsV1BfXEo1UyyD7GsmN67n7J77uRhoSNW1AXtXKPLcBFQn9Aw==}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -838,7 +838,7 @@ snapshots:
 
   '@noble/hashes@1.4.0': {}
 
-  '@noble/hashes@1.5.0': {}
+  '@noble/hashes@1.6.1': {}
 
   '@protobufjs/aspromise@1.1.2': {}
 
@@ -863,7 +863,7 @@ snapshots:
 
   '@protobufjs/utf8@1.1.0': {}
 
-  '@pryzm-finance/pryzmaticsjs@0.7.32(google-protobuf@3.21.2)(starknet@6.11.0)':
+  '@pryzm-finance/pryzmaticsjs@0.7.38(google-protobuf@3.21.2)(starknet@6.11.0)':
     dependencies:
       '@cosmjs/math': 0.32.4
       '@cosmjs/proto-signing': 0.32.4
@@ -911,7 +911,7 @@ snapshots:
       '@noble/curves': 1.3.0
       '@noble/hashes': 1.3.3
 
-  '@starknet-io/types-js@0.7.7': {}
+  '@starknet-io/types-js@0.7.8': {}
 
   '@types/long@4.0.2': {}
 
@@ -1095,7 +1095,7 @@ snapshots:
 
   get-starknet-core@4.0.0:
     dependencies:
-      '@starknet-io/types-js': 0.7.7
+      '@starknet-io/types-js': 0.7.8
 
   globalthis@1.0.4:
     dependencies:
@@ -1247,7 +1247,7 @@ snapshots:
 
   proxy-from-env@1.1.0: {}
 
-  psl@1.10.0:
+  psl@1.13.0:
     dependencies:
       punycode: 2.3.1
 
@@ -1288,7 +1288,7 @@ snapshots:
   starknet@6.11.0:
     dependencies:
       '@noble/curves': 1.4.2
-      '@noble/hashes': 1.5.0
+      '@noble/hashes': 1.6.1
       '@scure/base': 1.1.9
       '@scure/starknet': 1.0.0
       abi-wan-kanabi: 2.2.3
@@ -1297,7 +1297,7 @@ snapshots:
       isomorphic-fetch: 3.0.0
       lossless-json: 4.0.2
       pako: 2.1.0
-      starknet-types-07: '@starknet-io/types-js@0.7.7'
+      starknet-types-07: '@starknet-io/types-js@0.7.8'
       ts-mixer: 6.0.4
       url-join: 4.0.1
     transitivePeerDependencies:
@@ -1323,7 +1323,7 @@ snapshots:
 
   tough-cookie@4.1.4:
     dependencies:
-      psl: 1.10.0
+      psl: 1.13.0
       punycode: 2.3.1
       universalify: 0.2.0
       url-parse: 1.5.10
