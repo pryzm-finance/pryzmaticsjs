@@ -70,6 +70,8 @@ import "pryzmatics/server/gov/vote.proto";
 
 import "pryzmatics/server/statistics/statistics.proto";
 
+import "pryzmatics/server/bank/historical_bank_supply.proto";
+
 option go_package = "github.com/pryzm-finance/pryzmatics/server";
 
 service Query {
@@ -357,5 +359,9 @@ service Query {
 
   rpc Statistics(pryzmatics.server.statistics.QueryStatisticsRequest) returns (pryzmatics.server.statistics.QueryStatisticsResponse) {
     option (google.api.http).get = "/pryzmatics/statistics";
+  }
+
+  rpc HistoricalBankSupply(pryzmatics.server.bank.QueryHistoricalBankSupplyRequest) returns (pryzmatics.server.bank.QueryHistoricalBankSupplyResponse) {
+    option (google.api.http).get = "/pryzmatics/bank/supply/historical/{denom}";
   }
 }

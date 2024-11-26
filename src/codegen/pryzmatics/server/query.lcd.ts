@@ -52,6 +52,7 @@ import { QueryConfigRequest, QueryConfigResponseSDKType } from "./common/config"
 import { QueryProposalRequest, QueryProposalResponseSDKType, QueryProposalsRequest, QueryProposalsResponseSDKType } from "./gov/proposal";
 import { QueryProposalVotesRequest, QueryProposalVotesResponseSDKType } from "./gov/vote";
 import { QueryStatisticsRequest, QueryStatisticsResponseSDKType } from "./statistics/statistics";
+import { QueryHistoricalBankSupplyRequest, QueryHistoricalBankSupplyResponseSDKType } from "./bank/historical_bank_supply";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -129,6 +130,7 @@ export class LCDQueryClient {
     this.proposals = this.proposals.bind(this);
     this.proposalVotes = this.proposalVotes.bind(this);
     this.statistics = this.statistics.bind(this);
+    this.historicalBankSupply = this.historicalBankSupply.bind(this);
   }
   /* Asset */
   async asset(params: QueryAssetRequest): Promise<QueryAssetResponseSDKType> {
@@ -1076,5 +1078,25 @@ export class LCDQueryClient {
   async statistics(_params: QueryStatisticsRequest = {}): Promise<QueryStatisticsResponseSDKType> {
     const endpoint = `pryzmatics/statistics`;
     return await this.req.get<QueryStatisticsResponseSDKType>(endpoint);
+  }
+  /* HistoricalBankSupply */
+  async historicalBankSupply(params: QueryHistoricalBankSupplyRequest): Promise<QueryHistoricalBankSupplyResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.timeResolutionType !== "undefined") {
+      options.params.time_resolution_type = params.timeResolutionType;
+    }
+    if (typeof params?.timeResolutionValue !== "undefined") {
+      options.params.time_resolution_value = params.timeResolutionValue;
+    }
+    if (typeof params?.from !== "undefined") {
+      options.params.from = params.from;
+    }
+    if (typeof params?.to !== "undefined") {
+      options.params.to = params.to;
+    }
+    const endpoint = `pryzmatics/bank/supply/historical/${params.denom}`;
+    return await this.req.get<QueryHistoricalBankSupplyResponseSDKType>(endpoint, options);
   }
 }

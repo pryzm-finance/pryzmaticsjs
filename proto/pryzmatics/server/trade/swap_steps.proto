@@ -15,6 +15,10 @@ message QuerySwapStepsRequest {
   string token_out = 2;
 }
 
-message QuerySwapStepsResponse {
+message RouteOperations {
   repeated pryzmatics.pryzmnexus.Operation steps = 1 [(gogoproto.nullable) = false];
+}
+
+message QuerySwapStepsResponse {
+  repeated RouteOperations routes = 1 [(gogoproto.nullable) = false];
 }

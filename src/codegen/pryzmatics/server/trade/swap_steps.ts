@@ -22,22 +22,39 @@ export interface QuerySwapStepsRequestSDKType {
   token_in: string;
   token_out: string;
 }
-export interface QuerySwapStepsResponse {
+export interface RouteOperations {
   steps: Operation[];
+}
+export interface RouteOperationsProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.RouteOperations";
+  value: Uint8Array;
+}
+export interface RouteOperationsAmino {
+  steps?: OperationAmino[];
+}
+export interface RouteOperationsAminoMsg {
+  type: "/pryzmatics.server.trade.RouteOperations";
+  value: RouteOperationsAmino;
+}
+export interface RouteOperationsSDKType {
+  steps: OperationSDKType[];
+}
+export interface QuerySwapStepsResponse {
+  routes: RouteOperations[];
 }
 export interface QuerySwapStepsResponseProtoMsg {
   typeUrl: "/pryzmatics.server.trade.QuerySwapStepsResponse";
   value: Uint8Array;
 }
 export interface QuerySwapStepsResponseAmino {
-  steps?: OperationAmino[];
+  routes?: RouteOperationsAmino[];
 }
 export interface QuerySwapStepsResponseAminoMsg {
   type: "/pryzmatics.server.trade.QuerySwapStepsResponse";
   value: QuerySwapStepsResponseAmino;
 }
 export interface QuerySwapStepsResponseSDKType {
-  steps: OperationSDKType[];
+  routes: RouteOperationsSDKType[];
 }
 function createBaseQuerySwapStepsRequest(): QuerySwapStepsRequest {
   return {
@@ -136,32 +153,32 @@ export const QuerySwapStepsRequest = {
   }
 };
 GlobalDecoderRegistry.register(QuerySwapStepsRequest.typeUrl, QuerySwapStepsRequest);
-function createBaseQuerySwapStepsResponse(): QuerySwapStepsResponse {
+function createBaseRouteOperations(): RouteOperations {
   return {
     steps: []
   };
 }
-export const QuerySwapStepsResponse = {
-  typeUrl: "/pryzmatics.server.trade.QuerySwapStepsResponse",
-  is(o: any): o is QuerySwapStepsResponse {
-    return o && (o.$typeUrl === QuerySwapStepsResponse.typeUrl || Array.isArray(o.steps) && (!o.steps.length || Operation.is(o.steps[0])));
+export const RouteOperations = {
+  typeUrl: "/pryzmatics.server.trade.RouteOperations",
+  is(o: any): o is RouteOperations {
+    return o && (o.$typeUrl === RouteOperations.typeUrl || Array.isArray(o.steps) && (!o.steps.length || Operation.is(o.steps[0])));
   },
-  isSDK(o: any): o is QuerySwapStepsResponseSDKType {
-    return o && (o.$typeUrl === QuerySwapStepsResponse.typeUrl || Array.isArray(o.steps) && (!o.steps.length || Operation.isSDK(o.steps[0])));
+  isSDK(o: any): o is RouteOperationsSDKType {
+    return o && (o.$typeUrl === RouteOperations.typeUrl || Array.isArray(o.steps) && (!o.steps.length || Operation.isSDK(o.steps[0])));
   },
-  isAmino(o: any): o is QuerySwapStepsResponseAmino {
-    return o && (o.$typeUrl === QuerySwapStepsResponse.typeUrl || Array.isArray(o.steps) && (!o.steps.length || Operation.isAmino(o.steps[0])));
+  isAmino(o: any): o is RouteOperationsAmino {
+    return o && (o.$typeUrl === RouteOperations.typeUrl || Array.isArray(o.steps) && (!o.steps.length || Operation.isAmino(o.steps[0])));
   },
-  encode(message: QuerySwapStepsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: RouteOperations, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.steps) {
       Operation.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QuerySwapStepsResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): RouteOperations {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerySwapStepsResponse();
+    const message = createBaseRouteOperations();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -175,12 +192,12 @@ export const QuerySwapStepsResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QuerySwapStepsResponse {
+  fromJSON(object: any): RouteOperations {
     return {
       steps: Array.isArray(object?.steps) ? object.steps.map((e: any) => Operation.fromJSON(e)) : []
     };
   },
-  toJSON(message: QuerySwapStepsResponse): unknown {
+  toJSON(message: RouteOperations): unknown {
     const obj: any = {};
     if (message.steps) {
       obj.steps = message.steps.map(e => e ? Operation.toJSON(e) : undefined);
@@ -189,22 +206,111 @@ export const QuerySwapStepsResponse = {
     }
     return obj;
   },
-  fromPartial(object: Partial<QuerySwapStepsResponse>): QuerySwapStepsResponse {
-    const message = createBaseQuerySwapStepsResponse();
+  fromPartial(object: Partial<RouteOperations>): RouteOperations {
+    const message = createBaseRouteOperations();
     message.steps = object.steps?.map(e => Operation.fromPartial(e)) || [];
     return message;
   },
-  fromAmino(object: QuerySwapStepsResponseAmino): QuerySwapStepsResponse {
-    const message = createBaseQuerySwapStepsResponse();
+  fromAmino(object: RouteOperationsAmino): RouteOperations {
+    const message = createBaseRouteOperations();
     message.steps = object.steps?.map(e => Operation.fromAmino(e)) || [];
     return message;
   },
-  toAmino(message: QuerySwapStepsResponse, useInterfaces: boolean = true): QuerySwapStepsResponseAmino {
+  toAmino(message: RouteOperations, useInterfaces: boolean = true): RouteOperationsAmino {
     const obj: any = {};
     if (message.steps) {
       obj.steps = message.steps.map(e => e ? Operation.toAmino(e, useInterfaces) : undefined);
     } else {
       obj.steps = message.steps;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: RouteOperationsAminoMsg): RouteOperations {
+    return RouteOperations.fromAmino(object.value);
+  },
+  fromProtoMsg(message: RouteOperationsProtoMsg, useInterfaces: boolean = true): RouteOperations {
+    return RouteOperations.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: RouteOperations): Uint8Array {
+    return RouteOperations.encode(message).finish();
+  },
+  toProtoMsg(message: RouteOperations): RouteOperationsProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.RouteOperations",
+      value: RouteOperations.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(RouteOperations.typeUrl, RouteOperations);
+function createBaseQuerySwapStepsResponse(): QuerySwapStepsResponse {
+  return {
+    routes: []
+  };
+}
+export const QuerySwapStepsResponse = {
+  typeUrl: "/pryzmatics.server.trade.QuerySwapStepsResponse",
+  is(o: any): o is QuerySwapStepsResponse {
+    return o && (o.$typeUrl === QuerySwapStepsResponse.typeUrl || Array.isArray(o.routes) && (!o.routes.length || RouteOperations.is(o.routes[0])));
+  },
+  isSDK(o: any): o is QuerySwapStepsResponseSDKType {
+    return o && (o.$typeUrl === QuerySwapStepsResponse.typeUrl || Array.isArray(o.routes) && (!o.routes.length || RouteOperations.isSDK(o.routes[0])));
+  },
+  isAmino(o: any): o is QuerySwapStepsResponseAmino {
+    return o && (o.$typeUrl === QuerySwapStepsResponse.typeUrl || Array.isArray(o.routes) && (!o.routes.length || RouteOperations.isAmino(o.routes[0])));
+  },
+  encode(message: QuerySwapStepsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    for (const v of message.routes) {
+      RouteOperations.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QuerySwapStepsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySwapStepsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.routes.push(RouteOperations.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySwapStepsResponse {
+    return {
+      routes: Array.isArray(object?.routes) ? object.routes.map((e: any) => RouteOperations.fromJSON(e)) : []
+    };
+  },
+  toJSON(message: QuerySwapStepsResponse): unknown {
+    const obj: any = {};
+    if (message.routes) {
+      obj.routes = message.routes.map(e => e ? RouteOperations.toJSON(e) : undefined);
+    } else {
+      obj.routes = [];
+    }
+    return obj;
+  },
+  fromPartial(object: Partial<QuerySwapStepsResponse>): QuerySwapStepsResponse {
+    const message = createBaseQuerySwapStepsResponse();
+    message.routes = object.routes?.map(e => RouteOperations.fromPartial(e)) || [];
+    return message;
+  },
+  fromAmino(object: QuerySwapStepsResponseAmino): QuerySwapStepsResponse {
+    const message = createBaseQuerySwapStepsResponse();
+    message.routes = object.routes?.map(e => RouteOperations.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: QuerySwapStepsResponse, useInterfaces: boolean = true): QuerySwapStepsResponseAmino {
+    const obj: any = {};
+    if (message.routes) {
+      obj.routes = message.routes.map(e => e ? RouteOperations.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.routes = message.routes;
     }
     return obj;
   },
