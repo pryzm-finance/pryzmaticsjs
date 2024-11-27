@@ -109,6 +109,40 @@ export interface QueryHostChainUnbondingTimeResponseAminoMsg {
 export interface QueryHostChainUnbondingTimeResponseSDKType {
   unbonding_time: DurationSDKType;
 }
+export interface QueryHostChainByUnderlyingDenomRequest {
+  denom: string;
+}
+export interface QueryHostChainByUnderlyingDenomRequestProtoMsg {
+  typeUrl: "/pryzmatics.server.icstaking.QueryHostChainByUnderlyingDenomRequest";
+  value: Uint8Array;
+}
+export interface QueryHostChainByUnderlyingDenomRequestAmino {
+  denom?: string;
+}
+export interface QueryHostChainByUnderlyingDenomRequestAminoMsg {
+  type: "/pryzmatics.server.icstaking.QueryHostChainByUnderlyingDenomRequest";
+  value: QueryHostChainByUnderlyingDenomRequestAmino;
+}
+export interface QueryHostChainByUnderlyingDenomRequestSDKType {
+  denom: string;
+}
+export interface QueryHostChainByUnderlyingDenomResponse {
+  hostChain: HostChain;
+}
+export interface QueryHostChainByUnderlyingDenomResponseProtoMsg {
+  typeUrl: "/pryzmatics.server.icstaking.QueryHostChainByUnderlyingDenomResponse";
+  value: Uint8Array;
+}
+export interface QueryHostChainByUnderlyingDenomResponseAmino {
+  host_chain?: HostChainAmino;
+}
+export interface QueryHostChainByUnderlyingDenomResponseAminoMsg {
+  type: "/pryzmatics.server.icstaking.QueryHostChainByUnderlyingDenomResponse";
+  value: QueryHostChainByUnderlyingDenomResponseAmino;
+}
+export interface QueryHostChainByUnderlyingDenomResponseSDKType {
+  host_chain: HostChainSDKType;
+}
 function createBaseQueryHostChainRequest(): QueryHostChainRequest {
   return {
     hostChainId: ""
@@ -627,3 +661,169 @@ export const QueryHostChainUnbondingTimeResponse = {
   }
 };
 GlobalDecoderRegistry.register(QueryHostChainUnbondingTimeResponse.typeUrl, QueryHostChainUnbondingTimeResponse);
+function createBaseQueryHostChainByUnderlyingDenomRequest(): QueryHostChainByUnderlyingDenomRequest {
+  return {
+    denom: ""
+  };
+}
+export const QueryHostChainByUnderlyingDenomRequest = {
+  typeUrl: "/pryzmatics.server.icstaking.QueryHostChainByUnderlyingDenomRequest",
+  is(o: any): o is QueryHostChainByUnderlyingDenomRequest {
+    return o && (o.$typeUrl === QueryHostChainByUnderlyingDenomRequest.typeUrl || typeof o.denom === "string");
+  },
+  isSDK(o: any): o is QueryHostChainByUnderlyingDenomRequestSDKType {
+    return o && (o.$typeUrl === QueryHostChainByUnderlyingDenomRequest.typeUrl || typeof o.denom === "string");
+  },
+  isAmino(o: any): o is QueryHostChainByUnderlyingDenomRequestAmino {
+    return o && (o.$typeUrl === QueryHostChainByUnderlyingDenomRequest.typeUrl || typeof o.denom === "string");
+  },
+  encode(message: QueryHostChainByUnderlyingDenomRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.denom !== "") {
+      writer.uint32(10).string(message.denom);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryHostChainByUnderlyingDenomRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHostChainByUnderlyingDenomRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.denom = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryHostChainByUnderlyingDenomRequest {
+    return {
+      denom: isSet(object.denom) ? String(object.denom) : ""
+    };
+  },
+  toJSON(message: QueryHostChainByUnderlyingDenomRequest): unknown {
+    const obj: any = {};
+    message.denom !== undefined && (obj.denom = message.denom);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryHostChainByUnderlyingDenomRequest>): QueryHostChainByUnderlyingDenomRequest {
+    const message = createBaseQueryHostChainByUnderlyingDenomRequest();
+    message.denom = object.denom ?? "";
+    return message;
+  },
+  fromAmino(object: QueryHostChainByUnderlyingDenomRequestAmino): QueryHostChainByUnderlyingDenomRequest {
+    const message = createBaseQueryHostChainByUnderlyingDenomRequest();
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = object.denom;
+    }
+    return message;
+  },
+  toAmino(message: QueryHostChainByUnderlyingDenomRequest, useInterfaces: boolean = true): QueryHostChainByUnderlyingDenomRequestAmino {
+    const obj: any = {};
+    obj.denom = message.denom === "" ? undefined : message.denom;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHostChainByUnderlyingDenomRequestAminoMsg): QueryHostChainByUnderlyingDenomRequest {
+    return QueryHostChainByUnderlyingDenomRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHostChainByUnderlyingDenomRequestProtoMsg, useInterfaces: boolean = true): QueryHostChainByUnderlyingDenomRequest {
+    return QueryHostChainByUnderlyingDenomRequest.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryHostChainByUnderlyingDenomRequest): Uint8Array {
+    return QueryHostChainByUnderlyingDenomRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHostChainByUnderlyingDenomRequest): QueryHostChainByUnderlyingDenomRequestProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.icstaking.QueryHostChainByUnderlyingDenomRequest",
+      value: QueryHostChainByUnderlyingDenomRequest.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryHostChainByUnderlyingDenomRequest.typeUrl, QueryHostChainByUnderlyingDenomRequest);
+function createBaseQueryHostChainByUnderlyingDenomResponse(): QueryHostChainByUnderlyingDenomResponse {
+  return {
+    hostChain: HostChain.fromPartial({})
+  };
+}
+export const QueryHostChainByUnderlyingDenomResponse = {
+  typeUrl: "/pryzmatics.server.icstaking.QueryHostChainByUnderlyingDenomResponse",
+  is(o: any): o is QueryHostChainByUnderlyingDenomResponse {
+    return o && (o.$typeUrl === QueryHostChainByUnderlyingDenomResponse.typeUrl || HostChain.is(o.hostChain));
+  },
+  isSDK(o: any): o is QueryHostChainByUnderlyingDenomResponseSDKType {
+    return o && (o.$typeUrl === QueryHostChainByUnderlyingDenomResponse.typeUrl || HostChain.isSDK(o.host_chain));
+  },
+  isAmino(o: any): o is QueryHostChainByUnderlyingDenomResponseAmino {
+    return o && (o.$typeUrl === QueryHostChainByUnderlyingDenomResponse.typeUrl || HostChain.isAmino(o.host_chain));
+  },
+  encode(message: QueryHostChainByUnderlyingDenomResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.hostChain !== undefined) {
+      HostChain.encode(message.hostChain, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryHostChainByUnderlyingDenomResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHostChainByUnderlyingDenomResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hostChain = HostChain.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryHostChainByUnderlyingDenomResponse {
+    return {
+      hostChain: isSet(object.hostChain) ? HostChain.fromJSON(object.hostChain) : undefined
+    };
+  },
+  toJSON(message: QueryHostChainByUnderlyingDenomResponse): unknown {
+    const obj: any = {};
+    message.hostChain !== undefined && (obj.hostChain = message.hostChain ? HostChain.toJSON(message.hostChain) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryHostChainByUnderlyingDenomResponse>): QueryHostChainByUnderlyingDenomResponse {
+    const message = createBaseQueryHostChainByUnderlyingDenomResponse();
+    message.hostChain = object.hostChain !== undefined && object.hostChain !== null ? HostChain.fromPartial(object.hostChain) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryHostChainByUnderlyingDenomResponseAmino): QueryHostChainByUnderlyingDenomResponse {
+    const message = createBaseQueryHostChainByUnderlyingDenomResponse();
+    if (object.host_chain !== undefined && object.host_chain !== null) {
+      message.hostChain = HostChain.fromAmino(object.host_chain);
+    }
+    return message;
+  },
+  toAmino(message: QueryHostChainByUnderlyingDenomResponse, useInterfaces: boolean = true): QueryHostChainByUnderlyingDenomResponseAmino {
+    const obj: any = {};
+    obj.host_chain = message.hostChain ? HostChain.toAmino(message.hostChain, useInterfaces) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHostChainByUnderlyingDenomResponseAminoMsg): QueryHostChainByUnderlyingDenomResponse {
+    return QueryHostChainByUnderlyingDenomResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHostChainByUnderlyingDenomResponseProtoMsg, useInterfaces: boolean = true): QueryHostChainByUnderlyingDenomResponse {
+    return QueryHostChainByUnderlyingDenomResponse.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryHostChainByUnderlyingDenomResponse): Uint8Array {
+    return QueryHostChainByUnderlyingDenomResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHostChainByUnderlyingDenomResponse): QueryHostChainByUnderlyingDenomResponseProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.icstaking.QueryHostChainByUnderlyingDenomResponse",
+      value: QueryHostChainByUnderlyingDenomResponse.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryHostChainByUnderlyingDenomResponse.typeUrl, QueryHostChainByUnderlyingDenomResponse);

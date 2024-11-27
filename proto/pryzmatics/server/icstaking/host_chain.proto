@@ -33,3 +33,11 @@ message QueryHostChainUnbondingTimeRequest {
 message QueryHostChainUnbondingTimeResponse {
   google.protobuf.Duration unbonding_time = 1 [(gogoproto.nullable) = false, (gogoproto.stdduration) = true];
 }
+
+message QueryHostChainByUnderlyingDenomRequest {
+  string denom = 1;
+}
+
+message QueryHostChainByUnderlyingDenomResponse {
+  pryzmatics.icstaking.HostChain host_chain = 1 [(gogoproto.nullable) = false];
+}

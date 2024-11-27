@@ -1,10 +1,10 @@
 import { createPryzmaticsClient } from "@pryzm-finance/pryzmaticsjs";
 import * as console from "console";
 import { TimeResolutionType } from "@pryzm-finance/pryzmaticsjs/lib/codegen/pryzmatics/common/time_resolution";
-import { PRYZMATICS_TESTNET_ENDPOINT } from "./constants";
+import { PRYZMATICS_MAINNET_ENDPOINT } from "./constants";
 
 async function main() {
-    const pryzmaticsClient = await createPryzmaticsClient({ restEndpoint: PRYZMATICS_TESTNET_ENDPOINT })
+    const pryzmaticsClient = await createPryzmaticsClient({ restEndpoint: PRYZMATICS_MAINNET_ENDPOINT })
 
     const supplies = (await pryzmaticsClient.pryzmatics.historicalBankSupply({
         denom: `cluna`,

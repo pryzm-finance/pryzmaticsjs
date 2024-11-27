@@ -269,6 +269,10 @@ service Query {
     option (google.api.http).get = "/pryzmatics/icstaking/host_chain";
   }
 
+  rpc HostChainByUnderlyingDenom(pryzmatics.server.icstaking.QueryHostChainByUnderlyingDenomRequest) returns (pryzmatics.server.icstaking.QueryHostChainByUnderlyingDenomResponse) {
+    option (google.api.http).get = "/pryzmatics/icstaking/host_chain_by_underlying_denom/{denom}";
+  }
+
   rpc Validator(pryzmatics.server.oracle.QueryValidatorRequest) returns (pryzmatics.server.oracle.QueryValidatorResponse) {
     option (google.api.http).get = "/pryzmatics/oracle/validator/{operator_address}";
   }

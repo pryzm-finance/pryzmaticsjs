@@ -33,7 +33,7 @@ import { QueryPulseTradablePairsRequest, QueryPulseTradablePairsResponseSDKType,
 import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType } from "./trade/order";
 import { QueryDirectlyConnectedTokenPairsRequest, QueryDirectlyConnectedTokenPairsResponseSDKType } from "./trade/directly_connected_token_pairs";
 import { QueryTickersRequest, QueryTickersResponseSDKType } from "./trade/tickers";
-import { QueryHostChainUnbondingTimeRequest, QueryHostChainUnbondingTimeResponseSDKType, QueryHostChainRequest, QueryHostChainResponseSDKType, QueryHostChainsRequest, QueryHostChainsResponseSDKType } from "./icstaking/host_chain";
+import { QueryHostChainUnbondingTimeRequest, QueryHostChainUnbondingTimeResponseSDKType, QueryHostChainRequest, QueryHostChainResponseSDKType, QueryHostChainsRequest, QueryHostChainsResponseSDKType, QueryHostChainByUnderlyingDenomRequest, QueryHostChainByUnderlyingDenomResponseSDKType } from "./icstaking/host_chain";
 import { QueryValidatorRequest, QueryValidatorResponseSDKType, QueryValidatorsRequest, QueryValidatorsResponseSDKType } from "./oracle/validator";
 import { QueryVoteIntervalsRequest, QueryVoteIntervalsResponseSDKType } from "./oracle/vote_interval";
 import { QuerySlashWindowsRequest, QuerySlashWindowsResponseSDKType } from "./oracle/slash_window";
@@ -107,6 +107,7 @@ export class LCDQueryClient {
     this.hostChainUnbondingTime = this.hostChainUnbondingTime.bind(this);
     this.hostChain = this.hostChain.bind(this);
     this.hostChains = this.hostChains.bind(this);
+    this.hostChainByUnderlyingDenom = this.hostChainByUnderlyingDenom.bind(this);
     this.validator = this.validator.bind(this);
     this.validators = this.validators.bind(this);
     this.voteIntervals = this.voteIntervals.bind(this);
@@ -721,6 +722,11 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/icstaking/host_chain`;
     return await this.req.get<QueryHostChainsResponseSDKType>(endpoint, options);
+  }
+  /* HostChainByUnderlyingDenom */
+  async hostChainByUnderlyingDenom(params: QueryHostChainByUnderlyingDenomRequest): Promise<QueryHostChainByUnderlyingDenomResponseSDKType> {
+    const endpoint = `pryzmatics/icstaking/host_chain_by_underlying_denom/${params.denom}`;
+    return await this.req.get<QueryHostChainByUnderlyingDenomResponseSDKType>(endpoint);
   }
   /* Validator */
   async validator(params: QueryValidatorRequest): Promise<QueryValidatorResponseSDKType> {
