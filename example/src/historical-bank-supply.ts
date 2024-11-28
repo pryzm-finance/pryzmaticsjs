@@ -8,8 +8,8 @@ async function main() {
 
     const supplies = (await pryzmaticsClient.pryzmatics.historicalBankSupply({
         denom: `cluna`,
-        from: `${Date.parse('2023-07-27 11:59:33.619 GMT')}`,
-        to: `${Date.parse('2023-07-27 12:10:04.045 GMT')}`,
+        // from: `${Date.parse('2023-07-27 11:59:33.619 GMT')}`, // optional
+        // to: `${Date.parse('2023-07-27 12:10:04.045 GMT')}`,
         timeResolutionType: TimeResolutionType.TIME_RESOLUTION_TYPE_HOUR, // only supported resolutions are hour and day
         timeResolutionValue: 1
     })).historical_supplies
