@@ -7,8 +7,8 @@ export interface QueryHistoricalBankSupplyRequest {
   denom: string;
   timeResolutionType: TimeResolutionType;
   timeResolutionValue: number;
-  from: string;
-  to: string;
+  from?: string;
+  to?: string;
 }
 export interface QueryHistoricalBankSupplyRequestProtoMsg {
   typeUrl: "/pryzmatics.server.bank.QueryHistoricalBankSupplyRequest";
@@ -29,8 +29,8 @@ export interface QueryHistoricalBankSupplyRequestSDKType {
   denom: string;
   time_resolution_type: TimeResolutionType;
   time_resolution_value: number;
-  from: string;
-  to: string;
+  from?: string;
+  to?: string;
 }
 export interface QueryHistoricalBankSupplyResponse {
   historicalSupplies: HistoricalBankSupply[];
@@ -54,20 +54,20 @@ function createBaseQueryHistoricalBankSupplyRequest(): QueryHistoricalBankSupply
     denom: "",
     timeResolutionType: 0,
     timeResolutionValue: 0,
-    from: "",
-    to: ""
+    from: undefined,
+    to: undefined
   };
 }
 export const QueryHistoricalBankSupplyRequest = {
   typeUrl: "/pryzmatics.server.bank.QueryHistoricalBankSupplyRequest",
   is(o: any): o is QueryHistoricalBankSupplyRequest {
-    return o && (o.$typeUrl === QueryHistoricalBankSupplyRequest.typeUrl || typeof o.denom === "string" && isSet(o.timeResolutionType) && typeof o.timeResolutionValue === "number" && typeof o.from === "string" && typeof o.to === "string");
+    return o && (o.$typeUrl === QueryHistoricalBankSupplyRequest.typeUrl || typeof o.denom === "string" && isSet(o.timeResolutionType) && typeof o.timeResolutionValue === "number");
   },
   isSDK(o: any): o is QueryHistoricalBankSupplyRequestSDKType {
-    return o && (o.$typeUrl === QueryHistoricalBankSupplyRequest.typeUrl || typeof o.denom === "string" && isSet(o.time_resolution_type) && typeof o.time_resolution_value === "number" && typeof o.from === "string" && typeof o.to === "string");
+    return o && (o.$typeUrl === QueryHistoricalBankSupplyRequest.typeUrl || typeof o.denom === "string" && isSet(o.time_resolution_type) && typeof o.time_resolution_value === "number");
   },
   isAmino(o: any): o is QueryHistoricalBankSupplyRequestAmino {
-    return o && (o.$typeUrl === QueryHistoricalBankSupplyRequest.typeUrl || typeof o.denom === "string" && isSet(o.time_resolution_type) && typeof o.time_resolution_value === "number" && typeof o.from === "string" && typeof o.to === "string");
+    return o && (o.$typeUrl === QueryHistoricalBankSupplyRequest.typeUrl || typeof o.denom === "string" && isSet(o.time_resolution_type) && typeof o.time_resolution_value === "number");
   },
   encode(message: QueryHistoricalBankSupplyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
@@ -79,10 +79,10 @@ export const QueryHistoricalBankSupplyRequest = {
     if (message.timeResolutionValue !== 0) {
       writer.uint32(24).uint32(message.timeResolutionValue);
     }
-    if (message.from !== "") {
+    if (message.from !== undefined) {
       writer.uint32(34).string(message.from);
     }
-    if (message.to !== "") {
+    if (message.to !== undefined) {
       writer.uint32(42).string(message.to);
     }
     return writer;
@@ -121,8 +121,8 @@ export const QueryHistoricalBankSupplyRequest = {
       denom: isSet(object.denom) ? String(object.denom) : "",
       timeResolutionType: isSet(object.timeResolutionType) ? timeResolutionTypeFromJSON(object.timeResolutionType) : -1,
       timeResolutionValue: isSet(object.timeResolutionValue) ? Number(object.timeResolutionValue) : 0,
-      from: isSet(object.from) ? String(object.from) : "",
-      to: isSet(object.to) ? String(object.to) : ""
+      from: isSet(object.from) ? String(object.from) : undefined,
+      to: isSet(object.to) ? String(object.to) : undefined
     };
   },
   toJSON(message: QueryHistoricalBankSupplyRequest): unknown {
@@ -139,8 +139,8 @@ export const QueryHistoricalBankSupplyRequest = {
     message.denom = object.denom ?? "";
     message.timeResolutionType = object.timeResolutionType ?? 0;
     message.timeResolutionValue = object.timeResolutionValue ?? 0;
-    message.from = object.from ?? "";
-    message.to = object.to ?? "";
+    message.from = object.from ?? undefined;
+    message.to = object.to ?? undefined;
     return message;
   },
   fromAmino(object: QueryHistoricalBankSupplyRequestAmino): QueryHistoricalBankSupplyRequest {
@@ -167,8 +167,8 @@ export const QueryHistoricalBankSupplyRequest = {
     obj.denom = message.denom === "" ? undefined : message.denom;
     obj.time_resolution_type = message.timeResolutionType === 0 ? undefined : message.timeResolutionType;
     obj.time_resolution_value = message.timeResolutionValue === 0 ? undefined : message.timeResolutionValue;
-    obj.from = message.from === "" ? undefined : message.from;
-    obj.to = message.to === "" ? undefined : message.to;
+    obj.from = message.from === null ? undefined : message.from;
+    obj.to = message.to === null ? undefined : message.to;
     return obj;
   },
   fromAminoMsg(object: QueryHistoricalBankSupplyRequestAminoMsg): QueryHistoricalBankSupplyRequest {
