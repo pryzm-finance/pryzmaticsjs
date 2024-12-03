@@ -1,0 +1,47 @@
+syntax = "proto3";
+package pryzmatics.server.portfolio;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "pryzmatics/pool/token.proto";
+
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/portfolio";
+
+message QueryPortfolioRequest {
+  string address = 1;
+}
+
+enum PortfolioTokenCategory {
+  option (gogoproto.goproto_enum_prefix) = false;
+  ANY = 0 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryAny"];
+  BANK_SPENDABLE_BALANCE = 1 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryBankSpendableBalance"];
+  Y_STAKING = 2 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryYStaking"];
+  Y_LAUNCH_STAKING = 3 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryYLaunchStaking"];
+  P_GOV = 4 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryPGov"];
+  INCENTIVES = 5 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryIncentives"];
+  ALLIANCE = 6 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryAlliance"];
+}
+
+message PortfolioToken {
+  cosmos.base.v1beta1.Coin coin = 1 [
+    (gogoproto.nullable) = false
+  ];
+  PortfolioTokenCategory category = 2;
+  string value_in_stable_coin_terms = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
+  string value_in_asset_terms = 4 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
+  pryzmatics.pool.Token token = 5 [(gogoproto.nullable) = true];
+}
+
+message QueryPortfolioResponse {
+  repeated PortfolioToken tokens = 1 [(gogoproto.nullable) = false];
+}

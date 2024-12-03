@@ -72,6 +72,8 @@ import "pryzmatics/server/statistics/statistics.proto";
 
 import "pryzmatics/server/bank/historical_bank_supply.proto";
 
+import "pryzmatics/server/portfolio/portfolio.proto";
+
 option go_package = "github.com/pryzm-finance/pryzmatics/server";
 
 service Query {
@@ -367,5 +369,9 @@ service Query {
 
   rpc HistoricalBankSupply(pryzmatics.server.bank.QueryHistoricalBankSupplyRequest) returns (pryzmatics.server.bank.QueryHistoricalBankSupplyResponse) {
     option (google.api.http).get = "/pryzmatics/bank/supply/historical/{denom}";
+  }
+
+  rpc Portfolio(pryzmatics.server.portfolio.QueryPortfolioRequest) returns (pryzmatics.server.portfolio.QueryPortfolioResponse) {
+    option (google.api.http).get = "/pryzmatics/portfolio/{address}";
   }
 }

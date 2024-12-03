@@ -53,6 +53,7 @@ import { QueryProposalRequest, QueryProposalResponseSDKType, QueryProposalsReque
 import { QueryProposalVotesRequest, QueryProposalVotesResponseSDKType } from "./gov/vote";
 import { QueryStatisticsRequest, QueryStatisticsResponseSDKType } from "./statistics/statistics";
 import { QueryHistoricalBankSupplyRequest, QueryHistoricalBankSupplyResponseSDKType } from "./bank/historical_bank_supply";
+import { QueryPortfolioRequest, QueryPortfolioResponseSDKType } from "./portfolio/portfolio";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -132,6 +133,7 @@ export class LCDQueryClient {
     this.proposalVotes = this.proposalVotes.bind(this);
     this.statistics = this.statistics.bind(this);
     this.historicalBankSupply = this.historicalBankSupply.bind(this);
+    this.portfolio = this.portfolio.bind(this);
   }
   /* Asset */
   async asset(params: QueryAssetRequest): Promise<QueryAssetResponseSDKType> {
@@ -1104,5 +1106,10 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/bank/supply/historical/${params.denom}`;
     return await this.req.get<QueryHistoricalBankSupplyResponseSDKType>(endpoint, options);
+  }
+  /* Portfolio */
+  async portfolio(params: QueryPortfolioRequest): Promise<QueryPortfolioResponseSDKType> {
+    const endpoint = `pryzmatics/portfolio/${params.address}`;
+    return await this.req.get<QueryPortfolioResponseSDKType>(endpoint);
   }
 }
