@@ -10,11 +10,17 @@ export interface TokenYield {
   internalYield?: string;
   incentivesApr?: string;
   allianceApr?: string;
+  /** @deprecated */
   yStakingYield?: string;
+  /** @deprecated */
   yRoi?: string;
   stakingYield?: string;
   error: string;
+  /** @deprecated */
   pRoi?: string;
+  yieldToMaturityInUnderlyingTerms?: string;
+  yieldPerDayInUnderlyingTerms?: string;
+  roi?: string;
 }
 export interface TokenYieldProtoMsg {
   typeUrl: "/pryzmatics.pool.TokenYield";
@@ -27,11 +33,17 @@ export interface TokenYieldAmino {
   internal_yield?: string;
   incentives_apr?: string;
   alliance_apr?: string;
+  /** @deprecated */
   y_staking_yield?: string;
+  /** @deprecated */
   y_roi?: string;
   staking_yield?: string;
   error?: string;
+  /** @deprecated */
   p_roi?: string;
+  yield_to_maturity_in_underlying_terms?: string;
+  yield_per_day_in_underlying_terms?: string;
+  roi?: string;
 }
 export interface TokenYieldAminoMsg {
   type: "/pryzmatics.pool.TokenYield";
@@ -44,11 +56,17 @@ export interface TokenYieldSDKType {
   internal_yield?: string;
   incentives_apr?: string;
   alliance_apr?: string;
+  /** @deprecated */
   y_staking_yield?: string;
+  /** @deprecated */
   y_roi?: string;
   staking_yield?: string;
   error: string;
+  /** @deprecated */
   p_roi?: string;
+  yield_to_maturity_in_underlying_terms?: string;
+  yield_per_day_in_underlying_terms?: string;
+  roi?: string;
 }
 function createBaseTokenYield(): TokenYield {
   return {
@@ -62,7 +80,10 @@ function createBaseTokenYield(): TokenYield {
     yRoi: undefined,
     stakingYield: undefined,
     error: "",
-    pRoi: undefined
+    pRoi: undefined,
+    yieldToMaturityInUnderlyingTerms: undefined,
+    yieldPerDayInUnderlyingTerms: undefined,
+    roi: undefined
   };
 }
 export const TokenYield = {
@@ -110,6 +131,15 @@ export const TokenYield = {
     if (message.pRoi !== undefined) {
       writer.uint32(90).string(Decimal.fromUserInput(message.pRoi, 18).atomics);
     }
+    if (message.yieldToMaturityInUnderlyingTerms !== undefined) {
+      writer.uint32(98).string(Decimal.fromUserInput(message.yieldToMaturityInUnderlyingTerms, 18).atomics);
+    }
+    if (message.yieldPerDayInUnderlyingTerms !== undefined) {
+      writer.uint32(106).string(Decimal.fromUserInput(message.yieldPerDayInUnderlyingTerms, 18).atomics);
+    }
+    if (message.roi !== undefined) {
+      writer.uint32(114).string(Decimal.fromUserInput(message.roi, 18).atomics);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): TokenYield {
@@ -152,6 +182,15 @@ export const TokenYield = {
         case 11:
           message.pRoi = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
+        case 12:
+          message.yieldToMaturityInUnderlyingTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 13:
+          message.yieldPerDayInUnderlyingTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 14:
+          message.roi = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -171,7 +210,10 @@ export const TokenYield = {
       yRoi: isSet(object.yRoi) ? String(object.yRoi) : undefined,
       stakingYield: isSet(object.stakingYield) ? String(object.stakingYield) : undefined,
       error: isSet(object.error) ? String(object.error) : "",
-      pRoi: isSet(object.pRoi) ? String(object.pRoi) : undefined
+      pRoi: isSet(object.pRoi) ? String(object.pRoi) : undefined,
+      yieldToMaturityInUnderlyingTerms: isSet(object.yieldToMaturityInUnderlyingTerms) ? String(object.yieldToMaturityInUnderlyingTerms) : undefined,
+      yieldPerDayInUnderlyingTerms: isSet(object.yieldPerDayInUnderlyingTerms) ? String(object.yieldPerDayInUnderlyingTerms) : undefined,
+      roi: isSet(object.roi) ? String(object.roi) : undefined
     };
   },
   toJSON(message: TokenYield): unknown {
@@ -187,6 +229,9 @@ export const TokenYield = {
     message.stakingYield !== undefined && (obj.stakingYield = message.stakingYield);
     message.error !== undefined && (obj.error = message.error);
     message.pRoi !== undefined && (obj.pRoi = message.pRoi);
+    message.yieldToMaturityInUnderlyingTerms !== undefined && (obj.yieldToMaturityInUnderlyingTerms = message.yieldToMaturityInUnderlyingTerms);
+    message.yieldPerDayInUnderlyingTerms !== undefined && (obj.yieldPerDayInUnderlyingTerms = message.yieldPerDayInUnderlyingTerms);
+    message.roi !== undefined && (obj.roi = message.roi);
     return obj;
   },
   fromPartial(object: Partial<TokenYield>): TokenYield {
@@ -202,6 +247,9 @@ export const TokenYield = {
     message.stakingYield = object.stakingYield ?? undefined;
     message.error = object.error ?? "";
     message.pRoi = object.pRoi ?? undefined;
+    message.yieldToMaturityInUnderlyingTerms = object.yieldToMaturityInUnderlyingTerms ?? undefined;
+    message.yieldPerDayInUnderlyingTerms = object.yieldPerDayInUnderlyingTerms ?? undefined;
+    message.roi = object.roi ?? undefined;
     return message;
   },
   fromAmino(object: TokenYieldAmino): TokenYield {
@@ -239,6 +287,15 @@ export const TokenYield = {
     if (object.p_roi !== undefined && object.p_roi !== null) {
       message.pRoi = object.p_roi;
     }
+    if (object.yield_to_maturity_in_underlying_terms !== undefined && object.yield_to_maturity_in_underlying_terms !== null) {
+      message.yieldToMaturityInUnderlyingTerms = object.yield_to_maturity_in_underlying_terms;
+    }
+    if (object.yield_per_day_in_underlying_terms !== undefined && object.yield_per_day_in_underlying_terms !== null) {
+      message.yieldPerDayInUnderlyingTerms = object.yield_per_day_in_underlying_terms;
+    }
+    if (object.roi !== undefined && object.roi !== null) {
+      message.roi = object.roi;
+    }
     return message;
   },
   toAmino(message: TokenYield, useInterfaces: boolean = true): TokenYieldAmino {
@@ -254,6 +311,9 @@ export const TokenYield = {
     obj.staking_yield = padDecimal(message.stakingYield) === null ? undefined : padDecimal(message.stakingYield);
     obj.error = message.error === "" ? undefined : message.error;
     obj.p_roi = padDecimal(message.pRoi) === null ? undefined : padDecimal(message.pRoi);
+    obj.yield_to_maturity_in_underlying_terms = padDecimal(message.yieldToMaturityInUnderlyingTerms) === null ? undefined : padDecimal(message.yieldToMaturityInUnderlyingTerms);
+    obj.yield_per_day_in_underlying_terms = padDecimal(message.yieldPerDayInUnderlyingTerms) === null ? undefined : padDecimal(message.yieldPerDayInUnderlyingTerms);
+    obj.roi = padDecimal(message.roi) === null ? undefined : padDecimal(message.roi);
     return obj;
   },
   fromAminoMsg(object: TokenYieldAminoMsg): TokenYield {
