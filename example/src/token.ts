@@ -34,6 +34,8 @@ async function main() {
     console.log(token.yield.p_roi) // use roi instead
     console.log(token.yield.y_roi) // use roi instead
     console.log(token.yield.roi)
+    console.log(token.yield.yield_to_maturity_in_underlying_terms)
+    console.log(token.yield.yield_per_day_in_underlying_terms)
 }
 
 main().catch(console.error)
