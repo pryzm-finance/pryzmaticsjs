@@ -6,6 +6,7 @@ import "gogoproto/gogo.proto";
 import "google/protobuf/timestamp.proto";
 import "cosmos_proto/cosmos.proto";
 import "pryzm/amm/v1/operations.proto";
+import "pryzmatics/pryzmnexus/pryzmnexus.proto";
 
 
 option go_package = "github.com/pryzm-finance/pryzmatics/types/trade";
@@ -17,6 +18,7 @@ enum OperationType {
   OPERATION_TYPE_BATCH_SWAP = 2 [(gogoproto.enumvalue_customname) = "OPERATION_BATCH_SWAP"];
   OPERATION_TYPE_JOIN_POOL = 3 [(gogoproto.enumvalue_customname) = "OPERATION_JOIN_POOL"];
   OPERATION_TYPE_EXIT_POOL = 4 [(gogoproto.enumvalue_customname) = "OPERATION_EXIT_POOL"];
+  OPERATION_TYPE_NEXUS_BATCH = 5 [(gogoproto.enumvalue_customname) = "OPERATION_NEXUS_BATCH"];
 }
 
 message UserTradeHistory {
@@ -49,4 +51,9 @@ message UserTradeHistory {
     (gogoproto.stdtime) = true,
     (gogoproto.nullable) = false
   ];
+  repeated cosmos.base.v1beta1.Coin nexus_batch_fee = 12 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+  repeated pryzmatics.pryzmnexus.Operation nexus_path = 13 [(gogoproto.nullable) = false];
 }

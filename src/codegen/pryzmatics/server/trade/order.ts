@@ -1,6 +1,7 @@
 import { Order, OrderAmino, OrderSDKType, QueryOrderStatus, MatchableOrderCount, MatchableOrderCountAmino, MatchableOrderCountSDKType, MatchableOrder, MatchableOrderAmino, MatchableOrderSDKType, queryOrderStatusFromJSON, queryOrderStatusToJSON } from "../../trade/order";
 import { OrderOrderBy, OrderOrderByAmino, OrderOrderBySDKType } from "../../database/trade/order";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
+import { DisabledOrderPair, DisabledOrderPairAmino, DisabledOrderPairSDKType } from "../../../pryzm/amm/v1/order";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, padDecimal } from "../../../helpers";
 import { GlobalDecoderRegistry } from "../../../registry";
@@ -188,6 +189,34 @@ export interface QueryMatchableOrdersForPairResponseAminoMsg {
 export interface QueryMatchableOrdersForPairResponseSDKType {
   buy_orders: MatchableOrderSDKType[];
   sell_orders: MatchableOrderSDKType[];
+}
+export interface QueryOrderPairsToDisableRequest {}
+export interface QueryOrderPairsToDisableRequestProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairsToDisableRequest";
+  value: Uint8Array;
+}
+export interface QueryOrderPairsToDisableRequestAmino {}
+export interface QueryOrderPairsToDisableRequestAminoMsg {
+  type: "/pryzmatics.server.trade.QueryOrderPairsToDisableRequest";
+  value: QueryOrderPairsToDisableRequestAmino;
+}
+export interface QueryOrderPairsToDisableRequestSDKType {}
+export interface QueryOrderPairsToDisableResponse {
+  pairs: DisabledOrderPair[];
+}
+export interface QueryOrderPairsToDisableResponseProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairsToDisableResponse";
+  value: Uint8Array;
+}
+export interface QueryOrderPairsToDisableResponseAmino {
+  pairs?: DisabledOrderPairAmino[];
+}
+export interface QueryOrderPairsToDisableResponseAminoMsg {
+  type: "/pryzmatics.server.trade.QueryOrderPairsToDisableResponse";
+  value: QueryOrderPairsToDisableResponseAmino;
+}
+export interface QueryOrderPairsToDisableResponseSDKType {
+  pairs: DisabledOrderPairSDKType[];
 }
 function createBaseQueryOrderRequest(): QueryOrderRequest {
   return {
@@ -1101,3 +1130,159 @@ export const QueryMatchableOrdersForPairResponse = {
   }
 };
 GlobalDecoderRegistry.register(QueryMatchableOrdersForPairResponse.typeUrl, QueryMatchableOrdersForPairResponse);
+function createBaseQueryOrderPairsToDisableRequest(): QueryOrderPairsToDisableRequest {
+  return {};
+}
+export const QueryOrderPairsToDisableRequest = {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairsToDisableRequest",
+  is(o: any): o is QueryOrderPairsToDisableRequest {
+    return o && o.$typeUrl === QueryOrderPairsToDisableRequest.typeUrl;
+  },
+  isSDK(o: any): o is QueryOrderPairsToDisableRequestSDKType {
+    return o && o.$typeUrl === QueryOrderPairsToDisableRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryOrderPairsToDisableRequestAmino {
+    return o && o.$typeUrl === QueryOrderPairsToDisableRequest.typeUrl;
+  },
+  encode(_: QueryOrderPairsToDisableRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryOrderPairsToDisableRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOrderPairsToDisableRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): QueryOrderPairsToDisableRequest {
+    return {};
+  },
+  toJSON(_: QueryOrderPairsToDisableRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<QueryOrderPairsToDisableRequest>): QueryOrderPairsToDisableRequest {
+    const message = createBaseQueryOrderPairsToDisableRequest();
+    return message;
+  },
+  fromAmino(_: QueryOrderPairsToDisableRequestAmino): QueryOrderPairsToDisableRequest {
+    const message = createBaseQueryOrderPairsToDisableRequest();
+    return message;
+  },
+  toAmino(_: QueryOrderPairsToDisableRequest, useInterfaces: boolean = true): QueryOrderPairsToDisableRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryOrderPairsToDisableRequestAminoMsg): QueryOrderPairsToDisableRequest {
+    return QueryOrderPairsToDisableRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryOrderPairsToDisableRequestProtoMsg, useInterfaces: boolean = true): QueryOrderPairsToDisableRequest {
+    return QueryOrderPairsToDisableRequest.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryOrderPairsToDisableRequest): Uint8Array {
+    return QueryOrderPairsToDisableRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryOrderPairsToDisableRequest): QueryOrderPairsToDisableRequestProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryOrderPairsToDisableRequest",
+      value: QueryOrderPairsToDisableRequest.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryOrderPairsToDisableRequest.typeUrl, QueryOrderPairsToDisableRequest);
+function createBaseQueryOrderPairsToDisableResponse(): QueryOrderPairsToDisableResponse {
+  return {
+    pairs: []
+  };
+}
+export const QueryOrderPairsToDisableResponse = {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairsToDisableResponse",
+  is(o: any): o is QueryOrderPairsToDisableResponse {
+    return o && (o.$typeUrl === QueryOrderPairsToDisableResponse.typeUrl || Array.isArray(o.pairs) && (!o.pairs.length || DisabledOrderPair.is(o.pairs[0])));
+  },
+  isSDK(o: any): o is QueryOrderPairsToDisableResponseSDKType {
+    return o && (o.$typeUrl === QueryOrderPairsToDisableResponse.typeUrl || Array.isArray(o.pairs) && (!o.pairs.length || DisabledOrderPair.isSDK(o.pairs[0])));
+  },
+  isAmino(o: any): o is QueryOrderPairsToDisableResponseAmino {
+    return o && (o.$typeUrl === QueryOrderPairsToDisableResponse.typeUrl || Array.isArray(o.pairs) && (!o.pairs.length || DisabledOrderPair.isAmino(o.pairs[0])));
+  },
+  encode(message: QueryOrderPairsToDisableResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    for (const v of message.pairs) {
+      DisabledOrderPair.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryOrderPairsToDisableResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOrderPairsToDisableResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pairs.push(DisabledOrderPair.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryOrderPairsToDisableResponse {
+    return {
+      pairs: Array.isArray(object?.pairs) ? object.pairs.map((e: any) => DisabledOrderPair.fromJSON(e)) : []
+    };
+  },
+  toJSON(message: QueryOrderPairsToDisableResponse): unknown {
+    const obj: any = {};
+    if (message.pairs) {
+      obj.pairs = message.pairs.map(e => e ? DisabledOrderPair.toJSON(e) : undefined);
+    } else {
+      obj.pairs = [];
+    }
+    return obj;
+  },
+  fromPartial(object: Partial<QueryOrderPairsToDisableResponse>): QueryOrderPairsToDisableResponse {
+    const message = createBaseQueryOrderPairsToDisableResponse();
+    message.pairs = object.pairs?.map(e => DisabledOrderPair.fromPartial(e)) || [];
+    return message;
+  },
+  fromAmino(object: QueryOrderPairsToDisableResponseAmino): QueryOrderPairsToDisableResponse {
+    const message = createBaseQueryOrderPairsToDisableResponse();
+    message.pairs = object.pairs?.map(e => DisabledOrderPair.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: QueryOrderPairsToDisableResponse, useInterfaces: boolean = true): QueryOrderPairsToDisableResponseAmino {
+    const obj: any = {};
+    if (message.pairs) {
+      obj.pairs = message.pairs.map(e => e ? DisabledOrderPair.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.pairs = message.pairs;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryOrderPairsToDisableResponseAminoMsg): QueryOrderPairsToDisableResponse {
+    return QueryOrderPairsToDisableResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryOrderPairsToDisableResponseProtoMsg, useInterfaces: boolean = true): QueryOrderPairsToDisableResponse {
+    return QueryOrderPairsToDisableResponse.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryOrderPairsToDisableResponse): Uint8Array {
+    return QueryOrderPairsToDisableResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryOrderPairsToDisableResponse): QueryOrderPairsToDisableResponseProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryOrderPairsToDisableResponse",
+      value: QueryOrderPairsToDisableResponse.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryOrderPairsToDisableResponse.typeUrl, QueryOrderPairsToDisableResponse);

@@ -30,7 +30,7 @@ import { QueryExitAllTokensExactLptSimulationRequest, QueryExitAllTokensExactLpt
 import { QueryUserTradeHistoryRequest, QueryUserTradeHistoryResponseSDKType } from "./trade/user_trade_history";
 import { QueryTokenTradeVolumeRequest, QueryTokenTradeVolumeResponseSDKType, QueryPoolTradeVolumeRequest, QueryPoolTradeVolumeResponseSDKType, QueryFavoritePairsRequest, QueryFavoritePairsResponseSDKType } from "./trade/trade_volume";
 import { QueryPulseTradablePairsRequest, QueryPulseTradablePairsResponseSDKType, QueryPulseTradablePairPriceRequest, QueryPulseTradablePairPriceResponseSDKType } from "./trade/pulse_tradable_pairs";
-import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType } from "./trade/order";
+import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType, QueryOrderPairsToDisableRequest, QueryOrderPairsToDisableResponseSDKType } from "./trade/order";
 import { QueryDirectlyConnectedTokenPairsRequest, QueryDirectlyConnectedTokenPairsResponseSDKType } from "./trade/directly_connected_token_pairs";
 import { QueryTickersRequest, QueryTickersResponseSDKType } from "./trade/tickers";
 import { QueryHostChainUnbondingTimeRequest, QueryHostChainUnbondingTimeResponseSDKType, QueryHostChainRequest, QueryHostChainResponseSDKType, QueryHostChainsRequest, QueryHostChainsResponseSDKType, QueryHostChainByUnderlyingDenomRequest, QueryHostChainByUnderlyingDenomResponseSDKType } from "./icstaking/host_chain";
@@ -103,6 +103,7 @@ export class LCDQueryClient {
     this.orders = this.orders.bind(this);
     this.matchableOrderCounts = this.matchableOrderCounts.bind(this);
     this.matchableOrdersForPair = this.matchableOrdersForPair.bind(this);
+    this.orderPairsToDisable = this.orderPairsToDisable.bind(this);
     this.directlyConnectedTokenPairs = this.directlyConnectedTokenPairs.bind(this);
     this.tickers = this.tickers.bind(this);
     this.hostChainUnbondingTime = this.hostChainUnbondingTime.bind(this);
@@ -683,6 +684,11 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/trade/matchable_orders_for_pair/${params.tokenIn}/${params.tokenOut}/${params.poolId}/${params.whitelistedRoute}`;
     return await this.req.get<QueryMatchableOrdersForPairResponseSDKType>(endpoint, options);
+  }
+  /* OrderPairsToDisable */
+  async orderPairsToDisable(_params: QueryOrderPairsToDisableRequest = {}): Promise<QueryOrderPairsToDisableResponseSDKType> {
+    const endpoint = `pryzmatics/trade/order_pairs_to_disable`;
+    return await this.req.get<QueryOrderPairsToDisableResponseSDKType>(endpoint);
   }
   /* DirectlyConnectedTokenPairs */
   async directlyConnectedTokenPairs(params: QueryDirectlyConnectedTokenPairsRequest = {

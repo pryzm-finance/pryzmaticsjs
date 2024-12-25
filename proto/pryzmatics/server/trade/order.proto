@@ -7,7 +7,7 @@ import "pryzmatics/trade/pool_trade_history.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "pryzmatics/trade/order.proto";
 import "pryzmatics/database/trade/order.proto";
-
+import "pryzm/amm/v1/order.proto";
 
 option go_package = "github.com/pryzm-finance/pryzmatics/server/trade";
 
@@ -69,4 +69,11 @@ message QueryMatchableOrdersForPairRequest {
 message QueryMatchableOrdersForPairResponse {
   repeated pryzmatics.trade.MatchableOrder buy_orders = 1 [(gogoproto.nullable) = false];
   repeated pryzmatics.trade.MatchableOrder sell_orders = 2 [(gogoproto.nullable) = false];
+}
+
+message QueryOrderPairsToDisableRequest {
+}
+
+message QueryOrderPairsToDisableResponse {
+  repeated pryzm.amm.v1.DisabledOrderPair pairs = 1 [(gogoproto.nullable) = false];
 }
