@@ -1,7 +1,8 @@
 import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
 import { Token, TokenAmino, TokenSDKType } from "../../pool/token";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
 import { BinaryReader, BinaryWriter } from "../../../binary";
-import { isSet, padDecimal } from "../../../helpers";
+import { isSet, padDecimal, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
 import { GlobalDecoderRegistry } from "../../../registry";
 import { Decimal } from "@cosmjs/math";
 export enum PortfolioTokenCategory {
@@ -112,8 +113,59 @@ export interface PortfolioTokenSDKType {
   value_in_asset_terms?: string;
   token?: TokenSDKType;
 }
+export interface PortfolioDelegation {
+  validatorAddress: string;
+  amount: Coin;
+  valueInStableCoinTerms?: string;
+}
+export interface PortfolioDelegationProtoMsg {
+  typeUrl: "/pryzmatics.server.portfolio.PortfolioDelegation";
+  value: Uint8Array;
+}
+export interface PortfolioDelegationAmino {
+  validator_address?: string;
+  amount?: CoinAmino;
+  value_in_stable_coin_terms?: string;
+}
+export interface PortfolioDelegationAminoMsg {
+  type: "/pryzmatics.server.portfolio.PortfolioDelegation";
+  value: PortfolioDelegationAmino;
+}
+export interface PortfolioDelegationSDKType {
+  validator_address: string;
+  amount: CoinSDKType;
+  value_in_stable_coin_terms?: string;
+}
+export interface PortfolioUnbondingDelegation {
+  validatorAddress: string;
+  amount: Coin;
+  valueInStableCoinTerms?: string;
+  completionTime: Timestamp;
+}
+export interface PortfolioUnbondingDelegationProtoMsg {
+  typeUrl: "/pryzmatics.server.portfolio.PortfolioUnbondingDelegation";
+  value: Uint8Array;
+}
+export interface PortfolioUnbondingDelegationAmino {
+  validator_address?: string;
+  amount?: CoinAmino;
+  value_in_stable_coin_terms?: string;
+  completion_time?: string;
+}
+export interface PortfolioUnbondingDelegationAminoMsg {
+  type: "/pryzmatics.server.portfolio.PortfolioUnbondingDelegation";
+  value: PortfolioUnbondingDelegationAmino;
+}
+export interface PortfolioUnbondingDelegationSDKType {
+  validator_address: string;
+  amount: CoinSDKType;
+  value_in_stable_coin_terms?: string;
+  completion_time: TimestampSDKType;
+}
 export interface QueryPortfolioResponse {
   tokens: PortfolioToken[];
+  delegations: PortfolioDelegation[];
+  unbondingDelegations: PortfolioUnbondingDelegation[];
 }
 export interface QueryPortfolioResponseProtoMsg {
   typeUrl: "/pryzmatics.server.portfolio.QueryPortfolioResponse";
@@ -121,6 +173,8 @@ export interface QueryPortfolioResponseProtoMsg {
 }
 export interface QueryPortfolioResponseAmino {
   tokens?: PortfolioTokenAmino[];
+  delegations?: PortfolioDelegationAmino[];
+  unbonding_delegations?: PortfolioUnbondingDelegationAmino[];
 }
 export interface QueryPortfolioResponseAminoMsg {
   type: "/pryzmatics.server.portfolio.QueryPortfolioResponse";
@@ -128,6 +182,8 @@ export interface QueryPortfolioResponseAminoMsg {
 }
 export interface QueryPortfolioResponseSDKType {
   tokens: PortfolioTokenSDKType[];
+  delegations: PortfolioDelegationSDKType[];
+  unbonding_delegations: PortfolioUnbondingDelegationSDKType[];
 }
 function createBaseQueryPortfolioRequest(): QueryPortfolioRequest {
   return {
@@ -351,25 +407,269 @@ export const PortfolioToken = {
   }
 };
 GlobalDecoderRegistry.register(PortfolioToken.typeUrl, PortfolioToken);
+function createBasePortfolioDelegation(): PortfolioDelegation {
+  return {
+    validatorAddress: "",
+    amount: Coin.fromPartial({}),
+    valueInStableCoinTerms: undefined
+  };
+}
+export const PortfolioDelegation = {
+  typeUrl: "/pryzmatics.server.portfolio.PortfolioDelegation",
+  is(o: any): o is PortfolioDelegation {
+    return o && (o.$typeUrl === PortfolioDelegation.typeUrl || typeof o.validatorAddress === "string" && Coin.is(o.amount));
+  },
+  isSDK(o: any): o is PortfolioDelegationSDKType {
+    return o && (o.$typeUrl === PortfolioDelegation.typeUrl || typeof o.validator_address === "string" && Coin.isSDK(o.amount));
+  },
+  isAmino(o: any): o is PortfolioDelegationAmino {
+    return o && (o.$typeUrl === PortfolioDelegation.typeUrl || typeof o.validator_address === "string" && Coin.isAmino(o.amount));
+  },
+  encode(message: PortfolioDelegation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.validatorAddress !== "") {
+      writer.uint32(10).string(message.validatorAddress);
+    }
+    if (message.amount !== undefined) {
+      Coin.encode(message.amount, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.valueInStableCoinTerms !== undefined) {
+      writer.uint32(26).string(Decimal.fromUserInput(message.valueInStableCoinTerms, 18).atomics);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): PortfolioDelegation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePortfolioDelegation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.validatorAddress = reader.string();
+          break;
+        case 2:
+          message.amount = Coin.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 3:
+          message.valueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): PortfolioDelegation {
+    return {
+      validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
+      amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
+      valueInStableCoinTerms: isSet(object.valueInStableCoinTerms) ? String(object.valueInStableCoinTerms) : undefined
+    };
+  },
+  toJSON(message: PortfolioDelegation): unknown {
+    const obj: any = {};
+    message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
+    message.valueInStableCoinTerms !== undefined && (obj.valueInStableCoinTerms = message.valueInStableCoinTerms);
+    return obj;
+  },
+  fromPartial(object: Partial<PortfolioDelegation>): PortfolioDelegation {
+    const message = createBasePortfolioDelegation();
+    message.validatorAddress = object.validatorAddress ?? "";
+    message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
+    message.valueInStableCoinTerms = object.valueInStableCoinTerms ?? undefined;
+    return message;
+  },
+  fromAmino(object: PortfolioDelegationAmino): PortfolioDelegation {
+    const message = createBasePortfolioDelegation();
+    if (object.validator_address !== undefined && object.validator_address !== null) {
+      message.validatorAddress = object.validator_address;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = Coin.fromAmino(object.amount);
+    }
+    if (object.value_in_stable_coin_terms !== undefined && object.value_in_stable_coin_terms !== null) {
+      message.valueInStableCoinTerms = object.value_in_stable_coin_terms;
+    }
+    return message;
+  },
+  toAmino(message: PortfolioDelegation, useInterfaces: boolean = true): PortfolioDelegationAmino {
+    const obj: any = {};
+    obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
+    obj.amount = message.amount ? Coin.toAmino(message.amount, useInterfaces) : undefined;
+    obj.value_in_stable_coin_terms = padDecimal(message.valueInStableCoinTerms) === null ? undefined : padDecimal(message.valueInStableCoinTerms);
+    return obj;
+  },
+  fromAminoMsg(object: PortfolioDelegationAminoMsg): PortfolioDelegation {
+    return PortfolioDelegation.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PortfolioDelegationProtoMsg, useInterfaces: boolean = true): PortfolioDelegation {
+    return PortfolioDelegation.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: PortfolioDelegation): Uint8Array {
+    return PortfolioDelegation.encode(message).finish();
+  },
+  toProtoMsg(message: PortfolioDelegation): PortfolioDelegationProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.portfolio.PortfolioDelegation",
+      value: PortfolioDelegation.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(PortfolioDelegation.typeUrl, PortfolioDelegation);
+function createBasePortfolioUnbondingDelegation(): PortfolioUnbondingDelegation {
+  return {
+    validatorAddress: "",
+    amount: Coin.fromPartial({}),
+    valueInStableCoinTerms: undefined,
+    completionTime: Timestamp.fromPartial({})
+  };
+}
+export const PortfolioUnbondingDelegation = {
+  typeUrl: "/pryzmatics.server.portfolio.PortfolioUnbondingDelegation",
+  is(o: any): o is PortfolioUnbondingDelegation {
+    return o && (o.$typeUrl === PortfolioUnbondingDelegation.typeUrl || typeof o.validatorAddress === "string" && Coin.is(o.amount) && Timestamp.is(o.completionTime));
+  },
+  isSDK(o: any): o is PortfolioUnbondingDelegationSDKType {
+    return o && (o.$typeUrl === PortfolioUnbondingDelegation.typeUrl || typeof o.validator_address === "string" && Coin.isSDK(o.amount) && Timestamp.isSDK(o.completion_time));
+  },
+  isAmino(o: any): o is PortfolioUnbondingDelegationAmino {
+    return o && (o.$typeUrl === PortfolioUnbondingDelegation.typeUrl || typeof o.validator_address === "string" && Coin.isAmino(o.amount) && Timestamp.isAmino(o.completion_time));
+  },
+  encode(message: PortfolioUnbondingDelegation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.validatorAddress !== "") {
+      writer.uint32(10).string(message.validatorAddress);
+    }
+    if (message.amount !== undefined) {
+      Coin.encode(message.amount, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.valueInStableCoinTerms !== undefined) {
+      writer.uint32(26).string(Decimal.fromUserInput(message.valueInStableCoinTerms, 18).atomics);
+    }
+    if (message.completionTime !== undefined) {
+      Timestamp.encode(message.completionTime, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): PortfolioUnbondingDelegation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePortfolioUnbondingDelegation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.validatorAddress = reader.string();
+          break;
+        case 2:
+          message.amount = Coin.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 3:
+          message.valueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 4:
+          message.completionTime = Timestamp.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): PortfolioUnbondingDelegation {
+    return {
+      validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
+      amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
+      valueInStableCoinTerms: isSet(object.valueInStableCoinTerms) ? String(object.valueInStableCoinTerms) : undefined,
+      completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined
+    };
+  },
+  toJSON(message: PortfolioUnbondingDelegation): unknown {
+    const obj: any = {};
+    message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
+    message.valueInStableCoinTerms !== undefined && (obj.valueInStableCoinTerms = message.valueInStableCoinTerms);
+    message.completionTime !== undefined && (obj.completionTime = fromTimestamp(message.completionTime).toISOString());
+    return obj;
+  },
+  fromPartial(object: Partial<PortfolioUnbondingDelegation>): PortfolioUnbondingDelegation {
+    const message = createBasePortfolioUnbondingDelegation();
+    message.validatorAddress = object.validatorAddress ?? "";
+    message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
+    message.valueInStableCoinTerms = object.valueInStableCoinTerms ?? undefined;
+    message.completionTime = object.completionTime !== undefined && object.completionTime !== null ? Timestamp.fromPartial(object.completionTime) : undefined;
+    return message;
+  },
+  fromAmino(object: PortfolioUnbondingDelegationAmino): PortfolioUnbondingDelegation {
+    const message = createBasePortfolioUnbondingDelegation();
+    if (object.validator_address !== undefined && object.validator_address !== null) {
+      message.validatorAddress = object.validator_address;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = Coin.fromAmino(object.amount);
+    }
+    if (object.value_in_stable_coin_terms !== undefined && object.value_in_stable_coin_terms !== null) {
+      message.valueInStableCoinTerms = object.value_in_stable_coin_terms;
+    }
+    if (object.completion_time !== undefined && object.completion_time !== null) {
+      message.completionTime = Timestamp.fromAmino(object.completion_time);
+    }
+    return message;
+  },
+  toAmino(message: PortfolioUnbondingDelegation, useInterfaces: boolean = true): PortfolioUnbondingDelegationAmino {
+    const obj: any = {};
+    obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
+    obj.amount = message.amount ? Coin.toAmino(message.amount, useInterfaces) : undefined;
+    obj.value_in_stable_coin_terms = padDecimal(message.valueInStableCoinTerms) === null ? undefined : padDecimal(message.valueInStableCoinTerms);
+    obj.completion_time = message.completionTime ? Timestamp.toAmino(message.completionTime, useInterfaces) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: PortfolioUnbondingDelegationAminoMsg): PortfolioUnbondingDelegation {
+    return PortfolioUnbondingDelegation.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PortfolioUnbondingDelegationProtoMsg, useInterfaces: boolean = true): PortfolioUnbondingDelegation {
+    return PortfolioUnbondingDelegation.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: PortfolioUnbondingDelegation): Uint8Array {
+    return PortfolioUnbondingDelegation.encode(message).finish();
+  },
+  toProtoMsg(message: PortfolioUnbondingDelegation): PortfolioUnbondingDelegationProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.portfolio.PortfolioUnbondingDelegation",
+      value: PortfolioUnbondingDelegation.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(PortfolioUnbondingDelegation.typeUrl, PortfolioUnbondingDelegation);
 function createBaseQueryPortfolioResponse(): QueryPortfolioResponse {
   return {
-    tokens: []
+    tokens: [],
+    delegations: [],
+    unbondingDelegations: []
   };
 }
 export const QueryPortfolioResponse = {
   typeUrl: "/pryzmatics.server.portfolio.QueryPortfolioResponse",
   is(o: any): o is QueryPortfolioResponse {
-    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.tokens) && (!o.tokens.length || PortfolioToken.is(o.tokens[0])));
+    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.tokens) && (!o.tokens.length || PortfolioToken.is(o.tokens[0])) && Array.isArray(o.delegations) && (!o.delegations.length || PortfolioDelegation.is(o.delegations[0])) && Array.isArray(o.unbondingDelegations) && (!o.unbondingDelegations.length || PortfolioUnbondingDelegation.is(o.unbondingDelegations[0])));
   },
   isSDK(o: any): o is QueryPortfolioResponseSDKType {
-    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.tokens) && (!o.tokens.length || PortfolioToken.isSDK(o.tokens[0])));
+    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.tokens) && (!o.tokens.length || PortfolioToken.isSDK(o.tokens[0])) && Array.isArray(o.delegations) && (!o.delegations.length || PortfolioDelegation.isSDK(o.delegations[0])) && Array.isArray(o.unbonding_delegations) && (!o.unbonding_delegations.length || PortfolioUnbondingDelegation.isSDK(o.unbonding_delegations[0])));
   },
   isAmino(o: any): o is QueryPortfolioResponseAmino {
-    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.tokens) && (!o.tokens.length || PortfolioToken.isAmino(o.tokens[0])));
+    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.tokens) && (!o.tokens.length || PortfolioToken.isAmino(o.tokens[0])) && Array.isArray(o.delegations) && (!o.delegations.length || PortfolioDelegation.isAmino(o.delegations[0])) && Array.isArray(o.unbonding_delegations) && (!o.unbonding_delegations.length || PortfolioUnbondingDelegation.isAmino(o.unbonding_delegations[0])));
   },
   encode(message: QueryPortfolioResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.tokens) {
       PortfolioToken.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.delegations) {
+      PortfolioDelegation.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.unbondingDelegations) {
+      PortfolioUnbondingDelegation.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -383,6 +683,12 @@ export const QueryPortfolioResponse = {
         case 1:
           message.tokens.push(PortfolioToken.decode(reader, reader.uint32(), useInterfaces));
           break;
+        case 2:
+          message.delegations.push(PortfolioDelegation.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        case 3:
+          message.unbondingDelegations.push(PortfolioUnbondingDelegation.decode(reader, reader.uint32(), useInterfaces));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -392,7 +698,9 @@ export const QueryPortfolioResponse = {
   },
   fromJSON(object: any): QueryPortfolioResponse {
     return {
-      tokens: Array.isArray(object?.tokens) ? object.tokens.map((e: any) => PortfolioToken.fromJSON(e)) : []
+      tokens: Array.isArray(object?.tokens) ? object.tokens.map((e: any) => PortfolioToken.fromJSON(e)) : [],
+      delegations: Array.isArray(object?.delegations) ? object.delegations.map((e: any) => PortfolioDelegation.fromJSON(e)) : [],
+      unbondingDelegations: Array.isArray(object?.unbondingDelegations) ? object.unbondingDelegations.map((e: any) => PortfolioUnbondingDelegation.fromJSON(e)) : []
     };
   },
   toJSON(message: QueryPortfolioResponse): unknown {
@@ -402,16 +710,30 @@ export const QueryPortfolioResponse = {
     } else {
       obj.tokens = [];
     }
+    if (message.delegations) {
+      obj.delegations = message.delegations.map(e => e ? PortfolioDelegation.toJSON(e) : undefined);
+    } else {
+      obj.delegations = [];
+    }
+    if (message.unbondingDelegations) {
+      obj.unbondingDelegations = message.unbondingDelegations.map(e => e ? PortfolioUnbondingDelegation.toJSON(e) : undefined);
+    } else {
+      obj.unbondingDelegations = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<QueryPortfolioResponse>): QueryPortfolioResponse {
     const message = createBaseQueryPortfolioResponse();
     message.tokens = object.tokens?.map(e => PortfolioToken.fromPartial(e)) || [];
+    message.delegations = object.delegations?.map(e => PortfolioDelegation.fromPartial(e)) || [];
+    message.unbondingDelegations = object.unbondingDelegations?.map(e => PortfolioUnbondingDelegation.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: QueryPortfolioResponseAmino): QueryPortfolioResponse {
     const message = createBaseQueryPortfolioResponse();
     message.tokens = object.tokens?.map(e => PortfolioToken.fromAmino(e)) || [];
+    message.delegations = object.delegations?.map(e => PortfolioDelegation.fromAmino(e)) || [];
+    message.unbondingDelegations = object.unbonding_delegations?.map(e => PortfolioUnbondingDelegation.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: QueryPortfolioResponse, useInterfaces: boolean = true): QueryPortfolioResponseAmino {
@@ -420,6 +742,16 @@ export const QueryPortfolioResponse = {
       obj.tokens = message.tokens.map(e => e ? PortfolioToken.toAmino(e, useInterfaces) : undefined);
     } else {
       obj.tokens = message.tokens;
+    }
+    if (message.delegations) {
+      obj.delegations = message.delegations.map(e => e ? PortfolioDelegation.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.delegations = message.delegations;
+    }
+    if (message.unbondingDelegations) {
+      obj.unbonding_delegations = message.unbondingDelegations.map(e => e ? PortfolioUnbondingDelegation.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.unbonding_delegations = message.unbondingDelegations;
     }
     return obj;
   },

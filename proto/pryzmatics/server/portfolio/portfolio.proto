@@ -1,11 +1,11 @@
 syntax = "proto3";
 package pryzmatics.server.portfolio;
 
-import "gogoproto/gogo.proto";
-import "cosmos_proto/cosmos.proto";
 import "cosmos/base/v1beta1/coin.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
 import "pryzmatics/pool/token.proto";
-
 
 option go_package = "github.com/pryzm-finance/pryzmatics/server/portfolio";
 
@@ -25,9 +25,7 @@ enum PortfolioTokenCategory {
 }
 
 message PortfolioToken {
-  cosmos.base.v1beta1.Coin coin = 1 [
-    (gogoproto.nullable) = false
-  ];
+  cosmos.base.v1beta1.Coin coin = 1 [(gogoproto.nullable) = false];
   PortfolioTokenCategory category = 2;
   string value_in_stable_coin_terms = 3 [
     (cosmos_proto.scalar) = "cosmos.Dec",
@@ -42,6 +40,32 @@ message PortfolioToken {
   pryzmatics.pool.Token token = 5 [(gogoproto.nullable) = true];
 }
 
+message PortfolioDelegation {
+  string validator_address = 1;
+  cosmos.base.v1beta1.Coin amount = 2 [(gogoproto.nullable) = false];
+  string value_in_stable_coin_terms = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
+}
+
+message PortfolioUnbondingDelegation {
+  string validator_address = 1;
+  cosmos.base.v1beta1.Coin amount = 2 [(gogoproto.nullable) = false];
+  string value_in_stable_coin_terms = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
+  google.protobuf.Timestamp completion_time = 4 [
+    (gogoproto.nullable) = false,
+    (gogoproto.stdtime) = true
+  ];
+}
+
 message QueryPortfolioResponse {
   repeated PortfolioToken tokens = 1 [(gogoproto.nullable) = false];
+  repeated PortfolioDelegation delegations = 2 [(gogoproto.nullable) = false];
+  repeated PortfolioUnbondingDelegation unbonding_delegations = 3 [(gogoproto.nullable) = false];
 }
