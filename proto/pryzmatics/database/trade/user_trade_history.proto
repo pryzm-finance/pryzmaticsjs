@@ -14,3 +14,13 @@ message UserTradeHistoryOrderBy {
   UserTradeHistoryOrderByProperty property = 1;
   bool descending = 2;
 }
+
+enum UserTradeVolumeOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  ORDER_BY_PROPERTY_VOLUME = 0;
+}
+
+message UserTradeVolumeOrderBy {
+  UserTradeVolumeOrderByProperty property = 1;
+  bool descending = 2;
+}

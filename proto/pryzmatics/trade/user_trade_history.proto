@@ -6,6 +6,7 @@ import "gogoproto/gogo.proto";
 import "google/protobuf/timestamp.proto";
 import "cosmos_proto/cosmos.proto";
 import "pryzm/amm/v1/operations.proto";
+import "pryzm/amm/v1/route_step.proto";
 import "pryzmatics/pryzmnexus/pryzmnexus.proto";
 
 
@@ -19,6 +20,7 @@ enum OperationType {
   OPERATION_TYPE_JOIN_POOL = 3 [(gogoproto.enumvalue_customname) = "OPERATION_JOIN_POOL"];
   OPERATION_TYPE_EXIT_POOL = 4 [(gogoproto.enumvalue_customname) = "OPERATION_EXIT_POOL"];
   OPERATION_TYPE_NEXUS_BATCH = 5 [(gogoproto.enumvalue_customname) = "OPERATION_NEXUS_BATCH"];
+  OPERATION_TYPE_ORDER = 6 [(gogoproto.enumvalue_customname) = "OPERATION_ORDER"];
 }
 
 message UserTradeHistory {
@@ -55,5 +57,20 @@ message UserTradeHistory {
     (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
   ];
-  repeated pryzmatics.pryzmnexus.Operation nexus_path = 13 [(gogoproto.nullable) = false];
+  repeated pryzmatics.pryzmnexus.ExecutedOperation nexus_path = 13 [(gogoproto.nullable) = false];
+  repeated pryzm.amm.v1.RouteStep order_path = 14 [(gogoproto.nullable) = false];
+  string volume = 15 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
+}
+
+message UserTradeVolume {
+  string address = 1;
+  string volume = 2 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
 }

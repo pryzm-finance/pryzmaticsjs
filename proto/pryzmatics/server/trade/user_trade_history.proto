@@ -21,3 +21,15 @@ message QueryUserTradeHistoryResponse {
   repeated pryzmatics.trade.UserTradeHistory user_trade_history_records = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
 }
+
+message QueryUserTradeVolumeRequest {
+  pryzmatics.trade.OperationType operation_type = 1;
+  pryzmatics.database.trade.UserTradeVolumeOrderBy order_by = 2 [(gogoproto.nullable) = true];
+  uint64 interval_hours = 3;
+  cosmos.base.query.v1beta1.PageRequest pagination = 4 [(gogoproto.nullable) = true];
+}
+
+message QueryUserTradeVolumeResponse {
+  repeated pryzmatics.trade.UserTradeVolume user_trade_volume_records = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}

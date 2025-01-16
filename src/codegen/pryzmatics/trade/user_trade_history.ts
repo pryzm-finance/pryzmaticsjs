@@ -1,9 +1,11 @@
 import { Coin, CoinAmino, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { SwapStep, SwapStepAmino, SwapStepSDKType } from "../../pryzm/amm/v1/operations";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { Operation, OperationAmino, OperationSDKType } from "../pryzmnexus/pryzmnexus";
-import { isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers";
+import { ExecutedOperation, ExecutedOperationAmino, ExecutedOperationSDKType } from "../pryzmnexus/pryzmnexus";
+import { RouteStep, RouteStepAmino, RouteStepSDKType } from "../../pryzm/amm/v1/route_step";
+import { isSet, fromJsonTimestamp, fromTimestamp, padDecimal } from "../../helpers";
 import { BinaryReader, BinaryWriter } from "../../binary";
+import { Decimal } from "@cosmjs/math";
 import { GlobalDecoderRegistry } from "../../registry";
 export enum OperationType {
   OPERATION_TYPE_ANY = 0,
@@ -12,6 +14,7 @@ export enum OperationType {
   OPERATION_TYPE_JOIN_POOL = 3,
   OPERATION_TYPE_EXIT_POOL = 4,
   OPERATION_TYPE_NEXUS_BATCH = 5,
+  OPERATION_TYPE_ORDER = 6,
   UNRECOGNIZED = -1,
 }
 export const OperationTypeSDKType = OperationType;
@@ -36,6 +39,9 @@ export function operationTypeFromJSON(object: any): OperationType {
     case 5:
     case "OPERATION_TYPE_NEXUS_BATCH":
       return OperationType.OPERATION_TYPE_NEXUS_BATCH;
+    case 6:
+    case "OPERATION_TYPE_ORDER":
+      return OperationType.OPERATION_TYPE_ORDER;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -56,6 +62,8 @@ export function operationTypeToJSON(object: OperationType): string {
       return "OPERATION_TYPE_EXIT_POOL";
     case OperationType.OPERATION_TYPE_NEXUS_BATCH:
       return "OPERATION_TYPE_NEXUS_BATCH";
+    case OperationType.OPERATION_TYPE_ORDER:
+      return "OPERATION_TYPE_ORDER";
     case OperationType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -74,7 +82,9 @@ export interface UserTradeHistory {
   swapProtocolFee: Coin[];
   blockTime: Timestamp;
   nexusBatchFee: Coin[];
-  nexusPath: Operation[];
+  nexusPath: ExecutedOperation[];
+  orderPath: RouteStep[];
+  volume?: string;
 }
 export interface UserTradeHistoryProtoMsg {
   typeUrl: "/pryzmatics.trade.UserTradeHistory";
@@ -93,7 +103,9 @@ export interface UserTradeHistoryAmino {
   swap_protocol_fee?: CoinAmino[];
   block_time?: string;
   nexus_batch_fee?: CoinAmino[];
-  nexus_path?: OperationAmino[];
+  nexus_path?: ExecutedOperationAmino[];
+  order_path?: RouteStepAmino[];
+  volume?: string;
 }
 export interface UserTradeHistoryAminoMsg {
   type: "/pryzmatics.trade.UserTradeHistory";
@@ -112,7 +124,29 @@ export interface UserTradeHistorySDKType {
   swap_protocol_fee: CoinSDKType[];
   block_time: TimestampSDKType;
   nexus_batch_fee: CoinSDKType[];
-  nexus_path: OperationSDKType[];
+  nexus_path: ExecutedOperationSDKType[];
+  order_path: RouteStepSDKType[];
+  volume?: string;
+}
+export interface UserTradeVolume {
+  address: string;
+  volume: string;
+}
+export interface UserTradeVolumeProtoMsg {
+  typeUrl: "/pryzmatics.trade.UserTradeVolume";
+  value: Uint8Array;
+}
+export interface UserTradeVolumeAmino {
+  address?: string;
+  volume?: string;
+}
+export interface UserTradeVolumeAminoMsg {
+  type: "/pryzmatics.trade.UserTradeVolume";
+  value: UserTradeVolumeAmino;
+}
+export interface UserTradeVolumeSDKType {
+  address: string;
+  volume: string;
 }
 function createBaseUserTradeHistory(): UserTradeHistory {
   return {
@@ -128,19 +162,21 @@ function createBaseUserTradeHistory(): UserTradeHistory {
     swapProtocolFee: [],
     blockTime: Timestamp.fromPartial({}),
     nexusBatchFee: [],
-    nexusPath: []
+    nexusPath: [],
+    orderPath: [],
+    volume: undefined
   };
 }
 export const UserTradeHistory = {
   typeUrl: "/pryzmatics.trade.UserTradeHistory",
   is(o: any): o is UserTradeHistory {
-    return o && (o.$typeUrl === UserTradeHistory.typeUrl || typeof o.id === "bigint" && Array.isArray(o.amountsIn) && (!o.amountsIn.length || Coin.is(o.amountsIn[0])) && Array.isArray(o.amountsOut) && (!o.amountsOut.length || Coin.is(o.amountsOut[0])) && typeof o.address === "string" && typeof o.poolId === "bigint" && Array.isArray(o.path) && (!o.path.length || SwapStep.is(o.path[0])) && isSet(o.operationType) && Array.isArray(o.swapFee) && (!o.swapFee.length || Coin.is(o.swapFee[0])) && Array.isArray(o.joinExitProtocolFee) && (!o.joinExitProtocolFee.length || Coin.is(o.joinExitProtocolFee[0])) && Array.isArray(o.swapProtocolFee) && (!o.swapProtocolFee.length || Coin.is(o.swapProtocolFee[0])) && Timestamp.is(o.blockTime) && Array.isArray(o.nexusBatchFee) && (!o.nexusBatchFee.length || Coin.is(o.nexusBatchFee[0])) && Array.isArray(o.nexusPath) && (!o.nexusPath.length || Operation.is(o.nexusPath[0])));
+    return o && (o.$typeUrl === UserTradeHistory.typeUrl || typeof o.id === "bigint" && Array.isArray(o.amountsIn) && (!o.amountsIn.length || Coin.is(o.amountsIn[0])) && Array.isArray(o.amountsOut) && (!o.amountsOut.length || Coin.is(o.amountsOut[0])) && typeof o.address === "string" && typeof o.poolId === "bigint" && Array.isArray(o.path) && (!o.path.length || SwapStep.is(o.path[0])) && isSet(o.operationType) && Array.isArray(o.swapFee) && (!o.swapFee.length || Coin.is(o.swapFee[0])) && Array.isArray(o.joinExitProtocolFee) && (!o.joinExitProtocolFee.length || Coin.is(o.joinExitProtocolFee[0])) && Array.isArray(o.swapProtocolFee) && (!o.swapProtocolFee.length || Coin.is(o.swapProtocolFee[0])) && Timestamp.is(o.blockTime) && Array.isArray(o.nexusBatchFee) && (!o.nexusBatchFee.length || Coin.is(o.nexusBatchFee[0])) && Array.isArray(o.nexusPath) && (!o.nexusPath.length || ExecutedOperation.is(o.nexusPath[0])) && Array.isArray(o.orderPath) && (!o.orderPath.length || RouteStep.is(o.orderPath[0])));
   },
   isSDK(o: any): o is UserTradeHistorySDKType {
-    return o && (o.$typeUrl === UserTradeHistory.typeUrl || typeof o.id === "bigint" && Array.isArray(o.amounts_in) && (!o.amounts_in.length || Coin.isSDK(o.amounts_in[0])) && Array.isArray(o.amounts_out) && (!o.amounts_out.length || Coin.isSDK(o.amounts_out[0])) && typeof o.address === "string" && typeof o.pool_id === "bigint" && Array.isArray(o.path) && (!o.path.length || SwapStep.isSDK(o.path[0])) && isSet(o.operation_type) && Array.isArray(o.swap_fee) && (!o.swap_fee.length || Coin.isSDK(o.swap_fee[0])) && Array.isArray(o.join_exit_protocol_fee) && (!o.join_exit_protocol_fee.length || Coin.isSDK(o.join_exit_protocol_fee[0])) && Array.isArray(o.swap_protocol_fee) && (!o.swap_protocol_fee.length || Coin.isSDK(o.swap_protocol_fee[0])) && Timestamp.isSDK(o.block_time) && Array.isArray(o.nexus_batch_fee) && (!o.nexus_batch_fee.length || Coin.isSDK(o.nexus_batch_fee[0])) && Array.isArray(o.nexus_path) && (!o.nexus_path.length || Operation.isSDK(o.nexus_path[0])));
+    return o && (o.$typeUrl === UserTradeHistory.typeUrl || typeof o.id === "bigint" && Array.isArray(o.amounts_in) && (!o.amounts_in.length || Coin.isSDK(o.amounts_in[0])) && Array.isArray(o.amounts_out) && (!o.amounts_out.length || Coin.isSDK(o.amounts_out[0])) && typeof o.address === "string" && typeof o.pool_id === "bigint" && Array.isArray(o.path) && (!o.path.length || SwapStep.isSDK(o.path[0])) && isSet(o.operation_type) && Array.isArray(o.swap_fee) && (!o.swap_fee.length || Coin.isSDK(o.swap_fee[0])) && Array.isArray(o.join_exit_protocol_fee) && (!o.join_exit_protocol_fee.length || Coin.isSDK(o.join_exit_protocol_fee[0])) && Array.isArray(o.swap_protocol_fee) && (!o.swap_protocol_fee.length || Coin.isSDK(o.swap_protocol_fee[0])) && Timestamp.isSDK(o.block_time) && Array.isArray(o.nexus_batch_fee) && (!o.nexus_batch_fee.length || Coin.isSDK(o.nexus_batch_fee[0])) && Array.isArray(o.nexus_path) && (!o.nexus_path.length || ExecutedOperation.isSDK(o.nexus_path[0])) && Array.isArray(o.order_path) && (!o.order_path.length || RouteStep.isSDK(o.order_path[0])));
   },
   isAmino(o: any): o is UserTradeHistoryAmino {
-    return o && (o.$typeUrl === UserTradeHistory.typeUrl || typeof o.id === "bigint" && Array.isArray(o.amounts_in) && (!o.amounts_in.length || Coin.isAmino(o.amounts_in[0])) && Array.isArray(o.amounts_out) && (!o.amounts_out.length || Coin.isAmino(o.amounts_out[0])) && typeof o.address === "string" && typeof o.pool_id === "bigint" && Array.isArray(o.path) && (!o.path.length || SwapStep.isAmino(o.path[0])) && isSet(o.operation_type) && Array.isArray(o.swap_fee) && (!o.swap_fee.length || Coin.isAmino(o.swap_fee[0])) && Array.isArray(o.join_exit_protocol_fee) && (!o.join_exit_protocol_fee.length || Coin.isAmino(o.join_exit_protocol_fee[0])) && Array.isArray(o.swap_protocol_fee) && (!o.swap_protocol_fee.length || Coin.isAmino(o.swap_protocol_fee[0])) && Timestamp.isAmino(o.block_time) && Array.isArray(o.nexus_batch_fee) && (!o.nexus_batch_fee.length || Coin.isAmino(o.nexus_batch_fee[0])) && Array.isArray(o.nexus_path) && (!o.nexus_path.length || Operation.isAmino(o.nexus_path[0])));
+    return o && (o.$typeUrl === UserTradeHistory.typeUrl || typeof o.id === "bigint" && Array.isArray(o.amounts_in) && (!o.amounts_in.length || Coin.isAmino(o.amounts_in[0])) && Array.isArray(o.amounts_out) && (!o.amounts_out.length || Coin.isAmino(o.amounts_out[0])) && typeof o.address === "string" && typeof o.pool_id === "bigint" && Array.isArray(o.path) && (!o.path.length || SwapStep.isAmino(o.path[0])) && isSet(o.operation_type) && Array.isArray(o.swap_fee) && (!o.swap_fee.length || Coin.isAmino(o.swap_fee[0])) && Array.isArray(o.join_exit_protocol_fee) && (!o.join_exit_protocol_fee.length || Coin.isAmino(o.join_exit_protocol_fee[0])) && Array.isArray(o.swap_protocol_fee) && (!o.swap_protocol_fee.length || Coin.isAmino(o.swap_protocol_fee[0])) && Timestamp.isAmino(o.block_time) && Array.isArray(o.nexus_batch_fee) && (!o.nexus_batch_fee.length || Coin.isAmino(o.nexus_batch_fee[0])) && Array.isArray(o.nexus_path) && (!o.nexus_path.length || ExecutedOperation.isAmino(o.nexus_path[0])) && Array.isArray(o.order_path) && (!o.order_path.length || RouteStep.isAmino(o.order_path[0])));
   },
   encode(message: UserTradeHistory, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
@@ -180,7 +216,13 @@ export const UserTradeHistory = {
       Coin.encode(v!, writer.uint32(98).fork()).ldelim();
     }
     for (const v of message.nexusPath) {
-      Operation.encode(v!, writer.uint32(106).fork()).ldelim();
+      ExecutedOperation.encode(v!, writer.uint32(106).fork()).ldelim();
+    }
+    for (const v of message.orderPath) {
+      RouteStep.encode(v!, writer.uint32(114).fork()).ldelim();
+    }
+    if (message.volume !== undefined) {
+      writer.uint32(122).string(Decimal.fromUserInput(message.volume, 18).atomics);
     }
     return writer;
   },
@@ -228,7 +270,13 @@ export const UserTradeHistory = {
           message.nexusBatchFee.push(Coin.decode(reader, reader.uint32(), useInterfaces));
           break;
         case 13:
-          message.nexusPath.push(Operation.decode(reader, reader.uint32(), useInterfaces));
+          message.nexusPath.push(ExecutedOperation.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        case 14:
+          message.orderPath.push(RouteStep.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        case 15:
+          message.volume = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -251,7 +299,9 @@ export const UserTradeHistory = {
       swapProtocolFee: Array.isArray(object?.swapProtocolFee) ? object.swapProtocolFee.map((e: any) => Coin.fromJSON(e)) : [],
       blockTime: isSet(object.blockTime) ? fromJsonTimestamp(object.blockTime) : undefined,
       nexusBatchFee: Array.isArray(object?.nexusBatchFee) ? object.nexusBatchFee.map((e: any) => Coin.fromJSON(e)) : [],
-      nexusPath: Array.isArray(object?.nexusPath) ? object.nexusPath.map((e: any) => Operation.fromJSON(e)) : []
+      nexusPath: Array.isArray(object?.nexusPath) ? object.nexusPath.map((e: any) => ExecutedOperation.fromJSON(e)) : [],
+      orderPath: Array.isArray(object?.orderPath) ? object.orderPath.map((e: any) => RouteStep.fromJSON(e)) : [],
+      volume: isSet(object.volume) ? String(object.volume) : undefined
     };
   },
   toJSON(message: UserTradeHistory): unknown {
@@ -297,10 +347,16 @@ export const UserTradeHistory = {
       obj.nexusBatchFee = [];
     }
     if (message.nexusPath) {
-      obj.nexusPath = message.nexusPath.map(e => e ? Operation.toJSON(e) : undefined);
+      obj.nexusPath = message.nexusPath.map(e => e ? ExecutedOperation.toJSON(e) : undefined);
     } else {
       obj.nexusPath = [];
     }
+    if (message.orderPath) {
+      obj.orderPath = message.orderPath.map(e => e ? RouteStep.toJSON(e) : undefined);
+    } else {
+      obj.orderPath = [];
+    }
+    message.volume !== undefined && (obj.volume = message.volume);
     return obj;
   },
   fromPartial(object: Partial<UserTradeHistory>): UserTradeHistory {
@@ -317,7 +373,9 @@ export const UserTradeHistory = {
     message.swapProtocolFee = object.swapProtocolFee?.map(e => Coin.fromPartial(e)) || [];
     message.blockTime = object.blockTime !== undefined && object.blockTime !== null ? Timestamp.fromPartial(object.blockTime) : undefined;
     message.nexusBatchFee = object.nexusBatchFee?.map(e => Coin.fromPartial(e)) || [];
-    message.nexusPath = object.nexusPath?.map(e => Operation.fromPartial(e)) || [];
+    message.nexusPath = object.nexusPath?.map(e => ExecutedOperation.fromPartial(e)) || [];
+    message.orderPath = object.orderPath?.map(e => RouteStep.fromPartial(e)) || [];
+    message.volume = object.volume ?? undefined;
     return message;
   },
   fromAmino(object: UserTradeHistoryAmino): UserTradeHistory {
@@ -344,7 +402,11 @@ export const UserTradeHistory = {
       message.blockTime = Timestamp.fromAmino(object.block_time);
     }
     message.nexusBatchFee = object.nexus_batch_fee?.map(e => Coin.fromAmino(e)) || [];
-    message.nexusPath = object.nexus_path?.map(e => Operation.fromAmino(e)) || [];
+    message.nexusPath = object.nexus_path?.map(e => ExecutedOperation.fromAmino(e)) || [];
+    message.orderPath = object.order_path?.map(e => RouteStep.fromAmino(e)) || [];
+    if (object.volume !== undefined && object.volume !== null) {
+      message.volume = object.volume;
+    }
     return message;
   },
   toAmino(message: UserTradeHistory, useInterfaces: boolean = true): UserTradeHistoryAmino {
@@ -390,10 +452,16 @@ export const UserTradeHistory = {
       obj.nexus_batch_fee = message.nexusBatchFee;
     }
     if (message.nexusPath) {
-      obj.nexus_path = message.nexusPath.map(e => e ? Operation.toAmino(e, useInterfaces) : undefined);
+      obj.nexus_path = message.nexusPath.map(e => e ? ExecutedOperation.toAmino(e, useInterfaces) : undefined);
     } else {
       obj.nexus_path = message.nexusPath;
     }
+    if (message.orderPath) {
+      obj.order_path = message.orderPath.map(e => e ? RouteStep.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.order_path = message.orderPath;
+    }
+    obj.volume = padDecimal(message.volume) === null ? undefined : padDecimal(message.volume);
     return obj;
   },
   fromAminoMsg(object: UserTradeHistoryAminoMsg): UserTradeHistory {
@@ -413,3 +481,100 @@ export const UserTradeHistory = {
   }
 };
 GlobalDecoderRegistry.register(UserTradeHistory.typeUrl, UserTradeHistory);
+function createBaseUserTradeVolume(): UserTradeVolume {
+  return {
+    address: "",
+    volume: ""
+  };
+}
+export const UserTradeVolume = {
+  typeUrl: "/pryzmatics.trade.UserTradeVolume",
+  is(o: any): o is UserTradeVolume {
+    return o && (o.$typeUrl === UserTradeVolume.typeUrl || typeof o.address === "string" && typeof o.volume === "string");
+  },
+  isSDK(o: any): o is UserTradeVolumeSDKType {
+    return o && (o.$typeUrl === UserTradeVolume.typeUrl || typeof o.address === "string" && typeof o.volume === "string");
+  },
+  isAmino(o: any): o is UserTradeVolumeAmino {
+    return o && (o.$typeUrl === UserTradeVolume.typeUrl || typeof o.address === "string" && typeof o.volume === "string");
+  },
+  encode(message: UserTradeVolume, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    if (message.volume !== "") {
+      writer.uint32(18).string(Decimal.fromUserInput(message.volume, 18).atomics);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): UserTradeVolume {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUserTradeVolume();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        case 2:
+          message.volume = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): UserTradeVolume {
+    return {
+      address: isSet(object.address) ? String(object.address) : "",
+      volume: isSet(object.volume) ? String(object.volume) : ""
+    };
+  },
+  toJSON(message: UserTradeVolume): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    message.volume !== undefined && (obj.volume = message.volume);
+    return obj;
+  },
+  fromPartial(object: Partial<UserTradeVolume>): UserTradeVolume {
+    const message = createBaseUserTradeVolume();
+    message.address = object.address ?? "";
+    message.volume = object.volume ?? "";
+    return message;
+  },
+  fromAmino(object: UserTradeVolumeAmino): UserTradeVolume {
+    const message = createBaseUserTradeVolume();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    if (object.volume !== undefined && object.volume !== null) {
+      message.volume = object.volume;
+    }
+    return message;
+  },
+  toAmino(message: UserTradeVolume, useInterfaces: boolean = true): UserTradeVolumeAmino {
+    const obj: any = {};
+    obj.address = message.address === "" ? undefined : message.address;
+    obj.volume = padDecimal(message.volume) === "" ? undefined : padDecimal(message.volume);
+    return obj;
+  },
+  fromAminoMsg(object: UserTradeVolumeAminoMsg): UserTradeVolume {
+    return UserTradeVolume.fromAmino(object.value);
+  },
+  fromProtoMsg(message: UserTradeVolumeProtoMsg, useInterfaces: boolean = true): UserTradeVolume {
+    return UserTradeVolume.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: UserTradeVolume): Uint8Array {
+    return UserTradeVolume.encode(message).finish();
+  },
+  toProtoMsg(message: UserTradeVolume): UserTradeVolumeProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.trade.UserTradeVolume",
+      value: UserTradeVolume.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(UserTradeVolume.typeUrl, UserTradeVolume);

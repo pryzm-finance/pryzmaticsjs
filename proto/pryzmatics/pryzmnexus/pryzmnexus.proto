@@ -2,6 +2,7 @@ syntax = "proto3";
 package pryzmatics.pryzmnexus;
 
 import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/pryzm-finance/pryzmatics/pryzm-nexus";
 
@@ -134,6 +135,22 @@ message Operation {
   Operation_Refract refract = 2;
   Operation_Redeem redeem = 3;
   Operation_Stake stake = 4;
+}
+
+message ExecutedOperation {
+  Operation operation = 1 [(gogoproto.nullable) = false];
+  repeated cosmos.base.v1beta1.Coin amounts_out = 2 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+  repeated cosmos.base.v1beta1.Coin amounts_in = 3 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+  repeated cosmos.base.v1beta1.Coin fees = 4 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
 }
 
 // QueryMsg_Paused is an empty message.

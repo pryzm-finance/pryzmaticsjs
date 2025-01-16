@@ -1,3 +1,6 @@
+import { Coin as Coin1 } from "../../cosmos/base/v1beta1/coin";
+import { CoinAmino as Coin1Amino } from "../../cosmos/base/v1beta1/coin";
+import { CoinSDKType as Coin1SDKType } from "../../cosmos/base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet } from "../../helpers";
 import { GlobalDecoderRegistry } from "../../registry";
@@ -532,6 +535,32 @@ export interface OperationSDKType {
   refract?: Operation_RefractSDKType;
   redeem?: Operation_RedeemSDKType;
   stake?: Operation_StakeSDKType;
+}
+export interface ExecutedOperation {
+  operation: Operation;
+  amountsOut: Coin1[];
+  amountsIn: Coin1[];
+  fees: Coin1[];
+}
+export interface ExecutedOperationProtoMsg {
+  typeUrl: "/pryzmatics.pryzmnexus.ExecutedOperation";
+  value: Uint8Array;
+}
+export interface ExecutedOperationAmino {
+  operation?: OperationAmino;
+  amounts_out?: Coin1Amino[];
+  amounts_in?: Coin1Amino[];
+  fees?: Coin1Amino[];
+}
+export interface ExecutedOperationAminoMsg {
+  type: "/pryzmatics.pryzmnexus.ExecutedOperation";
+  value: ExecutedOperationAmino;
+}
+export interface ExecutedOperationSDKType {
+  operation: OperationSDKType;
+  amounts_out: Coin1SDKType[];
+  amounts_in: Coin1SDKType[];
+  fees: Coin1SDKType[];
 }
 /** QueryMsg_Paused is an empty message. */
 export interface QueryMsg_Paused {}
@@ -3049,6 +3078,149 @@ export const Operation = {
   }
 };
 GlobalDecoderRegistry.register(Operation.typeUrl, Operation);
+function createBaseExecutedOperation(): ExecutedOperation {
+  return {
+    operation: Operation.fromPartial({}),
+    amountsOut: [],
+    amountsIn: [],
+    fees: []
+  };
+}
+export const ExecutedOperation = {
+  typeUrl: "/pryzmatics.pryzmnexus.ExecutedOperation",
+  is(o: any): o is ExecutedOperation {
+    return o && (o.$typeUrl === ExecutedOperation.typeUrl || Operation.is(o.operation) && Array.isArray(o.amountsOut) && (!o.amountsOut.length || Coin1.is(o.amountsOut[0])) && Array.isArray(o.amountsIn) && (!o.amountsIn.length || Coin1.is(o.amountsIn[0])) && Array.isArray(o.fees) && (!o.fees.length || Coin1.is(o.fees[0])));
+  },
+  isSDK(o: any): o is ExecutedOperationSDKType {
+    return o && (o.$typeUrl === ExecutedOperation.typeUrl || Operation.isSDK(o.operation) && Array.isArray(o.amounts_out) && (!o.amounts_out.length || Coin1.isSDK(o.amounts_out[0])) && Array.isArray(o.amounts_in) && (!o.amounts_in.length || Coin1.isSDK(o.amounts_in[0])) && Array.isArray(o.fees) && (!o.fees.length || Coin1.isSDK(o.fees[0])));
+  },
+  isAmino(o: any): o is ExecutedOperationAmino {
+    return o && (o.$typeUrl === ExecutedOperation.typeUrl || Operation.isAmino(o.operation) && Array.isArray(o.amounts_out) && (!o.amounts_out.length || Coin1.isAmino(o.amounts_out[0])) && Array.isArray(o.amounts_in) && (!o.amounts_in.length || Coin1.isAmino(o.amounts_in[0])) && Array.isArray(o.fees) && (!o.fees.length || Coin1.isAmino(o.fees[0])));
+  },
+  encode(message: ExecutedOperation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.operation !== undefined) {
+      Operation.encode(message.operation, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.amountsOut) {
+      Coin1.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.amountsIn) {
+      Coin1.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.fees) {
+      Coin1.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): ExecutedOperation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseExecutedOperation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.operation = Operation.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 2:
+          message.amountsOut.push(Coin1.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        case 3:
+          message.amountsIn.push(Coin1.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        case 4:
+          message.fees.push(Coin1.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): ExecutedOperation {
+    return {
+      operation: isSet(object.operation) ? Operation.fromJSON(object.operation) : undefined,
+      amountsOut: Array.isArray(object?.amountsOut) ? object.amountsOut.map((e: any) => Coin1.fromJSON(e)) : [],
+      amountsIn: Array.isArray(object?.amountsIn) ? object.amountsIn.map((e: any) => Coin1.fromJSON(e)) : [],
+      fees: Array.isArray(object?.fees) ? object.fees.map((e: any) => Coin1.fromJSON(e)) : []
+    };
+  },
+  toJSON(message: ExecutedOperation): unknown {
+    const obj: any = {};
+    message.operation !== undefined && (obj.operation = message.operation ? Operation.toJSON(message.operation) : undefined);
+    if (message.amountsOut) {
+      obj.amountsOut = message.amountsOut.map(e => e ? Coin1.toJSON(e) : undefined);
+    } else {
+      obj.amountsOut = [];
+    }
+    if (message.amountsIn) {
+      obj.amountsIn = message.amountsIn.map(e => e ? Coin1.toJSON(e) : undefined);
+    } else {
+      obj.amountsIn = [];
+    }
+    if (message.fees) {
+      obj.fees = message.fees.map(e => e ? Coin1.toJSON(e) : undefined);
+    } else {
+      obj.fees = [];
+    }
+    return obj;
+  },
+  fromPartial(object: Partial<ExecutedOperation>): ExecutedOperation {
+    const message = createBaseExecutedOperation();
+    message.operation = object.operation !== undefined && object.operation !== null ? Operation.fromPartial(object.operation) : undefined;
+    message.amountsOut = object.amountsOut?.map(e => Coin1.fromPartial(e)) || [];
+    message.amountsIn = object.amountsIn?.map(e => Coin1.fromPartial(e)) || [];
+    message.fees = object.fees?.map(e => Coin1.fromPartial(e)) || [];
+    return message;
+  },
+  fromAmino(object: ExecutedOperationAmino): ExecutedOperation {
+    const message = createBaseExecutedOperation();
+    if (object.operation !== undefined && object.operation !== null) {
+      message.operation = Operation.fromAmino(object.operation);
+    }
+    message.amountsOut = object.amounts_out?.map(e => Coin1.fromAmino(e)) || [];
+    message.amountsIn = object.amounts_in?.map(e => Coin1.fromAmino(e)) || [];
+    message.fees = object.fees?.map(e => Coin1.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: ExecutedOperation, useInterfaces: boolean = true): ExecutedOperationAmino {
+    const obj: any = {};
+    obj.operation = message.operation ? Operation.toAmino(message.operation, useInterfaces) : undefined;
+    if (message.amountsOut) {
+      obj.amounts_out = message.amountsOut.map(e => e ? Coin1.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.amounts_out = message.amountsOut;
+    }
+    if (message.amountsIn) {
+      obj.amounts_in = message.amountsIn.map(e => e ? Coin1.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.amounts_in = message.amountsIn;
+    }
+    if (message.fees) {
+      obj.fees = message.fees.map(e => e ? Coin1.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.fees = message.fees;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: ExecutedOperationAminoMsg): ExecutedOperation {
+    return ExecutedOperation.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ExecutedOperationProtoMsg, useInterfaces: boolean = true): ExecutedOperation {
+    return ExecutedOperation.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: ExecutedOperation): Uint8Array {
+    return ExecutedOperation.encode(message).finish();
+  },
+  toProtoMsg(message: ExecutedOperation): ExecutedOperationProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.pryzmnexus.ExecutedOperation",
+      value: ExecutedOperation.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(ExecutedOperation.typeUrl, ExecutedOperation);
 function createBaseQueryMsg_Paused(): QueryMsg_Paused {
   return {};
 }

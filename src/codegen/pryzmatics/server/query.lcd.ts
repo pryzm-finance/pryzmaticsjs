@@ -27,7 +27,7 @@ import { QueryZeroImpactJoinAssetToYammSimulationRequest, QueryZeroImpactJoinAss
 import { QueryExitTokenExactLptSimulationRequest, QueryExitTokenExactLptSimulationResponseSDKType } from "./trade/exit_token_exact_lpt_simulation";
 import { QueryExitExactTokensSimulationRequest, QueryExitExactTokensSimulationResponseSDKType } from "./trade/exit_exact_tokens_simulation";
 import { QueryExitAllTokensExactLptSimulationRequest, QueryExitAllTokensExactLptSimulationResponseSDKType } from "./trade/exit_all_tokens_exact_lpt_simulation";
-import { QueryUserTradeHistoryRequest, QueryUserTradeHistoryResponseSDKType } from "./trade/user_trade_history";
+import { QueryUserTradeHistoryRequest, QueryUserTradeHistoryResponseSDKType, QueryUserTradeVolumeRequest, QueryUserTradeVolumeResponseSDKType } from "./trade/user_trade_history";
 import { QueryTokenTradeVolumeRequest, QueryTokenTradeVolumeResponseSDKType, QueryPoolTradeVolumeRequest, QueryPoolTradeVolumeResponseSDKType, QueryFavoritePairsRequest, QueryFavoritePairsResponseSDKType } from "./trade/trade_volume";
 import { QueryPulseTradablePairsRequest, QueryPulseTradablePairsResponseSDKType, QueryPulseTradablePairPriceRequest, QueryPulseTradablePairPriceResponseSDKType } from "./trade/pulse_tradable_pairs";
 import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType, QueryOrderPairsToDisableRequest, QueryOrderPairsToDisableResponseSDKType } from "./trade/order";
@@ -94,6 +94,7 @@ export class LCDQueryClient {
     this.exitExactTokensSimulation = this.exitExactTokensSimulation.bind(this);
     this.exitAllTokensExactLptSimulation = this.exitAllTokensExactLptSimulation.bind(this);
     this.userTradeHistory = this.userTradeHistory.bind(this);
+    this.userTradeVolume = this.userTradeVolume.bind(this);
     this.tokenTradeVolume = this.tokenTradeVolume.bind(this);
     this.poolTradeVolume = this.poolTradeVolume.bind(this);
     this.favoritePairs = this.favoritePairs.bind(this);
@@ -558,6 +559,26 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/trade/user_trade_history`;
     return await this.req.get<QueryUserTradeHistoryResponseSDKType>(endpoint, options);
+  }
+  /* UserTradeVolume */
+  async userTradeVolume(params: QueryUserTradeVolumeRequest): Promise<QueryUserTradeVolumeResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.operationType !== "undefined") {
+      options.params.operation_type = params.operationType;
+    }
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.intervalHours !== "undefined") {
+      options.params.interval_hours = params.intervalHours;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `pryzmatics/trade/user_trade_volume`;
+    return await this.req.get<QueryUserTradeVolumeResponseSDKType>(endpoint, options);
   }
   /* TokenTradeVolume */
   async tokenTradeVolume(params: QueryTokenTradeVolumeRequest): Promise<QueryTokenTradeVolumeResponseSDKType> {
