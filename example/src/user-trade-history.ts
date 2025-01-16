@@ -5,7 +5,7 @@ import { createPryzmaticsClient, PryzmaticsClient } from "@pryzm-finance/pryzmat
 import { PageRequest } from "@pryzm-finance/pryzmaticsjs/lib/codegen/cosmos/base/query/v1beta1/pagination";
 import { fetchAll } from "@pryzm-finance/pryzmaticsjs/lib";
 import {
-    UserTradeHistoryOrderByProperty
+    UserTradeHistoryOrderByProperty, UserTradeVolumeOrderByProperty
 } from "@pryzm-finance/pryzmaticsjs/lib/codegen/pryzmatics/database/trade/user_trade_history";
 
 async function main() {
@@ -43,6 +43,20 @@ async function main() {
         return [result.pagination.next_key, result.user_trade_history_records]
     })
     console.log(JSON.stringify(history))
+
+    let volumes = await fetchAll(pryzmaticsClient, async (client: PryzmaticsClient, request: PageRequest) => {
+        const result = await pryzmaticsClient.pryzmatics.userTradeVolume({
+            intervalHours: 24n,
+            operationType: OperationType.OPERATION_TYPE_ORDER, // pulse-trade volume leader-board
+            orderBy: {
+                property: UserTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_VOLUME,
+                descending: true
+            },
+            pagination: request
+        })
+        return [result.pagination.next_key, result.user_trade_volume_records]
+    })
+    console.log(JSON.stringify(volumes))
     return
 
     history = await fetchAll(pryzmaticsClient, async (client: PryzmaticsClient, request: PageRequest) => {
