@@ -30,7 +30,7 @@ import { QueryExitAllTokensExactLptSimulationRequest, QueryExitAllTokensExactLpt
 import { QueryUserTradeHistoryRequest, QueryUserTradeHistoryResponseSDKType, QueryUserTradeVolumeRequest, QueryUserTradeVolumeResponseSDKType } from "./trade/user_trade_history";
 import { QueryTokenTradeVolumeRequest, QueryTokenTradeVolumeResponseSDKType, QueryPoolTradeVolumeRequest, QueryPoolTradeVolumeResponseSDKType, QueryFavoritePairsRequest, QueryFavoritePairsResponseSDKType } from "./trade/trade_volume";
 import { QueryPulseTradablePairsRequest, QueryPulseTradablePairsResponseSDKType, QueryPulseTradablePairPriceRequest, QueryPulseTradablePairPriceResponseSDKType } from "./trade/pulse_tradable_pairs";
-import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType, QueryOrderPairsToDisableRequest, QueryOrderPairsToDisableResponseSDKType } from "./trade/order";
+import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType, QueryOrderPairsToDisableRequest, QueryOrderPairsToDisableResponseSDKType, QueryOrderPairMetricsRequest, QueryOrderPairMetricsResponseSDKType, QueryOrderPairPriceBucketsRequest, QueryOrderPairPriceBucketsResponseSDKType, QueryOrderMetricsRequest, QueryOrderMetricsResponseSDKType } from "./trade/order";
 import { QueryDirectlyConnectedTokenPairsRequest, QueryDirectlyConnectedTokenPairsResponseSDKType } from "./trade/directly_connected_token_pairs";
 import { QueryTickersRequest, QueryTickersResponseSDKType } from "./trade/tickers";
 import { QueryHostChainUnbondingTimeRequest, QueryHostChainUnbondingTimeResponseSDKType, QueryHostChainRequest, QueryHostChainResponseSDKType, QueryHostChainsRequest, QueryHostChainsResponseSDKType, QueryHostChainByUnderlyingDenomRequest, QueryHostChainByUnderlyingDenomResponseSDKType } from "./icstaking/host_chain";
@@ -105,6 +105,9 @@ export class LCDQueryClient {
     this.matchableOrderCounts = this.matchableOrderCounts.bind(this);
     this.matchableOrdersForPair = this.matchableOrdersForPair.bind(this);
     this.orderPairsToDisable = this.orderPairsToDisable.bind(this);
+    this.orderPairMetrics = this.orderPairMetrics.bind(this);
+    this.orderPairPriceBuckets = this.orderPairPriceBuckets.bind(this);
+    this.orderMetrics = this.orderMetrics.bind(this);
     this.directlyConnectedTokenPairs = this.directlyConnectedTokenPairs.bind(this);
     this.tickers = this.tickers.bind(this);
     this.hostChainUnbondingTime = this.hostChainUnbondingTime.bind(this);
@@ -557,6 +560,9 @@ export class LCDQueryClient {
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
+    if (typeof params?.includeProxyTrades !== "undefined") {
+      options.params.include_proxy_trades = params.includeProxyTrades;
+    }
     const endpoint = `pryzmatics/trade/user_trade_history`;
     return await this.req.get<QueryUserTradeHistoryResponseSDKType>(endpoint, options);
   }
@@ -576,6 +582,9 @@ export class LCDQueryClient {
     }
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
+    }
+    if (typeof params?.includeProxyTrades !== "undefined") {
+      options.params.include_proxy_trades = params.includeProxyTrades;
     }
     const endpoint = `pryzmatics/trade/user_trade_volume`;
     return await this.req.get<QueryUserTradeVolumeResponseSDKType>(endpoint, options);
@@ -710,6 +719,62 @@ export class LCDQueryClient {
   async orderPairsToDisable(_params: QueryOrderPairsToDisableRequest = {}): Promise<QueryOrderPairsToDisableResponseSDKType> {
     const endpoint = `pryzmatics/trade/order_pairs_to_disable`;
     return await this.req.get<QueryOrderPairsToDisableResponseSDKType>(endpoint);
+  }
+  /* OrderPairMetrics */
+  async orderPairMetrics(params: QueryOrderPairMetricsRequest = {
+    pagination: undefined
+  }): Promise<QueryOrderPairMetricsResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `pryzmatics/trade/order_pair_metrics`;
+    return await this.req.get<QueryOrderPairMetricsResponseSDKType>(endpoint, options);
+  }
+  /* OrderPairPriceBuckets */
+  async orderPairPriceBuckets(params: QueryOrderPairPriceBucketsRequest): Promise<QueryOrderPairPriceBucketsResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.tokenIn !== "undefined") {
+      options.params.token_in = params.tokenIn;
+    }
+    if (typeof params?.tokenOut !== "undefined") {
+      options.params.token_out = params.tokenOut;
+    }
+    if (typeof params?.poolId !== "undefined") {
+      options.params.pool_id = params.poolId;
+    }
+    if (typeof params?.whitelistedRoute !== "undefined") {
+      options.params.whitelisted_route = params.whitelistedRoute;
+    }
+    if (typeof params?.windowStart !== "undefined") {
+      options.params.window_start = params.windowStart;
+    }
+    if (typeof params?.windowEnd !== "undefined") {
+      options.params.window_end = params.windowEnd;
+    }
+    if (typeof params?.bucketSize !== "undefined") {
+      options.params.bucket_size = params.bucketSize;
+    }
+    const endpoint = `pryzmatics/trade/order_pair_price_buckets`;
+    return await this.req.get<QueryOrderPairPriceBucketsResponseSDKType>(endpoint, options);
+  }
+  /* OrderMetrics */
+  async orderMetrics(params: QueryOrderMetricsRequest): Promise<QueryOrderMetricsResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.tokenIn !== "undefined") {
+      options.params.token_in = params.tokenIn;
+    }
+    if (typeof params?.tokenOut !== "undefined") {
+      options.params.token_out = params.tokenOut;
+    }
+    const endpoint = `pryzmatics/trade/order_metrics`;
+    return await this.req.get<QueryOrderMetricsResponseSDKType>(endpoint, options);
   }
   /* DirectlyConnectedTokenPairs */
   async directlyConnectedTokenPairs(params: QueryDirectlyConnectedTokenPairsRequest = {

@@ -77,3 +77,47 @@ message QueryOrderPairsToDisableRequest {
 message QueryOrderPairsToDisableResponse {
   repeated pryzm.amm.v1.DisabledOrderPair pairs = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryOrderPairMetricsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1 [(gogoproto.nullable) = true];
+}
+
+message QueryOrderPairMetricsResponse {
+  repeated pryzmatics.trade.OrderPairMetrics metrics = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}
+
+message QueryOrderMetricsRequest {
+  string token_in = 1;
+  string token_out = 2;
+}
+
+message QueryOrderMetricsResponse {
+  pryzmatics.trade.OrderMetrics metrics = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryOrderPairPriceBucketsRequest {
+  string token_in = 1;
+  string token_out = 2;
+  uint64 pool_id = 3;
+  bool whitelisted_route = 4;
+  string window_start = 5 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string window_end = 6 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string bucket_size = 7 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message QueryOrderPairPriceBucketsResponse {
+  repeated pryzmatics.trade.AggregatedOrderPairPriceBucket buckets = 1 [(gogoproto.nullable) = false];
+}

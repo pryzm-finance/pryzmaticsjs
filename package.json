@@ -1,6 +1,6 @@
 {
   "name": "@pryzm-finance/pryzmaticsjs",
-  "version": "0.8.20-rc1",
+  "version": "0.9.10",
   "description": "Javascript SDK for Pryzmatics",
   "author": "amin <amin@refractedlabs.com>",
   "homepage": "https://github.com/pryzm-finance/pryzmaticsjs#readme",

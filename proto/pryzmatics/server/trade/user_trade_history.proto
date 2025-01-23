@@ -15,6 +15,7 @@ message QueryUserTradeHistoryRequest {
   pryzmatics.trade.OperationType operation_type = 4;
   pryzmatics.database.trade.UserTradeHistoryOrderBy order_by = 5 [(gogoproto.nullable) = true];
   cosmos.base.query.v1beta1.PageRequest pagination = 6 [(gogoproto.nullable) = true];
+  bool include_proxy_trades = 7;
 }
 
 message QueryUserTradeHistoryResponse {
@@ -27,6 +28,7 @@ message QueryUserTradeVolumeRequest {
   pryzmatics.database.trade.UserTradeVolumeOrderBy order_by = 2 [(gogoproto.nullable) = true];
   uint64 interval_hours = 3;
   cosmos.base.query.v1beta1.PageRequest pagination = 4 [(gogoproto.nullable) = true];
+  bool include_proxy_trades = 5;
 }
 
 message QueryUserTradeVolumeResponse {

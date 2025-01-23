@@ -1,4 +1,4 @@
-import { Order, OrderAmino, OrderSDKType, QueryOrderStatus, MatchableOrderCount, MatchableOrderCountAmino, MatchableOrderCountSDKType, MatchableOrder, MatchableOrderAmino, MatchableOrderSDKType, queryOrderStatusFromJSON, queryOrderStatusToJSON } from "../../trade/order";
+import { Order, OrderAmino, OrderSDKType, QueryOrderStatus, MatchableOrderCount, MatchableOrderCountAmino, MatchableOrderCountSDKType, MatchableOrder, MatchableOrderAmino, MatchableOrderSDKType, OrderPairMetrics, OrderPairMetricsAmino, OrderPairMetricsSDKType, OrderMetrics, OrderMetricsAmino, OrderMetricsSDKType, AggregatedOrderPairPriceBucket, AggregatedOrderPairPriceBucketAmino, AggregatedOrderPairPriceBucketSDKType, queryOrderStatusFromJSON, queryOrderStatusToJSON } from "../../trade/order";
 import { OrderOrderBy, OrderOrderByAmino, OrderOrderBySDKType } from "../../database/trade/order";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
 import { DisabledOrderPair, DisabledOrderPairAmino, DisabledOrderPairSDKType } from "../../../pryzm/amm/v1/order";
@@ -217,6 +217,132 @@ export interface QueryOrderPairsToDisableResponseAminoMsg {
 }
 export interface QueryOrderPairsToDisableResponseSDKType {
   pairs: DisabledOrderPairSDKType[];
+}
+export interface QueryOrderPairMetricsRequest {
+  pagination?: PageRequest;
+}
+export interface QueryOrderPairMetricsRequestProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairMetricsRequest";
+  value: Uint8Array;
+}
+export interface QueryOrderPairMetricsRequestAmino {
+  pagination?: PageRequestAmino;
+}
+export interface QueryOrderPairMetricsRequestAminoMsg {
+  type: "/pryzmatics.server.trade.QueryOrderPairMetricsRequest";
+  value: QueryOrderPairMetricsRequestAmino;
+}
+export interface QueryOrderPairMetricsRequestSDKType {
+  pagination?: PageRequestSDKType;
+}
+export interface QueryOrderPairMetricsResponse {
+  metrics: OrderPairMetrics[];
+  pagination?: PageResponse;
+}
+export interface QueryOrderPairMetricsResponseProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairMetricsResponse";
+  value: Uint8Array;
+}
+export interface QueryOrderPairMetricsResponseAmino {
+  metrics?: OrderPairMetricsAmino[];
+  pagination?: PageResponseAmino;
+}
+export interface QueryOrderPairMetricsResponseAminoMsg {
+  type: "/pryzmatics.server.trade.QueryOrderPairMetricsResponse";
+  value: QueryOrderPairMetricsResponseAmino;
+}
+export interface QueryOrderPairMetricsResponseSDKType {
+  metrics: OrderPairMetricsSDKType[];
+  pagination?: PageResponseSDKType;
+}
+export interface QueryOrderMetricsRequest {
+  tokenIn: string;
+  tokenOut: string;
+}
+export interface QueryOrderMetricsRequestProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderMetricsRequest";
+  value: Uint8Array;
+}
+export interface QueryOrderMetricsRequestAmino {
+  token_in?: string;
+  token_out?: string;
+}
+export interface QueryOrderMetricsRequestAminoMsg {
+  type: "/pryzmatics.server.trade.QueryOrderMetricsRequest";
+  value: QueryOrderMetricsRequestAmino;
+}
+export interface QueryOrderMetricsRequestSDKType {
+  token_in: string;
+  token_out: string;
+}
+export interface QueryOrderMetricsResponse {
+  metrics: OrderMetrics;
+}
+export interface QueryOrderMetricsResponseProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderMetricsResponse";
+  value: Uint8Array;
+}
+export interface QueryOrderMetricsResponseAmino {
+  metrics?: OrderMetricsAmino;
+}
+export interface QueryOrderMetricsResponseAminoMsg {
+  type: "/pryzmatics.server.trade.QueryOrderMetricsResponse";
+  value: QueryOrderMetricsResponseAmino;
+}
+export interface QueryOrderMetricsResponseSDKType {
+  metrics: OrderMetricsSDKType;
+}
+export interface QueryOrderPairPriceBucketsRequest {
+  tokenIn: string;
+  tokenOut: string;
+  poolId: bigint;
+  whitelistedRoute: boolean;
+  windowStart: string;
+  windowEnd: string;
+  bucketSize: string;
+}
+export interface QueryOrderPairPriceBucketsRequestProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairPriceBucketsRequest";
+  value: Uint8Array;
+}
+export interface QueryOrderPairPriceBucketsRequestAmino {
+  token_in?: string;
+  token_out?: string;
+  pool_id?: string;
+  whitelisted_route?: boolean;
+  window_start?: string;
+  window_end?: string;
+  bucket_size?: string;
+}
+export interface QueryOrderPairPriceBucketsRequestAminoMsg {
+  type: "/pryzmatics.server.trade.QueryOrderPairPriceBucketsRequest";
+  value: QueryOrderPairPriceBucketsRequestAmino;
+}
+export interface QueryOrderPairPriceBucketsRequestSDKType {
+  token_in: string;
+  token_out: string;
+  pool_id: bigint;
+  whitelisted_route: boolean;
+  window_start: string;
+  window_end: string;
+  bucket_size: string;
+}
+export interface QueryOrderPairPriceBucketsResponse {
+  buckets: AggregatedOrderPairPriceBucket[];
+}
+export interface QueryOrderPairPriceBucketsResponseProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairPriceBucketsResponse";
+  value: Uint8Array;
+}
+export interface QueryOrderPairPriceBucketsResponseAmino {
+  buckets?: AggregatedOrderPairPriceBucketAmino[];
+}
+export interface QueryOrderPairPriceBucketsResponseAminoMsg {
+  type: "/pryzmatics.server.trade.QueryOrderPairPriceBucketsResponse";
+  value: QueryOrderPairPriceBucketsResponseAmino;
+}
+export interface QueryOrderPairPriceBucketsResponseSDKType {
+  buckets: AggregatedOrderPairPriceBucketSDKType[];
 }
 function createBaseQueryOrderRequest(): QueryOrderRequest {
   return {
@@ -1286,3 +1412,625 @@ export const QueryOrderPairsToDisableResponse = {
   }
 };
 GlobalDecoderRegistry.register(QueryOrderPairsToDisableResponse.typeUrl, QueryOrderPairsToDisableResponse);
+function createBaseQueryOrderPairMetricsRequest(): QueryOrderPairMetricsRequest {
+  return {
+    pagination: undefined
+  };
+}
+export const QueryOrderPairMetricsRequest = {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairMetricsRequest",
+  is(o: any): o is QueryOrderPairMetricsRequest {
+    return o && o.$typeUrl === QueryOrderPairMetricsRequest.typeUrl;
+  },
+  isSDK(o: any): o is QueryOrderPairMetricsRequestSDKType {
+    return o && o.$typeUrl === QueryOrderPairMetricsRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryOrderPairMetricsRequestAmino {
+    return o && o.$typeUrl === QueryOrderPairMetricsRequest.typeUrl;
+  },
+  encode(message: QueryOrderPairMetricsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryOrderPairMetricsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOrderPairMetricsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryOrderPairMetricsRequest {
+    return {
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
+    };
+  },
+  toJSON(message: QueryOrderPairMetricsRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryOrderPairMetricsRequest>): QueryOrderPairMetricsRequest {
+    const message = createBaseQueryOrderPairMetricsRequest();
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryOrderPairMetricsRequestAmino): QueryOrderPairMetricsRequest {
+    const message = createBaseQueryOrderPairMetricsRequest();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryOrderPairMetricsRequest, useInterfaces: boolean = true): QueryOrderPairMetricsRequestAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryOrderPairMetricsRequestAminoMsg): QueryOrderPairMetricsRequest {
+    return QueryOrderPairMetricsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryOrderPairMetricsRequestProtoMsg, useInterfaces: boolean = true): QueryOrderPairMetricsRequest {
+    return QueryOrderPairMetricsRequest.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryOrderPairMetricsRequest): Uint8Array {
+    return QueryOrderPairMetricsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryOrderPairMetricsRequest): QueryOrderPairMetricsRequestProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryOrderPairMetricsRequest",
+      value: QueryOrderPairMetricsRequest.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryOrderPairMetricsRequest.typeUrl, QueryOrderPairMetricsRequest);
+function createBaseQueryOrderPairMetricsResponse(): QueryOrderPairMetricsResponse {
+  return {
+    metrics: [],
+    pagination: undefined
+  };
+}
+export const QueryOrderPairMetricsResponse = {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairMetricsResponse",
+  is(o: any): o is QueryOrderPairMetricsResponse {
+    return o && (o.$typeUrl === QueryOrderPairMetricsResponse.typeUrl || Array.isArray(o.metrics) && (!o.metrics.length || OrderPairMetrics.is(o.metrics[0])));
+  },
+  isSDK(o: any): o is QueryOrderPairMetricsResponseSDKType {
+    return o && (o.$typeUrl === QueryOrderPairMetricsResponse.typeUrl || Array.isArray(o.metrics) && (!o.metrics.length || OrderPairMetrics.isSDK(o.metrics[0])));
+  },
+  isAmino(o: any): o is QueryOrderPairMetricsResponseAmino {
+    return o && (o.$typeUrl === QueryOrderPairMetricsResponse.typeUrl || Array.isArray(o.metrics) && (!o.metrics.length || OrderPairMetrics.isAmino(o.metrics[0])));
+  },
+  encode(message: QueryOrderPairMetricsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    for (const v of message.metrics) {
+      OrderPairMetrics.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryOrderPairMetricsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOrderPairMetricsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.metrics.push(OrderPairMetrics.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryOrderPairMetricsResponse {
+    return {
+      metrics: Array.isArray(object?.metrics) ? object.metrics.map((e: any) => OrderPairMetrics.fromJSON(e)) : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
+    };
+  },
+  toJSON(message: QueryOrderPairMetricsResponse): unknown {
+    const obj: any = {};
+    if (message.metrics) {
+      obj.metrics = message.metrics.map(e => e ? OrderPairMetrics.toJSON(e) : undefined);
+    } else {
+      obj.metrics = [];
+    }
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryOrderPairMetricsResponse>): QueryOrderPairMetricsResponse {
+    const message = createBaseQueryOrderPairMetricsResponse();
+    message.metrics = object.metrics?.map(e => OrderPairMetrics.fromPartial(e)) || [];
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryOrderPairMetricsResponseAmino): QueryOrderPairMetricsResponse {
+    const message = createBaseQueryOrderPairMetricsResponse();
+    message.metrics = object.metrics?.map(e => OrderPairMetrics.fromAmino(e)) || [];
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryOrderPairMetricsResponse, useInterfaces: boolean = true): QueryOrderPairMetricsResponseAmino {
+    const obj: any = {};
+    if (message.metrics) {
+      obj.metrics = message.metrics.map(e => e ? OrderPairMetrics.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.metrics = message.metrics;
+    }
+    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination, useInterfaces) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryOrderPairMetricsResponseAminoMsg): QueryOrderPairMetricsResponse {
+    return QueryOrderPairMetricsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryOrderPairMetricsResponseProtoMsg, useInterfaces: boolean = true): QueryOrderPairMetricsResponse {
+    return QueryOrderPairMetricsResponse.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryOrderPairMetricsResponse): Uint8Array {
+    return QueryOrderPairMetricsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryOrderPairMetricsResponse): QueryOrderPairMetricsResponseProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryOrderPairMetricsResponse",
+      value: QueryOrderPairMetricsResponse.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryOrderPairMetricsResponse.typeUrl, QueryOrderPairMetricsResponse);
+function createBaseQueryOrderMetricsRequest(): QueryOrderMetricsRequest {
+  return {
+    tokenIn: "",
+    tokenOut: ""
+  };
+}
+export const QueryOrderMetricsRequest = {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderMetricsRequest",
+  is(o: any): o is QueryOrderMetricsRequest {
+    return o && (o.$typeUrl === QueryOrderMetricsRequest.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string");
+  },
+  isSDK(o: any): o is QueryOrderMetricsRequestSDKType {
+    return o && (o.$typeUrl === QueryOrderMetricsRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string");
+  },
+  isAmino(o: any): o is QueryOrderMetricsRequestAmino {
+    return o && (o.$typeUrl === QueryOrderMetricsRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string");
+  },
+  encode(message: QueryOrderMetricsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.tokenIn !== "") {
+      writer.uint32(10).string(message.tokenIn);
+    }
+    if (message.tokenOut !== "") {
+      writer.uint32(18).string(message.tokenOut);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryOrderMetricsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOrderMetricsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tokenIn = reader.string();
+          break;
+        case 2:
+          message.tokenOut = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryOrderMetricsRequest {
+    return {
+      tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
+      tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : ""
+    };
+  },
+  toJSON(message: QueryOrderMetricsRequest): unknown {
+    const obj: any = {};
+    message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
+    message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryOrderMetricsRequest>): QueryOrderMetricsRequest {
+    const message = createBaseQueryOrderMetricsRequest();
+    message.tokenIn = object.tokenIn ?? "";
+    message.tokenOut = object.tokenOut ?? "";
+    return message;
+  },
+  fromAmino(object: QueryOrderMetricsRequestAmino): QueryOrderMetricsRequest {
+    const message = createBaseQueryOrderMetricsRequest();
+    if (object.token_in !== undefined && object.token_in !== null) {
+      message.tokenIn = object.token_in;
+    }
+    if (object.token_out !== undefined && object.token_out !== null) {
+      message.tokenOut = object.token_out;
+    }
+    return message;
+  },
+  toAmino(message: QueryOrderMetricsRequest, useInterfaces: boolean = true): QueryOrderMetricsRequestAmino {
+    const obj: any = {};
+    obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
+    obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
+    return obj;
+  },
+  fromAminoMsg(object: QueryOrderMetricsRequestAminoMsg): QueryOrderMetricsRequest {
+    return QueryOrderMetricsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryOrderMetricsRequestProtoMsg, useInterfaces: boolean = true): QueryOrderMetricsRequest {
+    return QueryOrderMetricsRequest.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryOrderMetricsRequest): Uint8Array {
+    return QueryOrderMetricsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryOrderMetricsRequest): QueryOrderMetricsRequestProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryOrderMetricsRequest",
+      value: QueryOrderMetricsRequest.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryOrderMetricsRequest.typeUrl, QueryOrderMetricsRequest);
+function createBaseQueryOrderMetricsResponse(): QueryOrderMetricsResponse {
+  return {
+    metrics: OrderMetrics.fromPartial({})
+  };
+}
+export const QueryOrderMetricsResponse = {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderMetricsResponse",
+  is(o: any): o is QueryOrderMetricsResponse {
+    return o && (o.$typeUrl === QueryOrderMetricsResponse.typeUrl || OrderMetrics.is(o.metrics));
+  },
+  isSDK(o: any): o is QueryOrderMetricsResponseSDKType {
+    return o && (o.$typeUrl === QueryOrderMetricsResponse.typeUrl || OrderMetrics.isSDK(o.metrics));
+  },
+  isAmino(o: any): o is QueryOrderMetricsResponseAmino {
+    return o && (o.$typeUrl === QueryOrderMetricsResponse.typeUrl || OrderMetrics.isAmino(o.metrics));
+  },
+  encode(message: QueryOrderMetricsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.metrics !== undefined) {
+      OrderMetrics.encode(message.metrics, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryOrderMetricsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOrderMetricsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.metrics = OrderMetrics.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryOrderMetricsResponse {
+    return {
+      metrics: isSet(object.metrics) ? OrderMetrics.fromJSON(object.metrics) : undefined
+    };
+  },
+  toJSON(message: QueryOrderMetricsResponse): unknown {
+    const obj: any = {};
+    message.metrics !== undefined && (obj.metrics = message.metrics ? OrderMetrics.toJSON(message.metrics) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryOrderMetricsResponse>): QueryOrderMetricsResponse {
+    const message = createBaseQueryOrderMetricsResponse();
+    message.metrics = object.metrics !== undefined && object.metrics !== null ? OrderMetrics.fromPartial(object.metrics) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryOrderMetricsResponseAmino): QueryOrderMetricsResponse {
+    const message = createBaseQueryOrderMetricsResponse();
+    if (object.metrics !== undefined && object.metrics !== null) {
+      message.metrics = OrderMetrics.fromAmino(object.metrics);
+    }
+    return message;
+  },
+  toAmino(message: QueryOrderMetricsResponse, useInterfaces: boolean = true): QueryOrderMetricsResponseAmino {
+    const obj: any = {};
+    obj.metrics = message.metrics ? OrderMetrics.toAmino(message.metrics, useInterfaces) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryOrderMetricsResponseAminoMsg): QueryOrderMetricsResponse {
+    return QueryOrderMetricsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryOrderMetricsResponseProtoMsg, useInterfaces: boolean = true): QueryOrderMetricsResponse {
+    return QueryOrderMetricsResponse.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryOrderMetricsResponse): Uint8Array {
+    return QueryOrderMetricsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryOrderMetricsResponse): QueryOrderMetricsResponseProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryOrderMetricsResponse",
+      value: QueryOrderMetricsResponse.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryOrderMetricsResponse.typeUrl, QueryOrderMetricsResponse);
+function createBaseQueryOrderPairPriceBucketsRequest(): QueryOrderPairPriceBucketsRequest {
+  return {
+    tokenIn: "",
+    tokenOut: "",
+    poolId: BigInt(0),
+    whitelistedRoute: false,
+    windowStart: "",
+    windowEnd: "",
+    bucketSize: ""
+  };
+}
+export const QueryOrderPairPriceBucketsRequest = {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairPriceBucketsRequest",
+  is(o: any): o is QueryOrderPairPriceBucketsRequest {
+    return o && (o.$typeUrl === QueryOrderPairPriceBucketsRequest.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.poolId === "bigint" && typeof o.whitelistedRoute === "boolean" && typeof o.windowStart === "string" && typeof o.windowEnd === "string" && typeof o.bucketSize === "string");
+  },
+  isSDK(o: any): o is QueryOrderPairPriceBucketsRequestSDKType {
+    return o && (o.$typeUrl === QueryOrderPairPriceBucketsRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.pool_id === "bigint" && typeof o.whitelisted_route === "boolean" && typeof o.window_start === "string" && typeof o.window_end === "string" && typeof o.bucket_size === "string");
+  },
+  isAmino(o: any): o is QueryOrderPairPriceBucketsRequestAmino {
+    return o && (o.$typeUrl === QueryOrderPairPriceBucketsRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.pool_id === "bigint" && typeof o.whitelisted_route === "boolean" && typeof o.window_start === "string" && typeof o.window_end === "string" && typeof o.bucket_size === "string");
+  },
+  encode(message: QueryOrderPairPriceBucketsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.tokenIn !== "") {
+      writer.uint32(10).string(message.tokenIn);
+    }
+    if (message.tokenOut !== "") {
+      writer.uint32(18).string(message.tokenOut);
+    }
+    if (message.poolId !== BigInt(0)) {
+      writer.uint32(24).uint64(message.poolId);
+    }
+    if (message.whitelistedRoute === true) {
+      writer.uint32(32).bool(message.whitelistedRoute);
+    }
+    if (message.windowStart !== "") {
+      writer.uint32(42).string(Decimal.fromUserInput(message.windowStart, 18).atomics);
+    }
+    if (message.windowEnd !== "") {
+      writer.uint32(50).string(Decimal.fromUserInput(message.windowEnd, 18).atomics);
+    }
+    if (message.bucketSize !== "") {
+      writer.uint32(58).string(Decimal.fromUserInput(message.bucketSize, 18).atomics);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryOrderPairPriceBucketsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOrderPairPriceBucketsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tokenIn = reader.string();
+          break;
+        case 2:
+          message.tokenOut = reader.string();
+          break;
+        case 3:
+          message.poolId = reader.uint64();
+          break;
+        case 4:
+          message.whitelistedRoute = reader.bool();
+          break;
+        case 5:
+          message.windowStart = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 6:
+          message.windowEnd = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 7:
+          message.bucketSize = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryOrderPairPriceBucketsRequest {
+    return {
+      tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
+      tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
+      poolId: isSet(object.poolId) ? BigInt(object.poolId.toString()) : BigInt(0),
+      whitelistedRoute: isSet(object.whitelistedRoute) ? Boolean(object.whitelistedRoute) : false,
+      windowStart: isSet(object.windowStart) ? String(object.windowStart) : "",
+      windowEnd: isSet(object.windowEnd) ? String(object.windowEnd) : "",
+      bucketSize: isSet(object.bucketSize) ? String(object.bucketSize) : ""
+    };
+  },
+  toJSON(message: QueryOrderPairPriceBucketsRequest): unknown {
+    const obj: any = {};
+    message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
+    message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
+    message.poolId !== undefined && (obj.poolId = (message.poolId || BigInt(0)).toString());
+    message.whitelistedRoute !== undefined && (obj.whitelistedRoute = message.whitelistedRoute);
+    message.windowStart !== undefined && (obj.windowStart = message.windowStart);
+    message.windowEnd !== undefined && (obj.windowEnd = message.windowEnd);
+    message.bucketSize !== undefined && (obj.bucketSize = message.bucketSize);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryOrderPairPriceBucketsRequest>): QueryOrderPairPriceBucketsRequest {
+    const message = createBaseQueryOrderPairPriceBucketsRequest();
+    message.tokenIn = object.tokenIn ?? "";
+    message.tokenOut = object.tokenOut ?? "";
+    message.poolId = object.poolId !== undefined && object.poolId !== null ? BigInt(object.poolId.toString()) : BigInt(0);
+    message.whitelistedRoute = object.whitelistedRoute ?? false;
+    message.windowStart = object.windowStart ?? "";
+    message.windowEnd = object.windowEnd ?? "";
+    message.bucketSize = object.bucketSize ?? "";
+    return message;
+  },
+  fromAmino(object: QueryOrderPairPriceBucketsRequestAmino): QueryOrderPairPriceBucketsRequest {
+    const message = createBaseQueryOrderPairPriceBucketsRequest();
+    if (object.token_in !== undefined && object.token_in !== null) {
+      message.tokenIn = object.token_in;
+    }
+    if (object.token_out !== undefined && object.token_out !== null) {
+      message.tokenOut = object.token_out;
+    }
+    if (object.pool_id !== undefined && object.pool_id !== null) {
+      message.poolId = BigInt(object.pool_id);
+    }
+    if (object.whitelisted_route !== undefined && object.whitelisted_route !== null) {
+      message.whitelistedRoute = object.whitelisted_route;
+    }
+    if (object.window_start !== undefined && object.window_start !== null) {
+      message.windowStart = object.window_start;
+    }
+    if (object.window_end !== undefined && object.window_end !== null) {
+      message.windowEnd = object.window_end;
+    }
+    if (object.bucket_size !== undefined && object.bucket_size !== null) {
+      message.bucketSize = object.bucket_size;
+    }
+    return message;
+  },
+  toAmino(message: QueryOrderPairPriceBucketsRequest, useInterfaces: boolean = true): QueryOrderPairPriceBucketsRequestAmino {
+    const obj: any = {};
+    obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
+    obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
+    obj.pool_id = message.poolId ? message.poolId.toString() : undefined;
+    obj.whitelisted_route = message.whitelistedRoute === false ? undefined : message.whitelistedRoute;
+    obj.window_start = padDecimal(message.windowStart) === "" ? undefined : padDecimal(message.windowStart);
+    obj.window_end = padDecimal(message.windowEnd) === "" ? undefined : padDecimal(message.windowEnd);
+    obj.bucket_size = padDecimal(message.bucketSize) === "" ? undefined : padDecimal(message.bucketSize);
+    return obj;
+  },
+  fromAminoMsg(object: QueryOrderPairPriceBucketsRequestAminoMsg): QueryOrderPairPriceBucketsRequest {
+    return QueryOrderPairPriceBucketsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryOrderPairPriceBucketsRequestProtoMsg, useInterfaces: boolean = true): QueryOrderPairPriceBucketsRequest {
+    return QueryOrderPairPriceBucketsRequest.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryOrderPairPriceBucketsRequest): Uint8Array {
+    return QueryOrderPairPriceBucketsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryOrderPairPriceBucketsRequest): QueryOrderPairPriceBucketsRequestProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryOrderPairPriceBucketsRequest",
+      value: QueryOrderPairPriceBucketsRequest.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryOrderPairPriceBucketsRequest.typeUrl, QueryOrderPairPriceBucketsRequest);
+function createBaseQueryOrderPairPriceBucketsResponse(): QueryOrderPairPriceBucketsResponse {
+  return {
+    buckets: []
+  };
+}
+export const QueryOrderPairPriceBucketsResponse = {
+  typeUrl: "/pryzmatics.server.trade.QueryOrderPairPriceBucketsResponse",
+  is(o: any): o is QueryOrderPairPriceBucketsResponse {
+    return o && (o.$typeUrl === QueryOrderPairPriceBucketsResponse.typeUrl || Array.isArray(o.buckets) && (!o.buckets.length || AggregatedOrderPairPriceBucket.is(o.buckets[0])));
+  },
+  isSDK(o: any): o is QueryOrderPairPriceBucketsResponseSDKType {
+    return o && (o.$typeUrl === QueryOrderPairPriceBucketsResponse.typeUrl || Array.isArray(o.buckets) && (!o.buckets.length || AggregatedOrderPairPriceBucket.isSDK(o.buckets[0])));
+  },
+  isAmino(o: any): o is QueryOrderPairPriceBucketsResponseAmino {
+    return o && (o.$typeUrl === QueryOrderPairPriceBucketsResponse.typeUrl || Array.isArray(o.buckets) && (!o.buckets.length || AggregatedOrderPairPriceBucket.isAmino(o.buckets[0])));
+  },
+  encode(message: QueryOrderPairPriceBucketsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    for (const v of message.buckets) {
+      AggregatedOrderPairPriceBucket.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryOrderPairPriceBucketsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOrderPairPriceBucketsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.buckets.push(AggregatedOrderPairPriceBucket.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryOrderPairPriceBucketsResponse {
+    return {
+      buckets: Array.isArray(object?.buckets) ? object.buckets.map((e: any) => AggregatedOrderPairPriceBucket.fromJSON(e)) : []
+    };
+  },
+  toJSON(message: QueryOrderPairPriceBucketsResponse): unknown {
+    const obj: any = {};
+    if (message.buckets) {
+      obj.buckets = message.buckets.map(e => e ? AggregatedOrderPairPriceBucket.toJSON(e) : undefined);
+    } else {
+      obj.buckets = [];
+    }
+    return obj;
+  },
+  fromPartial(object: Partial<QueryOrderPairPriceBucketsResponse>): QueryOrderPairPriceBucketsResponse {
+    const message = createBaseQueryOrderPairPriceBucketsResponse();
+    message.buckets = object.buckets?.map(e => AggregatedOrderPairPriceBucket.fromPartial(e)) || [];
+    return message;
+  },
+  fromAmino(object: QueryOrderPairPriceBucketsResponseAmino): QueryOrderPairPriceBucketsResponse {
+    const message = createBaseQueryOrderPairPriceBucketsResponse();
+    message.buckets = object.buckets?.map(e => AggregatedOrderPairPriceBucket.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: QueryOrderPairPriceBucketsResponse, useInterfaces: boolean = true): QueryOrderPairPriceBucketsResponseAmino {
+    const obj: any = {};
+    if (message.buckets) {
+      obj.buckets = message.buckets.map(e => e ? AggregatedOrderPairPriceBucket.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.buckets = message.buckets;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryOrderPairPriceBucketsResponseAminoMsg): QueryOrderPairPriceBucketsResponse {
+    return QueryOrderPairPriceBucketsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryOrderPairPriceBucketsResponseProtoMsg, useInterfaces: boolean = true): QueryOrderPairPriceBucketsResponse {
+    return QueryOrderPairPriceBucketsResponse.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryOrderPairPriceBucketsResponse): Uint8Array {
+    return QueryOrderPairPriceBucketsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryOrderPairPriceBucketsResponse): QueryOrderPairPriceBucketsResponseProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryOrderPairPriceBucketsResponse",
+      value: QueryOrderPairPriceBucketsResponse.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryOrderPairPriceBucketsResponse.typeUrl, QueryOrderPairPriceBucketsResponse);

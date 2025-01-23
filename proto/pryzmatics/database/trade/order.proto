@@ -23,3 +23,14 @@ message OrderOrderBy {
   OrderOrderByProperty property = 1;
   bool descending = 2;
 }
+
+
+enum OrderPairMetricsOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  ORDER_BY_PROPERTY_LAST_POST_PROCESS_HEIGHT = 0;
+}
+
+message OrderPairMetricsOrderBy {
+  OrderPairMetricsOrderByProperty property = 1;
+  bool descending = 2;
+}

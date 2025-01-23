@@ -283,6 +283,170 @@ export interface MatchableOrderSDKType {
   max_matching_spot_price?: string;
   status: OrderStatus;
 }
+export interface OrderPairMetrics {
+  poolId: bigint;
+  tokenIn: string;
+  tokenOut: string;
+  whitelistedRoute: boolean;
+  totalRemaining: string;
+  totalActiveOrderCount: bigint;
+  totalRemainingWithoutLimit: string;
+  totalActiveOrderWithoutLimitCount: bigint;
+  totalInTheMoneyAmount: string;
+  totalInTheMoneyCount: bigint;
+  totalOutTheMoneyAmount: string;
+  totalOutTheMoneyCount: bigint;
+  lastPostProcessHeight: bigint;
+}
+export interface OrderPairMetricsProtoMsg {
+  typeUrl: "/pryzmatics.trade.OrderPairMetrics";
+  value: Uint8Array;
+}
+export interface OrderPairMetricsAmino {
+  pool_id?: string;
+  token_in?: string;
+  token_out?: string;
+  whitelisted_route?: boolean;
+  total_remaining?: string;
+  total_active_order_count?: string;
+  total_remaining_without_limit?: string;
+  total_active_order_without_limit_count?: string;
+  total_in_the_money_amount?: string;
+  total_in_the_money_count?: string;
+  total_out_the_money_amount?: string;
+  total_out_the_money_count?: string;
+  last_post_process_height?: string;
+}
+export interface OrderPairMetricsAminoMsg {
+  type: "/pryzmatics.trade.OrderPairMetrics";
+  value: OrderPairMetricsAmino;
+}
+export interface OrderPairMetricsSDKType {
+  pool_id: bigint;
+  token_in: string;
+  token_out: string;
+  whitelisted_route: boolean;
+  total_remaining: string;
+  total_active_order_count: bigint;
+  total_remaining_without_limit: string;
+  total_active_order_without_limit_count: bigint;
+  total_in_the_money_amount: string;
+  total_in_the_money_count: bigint;
+  total_out_the_money_amount: string;
+  total_out_the_money_count: bigint;
+  last_post_process_height: bigint;
+}
+export interface OrderMetrics {
+  totalRemaining: string;
+  totalActiveOrderCount: bigint;
+  totalRemainingWithoutLimit: string;
+  totalActiveOrderWithoutLimitCount: bigint;
+  totalInTheMoneyAmount: string;
+  totalInTheMoneyCount: bigint;
+  totalOutTheMoneyAmount: string;
+  totalOutTheMoneyCount: bigint;
+  lastPostProcessHeight: bigint;
+}
+export interface OrderMetricsProtoMsg {
+  typeUrl: "/pryzmatics.trade.OrderMetrics";
+  value: Uint8Array;
+}
+export interface OrderMetricsAmino {
+  total_remaining?: string;
+  total_active_order_count?: string;
+  total_remaining_without_limit?: string;
+  total_active_order_without_limit_count?: string;
+  total_in_the_money_amount?: string;
+  total_in_the_money_count?: string;
+  total_out_the_money_amount?: string;
+  total_out_the_money_count?: string;
+  last_post_process_height?: string;
+}
+export interface OrderMetricsAminoMsg {
+  type: "/pryzmatics.trade.OrderMetrics";
+  value: OrderMetricsAmino;
+}
+export interface OrderMetricsSDKType {
+  total_remaining: string;
+  total_active_order_count: bigint;
+  total_remaining_without_limit: string;
+  total_active_order_without_limit_count: bigint;
+  total_in_the_money_amount: string;
+  total_in_the_money_count: bigint;
+  total_out_the_money_amount: string;
+  total_out_the_money_count: bigint;
+  last_post_process_height: bigint;
+}
+export interface AggregatedOrderPairPriceBucket {
+  start: string;
+  end: string;
+  amount: string;
+  count: bigint;
+  accumulativeAmount: string;
+  accumulativeCount: bigint;
+}
+export interface AggregatedOrderPairPriceBucketProtoMsg {
+  typeUrl: "/pryzmatics.trade.AggregatedOrderPairPriceBucket";
+  value: Uint8Array;
+}
+export interface AggregatedOrderPairPriceBucketAmino {
+  start?: string;
+  end?: string;
+  amount?: string;
+  count?: string;
+  accumulative_amount?: string;
+  accumulative_count?: string;
+}
+export interface AggregatedOrderPairPriceBucketAminoMsg {
+  type: "/pryzmatics.trade.AggregatedOrderPairPriceBucket";
+  value: AggregatedOrderPairPriceBucketAmino;
+}
+export interface AggregatedOrderPairPriceBucketSDKType {
+  start: string;
+  end: string;
+  amount: string;
+  count: bigint;
+  accumulative_amount: string;
+  accumulative_count: bigint;
+}
+export interface OrderPairPriceBucket {
+  poolId: bigint;
+  tokenIn: string;
+  tokenOut: string;
+  whitelistedRoute: boolean;
+  start: string;
+  end: string;
+  amount: string;
+  count: bigint;
+}
+export interface OrderPairPriceBucketProtoMsg {
+  typeUrl: "/pryzmatics.trade.OrderPairPriceBucket";
+  value: Uint8Array;
+}
+export interface OrderPairPriceBucketAmino {
+  pool_id?: string;
+  token_in?: string;
+  token_out?: string;
+  whitelisted_route?: boolean;
+  start?: string;
+  end?: string;
+  amount?: string;
+  count?: string;
+}
+export interface OrderPairPriceBucketAminoMsg {
+  type: "/pryzmatics.trade.OrderPairPriceBucket";
+  value: OrderPairPriceBucketAmino;
+}
+export interface OrderPairPriceBucketSDKType {
+  pool_id: bigint;
+  token_in: string;
+  token_out: string;
+  whitelisted_route: boolean;
+  start: string;
+  end: string;
+  amount: string;
+  count: bigint;
+}
 function createBaseOrder(): Order {
   return {
     ammOrder: Order1.fromPartial({}),
@@ -965,3 +1129,783 @@ export const MatchableOrder = {
   }
 };
 GlobalDecoderRegistry.register(MatchableOrder.typeUrl, MatchableOrder);
+function createBaseOrderPairMetrics(): OrderPairMetrics {
+  return {
+    poolId: BigInt(0),
+    tokenIn: "",
+    tokenOut: "",
+    whitelistedRoute: false,
+    totalRemaining: "",
+    totalActiveOrderCount: BigInt(0),
+    totalRemainingWithoutLimit: "",
+    totalActiveOrderWithoutLimitCount: BigInt(0),
+    totalInTheMoneyAmount: "",
+    totalInTheMoneyCount: BigInt(0),
+    totalOutTheMoneyAmount: "",
+    totalOutTheMoneyCount: BigInt(0),
+    lastPostProcessHeight: BigInt(0)
+  };
+}
+export const OrderPairMetrics = {
+  typeUrl: "/pryzmatics.trade.OrderPairMetrics",
+  is(o: any): o is OrderPairMetrics {
+    return o && (o.$typeUrl === OrderPairMetrics.typeUrl || typeof o.poolId === "bigint" && typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.whitelistedRoute === "boolean" && typeof o.totalRemaining === "string" && typeof o.totalActiveOrderCount === "bigint" && typeof o.totalRemainingWithoutLimit === "string" && typeof o.totalActiveOrderWithoutLimitCount === "bigint" && typeof o.totalInTheMoneyAmount === "string" && typeof o.totalInTheMoneyCount === "bigint" && typeof o.totalOutTheMoneyAmount === "string" && typeof o.totalOutTheMoneyCount === "bigint" && typeof o.lastPostProcessHeight === "bigint");
+  },
+  isSDK(o: any): o is OrderPairMetricsSDKType {
+    return o && (o.$typeUrl === OrderPairMetrics.typeUrl || typeof o.pool_id === "bigint" && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.whitelisted_route === "boolean" && typeof o.total_remaining === "string" && typeof o.total_active_order_count === "bigint" && typeof o.total_remaining_without_limit === "string" && typeof o.total_active_order_without_limit_count === "bigint" && typeof o.total_in_the_money_amount === "string" && typeof o.total_in_the_money_count === "bigint" && typeof o.total_out_the_money_amount === "string" && typeof o.total_out_the_money_count === "bigint" && typeof o.last_post_process_height === "bigint");
+  },
+  isAmino(o: any): o is OrderPairMetricsAmino {
+    return o && (o.$typeUrl === OrderPairMetrics.typeUrl || typeof o.pool_id === "bigint" && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.whitelisted_route === "boolean" && typeof o.total_remaining === "string" && typeof o.total_active_order_count === "bigint" && typeof o.total_remaining_without_limit === "string" && typeof o.total_active_order_without_limit_count === "bigint" && typeof o.total_in_the_money_amount === "string" && typeof o.total_in_the_money_count === "bigint" && typeof o.total_out_the_money_amount === "string" && typeof o.total_out_the_money_count === "bigint" && typeof o.last_post_process_height === "bigint");
+  },
+  encode(message: OrderPairMetrics, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.poolId !== BigInt(0)) {
+      writer.uint32(8).uint64(message.poolId);
+    }
+    if (message.tokenIn !== "") {
+      writer.uint32(18).string(message.tokenIn);
+    }
+    if (message.tokenOut !== "") {
+      writer.uint32(26).string(message.tokenOut);
+    }
+    if (message.whitelistedRoute === true) {
+      writer.uint32(32).bool(message.whitelistedRoute);
+    }
+    if (message.totalRemaining !== "") {
+      writer.uint32(42).string(message.totalRemaining);
+    }
+    if (message.totalActiveOrderCount !== BigInt(0)) {
+      writer.uint32(48).uint64(message.totalActiveOrderCount);
+    }
+    if (message.totalRemainingWithoutLimit !== "") {
+      writer.uint32(58).string(message.totalRemainingWithoutLimit);
+    }
+    if (message.totalActiveOrderWithoutLimitCount !== BigInt(0)) {
+      writer.uint32(64).uint64(message.totalActiveOrderWithoutLimitCount);
+    }
+    if (message.totalInTheMoneyAmount !== "") {
+      writer.uint32(74).string(message.totalInTheMoneyAmount);
+    }
+    if (message.totalInTheMoneyCount !== BigInt(0)) {
+      writer.uint32(80).uint64(message.totalInTheMoneyCount);
+    }
+    if (message.totalOutTheMoneyAmount !== "") {
+      writer.uint32(90).string(message.totalOutTheMoneyAmount);
+    }
+    if (message.totalOutTheMoneyCount !== BigInt(0)) {
+      writer.uint32(96).uint64(message.totalOutTheMoneyCount);
+    }
+    if (message.lastPostProcessHeight !== BigInt(0)) {
+      writer.uint32(104).int64(message.lastPostProcessHeight);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): OrderPairMetrics {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOrderPairMetrics();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.poolId = reader.uint64();
+          break;
+        case 2:
+          message.tokenIn = reader.string();
+          break;
+        case 3:
+          message.tokenOut = reader.string();
+          break;
+        case 4:
+          message.whitelistedRoute = reader.bool();
+          break;
+        case 5:
+          message.totalRemaining = reader.string();
+          break;
+        case 6:
+          message.totalActiveOrderCount = reader.uint64();
+          break;
+        case 7:
+          message.totalRemainingWithoutLimit = reader.string();
+          break;
+        case 8:
+          message.totalActiveOrderWithoutLimitCount = reader.uint64();
+          break;
+        case 9:
+          message.totalInTheMoneyAmount = reader.string();
+          break;
+        case 10:
+          message.totalInTheMoneyCount = reader.uint64();
+          break;
+        case 11:
+          message.totalOutTheMoneyAmount = reader.string();
+          break;
+        case 12:
+          message.totalOutTheMoneyCount = reader.uint64();
+          break;
+        case 13:
+          message.lastPostProcessHeight = reader.int64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): OrderPairMetrics {
+    return {
+      poolId: isSet(object.poolId) ? BigInt(object.poolId.toString()) : BigInt(0),
+      tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
+      tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
+      whitelistedRoute: isSet(object.whitelistedRoute) ? Boolean(object.whitelistedRoute) : false,
+      totalRemaining: isSet(object.totalRemaining) ? String(object.totalRemaining) : "",
+      totalActiveOrderCount: isSet(object.totalActiveOrderCount) ? BigInt(object.totalActiveOrderCount.toString()) : BigInt(0),
+      totalRemainingWithoutLimit: isSet(object.totalRemainingWithoutLimit) ? String(object.totalRemainingWithoutLimit) : "",
+      totalActiveOrderWithoutLimitCount: isSet(object.totalActiveOrderWithoutLimitCount) ? BigInt(object.totalActiveOrderWithoutLimitCount.toString()) : BigInt(0),
+      totalInTheMoneyAmount: isSet(object.totalInTheMoneyAmount) ? String(object.totalInTheMoneyAmount) : "",
+      totalInTheMoneyCount: isSet(object.totalInTheMoneyCount) ? BigInt(object.totalInTheMoneyCount.toString()) : BigInt(0),
+      totalOutTheMoneyAmount: isSet(object.totalOutTheMoneyAmount) ? String(object.totalOutTheMoneyAmount) : "",
+      totalOutTheMoneyCount: isSet(object.totalOutTheMoneyCount) ? BigInt(object.totalOutTheMoneyCount.toString()) : BigInt(0),
+      lastPostProcessHeight: isSet(object.lastPostProcessHeight) ? BigInt(object.lastPostProcessHeight.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: OrderPairMetrics): unknown {
+    const obj: any = {};
+    message.poolId !== undefined && (obj.poolId = (message.poolId || BigInt(0)).toString());
+    message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
+    message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
+    message.whitelistedRoute !== undefined && (obj.whitelistedRoute = message.whitelistedRoute);
+    message.totalRemaining !== undefined && (obj.totalRemaining = message.totalRemaining);
+    message.totalActiveOrderCount !== undefined && (obj.totalActiveOrderCount = (message.totalActiveOrderCount || BigInt(0)).toString());
+    message.totalRemainingWithoutLimit !== undefined && (obj.totalRemainingWithoutLimit = message.totalRemainingWithoutLimit);
+    message.totalActiveOrderWithoutLimitCount !== undefined && (obj.totalActiveOrderWithoutLimitCount = (message.totalActiveOrderWithoutLimitCount || BigInt(0)).toString());
+    message.totalInTheMoneyAmount !== undefined && (obj.totalInTheMoneyAmount = message.totalInTheMoneyAmount);
+    message.totalInTheMoneyCount !== undefined && (obj.totalInTheMoneyCount = (message.totalInTheMoneyCount || BigInt(0)).toString());
+    message.totalOutTheMoneyAmount !== undefined && (obj.totalOutTheMoneyAmount = message.totalOutTheMoneyAmount);
+    message.totalOutTheMoneyCount !== undefined && (obj.totalOutTheMoneyCount = (message.totalOutTheMoneyCount || BigInt(0)).toString());
+    message.lastPostProcessHeight !== undefined && (obj.lastPostProcessHeight = (message.lastPostProcessHeight || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<OrderPairMetrics>): OrderPairMetrics {
+    const message = createBaseOrderPairMetrics();
+    message.poolId = object.poolId !== undefined && object.poolId !== null ? BigInt(object.poolId.toString()) : BigInt(0);
+    message.tokenIn = object.tokenIn ?? "";
+    message.tokenOut = object.tokenOut ?? "";
+    message.whitelistedRoute = object.whitelistedRoute ?? false;
+    message.totalRemaining = object.totalRemaining ?? "";
+    message.totalActiveOrderCount = object.totalActiveOrderCount !== undefined && object.totalActiveOrderCount !== null ? BigInt(object.totalActiveOrderCount.toString()) : BigInt(0);
+    message.totalRemainingWithoutLimit = object.totalRemainingWithoutLimit ?? "";
+    message.totalActiveOrderWithoutLimitCount = object.totalActiveOrderWithoutLimitCount !== undefined && object.totalActiveOrderWithoutLimitCount !== null ? BigInt(object.totalActiveOrderWithoutLimitCount.toString()) : BigInt(0);
+    message.totalInTheMoneyAmount = object.totalInTheMoneyAmount ?? "";
+    message.totalInTheMoneyCount = object.totalInTheMoneyCount !== undefined && object.totalInTheMoneyCount !== null ? BigInt(object.totalInTheMoneyCount.toString()) : BigInt(0);
+    message.totalOutTheMoneyAmount = object.totalOutTheMoneyAmount ?? "";
+    message.totalOutTheMoneyCount = object.totalOutTheMoneyCount !== undefined && object.totalOutTheMoneyCount !== null ? BigInt(object.totalOutTheMoneyCount.toString()) : BigInt(0);
+    message.lastPostProcessHeight = object.lastPostProcessHeight !== undefined && object.lastPostProcessHeight !== null ? BigInt(object.lastPostProcessHeight.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: OrderPairMetricsAmino): OrderPairMetrics {
+    const message = createBaseOrderPairMetrics();
+    if (object.pool_id !== undefined && object.pool_id !== null) {
+      message.poolId = BigInt(object.pool_id);
+    }
+    if (object.token_in !== undefined && object.token_in !== null) {
+      message.tokenIn = object.token_in;
+    }
+    if (object.token_out !== undefined && object.token_out !== null) {
+      message.tokenOut = object.token_out;
+    }
+    if (object.whitelisted_route !== undefined && object.whitelisted_route !== null) {
+      message.whitelistedRoute = object.whitelisted_route;
+    }
+    if (object.total_remaining !== undefined && object.total_remaining !== null) {
+      message.totalRemaining = object.total_remaining;
+    }
+    if (object.total_active_order_count !== undefined && object.total_active_order_count !== null) {
+      message.totalActiveOrderCount = BigInt(object.total_active_order_count);
+    }
+    if (object.total_remaining_without_limit !== undefined && object.total_remaining_without_limit !== null) {
+      message.totalRemainingWithoutLimit = object.total_remaining_without_limit;
+    }
+    if (object.total_active_order_without_limit_count !== undefined && object.total_active_order_without_limit_count !== null) {
+      message.totalActiveOrderWithoutLimitCount = BigInt(object.total_active_order_without_limit_count);
+    }
+    if (object.total_in_the_money_amount !== undefined && object.total_in_the_money_amount !== null) {
+      message.totalInTheMoneyAmount = object.total_in_the_money_amount;
+    }
+    if (object.total_in_the_money_count !== undefined && object.total_in_the_money_count !== null) {
+      message.totalInTheMoneyCount = BigInt(object.total_in_the_money_count);
+    }
+    if (object.total_out_the_money_amount !== undefined && object.total_out_the_money_amount !== null) {
+      message.totalOutTheMoneyAmount = object.total_out_the_money_amount;
+    }
+    if (object.total_out_the_money_count !== undefined && object.total_out_the_money_count !== null) {
+      message.totalOutTheMoneyCount = BigInt(object.total_out_the_money_count);
+    }
+    if (object.last_post_process_height !== undefined && object.last_post_process_height !== null) {
+      message.lastPostProcessHeight = BigInt(object.last_post_process_height);
+    }
+    return message;
+  },
+  toAmino(message: OrderPairMetrics, useInterfaces: boolean = true): OrderPairMetricsAmino {
+    const obj: any = {};
+    obj.pool_id = message.poolId ? message.poolId.toString() : undefined;
+    obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
+    obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
+    obj.whitelisted_route = message.whitelistedRoute === false ? undefined : message.whitelistedRoute;
+    obj.total_remaining = message.totalRemaining === "" ? undefined : message.totalRemaining;
+    obj.total_active_order_count = message.totalActiveOrderCount ? message.totalActiveOrderCount.toString() : undefined;
+    obj.total_remaining_without_limit = message.totalRemainingWithoutLimit === "" ? undefined : message.totalRemainingWithoutLimit;
+    obj.total_active_order_without_limit_count = message.totalActiveOrderWithoutLimitCount ? message.totalActiveOrderWithoutLimitCount.toString() : undefined;
+    obj.total_in_the_money_amount = message.totalInTheMoneyAmount === "" ? undefined : message.totalInTheMoneyAmount;
+    obj.total_in_the_money_count = message.totalInTheMoneyCount ? message.totalInTheMoneyCount.toString() : undefined;
+    obj.total_out_the_money_amount = message.totalOutTheMoneyAmount === "" ? undefined : message.totalOutTheMoneyAmount;
+    obj.total_out_the_money_count = message.totalOutTheMoneyCount ? message.totalOutTheMoneyCount.toString() : undefined;
+    obj.last_post_process_height = message.lastPostProcessHeight ? message.lastPostProcessHeight.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: OrderPairMetricsAminoMsg): OrderPairMetrics {
+    return OrderPairMetrics.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OrderPairMetricsProtoMsg, useInterfaces: boolean = true): OrderPairMetrics {
+    return OrderPairMetrics.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: OrderPairMetrics): Uint8Array {
+    return OrderPairMetrics.encode(message).finish();
+  },
+  toProtoMsg(message: OrderPairMetrics): OrderPairMetricsProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.trade.OrderPairMetrics",
+      value: OrderPairMetrics.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(OrderPairMetrics.typeUrl, OrderPairMetrics);
+function createBaseOrderMetrics(): OrderMetrics {
+  return {
+    totalRemaining: "",
+    totalActiveOrderCount: BigInt(0),
+    totalRemainingWithoutLimit: "",
+    totalActiveOrderWithoutLimitCount: BigInt(0),
+    totalInTheMoneyAmount: "",
+    totalInTheMoneyCount: BigInt(0),
+    totalOutTheMoneyAmount: "",
+    totalOutTheMoneyCount: BigInt(0),
+    lastPostProcessHeight: BigInt(0)
+  };
+}
+export const OrderMetrics = {
+  typeUrl: "/pryzmatics.trade.OrderMetrics",
+  is(o: any): o is OrderMetrics {
+    return o && (o.$typeUrl === OrderMetrics.typeUrl || typeof o.totalRemaining === "string" && typeof o.totalActiveOrderCount === "bigint" && typeof o.totalRemainingWithoutLimit === "string" && typeof o.totalActiveOrderWithoutLimitCount === "bigint" && typeof o.totalInTheMoneyAmount === "string" && typeof o.totalInTheMoneyCount === "bigint" && typeof o.totalOutTheMoneyAmount === "string" && typeof o.totalOutTheMoneyCount === "bigint" && typeof o.lastPostProcessHeight === "bigint");
+  },
+  isSDK(o: any): o is OrderMetricsSDKType {
+    return o && (o.$typeUrl === OrderMetrics.typeUrl || typeof o.total_remaining === "string" && typeof o.total_active_order_count === "bigint" && typeof o.total_remaining_without_limit === "string" && typeof o.total_active_order_without_limit_count === "bigint" && typeof o.total_in_the_money_amount === "string" && typeof o.total_in_the_money_count === "bigint" && typeof o.total_out_the_money_amount === "string" && typeof o.total_out_the_money_count === "bigint" && typeof o.last_post_process_height === "bigint");
+  },
+  isAmino(o: any): o is OrderMetricsAmino {
+    return o && (o.$typeUrl === OrderMetrics.typeUrl || typeof o.total_remaining === "string" && typeof o.total_active_order_count === "bigint" && typeof o.total_remaining_without_limit === "string" && typeof o.total_active_order_without_limit_count === "bigint" && typeof o.total_in_the_money_amount === "string" && typeof o.total_in_the_money_count === "bigint" && typeof o.total_out_the_money_amount === "string" && typeof o.total_out_the_money_count === "bigint" && typeof o.last_post_process_height === "bigint");
+  },
+  encode(message: OrderMetrics, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.totalRemaining !== "") {
+      writer.uint32(42).string(message.totalRemaining);
+    }
+    if (message.totalActiveOrderCount !== BigInt(0)) {
+      writer.uint32(48).uint64(message.totalActiveOrderCount);
+    }
+    if (message.totalRemainingWithoutLimit !== "") {
+      writer.uint32(58).string(message.totalRemainingWithoutLimit);
+    }
+    if (message.totalActiveOrderWithoutLimitCount !== BigInt(0)) {
+      writer.uint32(64).uint64(message.totalActiveOrderWithoutLimitCount);
+    }
+    if (message.totalInTheMoneyAmount !== "") {
+      writer.uint32(74).string(message.totalInTheMoneyAmount);
+    }
+    if (message.totalInTheMoneyCount !== BigInt(0)) {
+      writer.uint32(80).uint64(message.totalInTheMoneyCount);
+    }
+    if (message.totalOutTheMoneyAmount !== "") {
+      writer.uint32(90).string(message.totalOutTheMoneyAmount);
+    }
+    if (message.totalOutTheMoneyCount !== BigInt(0)) {
+      writer.uint32(96).uint64(message.totalOutTheMoneyCount);
+    }
+    if (message.lastPostProcessHeight !== BigInt(0)) {
+      writer.uint32(104).int64(message.lastPostProcessHeight);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): OrderMetrics {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOrderMetrics();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 5:
+          message.totalRemaining = reader.string();
+          break;
+        case 6:
+          message.totalActiveOrderCount = reader.uint64();
+          break;
+        case 7:
+          message.totalRemainingWithoutLimit = reader.string();
+          break;
+        case 8:
+          message.totalActiveOrderWithoutLimitCount = reader.uint64();
+          break;
+        case 9:
+          message.totalInTheMoneyAmount = reader.string();
+          break;
+        case 10:
+          message.totalInTheMoneyCount = reader.uint64();
+          break;
+        case 11:
+          message.totalOutTheMoneyAmount = reader.string();
+          break;
+        case 12:
+          message.totalOutTheMoneyCount = reader.uint64();
+          break;
+        case 13:
+          message.lastPostProcessHeight = reader.int64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): OrderMetrics {
+    return {
+      totalRemaining: isSet(object.totalRemaining) ? String(object.totalRemaining) : "",
+      totalActiveOrderCount: isSet(object.totalActiveOrderCount) ? BigInt(object.totalActiveOrderCount.toString()) : BigInt(0),
+      totalRemainingWithoutLimit: isSet(object.totalRemainingWithoutLimit) ? String(object.totalRemainingWithoutLimit) : "",
+      totalActiveOrderWithoutLimitCount: isSet(object.totalActiveOrderWithoutLimitCount) ? BigInt(object.totalActiveOrderWithoutLimitCount.toString()) : BigInt(0),
+      totalInTheMoneyAmount: isSet(object.totalInTheMoneyAmount) ? String(object.totalInTheMoneyAmount) : "",
+      totalInTheMoneyCount: isSet(object.totalInTheMoneyCount) ? BigInt(object.totalInTheMoneyCount.toString()) : BigInt(0),
+      totalOutTheMoneyAmount: isSet(object.totalOutTheMoneyAmount) ? String(object.totalOutTheMoneyAmount) : "",
+      totalOutTheMoneyCount: isSet(object.totalOutTheMoneyCount) ? BigInt(object.totalOutTheMoneyCount.toString()) : BigInt(0),
+      lastPostProcessHeight: isSet(object.lastPostProcessHeight) ? BigInt(object.lastPostProcessHeight.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: OrderMetrics): unknown {
+    const obj: any = {};
+    message.totalRemaining !== undefined && (obj.totalRemaining = message.totalRemaining);
+    message.totalActiveOrderCount !== undefined && (obj.totalActiveOrderCount = (message.totalActiveOrderCount || BigInt(0)).toString());
+    message.totalRemainingWithoutLimit !== undefined && (obj.totalRemainingWithoutLimit = message.totalRemainingWithoutLimit);
+    message.totalActiveOrderWithoutLimitCount !== undefined && (obj.totalActiveOrderWithoutLimitCount = (message.totalActiveOrderWithoutLimitCount || BigInt(0)).toString());
+    message.totalInTheMoneyAmount !== undefined && (obj.totalInTheMoneyAmount = message.totalInTheMoneyAmount);
+    message.totalInTheMoneyCount !== undefined && (obj.totalInTheMoneyCount = (message.totalInTheMoneyCount || BigInt(0)).toString());
+    message.totalOutTheMoneyAmount !== undefined && (obj.totalOutTheMoneyAmount = message.totalOutTheMoneyAmount);
+    message.totalOutTheMoneyCount !== undefined && (obj.totalOutTheMoneyCount = (message.totalOutTheMoneyCount || BigInt(0)).toString());
+    message.lastPostProcessHeight !== undefined && (obj.lastPostProcessHeight = (message.lastPostProcessHeight || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<OrderMetrics>): OrderMetrics {
+    const message = createBaseOrderMetrics();
+    message.totalRemaining = object.totalRemaining ?? "";
+    message.totalActiveOrderCount = object.totalActiveOrderCount !== undefined && object.totalActiveOrderCount !== null ? BigInt(object.totalActiveOrderCount.toString()) : BigInt(0);
+    message.totalRemainingWithoutLimit = object.totalRemainingWithoutLimit ?? "";
+    message.totalActiveOrderWithoutLimitCount = object.totalActiveOrderWithoutLimitCount !== undefined && object.totalActiveOrderWithoutLimitCount !== null ? BigInt(object.totalActiveOrderWithoutLimitCount.toString()) : BigInt(0);
+    message.totalInTheMoneyAmount = object.totalInTheMoneyAmount ?? "";
+    message.totalInTheMoneyCount = object.totalInTheMoneyCount !== undefined && object.totalInTheMoneyCount !== null ? BigInt(object.totalInTheMoneyCount.toString()) : BigInt(0);
+    message.totalOutTheMoneyAmount = object.totalOutTheMoneyAmount ?? "";
+    message.totalOutTheMoneyCount = object.totalOutTheMoneyCount !== undefined && object.totalOutTheMoneyCount !== null ? BigInt(object.totalOutTheMoneyCount.toString()) : BigInt(0);
+    message.lastPostProcessHeight = object.lastPostProcessHeight !== undefined && object.lastPostProcessHeight !== null ? BigInt(object.lastPostProcessHeight.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: OrderMetricsAmino): OrderMetrics {
+    const message = createBaseOrderMetrics();
+    if (object.total_remaining !== undefined && object.total_remaining !== null) {
+      message.totalRemaining = object.total_remaining;
+    }
+    if (object.total_active_order_count !== undefined && object.total_active_order_count !== null) {
+      message.totalActiveOrderCount = BigInt(object.total_active_order_count);
+    }
+    if (object.total_remaining_without_limit !== undefined && object.total_remaining_without_limit !== null) {
+      message.totalRemainingWithoutLimit = object.total_remaining_without_limit;
+    }
+    if (object.total_active_order_without_limit_count !== undefined && object.total_active_order_without_limit_count !== null) {
+      message.totalActiveOrderWithoutLimitCount = BigInt(object.total_active_order_without_limit_count);
+    }
+    if (object.total_in_the_money_amount !== undefined && object.total_in_the_money_amount !== null) {
+      message.totalInTheMoneyAmount = object.total_in_the_money_amount;
+    }
+    if (object.total_in_the_money_count !== undefined && object.total_in_the_money_count !== null) {
+      message.totalInTheMoneyCount = BigInt(object.total_in_the_money_count);
+    }
+    if (object.total_out_the_money_amount !== undefined && object.total_out_the_money_amount !== null) {
+      message.totalOutTheMoneyAmount = object.total_out_the_money_amount;
+    }
+    if (object.total_out_the_money_count !== undefined && object.total_out_the_money_count !== null) {
+      message.totalOutTheMoneyCount = BigInt(object.total_out_the_money_count);
+    }
+    if (object.last_post_process_height !== undefined && object.last_post_process_height !== null) {
+      message.lastPostProcessHeight = BigInt(object.last_post_process_height);
+    }
+    return message;
+  },
+  toAmino(message: OrderMetrics, useInterfaces: boolean = true): OrderMetricsAmino {
+    const obj: any = {};
+    obj.total_remaining = message.totalRemaining === "" ? undefined : message.totalRemaining;
+    obj.total_active_order_count = message.totalActiveOrderCount ? message.totalActiveOrderCount.toString() : undefined;
+    obj.total_remaining_without_limit = message.totalRemainingWithoutLimit === "" ? undefined : message.totalRemainingWithoutLimit;
+    obj.total_active_order_without_limit_count = message.totalActiveOrderWithoutLimitCount ? message.totalActiveOrderWithoutLimitCount.toString() : undefined;
+    obj.total_in_the_money_amount = message.totalInTheMoneyAmount === "" ? undefined : message.totalInTheMoneyAmount;
+    obj.total_in_the_money_count = message.totalInTheMoneyCount ? message.totalInTheMoneyCount.toString() : undefined;
+    obj.total_out_the_money_amount = message.totalOutTheMoneyAmount === "" ? undefined : message.totalOutTheMoneyAmount;
+    obj.total_out_the_money_count = message.totalOutTheMoneyCount ? message.totalOutTheMoneyCount.toString() : undefined;
+    obj.last_post_process_height = message.lastPostProcessHeight ? message.lastPostProcessHeight.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: OrderMetricsAminoMsg): OrderMetrics {
+    return OrderMetrics.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OrderMetricsProtoMsg, useInterfaces: boolean = true): OrderMetrics {
+    return OrderMetrics.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: OrderMetrics): Uint8Array {
+    return OrderMetrics.encode(message).finish();
+  },
+  toProtoMsg(message: OrderMetrics): OrderMetricsProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.trade.OrderMetrics",
+      value: OrderMetrics.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(OrderMetrics.typeUrl, OrderMetrics);
+function createBaseAggregatedOrderPairPriceBucket(): AggregatedOrderPairPriceBucket {
+  return {
+    start: "",
+    end: "",
+    amount: "",
+    count: BigInt(0),
+    accumulativeAmount: "",
+    accumulativeCount: BigInt(0)
+  };
+}
+export const AggregatedOrderPairPriceBucket = {
+  typeUrl: "/pryzmatics.trade.AggregatedOrderPairPriceBucket",
+  is(o: any): o is AggregatedOrderPairPriceBucket {
+    return o && (o.$typeUrl === AggregatedOrderPairPriceBucket.typeUrl || typeof o.start === "string" && typeof o.end === "string" && typeof o.amount === "string" && typeof o.count === "bigint" && typeof o.accumulativeAmount === "string" && typeof o.accumulativeCount === "bigint");
+  },
+  isSDK(o: any): o is AggregatedOrderPairPriceBucketSDKType {
+    return o && (o.$typeUrl === AggregatedOrderPairPriceBucket.typeUrl || typeof o.start === "string" && typeof o.end === "string" && typeof o.amount === "string" && typeof o.count === "bigint" && typeof o.accumulative_amount === "string" && typeof o.accumulative_count === "bigint");
+  },
+  isAmino(o: any): o is AggregatedOrderPairPriceBucketAmino {
+    return o && (o.$typeUrl === AggregatedOrderPairPriceBucket.typeUrl || typeof o.start === "string" && typeof o.end === "string" && typeof o.amount === "string" && typeof o.count === "bigint" && typeof o.accumulative_amount === "string" && typeof o.accumulative_count === "bigint");
+  },
+  encode(message: AggregatedOrderPairPriceBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.start !== "") {
+      writer.uint32(10).string(Decimal.fromUserInput(message.start, 18).atomics);
+    }
+    if (message.end !== "") {
+      writer.uint32(18).string(Decimal.fromUserInput(message.end, 18).atomics);
+    }
+    if (message.amount !== "") {
+      writer.uint32(26).string(message.amount);
+    }
+    if (message.count !== BigInt(0)) {
+      writer.uint32(32).uint64(message.count);
+    }
+    if (message.accumulativeAmount !== "") {
+      writer.uint32(42).string(message.accumulativeAmount);
+    }
+    if (message.accumulativeCount !== BigInt(0)) {
+      writer.uint32(48).uint64(message.accumulativeCount);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): AggregatedOrderPairPriceBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAggregatedOrderPairPriceBucket();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.start = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 2:
+          message.end = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 3:
+          message.amount = reader.string();
+          break;
+        case 4:
+          message.count = reader.uint64();
+          break;
+        case 5:
+          message.accumulativeAmount = reader.string();
+          break;
+        case 6:
+          message.accumulativeCount = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): AggregatedOrderPairPriceBucket {
+    return {
+      start: isSet(object.start) ? String(object.start) : "",
+      end: isSet(object.end) ? String(object.end) : "",
+      amount: isSet(object.amount) ? String(object.amount) : "",
+      count: isSet(object.count) ? BigInt(object.count.toString()) : BigInt(0),
+      accumulativeAmount: isSet(object.accumulativeAmount) ? String(object.accumulativeAmount) : "",
+      accumulativeCount: isSet(object.accumulativeCount) ? BigInt(object.accumulativeCount.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: AggregatedOrderPairPriceBucket): unknown {
+    const obj: any = {};
+    message.start !== undefined && (obj.start = message.start);
+    message.end !== undefined && (obj.end = message.end);
+    message.amount !== undefined && (obj.amount = message.amount);
+    message.count !== undefined && (obj.count = (message.count || BigInt(0)).toString());
+    message.accumulativeAmount !== undefined && (obj.accumulativeAmount = message.accumulativeAmount);
+    message.accumulativeCount !== undefined && (obj.accumulativeCount = (message.accumulativeCount || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<AggregatedOrderPairPriceBucket>): AggregatedOrderPairPriceBucket {
+    const message = createBaseAggregatedOrderPairPriceBucket();
+    message.start = object.start ?? "";
+    message.end = object.end ?? "";
+    message.amount = object.amount ?? "";
+    message.count = object.count !== undefined && object.count !== null ? BigInt(object.count.toString()) : BigInt(0);
+    message.accumulativeAmount = object.accumulativeAmount ?? "";
+    message.accumulativeCount = object.accumulativeCount !== undefined && object.accumulativeCount !== null ? BigInt(object.accumulativeCount.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: AggregatedOrderPairPriceBucketAmino): AggregatedOrderPairPriceBucket {
+    const message = createBaseAggregatedOrderPairPriceBucket();
+    if (object.start !== undefined && object.start !== null) {
+      message.start = object.start;
+    }
+    if (object.end !== undefined && object.end !== null) {
+      message.end = object.end;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    if (object.count !== undefined && object.count !== null) {
+      message.count = BigInt(object.count);
+    }
+    if (object.accumulative_amount !== undefined && object.accumulative_amount !== null) {
+      message.accumulativeAmount = object.accumulative_amount;
+    }
+    if (object.accumulative_count !== undefined && object.accumulative_count !== null) {
+      message.accumulativeCount = BigInt(object.accumulative_count);
+    }
+    return message;
+  },
+  toAmino(message: AggregatedOrderPairPriceBucket, useInterfaces: boolean = true): AggregatedOrderPairPriceBucketAmino {
+    const obj: any = {};
+    obj.start = padDecimal(message.start) === "" ? undefined : padDecimal(message.start);
+    obj.end = padDecimal(message.end) === "" ? undefined : padDecimal(message.end);
+    obj.amount = message.amount === "" ? undefined : message.amount;
+    obj.count = message.count ? message.count.toString() : undefined;
+    obj.accumulative_amount = message.accumulativeAmount === "" ? undefined : message.accumulativeAmount;
+    obj.accumulative_count = message.accumulativeCount ? message.accumulativeCount.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: AggregatedOrderPairPriceBucketAminoMsg): AggregatedOrderPairPriceBucket {
+    return AggregatedOrderPairPriceBucket.fromAmino(object.value);
+  },
+  fromProtoMsg(message: AggregatedOrderPairPriceBucketProtoMsg, useInterfaces: boolean = true): AggregatedOrderPairPriceBucket {
+    return AggregatedOrderPairPriceBucket.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: AggregatedOrderPairPriceBucket): Uint8Array {
+    return AggregatedOrderPairPriceBucket.encode(message).finish();
+  },
+  toProtoMsg(message: AggregatedOrderPairPriceBucket): AggregatedOrderPairPriceBucketProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.trade.AggregatedOrderPairPriceBucket",
+      value: AggregatedOrderPairPriceBucket.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(AggregatedOrderPairPriceBucket.typeUrl, AggregatedOrderPairPriceBucket);
+function createBaseOrderPairPriceBucket(): OrderPairPriceBucket {
+  return {
+    poolId: BigInt(0),
+    tokenIn: "",
+    tokenOut: "",
+    whitelistedRoute: false,
+    start: "",
+    end: "",
+    amount: "",
+    count: BigInt(0)
+  };
+}
+export const OrderPairPriceBucket = {
+  typeUrl: "/pryzmatics.trade.OrderPairPriceBucket",
+  is(o: any): o is OrderPairPriceBucket {
+    return o && (o.$typeUrl === OrderPairPriceBucket.typeUrl || typeof o.poolId === "bigint" && typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.whitelistedRoute === "boolean" && typeof o.start === "string" && typeof o.end === "string" && typeof o.amount === "string" && typeof o.count === "bigint");
+  },
+  isSDK(o: any): o is OrderPairPriceBucketSDKType {
+    return o && (o.$typeUrl === OrderPairPriceBucket.typeUrl || typeof o.pool_id === "bigint" && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.whitelisted_route === "boolean" && typeof o.start === "string" && typeof o.end === "string" && typeof o.amount === "string" && typeof o.count === "bigint");
+  },
+  isAmino(o: any): o is OrderPairPriceBucketAmino {
+    return o && (o.$typeUrl === OrderPairPriceBucket.typeUrl || typeof o.pool_id === "bigint" && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.whitelisted_route === "boolean" && typeof o.start === "string" && typeof o.end === "string" && typeof o.amount === "string" && typeof o.count === "bigint");
+  },
+  encode(message: OrderPairPriceBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.poolId !== BigInt(0)) {
+      writer.uint32(8).uint64(message.poolId);
+    }
+    if (message.tokenIn !== "") {
+      writer.uint32(18).string(message.tokenIn);
+    }
+    if (message.tokenOut !== "") {
+      writer.uint32(26).string(message.tokenOut);
+    }
+    if (message.whitelistedRoute === true) {
+      writer.uint32(32).bool(message.whitelistedRoute);
+    }
+    if (message.start !== "") {
+      writer.uint32(42).string(Decimal.fromUserInput(message.start, 18).atomics);
+    }
+    if (message.end !== "") {
+      writer.uint32(50).string(Decimal.fromUserInput(message.end, 18).atomics);
+    }
+    if (message.amount !== "") {
+      writer.uint32(58).string(message.amount);
+    }
+    if (message.count !== BigInt(0)) {
+      writer.uint32(64).uint64(message.count);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): OrderPairPriceBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOrderPairPriceBucket();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.poolId = reader.uint64();
+          break;
+        case 2:
+          message.tokenIn = reader.string();
+          break;
+        case 3:
+          message.tokenOut = reader.string();
+          break;
+        case 4:
+          message.whitelistedRoute = reader.bool();
+          break;
+        case 5:
+          message.start = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 6:
+          message.end = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 7:
+          message.amount = reader.string();
+          break;
+        case 8:
+          message.count = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): OrderPairPriceBucket {
+    return {
+      poolId: isSet(object.poolId) ? BigInt(object.poolId.toString()) : BigInt(0),
+      tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
+      tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
+      whitelistedRoute: isSet(object.whitelistedRoute) ? Boolean(object.whitelistedRoute) : false,
+      start: isSet(object.start) ? String(object.start) : "",
+      end: isSet(object.end) ? String(object.end) : "",
+      amount: isSet(object.amount) ? String(object.amount) : "",
+      count: isSet(object.count) ? BigInt(object.count.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: OrderPairPriceBucket): unknown {
+    const obj: any = {};
+    message.poolId !== undefined && (obj.poolId = (message.poolId || BigInt(0)).toString());
+    message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
+    message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
+    message.whitelistedRoute !== undefined && (obj.whitelistedRoute = message.whitelistedRoute);
+    message.start !== undefined && (obj.start = message.start);
+    message.end !== undefined && (obj.end = message.end);
+    message.amount !== undefined && (obj.amount = message.amount);
+    message.count !== undefined && (obj.count = (message.count || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<OrderPairPriceBucket>): OrderPairPriceBucket {
+    const message = createBaseOrderPairPriceBucket();
+    message.poolId = object.poolId !== undefined && object.poolId !== null ? BigInt(object.poolId.toString()) : BigInt(0);
+    message.tokenIn = object.tokenIn ?? "";
+    message.tokenOut = object.tokenOut ?? "";
+    message.whitelistedRoute = object.whitelistedRoute ?? false;
+    message.start = object.start ?? "";
+    message.end = object.end ?? "";
+    message.amount = object.amount ?? "";
+    message.count = object.count !== undefined && object.count !== null ? BigInt(object.count.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: OrderPairPriceBucketAmino): OrderPairPriceBucket {
+    const message = createBaseOrderPairPriceBucket();
+    if (object.pool_id !== undefined && object.pool_id !== null) {
+      message.poolId = BigInt(object.pool_id);
+    }
+    if (object.token_in !== undefined && object.token_in !== null) {
+      message.tokenIn = object.token_in;
+    }
+    if (object.token_out !== undefined && object.token_out !== null) {
+      message.tokenOut = object.token_out;
+    }
+    if (object.whitelisted_route !== undefined && object.whitelisted_route !== null) {
+      message.whitelistedRoute = object.whitelisted_route;
+    }
+    if (object.start !== undefined && object.start !== null) {
+      message.start = object.start;
+    }
+    if (object.end !== undefined && object.end !== null) {
+      message.end = object.end;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    if (object.count !== undefined && object.count !== null) {
+      message.count = BigInt(object.count);
+    }
+    return message;
+  },
+  toAmino(message: OrderPairPriceBucket, useInterfaces: boolean = true): OrderPairPriceBucketAmino {
+    const obj: any = {};
+    obj.pool_id = message.poolId ? message.poolId.toString() : undefined;
+    obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
+    obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
+    obj.whitelisted_route = message.whitelistedRoute === false ? undefined : message.whitelistedRoute;
+    obj.start = padDecimal(message.start) === "" ? undefined : padDecimal(message.start);
+    obj.end = padDecimal(message.end) === "" ? undefined : padDecimal(message.end);
+    obj.amount = message.amount === "" ? undefined : message.amount;
+    obj.count = message.count ? message.count.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: OrderPairPriceBucketAminoMsg): OrderPairPriceBucket {
+    return OrderPairPriceBucket.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OrderPairPriceBucketProtoMsg, useInterfaces: boolean = true): OrderPairPriceBucket {
+    return OrderPairPriceBucket.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: OrderPairPriceBucket): Uint8Array {
+    return OrderPairPriceBucket.encode(message).finish();
+  },
+  toProtoMsg(message: OrderPairPriceBucket): OrderPairPriceBucketProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.trade.OrderPairPriceBucket",
+      value: OrderPairPriceBucket.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(OrderPairPriceBucket.typeUrl, OrderPairPriceBucket);

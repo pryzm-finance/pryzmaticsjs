@@ -258,6 +258,18 @@ service Query {
     option (google.api.http).get = "/pryzmatics/trade/order_pairs_to_disable";
   }
 
+  rpc OrderPairMetrics(pryzmatics.server.trade.QueryOrderPairMetricsRequest) returns (pryzmatics.server.trade.QueryOrderPairMetricsResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/order_pair_metrics";
+  }
+
+  rpc OrderPairPriceBuckets(pryzmatics.server.trade.QueryOrderPairPriceBucketsRequest) returns (pryzmatics.server.trade.QueryOrderPairPriceBucketsResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/order_pair_price_buckets";
+  }
+
+  rpc OrderMetrics(pryzmatics.server.trade.QueryOrderMetricsRequest) returns (pryzmatics.server.trade.QueryOrderMetricsResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/order_metrics";
+  }
+
   rpc DirectlyConnectedTokenPairs(pryzmatics.server.trade.QueryDirectlyConnectedTokenPairsRequest) returns (pryzmatics.server.trade.QueryDirectlyConnectedTokenPairsResponse) {
     option (google.api.http).get = "/pryzmatics/trade/directly_connected_token_pair";
   }
