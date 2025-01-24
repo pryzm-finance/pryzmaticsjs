@@ -140,31 +140,30 @@ message OrderPairMetrics {
 }
 
 message OrderMetrics {
-  string total_remaining = 5 [
-    (cosmos_proto.scalar) = "cosmos.Int",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+  string total_remaining = 1 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-  uint64 total_active_order_count = 6;
-  string total_remaining_without_limit = 7 [
-    (cosmos_proto.scalar) = "cosmos.Int",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+  uint64 total_active_order_count = 2;
+  string total_remaining_without_limit = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-  uint64 total_active_order_without_limit_count = 8;
-  string total_in_the_money_amount = 9 [
-    (cosmos_proto.scalar) = "cosmos.Int",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+  uint64 total_active_order_without_limit_count = 4;
+  string total_in_the_money_amount = 5 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-  uint64 total_in_the_money_count = 10;
-  string total_out_the_money_amount = 11 [
-    (cosmos_proto.scalar) = "cosmos.Int",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+  uint64 total_in_the_money_count = 6;
+  string total_out_the_money_amount = 7 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-  uint64 total_out_the_money_count = 12;
-  int64 last_post_process_height = 13;
+  uint64 total_out_the_money_count = 8;
 }
 
 message AggregatedOrderPairPriceBucket {

@@ -345,7 +345,6 @@ export interface OrderMetrics {
   totalInTheMoneyCount: bigint;
   totalOutTheMoneyAmount: string;
   totalOutTheMoneyCount: bigint;
-  lastPostProcessHeight: bigint;
 }
 export interface OrderMetricsProtoMsg {
   typeUrl: "/pryzmatics.trade.OrderMetrics";
@@ -360,7 +359,6 @@ export interface OrderMetricsAmino {
   total_in_the_money_count?: string;
   total_out_the_money_amount?: string;
   total_out_the_money_count?: string;
-  last_post_process_height?: string;
 }
 export interface OrderMetricsAminoMsg {
   type: "/pryzmatics.trade.OrderMetrics";
@@ -375,7 +373,6 @@ export interface OrderMetricsSDKType {
   total_in_the_money_count: bigint;
   total_out_the_money_amount: string;
   total_out_the_money_count: bigint;
-  last_post_process_height: bigint;
 }
 export interface AggregatedOrderPairPriceBucket {
   start: string;
@@ -1389,48 +1386,44 @@ function createBaseOrderMetrics(): OrderMetrics {
     totalInTheMoneyAmount: "",
     totalInTheMoneyCount: BigInt(0),
     totalOutTheMoneyAmount: "",
-    totalOutTheMoneyCount: BigInt(0),
-    lastPostProcessHeight: BigInt(0)
+    totalOutTheMoneyCount: BigInt(0)
   };
 }
 export const OrderMetrics = {
   typeUrl: "/pryzmatics.trade.OrderMetrics",
   is(o: any): o is OrderMetrics {
-    return o && (o.$typeUrl === OrderMetrics.typeUrl || typeof o.totalRemaining === "string" && typeof o.totalActiveOrderCount === "bigint" && typeof o.totalRemainingWithoutLimit === "string" && typeof o.totalActiveOrderWithoutLimitCount === "bigint" && typeof o.totalInTheMoneyAmount === "string" && typeof o.totalInTheMoneyCount === "bigint" && typeof o.totalOutTheMoneyAmount === "string" && typeof o.totalOutTheMoneyCount === "bigint" && typeof o.lastPostProcessHeight === "bigint");
+    return o && (o.$typeUrl === OrderMetrics.typeUrl || typeof o.totalRemaining === "string" && typeof o.totalActiveOrderCount === "bigint" && typeof o.totalRemainingWithoutLimit === "string" && typeof o.totalActiveOrderWithoutLimitCount === "bigint" && typeof o.totalInTheMoneyAmount === "string" && typeof o.totalInTheMoneyCount === "bigint" && typeof o.totalOutTheMoneyAmount === "string" && typeof o.totalOutTheMoneyCount === "bigint");
   },
   isSDK(o: any): o is OrderMetricsSDKType {
-    return o && (o.$typeUrl === OrderMetrics.typeUrl || typeof o.total_remaining === "string" && typeof o.total_active_order_count === "bigint" && typeof o.total_remaining_without_limit === "string" && typeof o.total_active_order_without_limit_count === "bigint" && typeof o.total_in_the_money_amount === "string" && typeof o.total_in_the_money_count === "bigint" && typeof o.total_out_the_money_amount === "string" && typeof o.total_out_the_money_count === "bigint" && typeof o.last_post_process_height === "bigint");
+    return o && (o.$typeUrl === OrderMetrics.typeUrl || typeof o.total_remaining === "string" && typeof o.total_active_order_count === "bigint" && typeof o.total_remaining_without_limit === "string" && typeof o.total_active_order_without_limit_count === "bigint" && typeof o.total_in_the_money_amount === "string" && typeof o.total_in_the_money_count === "bigint" && typeof o.total_out_the_money_amount === "string" && typeof o.total_out_the_money_count === "bigint");
   },
   isAmino(o: any): o is OrderMetricsAmino {
-    return o && (o.$typeUrl === OrderMetrics.typeUrl || typeof o.total_remaining === "string" && typeof o.total_active_order_count === "bigint" && typeof o.total_remaining_without_limit === "string" && typeof o.total_active_order_without_limit_count === "bigint" && typeof o.total_in_the_money_amount === "string" && typeof o.total_in_the_money_count === "bigint" && typeof o.total_out_the_money_amount === "string" && typeof o.total_out_the_money_count === "bigint" && typeof o.last_post_process_height === "bigint");
+    return o && (o.$typeUrl === OrderMetrics.typeUrl || typeof o.total_remaining === "string" && typeof o.total_active_order_count === "bigint" && typeof o.total_remaining_without_limit === "string" && typeof o.total_active_order_without_limit_count === "bigint" && typeof o.total_in_the_money_amount === "string" && typeof o.total_in_the_money_count === "bigint" && typeof o.total_out_the_money_amount === "string" && typeof o.total_out_the_money_count === "bigint");
   },
   encode(message: OrderMetrics, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.totalRemaining !== "") {
-      writer.uint32(42).string(message.totalRemaining);
+      writer.uint32(10).string(Decimal.fromUserInput(message.totalRemaining, 18).atomics);
     }
     if (message.totalActiveOrderCount !== BigInt(0)) {
-      writer.uint32(48).uint64(message.totalActiveOrderCount);
+      writer.uint32(16).uint64(message.totalActiveOrderCount);
     }
     if (message.totalRemainingWithoutLimit !== "") {
-      writer.uint32(58).string(message.totalRemainingWithoutLimit);
+      writer.uint32(26).string(Decimal.fromUserInput(message.totalRemainingWithoutLimit, 18).atomics);
     }
     if (message.totalActiveOrderWithoutLimitCount !== BigInt(0)) {
-      writer.uint32(64).uint64(message.totalActiveOrderWithoutLimitCount);
+      writer.uint32(32).uint64(message.totalActiveOrderWithoutLimitCount);
     }
     if (message.totalInTheMoneyAmount !== "") {
-      writer.uint32(74).string(message.totalInTheMoneyAmount);
+      writer.uint32(42).string(Decimal.fromUserInput(message.totalInTheMoneyAmount, 18).atomics);
     }
     if (message.totalInTheMoneyCount !== BigInt(0)) {
-      writer.uint32(80).uint64(message.totalInTheMoneyCount);
+      writer.uint32(48).uint64(message.totalInTheMoneyCount);
     }
     if (message.totalOutTheMoneyAmount !== "") {
-      writer.uint32(90).string(message.totalOutTheMoneyAmount);
+      writer.uint32(58).string(Decimal.fromUserInput(message.totalOutTheMoneyAmount, 18).atomics);
     }
     if (message.totalOutTheMoneyCount !== BigInt(0)) {
-      writer.uint32(96).uint64(message.totalOutTheMoneyCount);
-    }
-    if (message.lastPostProcessHeight !== BigInt(0)) {
-      writer.uint32(104).int64(message.lastPostProcessHeight);
+      writer.uint32(64).uint64(message.totalOutTheMoneyCount);
     }
     return writer;
   },
@@ -1441,32 +1434,29 @@ export const OrderMetrics = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 5:
-          message.totalRemaining = reader.string();
+        case 1:
+          message.totalRemaining = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
-        case 6:
+        case 2:
           message.totalActiveOrderCount = reader.uint64();
           break;
-        case 7:
-          message.totalRemainingWithoutLimit = reader.string();
+        case 3:
+          message.totalRemainingWithoutLimit = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
-        case 8:
+        case 4:
           message.totalActiveOrderWithoutLimitCount = reader.uint64();
           break;
-        case 9:
-          message.totalInTheMoneyAmount = reader.string();
+        case 5:
+          message.totalInTheMoneyAmount = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
-        case 10:
+        case 6:
           message.totalInTheMoneyCount = reader.uint64();
           break;
-        case 11:
-          message.totalOutTheMoneyAmount = reader.string();
+        case 7:
+          message.totalOutTheMoneyAmount = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
-        case 12:
+        case 8:
           message.totalOutTheMoneyCount = reader.uint64();
-          break;
-        case 13:
-          message.lastPostProcessHeight = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1484,8 +1474,7 @@ export const OrderMetrics = {
       totalInTheMoneyAmount: isSet(object.totalInTheMoneyAmount) ? String(object.totalInTheMoneyAmount) : "",
       totalInTheMoneyCount: isSet(object.totalInTheMoneyCount) ? BigInt(object.totalInTheMoneyCount.toString()) : BigInt(0),
       totalOutTheMoneyAmount: isSet(object.totalOutTheMoneyAmount) ? String(object.totalOutTheMoneyAmount) : "",
-      totalOutTheMoneyCount: isSet(object.totalOutTheMoneyCount) ? BigInt(object.totalOutTheMoneyCount.toString()) : BigInt(0),
-      lastPostProcessHeight: isSet(object.lastPostProcessHeight) ? BigInt(object.lastPostProcessHeight.toString()) : BigInt(0)
+      totalOutTheMoneyCount: isSet(object.totalOutTheMoneyCount) ? BigInt(object.totalOutTheMoneyCount.toString()) : BigInt(0)
     };
   },
   toJSON(message: OrderMetrics): unknown {
@@ -1498,7 +1487,6 @@ export const OrderMetrics = {
     message.totalInTheMoneyCount !== undefined && (obj.totalInTheMoneyCount = (message.totalInTheMoneyCount || BigInt(0)).toString());
     message.totalOutTheMoneyAmount !== undefined && (obj.totalOutTheMoneyAmount = message.totalOutTheMoneyAmount);
     message.totalOutTheMoneyCount !== undefined && (obj.totalOutTheMoneyCount = (message.totalOutTheMoneyCount || BigInt(0)).toString());
-    message.lastPostProcessHeight !== undefined && (obj.lastPostProcessHeight = (message.lastPostProcessHeight || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<OrderMetrics>): OrderMetrics {
@@ -1511,7 +1499,6 @@ export const OrderMetrics = {
     message.totalInTheMoneyCount = object.totalInTheMoneyCount !== undefined && object.totalInTheMoneyCount !== null ? BigInt(object.totalInTheMoneyCount.toString()) : BigInt(0);
     message.totalOutTheMoneyAmount = object.totalOutTheMoneyAmount ?? "";
     message.totalOutTheMoneyCount = object.totalOutTheMoneyCount !== undefined && object.totalOutTheMoneyCount !== null ? BigInt(object.totalOutTheMoneyCount.toString()) : BigInt(0);
-    message.lastPostProcessHeight = object.lastPostProcessHeight !== undefined && object.lastPostProcessHeight !== null ? BigInt(object.lastPostProcessHeight.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: OrderMetricsAmino): OrderMetrics {
@@ -1540,22 +1527,18 @@ export const OrderMetrics = {
     if (object.total_out_the_money_count !== undefined && object.total_out_the_money_count !== null) {
       message.totalOutTheMoneyCount = BigInt(object.total_out_the_money_count);
     }
-    if (object.last_post_process_height !== undefined && object.last_post_process_height !== null) {
-      message.lastPostProcessHeight = BigInt(object.last_post_process_height);
-    }
     return message;
   },
   toAmino(message: OrderMetrics, useInterfaces: boolean = true): OrderMetricsAmino {
     const obj: any = {};
-    obj.total_remaining = message.totalRemaining === "" ? undefined : message.totalRemaining;
+    obj.total_remaining = padDecimal(message.totalRemaining) === "" ? undefined : padDecimal(message.totalRemaining);
     obj.total_active_order_count = message.totalActiveOrderCount ? message.totalActiveOrderCount.toString() : undefined;
-    obj.total_remaining_without_limit = message.totalRemainingWithoutLimit === "" ? undefined : message.totalRemainingWithoutLimit;
+    obj.total_remaining_without_limit = padDecimal(message.totalRemainingWithoutLimit) === "" ? undefined : padDecimal(message.totalRemainingWithoutLimit);
     obj.total_active_order_without_limit_count = message.totalActiveOrderWithoutLimitCount ? message.totalActiveOrderWithoutLimitCount.toString() : undefined;
-    obj.total_in_the_money_amount = message.totalInTheMoneyAmount === "" ? undefined : message.totalInTheMoneyAmount;
+    obj.total_in_the_money_amount = padDecimal(message.totalInTheMoneyAmount) === "" ? undefined : padDecimal(message.totalInTheMoneyAmount);
     obj.total_in_the_money_count = message.totalInTheMoneyCount ? message.totalInTheMoneyCount.toString() : undefined;
-    obj.total_out_the_money_amount = message.totalOutTheMoneyAmount === "" ? undefined : message.totalOutTheMoneyAmount;
+    obj.total_out_the_money_amount = padDecimal(message.totalOutTheMoneyAmount) === "" ? undefined : padDecimal(message.totalOutTheMoneyAmount);
     obj.total_out_the_money_count = message.totalOutTheMoneyCount ? message.totalOutTheMoneyCount.toString() : undefined;
-    obj.last_post_process_height = message.lastPostProcessHeight ? message.lastPostProcessHeight.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: OrderMetricsAminoMsg): OrderMetrics {

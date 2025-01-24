@@ -5,8 +5,8 @@ import { ExecutedOperation, ExecutedOperationAmino, ExecutedOperationSDKType } f
 import { RouteStep, RouteStepAmino, RouteStepSDKType } from "../../pryzm/amm/v1/route_step";
 import { isSet, fromJsonTimestamp, fromTimestamp, padDecimal } from "../../helpers";
 import { BinaryReader, BinaryWriter } from "../../binary";
-import { Decimal } from "@cosmjs/math";
 import { GlobalDecoderRegistry } from "../../registry";
+import { Decimal } from "@cosmjs/math";
 export enum OperationType {
   OPERATION_TYPE_ANY = 0,
   OPERATION_TYPE_SINGLE_SWAP = 1,
@@ -84,7 +84,6 @@ export interface UserTradeHistory {
   nexusBatchFee: Coin[];
   nexusPath: ExecutedOperation[];
   orderPath: RouteStep[];
-  volume?: string;
 }
 export interface UserTradeHistoryProtoMsg {
   typeUrl: "/pryzmatics.trade.UserTradeHistory";
@@ -105,7 +104,6 @@ export interface UserTradeHistoryAmino {
   nexus_batch_fee?: CoinAmino[];
   nexus_path?: ExecutedOperationAmino[];
   order_path?: RouteStepAmino[];
-  volume?: string;
 }
 export interface UserTradeHistoryAminoMsg {
   type: "/pryzmatics.trade.UserTradeHistory";
@@ -126,7 +124,6 @@ export interface UserTradeHistorySDKType {
   nexus_batch_fee: CoinSDKType[];
   nexus_path: ExecutedOperationSDKType[];
   order_path: RouteStepSDKType[];
-  volume?: string;
 }
 export interface UserTradeVolume {
   address: string;
@@ -163,8 +160,7 @@ function createBaseUserTradeHistory(): UserTradeHistory {
     blockTime: Timestamp.fromPartial({}),
     nexusBatchFee: [],
     nexusPath: [],
-    orderPath: [],
-    volume: undefined
+    orderPath: []
   };
 }
 export const UserTradeHistory = {
@@ -221,9 +217,6 @@ export const UserTradeHistory = {
     for (const v of message.orderPath) {
       RouteStep.encode(v!, writer.uint32(114).fork()).ldelim();
     }
-    if (message.volume !== undefined) {
-      writer.uint32(122).string(Decimal.fromUserInput(message.volume, 18).atomics);
-    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): UserTradeHistory {
@@ -275,9 +268,6 @@ export const UserTradeHistory = {
         case 14:
           message.orderPath.push(RouteStep.decode(reader, reader.uint32(), useInterfaces));
           break;
-        case 15:
-          message.volume = Decimal.fromAtomics(reader.string(), 18).toString();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -300,8 +290,7 @@ export const UserTradeHistory = {
       blockTime: isSet(object.blockTime) ? fromJsonTimestamp(object.blockTime) : undefined,
       nexusBatchFee: Array.isArray(object?.nexusBatchFee) ? object.nexusBatchFee.map((e: any) => Coin.fromJSON(e)) : [],
       nexusPath: Array.isArray(object?.nexusPath) ? object.nexusPath.map((e: any) => ExecutedOperation.fromJSON(e)) : [],
-      orderPath: Array.isArray(object?.orderPath) ? object.orderPath.map((e: any) => RouteStep.fromJSON(e)) : [],
-      volume: isSet(object.volume) ? String(object.volume) : undefined
+      orderPath: Array.isArray(object?.orderPath) ? object.orderPath.map((e: any) => RouteStep.fromJSON(e)) : []
     };
   },
   toJSON(message: UserTradeHistory): unknown {
@@ -356,7 +345,6 @@ export const UserTradeHistory = {
     } else {
       obj.orderPath = [];
     }
-    message.volume !== undefined && (obj.volume = message.volume);
     return obj;
   },
   fromPartial(object: Partial<UserTradeHistory>): UserTradeHistory {
@@ -375,7 +363,6 @@ export const UserTradeHistory = {
     message.nexusBatchFee = object.nexusBatchFee?.map(e => Coin.fromPartial(e)) || [];
     message.nexusPath = object.nexusPath?.map(e => ExecutedOperation.fromPartial(e)) || [];
     message.orderPath = object.orderPath?.map(e => RouteStep.fromPartial(e)) || [];
-    message.volume = object.volume ?? undefined;
     return message;
   },
   fromAmino(object: UserTradeHistoryAmino): UserTradeHistory {
@@ -404,9 +391,6 @@ export const UserTradeHistory = {
     message.nexusBatchFee = object.nexus_batch_fee?.map(e => Coin.fromAmino(e)) || [];
     message.nexusPath = object.nexus_path?.map(e => ExecutedOperation.fromAmino(e)) || [];
     message.orderPath = object.order_path?.map(e => RouteStep.fromAmino(e)) || [];
-    if (object.volume !== undefined && object.volume !== null) {
-      message.volume = object.volume;
-    }
     return message;
   },
   toAmino(message: UserTradeHistory, useInterfaces: boolean = true): UserTradeHistoryAmino {
@@ -461,7 +445,6 @@ export const UserTradeHistory = {
     } else {
       obj.order_path = message.orderPath;
     }
-    obj.volume = padDecimal(message.volume) === null ? undefined : padDecimal(message.volume);
     return obj;
   },
   fromAminoMsg(object: UserTradeHistoryAminoMsg): UserTradeHistory {
