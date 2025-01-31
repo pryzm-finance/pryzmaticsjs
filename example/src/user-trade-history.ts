@@ -13,7 +13,7 @@ async function main() {
 
     let history = await fetchAll(pryzmaticsClient, async (client: PryzmaticsClient, request: PageRequest) => {
         const result = await pryzmaticsClient.pryzmatics.userTradeHistory({
-            operationType: OperationType.OPERATION_TYPE_ANY,
+            operationTypes: [OperationType.OPERATION_TYPE_BATCH_SWAP, OperationType.OPERATION_TYPE_NEXUS_BATCH, OperationType.OPERATION_TYPE_SINGLE_SWAP],
             address: "",
             firstToken: "",
             secondToken: "",
@@ -21,7 +21,8 @@ async function main() {
                 property: UserTradeHistoryOrderByProperty.ORDER_BY_PROPERTY_BLOCK_TIME,
                 descending: true
             },
-            pagination: request
+            pagination: request,
+            includeProxyTrades: false,
         })
         return [result.pagination.next_key, result.user_trade_history_records]
     })
@@ -30,7 +31,7 @@ async function main() {
 
     history = await fetchAll(pryzmaticsClient, async (client: PryzmaticsClient, request: PageRequest) => {
         const result = await pryzmaticsClient.pryzmatics.userTradeHistory({
-            operationType: OperationType.OPERATION_TYPE_ANY,
+            operationTypes: [OperationType.OPERATION_TYPE_BATCH_SWAP, OperationType.OPERATION_TYPE_NEXUS_BATCH, OperationType.OPERATION_TYPE_SINGLE_SWAP],
             address: "",
             firstToken: "c:uluna",
             secondToken: "upryzm",
@@ -38,7 +39,8 @@ async function main() {
                 property: UserTradeHistoryOrderByProperty.ORDER_BY_PROPERTY_BLOCK_TIME,
                 descending: true
             },
-            pagination: request
+            pagination: request,
+            includeProxyTrades: false,
         })
         return [result.pagination.next_key, result.user_trade_history_records]
     })
@@ -47,12 +49,18 @@ async function main() {
     let volumes = await fetchAll(pryzmaticsClient, async (client: PryzmaticsClient, request: PageRequest) => {
         const result = await pryzmaticsClient.pryzmatics.userTradeVolume({
             intervalHours: 24n,
-            operationType: OperationType.OPERATION_TYPE_ORDER, // pulse-trade volume leader-board
+            operationTypes: [
+                OperationType.OPERATION_TYPE_BATCH_SWAP,
+                OperationType.OPERATION_TYPE_NEXUS_BATCH,
+                OperationType.OPERATION_TYPE_SINGLE_SWAP,
+                OperationType.OPERATION_TYPE_ORDER
+            ],
             orderBy: {
                 property: UserTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_VOLUME,
                 descending: true
             },
-            pagination: request
+            pagination: request,
+            includeProxyTrades: false,
         })
         return [result.pagination.next_key, result.user_trade_volume_records]
     })
@@ -62,14 +70,15 @@ async function main() {
     history = await fetchAll(pryzmaticsClient, async (client: PryzmaticsClient, request: PageRequest) => {
         const result = await pryzmaticsClient.pryzmatics.userTradeHistory({
             address: "pryzm1pl9wyl87pzdzeffpg5deknd3gymq56p2g6gjpk",
-            operationType: OperationType.OPERATION_TYPE_ANY,
+            operationTypes: [OperationType.OPERATION_TYPE_BATCH_SWAP, OperationType.OPERATION_TYPE_NEXUS_BATCH, OperationType.OPERATION_TYPE_SINGLE_SWAP],
             firstToken: "c:uluna",
             secondToken: "upryzm",
             orderBy: {
                 property: UserTradeHistoryOrderByProperty.ORDER_BY_PROPERTY_BLOCK_TIME,
                 descending: true
             },
-            pagination: request
+            pagination: request,
+            includeProxyTrades: false,
         })
         return [result.pagination.next_key, result.user_trade_history_records]
     })
