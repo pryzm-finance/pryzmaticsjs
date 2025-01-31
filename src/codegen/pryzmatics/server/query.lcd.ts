@@ -551,8 +551,8 @@ export class LCDQueryClient {
     if (typeof params?.address !== "undefined") {
       options.params.address = params.address;
     }
-    if (typeof params?.operationType !== "undefined") {
-      options.params.operation_type = params.operationType;
+    if (typeof params?.operationTypes !== "undefined") {
+      options.params.operation_types = params.operationTypes;
     }
     if (typeof params?.orderBy !== "undefined") {
       options.params.order_by = params.orderBy;
@@ -571,8 +571,8 @@ export class LCDQueryClient {
     const options: any = {
       params: {}
     };
-    if (typeof params?.operationType !== "undefined") {
-      options.params.operation_type = params.operationType;
+    if (typeof params?.operationTypes !== "undefined") {
+      options.params.operation_types = params.operationTypes;
     }
     if (typeof params?.orderBy !== "undefined") {
       options.params.order_by = params.orderBy;

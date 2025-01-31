@@ -12,7 +12,7 @@ message QueryUserTradeHistoryRequest {
   string first_token = 1;
   string second_token = 2;
   string address = 3;
-  pryzmatics.trade.OperationType operation_type = 4;
+  repeated pryzmatics.trade.OperationType operation_types = 4;
   pryzmatics.database.trade.UserTradeHistoryOrderBy order_by = 5 [(gogoproto.nullable) = true];
   cosmos.base.query.v1beta1.PageRequest pagination = 6 [(gogoproto.nullable) = true];
   bool include_proxy_trades = 7;
@@ -24,7 +24,7 @@ message QueryUserTradeHistoryResponse {
 }
 
 message QueryUserTradeVolumeRequest {
-  pryzmatics.trade.OperationType operation_type = 1;
+  repeated pryzmatics.trade.OperationType operation_types = 1;
   pryzmatics.database.trade.UserTradeVolumeOrderBy order_by = 2 [(gogoproto.nullable) = true];
   uint64 interval_hours = 3;
   cosmos.base.query.v1beta1.PageRequest pagination = 4 [(gogoproto.nullable) = true];
