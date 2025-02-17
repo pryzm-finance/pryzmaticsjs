@@ -1,4 +1,4 @@
-import { PoolType, poolTypeFromJSON, poolTypeToJSON } from "../../pryzm/amm/v1/pool";
+import { PoolType, PoolPauseWindow, PoolPauseWindowAmino, PoolPauseWindowSDKType, poolTypeFromJSON, poolTypeToJSON } from "../../pryzm/amm/v1/pool";
 import { PoolApr, PoolAprAmino, PoolAprSDKType } from "./pool_apr";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { Decimal } from "@cosmjs/math";
@@ -52,6 +52,11 @@ export interface Pool {
   lpDenom: string;
   apr?: PoolApr;
   metrics: PoolMetrics;
+  paused: boolean;
+  pausedByGov: boolean;
+  pausedByOwner: boolean;
+  ownerPauseWindowTiming?: PoolPauseWindow;
+  recoveryMode: boolean;
 }
 export interface PoolProtoMsg {
   typeUrl: "/pryzmatics.pool.Pool";
@@ -64,6 +69,11 @@ export interface PoolAmino {
   lp_denom?: string;
   apr?: PoolAprAmino;
   metrics?: PoolMetricsAmino;
+  paused?: boolean;
+  paused_by_gov?: boolean;
+  paused_by_owner?: boolean;
+  owner_pause_window_timing?: PoolPauseWindowAmino;
+  recovery_mode?: boolean;
 }
 export interface PoolAminoMsg {
   type: "/pryzmatics.pool.Pool";
@@ -76,6 +86,11 @@ export interface PoolSDKType {
   lp_denom: string;
   apr?: PoolAprSDKType;
   metrics: PoolMetricsSDKType;
+  paused: boolean;
+  paused_by_gov: boolean;
+  paused_by_owner: boolean;
+  owner_pause_window_timing?: PoolPauseWindowSDKType;
+  recovery_mode: boolean;
 }
 function createBasePoolMetrics(): PoolMetrics {
   return {
@@ -279,19 +294,24 @@ function createBasePool(): Pool {
     poolType: 0,
     lpDenom: "",
     apr: undefined,
-    metrics: PoolMetrics.fromPartial({})
+    metrics: PoolMetrics.fromPartial({}),
+    paused: false,
+    pausedByGov: false,
+    pausedByOwner: false,
+    ownerPauseWindowTiming: undefined,
+    recoveryMode: false
   };
 }
 export const Pool = {
   typeUrl: "/pryzmatics.pool.Pool",
   is(o: any): o is Pool {
-    return o && (o.$typeUrl === Pool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.poolType) && typeof o.lpDenom === "string" && PoolMetrics.is(o.metrics));
+    return o && (o.$typeUrl === Pool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.poolType) && typeof o.lpDenom === "string" && PoolMetrics.is(o.metrics) && typeof o.paused === "boolean" && typeof o.pausedByGov === "boolean" && typeof o.pausedByOwner === "boolean" && typeof o.recoveryMode === "boolean");
   },
   isSDK(o: any): o is PoolSDKType {
-    return o && (o.$typeUrl === Pool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.pool_type) && typeof o.lp_denom === "string" && PoolMetrics.isSDK(o.metrics));
+    return o && (o.$typeUrl === Pool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.pool_type) && typeof o.lp_denom === "string" && PoolMetrics.isSDK(o.metrics) && typeof o.paused === "boolean" && typeof o.paused_by_gov === "boolean" && typeof o.paused_by_owner === "boolean" && typeof o.recovery_mode === "boolean");
   },
   isAmino(o: any): o is PoolAmino {
-    return o && (o.$typeUrl === Pool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.pool_type) && typeof o.lp_denom === "string" && PoolMetrics.isAmino(o.metrics));
+    return o && (o.$typeUrl === Pool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.pool_type) && typeof o.lp_denom === "string" && PoolMetrics.isAmino(o.metrics) && typeof o.paused === "boolean" && typeof o.paused_by_gov === "boolean" && typeof o.paused_by_owner === "boolean" && typeof o.recovery_mode === "boolean");
   },
   encode(message: Pool, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
@@ -311,6 +331,21 @@ export const Pool = {
     }
     if (message.metrics !== undefined) {
       PoolMetrics.encode(message.metrics, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.paused === true) {
+      writer.uint32(56).bool(message.paused);
+    }
+    if (message.pausedByGov === true) {
+      writer.uint32(64).bool(message.pausedByGov);
+    }
+    if (message.pausedByOwner === true) {
+      writer.uint32(72).bool(message.pausedByOwner);
+    }
+    if (message.ownerPauseWindowTiming !== undefined) {
+      PoolPauseWindow.encode(message.ownerPauseWindowTiming, writer.uint32(82).fork()).ldelim();
+    }
+    if (message.recoveryMode === true) {
+      writer.uint32(88).bool(message.recoveryMode);
     }
     return writer;
   },
@@ -339,6 +374,21 @@ export const Pool = {
         case 6:
           message.metrics = PoolMetrics.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 7:
+          message.paused = reader.bool();
+          break;
+        case 8:
+          message.pausedByGov = reader.bool();
+          break;
+        case 9:
+          message.pausedByOwner = reader.bool();
+          break;
+        case 10:
+          message.ownerPauseWindowTiming = PoolPauseWindow.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 11:
+          message.recoveryMode = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -353,7 +403,12 @@ export const Pool = {
       poolType: isSet(object.poolType) ? poolTypeFromJSON(object.poolType) : -1,
       lpDenom: isSet(object.lpDenom) ? String(object.lpDenom) : "",
       apr: isSet(object.apr) ? PoolApr.fromJSON(object.apr) : undefined,
-      metrics: isSet(object.metrics) ? PoolMetrics.fromJSON(object.metrics) : undefined
+      metrics: isSet(object.metrics) ? PoolMetrics.fromJSON(object.metrics) : undefined,
+      paused: isSet(object.paused) ? Boolean(object.paused) : false,
+      pausedByGov: isSet(object.pausedByGov) ? Boolean(object.pausedByGov) : false,
+      pausedByOwner: isSet(object.pausedByOwner) ? Boolean(object.pausedByOwner) : false,
+      ownerPauseWindowTiming: isSet(object.ownerPauseWindowTiming) ? PoolPauseWindow.fromJSON(object.ownerPauseWindowTiming) : undefined,
+      recoveryMode: isSet(object.recoveryMode) ? Boolean(object.recoveryMode) : false
     };
   },
   toJSON(message: Pool): unknown {
@@ -364,6 +419,11 @@ export const Pool = {
     message.lpDenom !== undefined && (obj.lpDenom = message.lpDenom);
     message.apr !== undefined && (obj.apr = message.apr ? PoolApr.toJSON(message.apr) : undefined);
     message.metrics !== undefined && (obj.metrics = message.metrics ? PoolMetrics.toJSON(message.metrics) : undefined);
+    message.paused !== undefined && (obj.paused = message.paused);
+    message.pausedByGov !== undefined && (obj.pausedByGov = message.pausedByGov);
+    message.pausedByOwner !== undefined && (obj.pausedByOwner = message.pausedByOwner);
+    message.ownerPauseWindowTiming !== undefined && (obj.ownerPauseWindowTiming = message.ownerPauseWindowTiming ? PoolPauseWindow.toJSON(message.ownerPauseWindowTiming) : undefined);
+    message.recoveryMode !== undefined && (obj.recoveryMode = message.recoveryMode);
     return obj;
   },
   fromPartial(object: Partial<Pool>): Pool {
@@ -374,6 +434,11 @@ export const Pool = {
     message.lpDenom = object.lpDenom ?? "";
     message.apr = object.apr !== undefined && object.apr !== null ? PoolApr.fromPartial(object.apr) : undefined;
     message.metrics = object.metrics !== undefined && object.metrics !== null ? PoolMetrics.fromPartial(object.metrics) : undefined;
+    message.paused = object.paused ?? false;
+    message.pausedByGov = object.pausedByGov ?? false;
+    message.pausedByOwner = object.pausedByOwner ?? false;
+    message.ownerPauseWindowTiming = object.ownerPauseWindowTiming !== undefined && object.ownerPauseWindowTiming !== null ? PoolPauseWindow.fromPartial(object.ownerPauseWindowTiming) : undefined;
+    message.recoveryMode = object.recoveryMode ?? false;
     return message;
   },
   fromAmino(object: PoolAmino): Pool {
@@ -396,6 +461,21 @@ export const Pool = {
     if (object.metrics !== undefined && object.metrics !== null) {
       message.metrics = PoolMetrics.fromAmino(object.metrics);
     }
+    if (object.paused !== undefined && object.paused !== null) {
+      message.paused = object.paused;
+    }
+    if (object.paused_by_gov !== undefined && object.paused_by_gov !== null) {
+      message.pausedByGov = object.paused_by_gov;
+    }
+    if (object.paused_by_owner !== undefined && object.paused_by_owner !== null) {
+      message.pausedByOwner = object.paused_by_owner;
+    }
+    if (object.owner_pause_window_timing !== undefined && object.owner_pause_window_timing !== null) {
+      message.ownerPauseWindowTiming = PoolPauseWindow.fromAmino(object.owner_pause_window_timing);
+    }
+    if (object.recovery_mode !== undefined && object.recovery_mode !== null) {
+      message.recoveryMode = object.recovery_mode;
+    }
     return message;
   },
   toAmino(message: Pool, useInterfaces: boolean = true): PoolAmino {
@@ -406,6 +486,11 @@ export const Pool = {
     obj.lp_denom = message.lpDenom === "" ? undefined : message.lpDenom;
     obj.apr = message.apr ? PoolApr.toAmino(message.apr, useInterfaces) : undefined;
     obj.metrics = message.metrics ? PoolMetrics.toAmino(message.metrics, useInterfaces) : undefined;
+    obj.paused = message.paused === false ? undefined : message.paused;
+    obj.paused_by_gov = message.pausedByGov === false ? undefined : message.pausedByGov;
+    obj.paused_by_owner = message.pausedByOwner === false ? undefined : message.pausedByOwner;
+    obj.owner_pause_window_timing = message.ownerPauseWindowTiming ? PoolPauseWindow.toAmino(message.ownerPauseWindowTiming, useInterfaces) : undefined;
+    obj.recovery_mode = message.recoveryMode === false ? undefined : message.recoveryMode;
     return obj;
   },
   fromAminoMsg(object: PoolAminoMsg): Pool {

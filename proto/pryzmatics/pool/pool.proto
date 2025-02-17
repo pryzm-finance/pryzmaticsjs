@@ -65,4 +65,9 @@ message Pool {
   string lp_denom = 4;
   pryzmatics.pool.PoolApr apr = 5 [(gogoproto.nullable) = true];
   PoolMetrics metrics = 6 [(gogoproto.nullable) = false];
+  bool paused = 7;
+  bool paused_by_gov = 8;
+  bool paused_by_owner = 9;
+  pryzm.amm.v1.PoolPauseWindow owner_pause_window_timing = 10 [(gogoproto.nullable) = true];
+  bool recovery_mode = 11;
 }
