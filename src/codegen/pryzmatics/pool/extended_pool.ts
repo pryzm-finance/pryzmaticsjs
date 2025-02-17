@@ -1,4 +1,4 @@
-import { PoolType, poolTypeFromJSON, poolTypeToJSON } from "../../pryzm/amm/v1/pool";
+import { PoolType, PoolPauseWindow, PoolPauseWindowAmino, PoolPauseWindowSDKType, poolTypeFromJSON, poolTypeToJSON } from "../../pryzm/amm/v1/pool";
 import { PoolApr, PoolAprAmino, PoolAprSDKType } from "./pool_apr";
 import { PoolMetrics, PoolMetricsAmino, PoolMetricsSDKType } from "./pool";
 import { PoolToken, PoolTokenAmino, PoolTokenSDKType } from "./pool_token";
@@ -17,6 +17,11 @@ export interface ExtendedPool {
   apr?: PoolApr;
   metrics: PoolMetrics;
   tokens: PoolToken[];
+  paused: boolean;
+  pausedByGov: boolean;
+  pausedByOwner: boolean;
+  ownerPauseWindowTiming?: PoolPauseWindow;
+  recoveryMode: boolean;
 }
 export interface ExtendedPoolProtoMsg {
   typeUrl: "/pryzmatics.pool.ExtendedPool";
@@ -33,6 +38,11 @@ export interface ExtendedPoolAmino {
   apr?: PoolAprAmino;
   metrics?: PoolMetricsAmino;
   tokens?: PoolTokenAmino[];
+  paused?: boolean;
+  paused_by_gov?: boolean;
+  paused_by_owner?: boolean;
+  owner_pause_window_timing?: PoolPauseWindowAmino;
+  recovery_mode?: boolean;
 }
 export interface ExtendedPoolAminoMsg {
   type: "/pryzmatics.pool.ExtendedPool";
@@ -49,6 +59,11 @@ export interface ExtendedPoolSDKType {
   apr?: PoolAprSDKType;
   metrics: PoolMetricsSDKType;
   tokens: PoolTokenSDKType[];
+  paused: boolean;
+  paused_by_gov: boolean;
+  paused_by_owner: boolean;
+  owner_pause_window_timing?: PoolPauseWindowSDKType;
+  recovery_mode: boolean;
 }
 function createBaseExtendedPool(): ExtendedPool {
   return {
@@ -61,19 +76,24 @@ function createBaseExtendedPool(): ExtendedPool {
     totalLiquidity: undefined,
     apr: undefined,
     metrics: PoolMetrics.fromPartial({}),
-    tokens: []
+    tokens: [],
+    paused: false,
+    pausedByGov: false,
+    pausedByOwner: false,
+    ownerPauseWindowTiming: undefined,
+    recoveryMode: false
   };
 }
 export const ExtendedPool = {
   typeUrl: "/pryzmatics.pool.ExtendedPool",
   is(o: any): o is ExtendedPool {
-    return o && (o.$typeUrl === ExtendedPool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.poolType) && typeof o.lpDenom === "string" && typeof o.lpSupply === "string" && PoolMetrics.is(o.metrics) && Array.isArray(o.tokens) && (!o.tokens.length || PoolToken.is(o.tokens[0])));
+    return o && (o.$typeUrl === ExtendedPool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.poolType) && typeof o.lpDenom === "string" && typeof o.lpSupply === "string" && PoolMetrics.is(o.metrics) && Array.isArray(o.tokens) && (!o.tokens.length || PoolToken.is(o.tokens[0])) && typeof o.paused === "boolean" && typeof o.pausedByGov === "boolean" && typeof o.pausedByOwner === "boolean" && typeof o.recoveryMode === "boolean");
   },
   isSDK(o: any): o is ExtendedPoolSDKType {
-    return o && (o.$typeUrl === ExtendedPool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.pool_type) && typeof o.lp_denom === "string" && typeof o.lp_supply === "string" && PoolMetrics.isSDK(o.metrics) && Array.isArray(o.tokens) && (!o.tokens.length || PoolToken.isSDK(o.tokens[0])));
+    return o && (o.$typeUrl === ExtendedPool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.pool_type) && typeof o.lp_denom === "string" && typeof o.lp_supply === "string" && PoolMetrics.isSDK(o.metrics) && Array.isArray(o.tokens) && (!o.tokens.length || PoolToken.isSDK(o.tokens[0])) && typeof o.paused === "boolean" && typeof o.paused_by_gov === "boolean" && typeof o.paused_by_owner === "boolean" && typeof o.recovery_mode === "boolean");
   },
   isAmino(o: any): o is ExtendedPoolAmino {
-    return o && (o.$typeUrl === ExtendedPool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.pool_type) && typeof o.lp_denom === "string" && typeof o.lp_supply === "string" && PoolMetrics.isAmino(o.metrics) && Array.isArray(o.tokens) && (!o.tokens.length || PoolToken.isAmino(o.tokens[0])));
+    return o && (o.$typeUrl === ExtendedPool.typeUrl || typeof o.id === "bigint" && typeof o.name === "string" && isSet(o.pool_type) && typeof o.lp_denom === "string" && typeof o.lp_supply === "string" && PoolMetrics.isAmino(o.metrics) && Array.isArray(o.tokens) && (!o.tokens.length || PoolToken.isAmino(o.tokens[0])) && typeof o.paused === "boolean" && typeof o.paused_by_gov === "boolean" && typeof o.paused_by_owner === "boolean" && typeof o.recovery_mode === "boolean");
   },
   encode(message: ExtendedPool, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
@@ -105,6 +125,21 @@ export const ExtendedPool = {
     }
     for (const v of message.tokens) {
       PoolToken.encode(v!, writer.uint32(82).fork()).ldelim();
+    }
+    if (message.paused === true) {
+      writer.uint32(88).bool(message.paused);
+    }
+    if (message.pausedByGov === true) {
+      writer.uint32(96).bool(message.pausedByGov);
+    }
+    if (message.pausedByOwner === true) {
+      writer.uint32(104).bool(message.pausedByOwner);
+    }
+    if (message.ownerPauseWindowTiming !== undefined) {
+      PoolPauseWindow.encode(message.ownerPauseWindowTiming, writer.uint32(114).fork()).ldelim();
+    }
+    if (message.recoveryMode === true) {
+      writer.uint32(120).bool(message.recoveryMode);
     }
     return writer;
   },
@@ -145,6 +180,21 @@ export const ExtendedPool = {
         case 10:
           message.tokens.push(PoolToken.decode(reader, reader.uint32(), useInterfaces));
           break;
+        case 11:
+          message.paused = reader.bool();
+          break;
+        case 12:
+          message.pausedByGov = reader.bool();
+          break;
+        case 13:
+          message.pausedByOwner = reader.bool();
+          break;
+        case 14:
+          message.ownerPauseWindowTiming = PoolPauseWindow.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 15:
+          message.recoveryMode = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -163,7 +213,12 @@ export const ExtendedPool = {
       totalLiquidity: isSet(object.totalLiquidity) ? String(object.totalLiquidity) : undefined,
       apr: isSet(object.apr) ? PoolApr.fromJSON(object.apr) : undefined,
       metrics: isSet(object.metrics) ? PoolMetrics.fromJSON(object.metrics) : undefined,
-      tokens: Array.isArray(object?.tokens) ? object.tokens.map((e: any) => PoolToken.fromJSON(e)) : []
+      tokens: Array.isArray(object?.tokens) ? object.tokens.map((e: any) => PoolToken.fromJSON(e)) : [],
+      paused: isSet(object.paused) ? Boolean(object.paused) : false,
+      pausedByGov: isSet(object.pausedByGov) ? Boolean(object.pausedByGov) : false,
+      pausedByOwner: isSet(object.pausedByOwner) ? Boolean(object.pausedByOwner) : false,
+      ownerPauseWindowTiming: isSet(object.ownerPauseWindowTiming) ? PoolPauseWindow.fromJSON(object.ownerPauseWindowTiming) : undefined,
+      recoveryMode: isSet(object.recoveryMode) ? Boolean(object.recoveryMode) : false
     };
   },
   toJSON(message: ExtendedPool): unknown {
@@ -182,6 +237,11 @@ export const ExtendedPool = {
     } else {
       obj.tokens = [];
     }
+    message.paused !== undefined && (obj.paused = message.paused);
+    message.pausedByGov !== undefined && (obj.pausedByGov = message.pausedByGov);
+    message.pausedByOwner !== undefined && (obj.pausedByOwner = message.pausedByOwner);
+    message.ownerPauseWindowTiming !== undefined && (obj.ownerPauseWindowTiming = message.ownerPauseWindowTiming ? PoolPauseWindow.toJSON(message.ownerPauseWindowTiming) : undefined);
+    message.recoveryMode !== undefined && (obj.recoveryMode = message.recoveryMode);
     return obj;
   },
   fromPartial(object: Partial<ExtendedPool>): ExtendedPool {
@@ -196,6 +256,11 @@ export const ExtendedPool = {
     message.apr = object.apr !== undefined && object.apr !== null ? PoolApr.fromPartial(object.apr) : undefined;
     message.metrics = object.metrics !== undefined && object.metrics !== null ? PoolMetrics.fromPartial(object.metrics) : undefined;
     message.tokens = object.tokens?.map(e => PoolToken.fromPartial(e)) || [];
+    message.paused = object.paused ?? false;
+    message.pausedByGov = object.pausedByGov ?? false;
+    message.pausedByOwner = object.pausedByOwner ?? false;
+    message.ownerPauseWindowTiming = object.ownerPauseWindowTiming !== undefined && object.ownerPauseWindowTiming !== null ? PoolPauseWindow.fromPartial(object.ownerPauseWindowTiming) : undefined;
+    message.recoveryMode = object.recoveryMode ?? false;
     return message;
   },
   fromAmino(object: ExtendedPoolAmino): ExtendedPool {
@@ -228,6 +293,21 @@ export const ExtendedPool = {
       message.metrics = PoolMetrics.fromAmino(object.metrics);
     }
     message.tokens = object.tokens?.map(e => PoolToken.fromAmino(e)) || [];
+    if (object.paused !== undefined && object.paused !== null) {
+      message.paused = object.paused;
+    }
+    if (object.paused_by_gov !== undefined && object.paused_by_gov !== null) {
+      message.pausedByGov = object.paused_by_gov;
+    }
+    if (object.paused_by_owner !== undefined && object.paused_by_owner !== null) {
+      message.pausedByOwner = object.paused_by_owner;
+    }
+    if (object.owner_pause_window_timing !== undefined && object.owner_pause_window_timing !== null) {
+      message.ownerPauseWindowTiming = PoolPauseWindow.fromAmino(object.owner_pause_window_timing);
+    }
+    if (object.recovery_mode !== undefined && object.recovery_mode !== null) {
+      message.recoveryMode = object.recovery_mode;
+    }
     return message;
   },
   toAmino(message: ExtendedPool, useInterfaces: boolean = true): ExtendedPoolAmino {
@@ -246,6 +326,11 @@ export const ExtendedPool = {
     } else {
       obj.tokens = message.tokens;
     }
+    obj.paused = message.paused === false ? undefined : message.paused;
+    obj.paused_by_gov = message.pausedByGov === false ? undefined : message.pausedByGov;
+    obj.paused_by_owner = message.pausedByOwner === false ? undefined : message.pausedByOwner;
+    obj.owner_pause_window_timing = message.ownerPauseWindowTiming ? PoolPauseWindow.toAmino(message.ownerPauseWindowTiming, useInterfaces) : undefined;
+    obj.recovery_mode = message.recoveryMode === false ? undefined : message.recoveryMode;
     return obj;
   },
   fromAminoMsg(object: ExtendedPoolAminoMsg): ExtendedPool {

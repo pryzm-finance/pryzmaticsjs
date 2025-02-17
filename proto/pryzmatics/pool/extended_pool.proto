@@ -34,4 +34,9 @@ message ExtendedPool {
   pryzmatics.pool.PoolApr apr = 8 [(gogoproto.nullable) = true];
   pryzmatics.pool.PoolMetrics metrics = 9 [(gogoproto.nullable) = false];
   repeated pryzmatics.pool.PoolToken tokens = 10 [(gogoproto.nullable) = false];
+  bool paused = 11;
+  bool paused_by_gov = 12;
+  bool paused_by_owner = 13;
+  pryzm.amm.v1.PoolPauseWindow owner_pause_window_timing = 14 [(gogoproto.nullable) = true];
+  bool recovery_mode = 15;
 }
