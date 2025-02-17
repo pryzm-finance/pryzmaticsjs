@@ -9,6 +9,7 @@ async function main() {
         poolId: 2n
     })
     console.log(pool.pool)
+    console.log(pool.pool.paused)
     console.log(pool.zero_impact_join_capabilities)
 }
 
