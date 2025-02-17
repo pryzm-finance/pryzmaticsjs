@@ -235,7 +235,7 @@ service Query {
   }
 
   rpc PulseTradablePairPrice(pryzmatics.server.trade.QueryPulseTradablePairPriceRequest) returns (pryzmatics.server.trade.QueryPulseTradablePairPriceResponse) {
-    option (google.api.http).get = "/pryzmatics/trade/pulse_tradable_pair_price/{token_in}/{token_out}/{pool_id}/{whitelisted_route}";
+    option (google.api.http).get = "/pryzmatics/trade/pulse_tradable_pair_price";
   }
 
   rpc Order(pryzmatics.server.trade.QueryOrderRequest) returns (pryzmatics.server.trade.QueryOrderResponse) {

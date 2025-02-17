@@ -647,8 +647,23 @@ export class LCDQueryClient {
   }
   /* PulseTradablePairPrice */
   async pulseTradablePairPrice(params: QueryPulseTradablePairPriceRequest): Promise<QueryPulseTradablePairPriceResponseSDKType> {
-    const endpoint = `pryzmatics/trade/pulse_tradable_pair_price/${params.tokenIn}/${params.tokenOut}/${params.poolId}/${params.whitelistedRoute}`;
-    return await this.req.get<QueryPulseTradablePairPriceResponseSDKType>(endpoint);
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.tokenIn !== "undefined") {
+      options.params.token_in = params.tokenIn;
+    }
+    if (typeof params?.tokenOut !== "undefined") {
+      options.params.token_out = params.tokenOut;
+    }
+    if (typeof params?.poolId !== "undefined") {
+      options.params.pool_id = params.poolId;
+    }
+    if (typeof params?.whitelistedRoute !== "undefined") {
+      options.params.whitelisted_route = params.whitelistedRoute;
+    }
+    const endpoint = `pryzmatics/trade/pulse_tradable_pair_price`;
+    return await this.req.get<QueryPulseTradablePairPriceResponseSDKType>(endpoint, options);
   }
   /* Order */
   async order(params: QueryOrderRequest): Promise<QueryOrderResponseSDKType> {
