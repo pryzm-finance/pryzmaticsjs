@@ -19,6 +19,7 @@ async function main() {
     // list of all flows
     let flows = await getAllFlows(c, {
         creator: "",
+        excludeCreators: [],
         tokenInDenom: "",
         tokenOutDenom: "",
         participant: "",
@@ -32,6 +33,7 @@ async function main() {
     // list of all flows ordered by token in denom
     flows = await getAllFlows(c, {
         creator: "",
+        excludeCreators: [],
         tokenInDenom: "",
         tokenOutDenom: "",
         participant: "",
@@ -49,6 +51,7 @@ async function main() {
     // list of flows a user has created and can claim token-in from
     flows = await getAllFlows(c, {
         creator: "pryzm1pd4uk37d2glnyn39xfpvupvncpy9mne248rrj5",
+        excludeCreators: [],
         tokenInDenom: "",
         tokenOutDenom: "",
         tokenInClaimability: TokenClaimability.TOKEN_CLAIMABILITY_CLAIMABLE,
@@ -67,6 +70,7 @@ async function main() {
         participationType: ParticipationType.PARTICIPATION_TYPE_POSITION_OWNER,
         tokenOutClaimability: TokenClaimability.TOKEN_CLAIMABILITY_CLAIMABLE,
         creator: "",
+        excludeCreators: [],
         tokenInClaimability: TokenClaimability.TOKEN_CLAIMABILITY_ANY,
         status: FlowStatus.FLOW_STATUS_ANY,
     })
@@ -75,6 +79,7 @@ async function main() {
     // list of flows with upryzm as tokenOutDenom
     flows = await getAllFlows(c, {
         creator: "",
+        excludeCreators: [],
         participant: "",
         tokenInDenom: "",
         tokenOutDenom: "upryzm",
@@ -88,6 +93,7 @@ async function main() {
     // list of flows with upryzm as tokenInDenom
     flows = await getAllFlows(c, {
         creator: "",
+        excludeCreators: [],
         participant: "",
         tokenInDenom: "upryzm",
         tokenOutDenom: "",
@@ -95,6 +101,20 @@ async function main() {
         tokenOutClaimability: TokenClaimability.TOKEN_CLAIMABILITY_ANY,
         tokenInClaimability: TokenClaimability.TOKEN_CLAIMABILITY_ANY,
         status: FlowStatus.FLOW_STATUS_ANY,
+    })
+    console.log(JSON.stringify(flows))
+
+    // list of all flows excluding those with creator in excludeCreators
+    flows = await getAllFlows(c, {
+        creator: "",
+        excludeCreators: ["addr1", "addr2"],
+        tokenInDenom: "",
+        tokenOutDenom: "",
+        participant: "",
+        participationType: ParticipationType.PARTICIPATION_TYPE_NO_PARTICIPATION,
+        status: FlowStatus.FLOW_STATUS_ANY,
+        tokenInClaimability: TokenClaimability.TOKEN_CLAIMABILITY_ANY,
+        tokenOutClaimability: TokenClaimability.TOKEN_CLAIMABILITY_ANY,
     })
     console.log(JSON.stringify(flows))
 }
