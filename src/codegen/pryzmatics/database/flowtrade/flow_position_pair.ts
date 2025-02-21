@@ -9,6 +9,8 @@ export enum FlowPositionPairOrderByProperty {
   ORDER_BY_PROPERTY_FLOW_LIVE_PRICE = 4,
   ORDER_BY_PROPERTY_FLOW_TOKEN_OUT_BALANCE = 5,
   ORDER_BY_PROPERTY_FLOW_TOTAL_TOKEN_OUT_AMOUNT = 6,
+  ORDER_BY_PROPERTY_FLOW_START_TIME = 7,
+  ORDER_BY_PROPERTY_FLOW_LIMIT_PRICE = 8,
   UNRECOGNIZED = -1,
 }
 export const FlowPositionPairOrderByPropertySDKType = FlowPositionPairOrderByProperty;
@@ -36,6 +38,12 @@ export function flowPositionPairOrderByPropertyFromJSON(object: any): FlowPositi
     case 6:
     case "ORDER_BY_PROPERTY_FLOW_TOTAL_TOKEN_OUT_AMOUNT":
       return FlowPositionPairOrderByProperty.ORDER_BY_PROPERTY_FLOW_TOTAL_TOKEN_OUT_AMOUNT;
+    case 7:
+    case "ORDER_BY_PROPERTY_FLOW_START_TIME":
+      return FlowPositionPairOrderByProperty.ORDER_BY_PROPERTY_FLOW_START_TIME;
+    case 8:
+    case "ORDER_BY_PROPERTY_FLOW_LIMIT_PRICE":
+      return FlowPositionPairOrderByProperty.ORDER_BY_PROPERTY_FLOW_LIMIT_PRICE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -58,6 +66,10 @@ export function flowPositionPairOrderByPropertyToJSON(object: FlowPositionPairOr
       return "ORDER_BY_PROPERTY_FLOW_TOKEN_OUT_BALANCE";
     case FlowPositionPairOrderByProperty.ORDER_BY_PROPERTY_FLOW_TOTAL_TOKEN_OUT_AMOUNT:
       return "ORDER_BY_PROPERTY_FLOW_TOTAL_TOKEN_OUT_AMOUNT";
+    case FlowPositionPairOrderByProperty.ORDER_BY_PROPERTY_FLOW_START_TIME:
+      return "ORDER_BY_PROPERTY_FLOW_START_TIME";
+    case FlowPositionPairOrderByProperty.ORDER_BY_PROPERTY_FLOW_LIMIT_PRICE:
+      return "ORDER_BY_PROPERTY_FLOW_LIMIT_PRICE";
     case FlowPositionPairOrderByProperty.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
