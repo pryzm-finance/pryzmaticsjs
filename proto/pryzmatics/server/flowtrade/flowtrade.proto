@@ -44,6 +44,7 @@ message QueryAllFlowRequest {
   TokenClaimability token_out_claimability = 8;
   pryzmatics.database.flowtrade.FlowPositionPairOrderBy order_by = 9 [(gogoproto.nullable) = true];
   cosmos.base.query.v1beta1.PageRequest pagination = 10 [(gogoproto.nullable) = true];
+  repeated string exclude_creators = 11;
 }
 
 message QueryAllFlowResponse {

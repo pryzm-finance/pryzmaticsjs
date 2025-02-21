@@ -1111,6 +1111,9 @@ export class LCDQueryClient {
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
+    if (typeof params?.excludeCreators !== "undefined") {
+      options.params.exclude_creators = params.excludeCreators;
+    }
     const endpoint = `pryzmatics/flowtrade/flow`;
     return await this.req.get<QueryAllFlowResponseSDKType>(endpoint, options);
   }

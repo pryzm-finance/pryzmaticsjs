@@ -127,6 +127,7 @@ export interface QueryAllFlowRequest {
   tokenOutClaimability: TokenClaimability;
   orderBy?: FlowPositionPairOrderBy;
   pagination?: PageRequest;
+  excludeCreators: string[];
 }
 export interface QueryAllFlowRequestProtoMsg {
   typeUrl: "/pryzmatics.server.flowtrade.QueryAllFlowRequest";
@@ -143,6 +144,7 @@ export interface QueryAllFlowRequestAmino {
   token_out_claimability?: TokenClaimability;
   order_by?: FlowPositionPairOrderByAmino;
   pagination?: PageRequestAmino;
+  exclude_creators?: string[];
 }
 export interface QueryAllFlowRequestAminoMsg {
   type: "/pryzmatics.server.flowtrade.QueryAllFlowRequest";
@@ -159,6 +161,7 @@ export interface QueryAllFlowRequestSDKType {
   token_out_claimability: TokenClaimability;
   order_by?: FlowPositionPairOrderBySDKType;
   pagination?: PageRequestSDKType;
+  exclude_creators: string[];
 }
 export interface QueryAllFlowResponse {
   flows: FlowPositionPair[];
@@ -357,19 +360,20 @@ function createBaseQueryAllFlowRequest(): QueryAllFlowRequest {
     participationType: 0,
     tokenOutClaimability: 0,
     orderBy: undefined,
-    pagination: undefined
+    pagination: undefined,
+    excludeCreators: []
   };
 }
 export const QueryAllFlowRequest = {
   typeUrl: "/pryzmatics.server.flowtrade.QueryAllFlowRequest",
   is(o: any): o is QueryAllFlowRequest {
-    return o && (o.$typeUrl === QueryAllFlowRequest.typeUrl || isSet(o.status) && typeof o.creator === "string" && typeof o.tokenInDenom === "string" && typeof o.tokenOutDenom === "string" && isSet(o.tokenInClaimability) && typeof o.participant === "string" && isSet(o.participationType) && isSet(o.tokenOutClaimability));
+    return o && (o.$typeUrl === QueryAllFlowRequest.typeUrl || isSet(o.status) && typeof o.creator === "string" && typeof o.tokenInDenom === "string" && typeof o.tokenOutDenom === "string" && isSet(o.tokenInClaimability) && typeof o.participant === "string" && isSet(o.participationType) && isSet(o.tokenOutClaimability) && Array.isArray(o.excludeCreators) && (!o.excludeCreators.length || typeof o.excludeCreators[0] === "string"));
   },
   isSDK(o: any): o is QueryAllFlowRequestSDKType {
-    return o && (o.$typeUrl === QueryAllFlowRequest.typeUrl || isSet(o.status) && typeof o.creator === "string" && typeof o.token_in_denom === "string" && typeof o.token_out_denom === "string" && isSet(o.token_in_claimability) && typeof o.participant === "string" && isSet(o.participation_type) && isSet(o.token_out_claimability));
+    return o && (o.$typeUrl === QueryAllFlowRequest.typeUrl || isSet(o.status) && typeof o.creator === "string" && typeof o.token_in_denom === "string" && typeof o.token_out_denom === "string" && isSet(o.token_in_claimability) && typeof o.participant === "string" && isSet(o.participation_type) && isSet(o.token_out_claimability) && Array.isArray(o.exclude_creators) && (!o.exclude_creators.length || typeof o.exclude_creators[0] === "string"));
   },
   isAmino(o: any): o is QueryAllFlowRequestAmino {
-    return o && (o.$typeUrl === QueryAllFlowRequest.typeUrl || isSet(o.status) && typeof o.creator === "string" && typeof o.token_in_denom === "string" && typeof o.token_out_denom === "string" && isSet(o.token_in_claimability) && typeof o.participant === "string" && isSet(o.participation_type) && isSet(o.token_out_claimability));
+    return o && (o.$typeUrl === QueryAllFlowRequest.typeUrl || isSet(o.status) && typeof o.creator === "string" && typeof o.token_in_denom === "string" && typeof o.token_out_denom === "string" && isSet(o.token_in_claimability) && typeof o.participant === "string" && isSet(o.participation_type) && isSet(o.token_out_claimability) && Array.isArray(o.exclude_creators) && (!o.exclude_creators.length || typeof o.exclude_creators[0] === "string"));
   },
   encode(message: QueryAllFlowRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.status !== 0) {
@@ -401,6 +405,9 @@ export const QueryAllFlowRequest = {
     }
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(82).fork()).ldelim();
+    }
+    for (const v of message.excludeCreators) {
+      writer.uint32(90).string(v!);
     }
     return writer;
   },
@@ -441,6 +448,9 @@ export const QueryAllFlowRequest = {
         case 10:
           message.pagination = PageRequest.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 11:
+          message.excludeCreators.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -459,7 +469,8 @@ export const QueryAllFlowRequest = {
       participationType: isSet(object.participationType) ? participationTypeFromJSON(object.participationType) : -1,
       tokenOutClaimability: isSet(object.tokenOutClaimability) ? tokenClaimabilityFromJSON(object.tokenOutClaimability) : -1,
       orderBy: isSet(object.orderBy) ? FlowPositionPairOrderBy.fromJSON(object.orderBy) : undefined,
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
+      excludeCreators: Array.isArray(object?.excludeCreators) ? object.excludeCreators.map((e: any) => String(e)) : []
     };
   },
   toJSON(message: QueryAllFlowRequest): unknown {
@@ -474,6 +485,11 @@ export const QueryAllFlowRequest = {
     message.tokenOutClaimability !== undefined && (obj.tokenOutClaimability = tokenClaimabilityToJSON(message.tokenOutClaimability));
     message.orderBy !== undefined && (obj.orderBy = message.orderBy ? FlowPositionPairOrderBy.toJSON(message.orderBy) : undefined);
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    if (message.excludeCreators) {
+      obj.excludeCreators = message.excludeCreators.map(e => e);
+    } else {
+      obj.excludeCreators = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<QueryAllFlowRequest>): QueryAllFlowRequest {
@@ -488,6 +504,7 @@ export const QueryAllFlowRequest = {
     message.tokenOutClaimability = object.tokenOutClaimability ?? 0;
     message.orderBy = object.orderBy !== undefined && object.orderBy !== null ? FlowPositionPairOrderBy.fromPartial(object.orderBy) : undefined;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    message.excludeCreators = object.excludeCreators?.map(e => e) || [];
     return message;
   },
   fromAmino(object: QueryAllFlowRequestAmino): QueryAllFlowRequest {
@@ -522,6 +539,7 @@ export const QueryAllFlowRequest = {
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
+    message.excludeCreators = object.exclude_creators?.map(e => e) || [];
     return message;
   },
   toAmino(message: QueryAllFlowRequest, useInterfaces: boolean = true): QueryAllFlowRequestAmino {
@@ -536,6 +554,11 @@ export const QueryAllFlowRequest = {
     obj.token_out_claimability = message.tokenOutClaimability === 0 ? undefined : message.tokenOutClaimability;
     obj.order_by = message.orderBy ? FlowPositionPairOrderBy.toAmino(message.orderBy, useInterfaces) : undefined;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
+    if (message.excludeCreators) {
+      obj.exclude_creators = message.excludeCreators.map(e => e);
+    } else {
+      obj.exclude_creators = message.excludeCreators;
+    }
     return obj;
   },
   fromAminoMsg(object: QueryAllFlowRequestAminoMsg): QueryAllFlowRequest {
