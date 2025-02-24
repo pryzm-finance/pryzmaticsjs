@@ -134,6 +134,8 @@ export interface Token {
   underlyingTokenTermsPrice?: string;
   assetId: string;
   error: string;
+  /** TODO move all asset related fields into a new single field */
+  assetExchangeRate?: string;
 }
 export interface TokenProtoMsg {
   typeUrl: "/pryzmatics.pool.Token";
@@ -149,6 +151,8 @@ export interface TokenAmino {
   underlying_token_terms_price?: string;
   asset_id?: string;
   error?: string;
+  /** TODO move all asset related fields into a new single field */
+  asset_exchange_rate?: string;
 }
 export interface TokenAminoMsg {
   type: "/pryzmatics.pool.Token";
@@ -164,6 +168,7 @@ export interface TokenSDKType {
   underlying_token_terms_price?: string;
   asset_id: string;
   error: string;
+  asset_exchange_rate?: string;
 }
 function createBaseTokenMetrics(): TokenMetrics {
   return {
@@ -482,7 +487,8 @@ function createBaseToken(): Token {
     underlyingTokenDenom: "",
     underlyingTokenTermsPrice: undefined,
     assetId: "",
-    error: ""
+    error: "",
+    assetExchangeRate: undefined
   };
 }
 export const Token = {
@@ -524,6 +530,9 @@ export const Token = {
     if (message.error !== "") {
       writer.uint32(74).string(message.error);
     }
+    if (message.assetExchangeRate !== undefined) {
+      writer.uint32(82).string(Decimal.fromUserInput(message.assetExchangeRate, 18).atomics);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): Token {
@@ -560,6 +569,9 @@ export const Token = {
         case 9:
           message.error = reader.string();
           break;
+        case 10:
+          message.assetExchangeRate = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -577,7 +589,8 @@ export const Token = {
       underlyingTokenDenom: isSet(object.underlyingTokenDenom) ? String(object.underlyingTokenDenom) : "",
       underlyingTokenTermsPrice: isSet(object.underlyingTokenTermsPrice) ? String(object.underlyingTokenTermsPrice) : undefined,
       assetId: isSet(object.assetId) ? String(object.assetId) : "",
-      error: isSet(object.error) ? String(object.error) : ""
+      error: isSet(object.error) ? String(object.error) : "",
+      assetExchangeRate: isSet(object.assetExchangeRate) ? String(object.assetExchangeRate) : undefined
     };
   },
   toJSON(message: Token): unknown {
@@ -591,6 +604,7 @@ export const Token = {
     message.underlyingTokenTermsPrice !== undefined && (obj.underlyingTokenTermsPrice = message.underlyingTokenTermsPrice);
     message.assetId !== undefined && (obj.assetId = message.assetId);
     message.error !== undefined && (obj.error = message.error);
+    message.assetExchangeRate !== undefined && (obj.assetExchangeRate = message.assetExchangeRate);
     return obj;
   },
   fromPartial(object: Partial<Token>): Token {
@@ -604,6 +618,7 @@ export const Token = {
     message.underlyingTokenTermsPrice = object.underlyingTokenTermsPrice ?? undefined;
     message.assetId = object.assetId ?? "";
     message.error = object.error ?? "";
+    message.assetExchangeRate = object.assetExchangeRate ?? undefined;
     return message;
   },
   fromAmino(object: TokenAmino): Token {
@@ -635,6 +650,9 @@ export const Token = {
     if (object.error !== undefined && object.error !== null) {
       message.error = object.error;
     }
+    if (object.asset_exchange_rate !== undefined && object.asset_exchange_rate !== null) {
+      message.assetExchangeRate = object.asset_exchange_rate;
+    }
     return message;
   },
   toAmino(message: Token, useInterfaces: boolean = true): TokenAmino {
@@ -648,6 +666,7 @@ export const Token = {
     obj.underlying_token_terms_price = padDecimal(message.underlyingTokenTermsPrice) === null ? undefined : padDecimal(message.underlyingTokenTermsPrice);
     obj.asset_id = message.assetId === "" ? undefined : message.assetId;
     obj.error = message.error === "" ? undefined : message.error;
+    obj.asset_exchange_rate = padDecimal(message.assetExchangeRate) === null ? undefined : padDecimal(message.assetExchangeRate);
     return obj;
   },
   fromAminoMsg(object: TokenAminoMsg): Token {

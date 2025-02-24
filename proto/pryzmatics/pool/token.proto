@@ -125,4 +125,9 @@ message Token {
   ];
   string asset_id = 8;
   string error = 9;
+  string asset_exchange_rate = 10 [ //TODO move all asset related fields into a new single field
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
 }

@@ -1,4 +1,5 @@
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
+import { Token, TokenAmino, TokenSDKType } from "../pool/token";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { Decimal } from "@cosmjs/math";
 import { isSet, fromJsonTimestamp, fromTimestamp, padDecimal } from "../../helpers";
@@ -15,13 +16,22 @@ export interface Maturity {
   /** use y_roi instead */
   /** @deprecated */
   roi?: string;
+  /** @deprecated */
   yApy?: string;
+  /** @deprecated */
   pApy?: string;
+  /** @deprecated */
   yPrice?: string;
+  /** @deprecated */
   pPrice?: string;
+  /** @deprecated */
   error: string;
+  /** @deprecated */
   yRoi?: string;
+  /** @deprecated */
   pRoi?: string;
+  yToken?: Token;
+  pToken?: Token;
 }
 export interface MaturityProtoMsg {
   typeUrl: "/pryzmatics.maturity.Maturity";
@@ -39,13 +49,22 @@ export interface MaturityAmino {
   /** use y_roi instead */
   /** @deprecated */
   roi?: string;
+  /** @deprecated */
   y_apy?: string;
+  /** @deprecated */
   p_apy?: string;
+  /** @deprecated */
   y_price?: string;
+  /** @deprecated */
   p_price?: string;
+  /** @deprecated */
   error?: string;
+  /** @deprecated */
   y_roi?: string;
+  /** @deprecated */
   p_roi?: string;
+  y_token?: TokenAmino;
+  p_token?: TokenAmino;
 }
 export interface MaturityAminoMsg {
   type: "/pryzmatics.maturity.Maturity";
@@ -62,13 +81,22 @@ export interface MaturitySDKType {
   block_time: TimestampSDKType;
   /** @deprecated */
   roi?: string;
+  /** @deprecated */
   y_apy?: string;
+  /** @deprecated */
   p_apy?: string;
+  /** @deprecated */
   y_price?: string;
+  /** @deprecated */
   p_price?: string;
+  /** @deprecated */
   error: string;
+  /** @deprecated */
   y_roi?: string;
+  /** @deprecated */
   p_roi?: string;
+  y_token?: TokenSDKType;
+  p_token?: TokenSDKType;
 }
 function createBaseMaturity(): Maturity {
   return {
@@ -87,7 +115,9 @@ function createBaseMaturity(): Maturity {
     pPrice: undefined,
     error: "",
     yRoi: undefined,
-    pRoi: undefined
+    pRoi: undefined,
+    yToken: undefined,
+    pToken: undefined
   };
 }
 export const Maturity = {
@@ -150,6 +180,12 @@ export const Maturity = {
     if (message.pRoi !== undefined) {
       writer.uint32(130).string(Decimal.fromUserInput(message.pRoi, 18).atomics);
     }
+    if (message.yToken !== undefined) {
+      Token.encode(message.yToken, writer.uint32(138).fork()).ldelim();
+    }
+    if (message.pToken !== undefined) {
+      Token.encode(message.pToken, writer.uint32(146).fork()).ldelim();
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): Maturity {
@@ -207,6 +243,12 @@ export const Maturity = {
         case 16:
           message.pRoi = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
+        case 17:
+          message.yToken = Token.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 18:
+          message.pToken = Token.decode(reader, reader.uint32(), useInterfaces);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -231,7 +273,9 @@ export const Maturity = {
       pPrice: isSet(object.pPrice) ? String(object.pPrice) : undefined,
       error: isSet(object.error) ? String(object.error) : "",
       yRoi: isSet(object.yRoi) ? String(object.yRoi) : undefined,
-      pRoi: isSet(object.pRoi) ? String(object.pRoi) : undefined
+      pRoi: isSet(object.pRoi) ? String(object.pRoi) : undefined,
+      yToken: isSet(object.yToken) ? Token.fromJSON(object.yToken) : undefined,
+      pToken: isSet(object.pToken) ? Token.fromJSON(object.pToken) : undefined
     };
   },
   toJSON(message: Maturity): unknown {
@@ -252,6 +296,8 @@ export const Maturity = {
     message.error !== undefined && (obj.error = message.error);
     message.yRoi !== undefined && (obj.yRoi = message.yRoi);
     message.pRoi !== undefined && (obj.pRoi = message.pRoi);
+    message.yToken !== undefined && (obj.yToken = message.yToken ? Token.toJSON(message.yToken) : undefined);
+    message.pToken !== undefined && (obj.pToken = message.pToken ? Token.toJSON(message.pToken) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Maturity>): Maturity {
@@ -272,6 +318,8 @@ export const Maturity = {
     message.error = object.error ?? "";
     message.yRoi = object.yRoi ?? undefined;
     message.pRoi = object.pRoi ?? undefined;
+    message.yToken = object.yToken !== undefined && object.yToken !== null ? Token.fromPartial(object.yToken) : undefined;
+    message.pToken = object.pToken !== undefined && object.pToken !== null ? Token.fromPartial(object.pToken) : undefined;
     return message;
   },
   fromAmino(object: MaturityAmino): Maturity {
@@ -324,6 +372,12 @@ export const Maturity = {
     if (object.p_roi !== undefined && object.p_roi !== null) {
       message.pRoi = object.p_roi;
     }
+    if (object.y_token !== undefined && object.y_token !== null) {
+      message.yToken = Token.fromAmino(object.y_token);
+    }
+    if (object.p_token !== undefined && object.p_token !== null) {
+      message.pToken = Token.fromAmino(object.p_token);
+    }
     return message;
   },
   toAmino(message: Maturity, useInterfaces: boolean = true): MaturityAmino {
@@ -344,6 +398,8 @@ export const Maturity = {
     obj.error = message.error === "" ? undefined : message.error;
     obj.y_roi = padDecimal(message.yRoi) === null ? undefined : padDecimal(message.yRoi);
     obj.p_roi = padDecimal(message.pRoi) === null ? undefined : padDecimal(message.pRoi);
+    obj.y_token = message.yToken ? Token.toAmino(message.yToken, useInterfaces) : undefined;
+    obj.p_token = message.pToken ? Token.toAmino(message.pToken, useInterfaces) : undefined;
     return obj;
   },
   fromAminoMsg(object: MaturityAminoMsg): Maturity {
