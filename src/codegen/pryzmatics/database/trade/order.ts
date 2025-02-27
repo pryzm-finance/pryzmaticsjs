@@ -107,6 +107,38 @@ export function orderPairMetricsOrderByPropertyToJSON(object: OrderPairMetricsOr
       return "UNRECOGNIZED";
   }
 }
+export enum MatchableOrderOrderByProperty {
+  MATCHABLE_ORDER_BY_PROPERTY_REMAINING_AMOUNT = 0,
+  MATCHABLE_ORDER_BY_PROPERTY_MAX_MATCHING_SPOT_PRICE = 1,
+  UNRECOGNIZED = -1,
+}
+export const MatchableOrderOrderByPropertySDKType = MatchableOrderOrderByProperty;
+export const MatchableOrderOrderByPropertyAmino = MatchableOrderOrderByProperty;
+export function matchableOrderOrderByPropertyFromJSON(object: any): MatchableOrderOrderByProperty {
+  switch (object) {
+    case 0:
+    case "MATCHABLE_ORDER_BY_PROPERTY_REMAINING_AMOUNT":
+      return MatchableOrderOrderByProperty.MATCHABLE_ORDER_BY_PROPERTY_REMAINING_AMOUNT;
+    case 1:
+    case "MATCHABLE_ORDER_BY_PROPERTY_MAX_MATCHING_SPOT_PRICE":
+      return MatchableOrderOrderByProperty.MATCHABLE_ORDER_BY_PROPERTY_MAX_MATCHING_SPOT_PRICE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return MatchableOrderOrderByProperty.UNRECOGNIZED;
+  }
+}
+export function matchableOrderOrderByPropertyToJSON(object: MatchableOrderOrderByProperty): string {
+  switch (object) {
+    case MatchableOrderOrderByProperty.MATCHABLE_ORDER_BY_PROPERTY_REMAINING_AMOUNT:
+      return "MATCHABLE_ORDER_BY_PROPERTY_REMAINING_AMOUNT";
+    case MatchableOrderOrderByProperty.MATCHABLE_ORDER_BY_PROPERTY_MAX_MATCHING_SPOT_PRICE:
+      return "MATCHABLE_ORDER_BY_PROPERTY_MAX_MATCHING_SPOT_PRICE";
+    case MatchableOrderOrderByProperty.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 export interface OrderOrderBy {
   property: OrderOrderByProperty;
   descending: boolean;
@@ -145,6 +177,26 @@ export interface OrderPairMetricsOrderByAminoMsg {
 }
 export interface OrderPairMetricsOrderBySDKType {
   property: OrderPairMetricsOrderByProperty;
+  descending: boolean;
+}
+export interface MatchableOrderOrderBy {
+  property: MatchableOrderOrderByProperty;
+  descending: boolean;
+}
+export interface MatchableOrderOrderByProtoMsg {
+  typeUrl: "/pryzmatics.database.trade.MatchableOrderOrderBy";
+  value: Uint8Array;
+}
+export interface MatchableOrderOrderByAmino {
+  property?: MatchableOrderOrderByProperty;
+  descending?: boolean;
+}
+export interface MatchableOrderOrderByAminoMsg {
+  type: "/pryzmatics.database.trade.MatchableOrderOrderBy";
+  value: MatchableOrderOrderByAmino;
+}
+export interface MatchableOrderOrderBySDKType {
+  property: MatchableOrderOrderByProperty;
   descending: boolean;
 }
 function createBaseOrderOrderBy(): OrderOrderBy {
@@ -341,3 +393,100 @@ export const OrderPairMetricsOrderBy = {
   }
 };
 GlobalDecoderRegistry.register(OrderPairMetricsOrderBy.typeUrl, OrderPairMetricsOrderBy);
+function createBaseMatchableOrderOrderBy(): MatchableOrderOrderBy {
+  return {
+    property: 0,
+    descending: false
+  };
+}
+export const MatchableOrderOrderBy = {
+  typeUrl: "/pryzmatics.database.trade.MatchableOrderOrderBy",
+  is(o: any): o is MatchableOrderOrderBy {
+    return o && (o.$typeUrl === MatchableOrderOrderBy.typeUrl || isSet(o.property) && typeof o.descending === "boolean");
+  },
+  isSDK(o: any): o is MatchableOrderOrderBySDKType {
+    return o && (o.$typeUrl === MatchableOrderOrderBy.typeUrl || isSet(o.property) && typeof o.descending === "boolean");
+  },
+  isAmino(o: any): o is MatchableOrderOrderByAmino {
+    return o && (o.$typeUrl === MatchableOrderOrderBy.typeUrl || isSet(o.property) && typeof o.descending === "boolean");
+  },
+  encode(message: MatchableOrderOrderBy, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.property !== 0) {
+      writer.uint32(8).int32(message.property);
+    }
+    if (message.descending === true) {
+      writer.uint32(16).bool(message.descending);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): MatchableOrderOrderBy {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMatchableOrderOrderBy();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.property = (reader.int32() as any);
+          break;
+        case 2:
+          message.descending = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MatchableOrderOrderBy {
+    return {
+      property: isSet(object.property) ? matchableOrderOrderByPropertyFromJSON(object.property) : -1,
+      descending: isSet(object.descending) ? Boolean(object.descending) : false
+    };
+  },
+  toJSON(message: MatchableOrderOrderBy): unknown {
+    const obj: any = {};
+    message.property !== undefined && (obj.property = matchableOrderOrderByPropertyToJSON(message.property));
+    message.descending !== undefined && (obj.descending = message.descending);
+    return obj;
+  },
+  fromPartial(object: Partial<MatchableOrderOrderBy>): MatchableOrderOrderBy {
+    const message = createBaseMatchableOrderOrderBy();
+    message.property = object.property ?? 0;
+    message.descending = object.descending ?? false;
+    return message;
+  },
+  fromAmino(object: MatchableOrderOrderByAmino): MatchableOrderOrderBy {
+    const message = createBaseMatchableOrderOrderBy();
+    if (object.property !== undefined && object.property !== null) {
+      message.property = object.property;
+    }
+    if (object.descending !== undefined && object.descending !== null) {
+      message.descending = object.descending;
+    }
+    return message;
+  },
+  toAmino(message: MatchableOrderOrderBy, useInterfaces: boolean = true): MatchableOrderOrderByAmino {
+    const obj: any = {};
+    obj.property = message.property === 0 ? undefined : message.property;
+    obj.descending = message.descending === false ? undefined : message.descending;
+    return obj;
+  },
+  fromAminoMsg(object: MatchableOrderOrderByAminoMsg): MatchableOrderOrderBy {
+    return MatchableOrderOrderBy.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MatchableOrderOrderByProtoMsg, useInterfaces: boolean = true): MatchableOrderOrderBy {
+    return MatchableOrderOrderBy.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: MatchableOrderOrderBy): Uint8Array {
+    return MatchableOrderOrderBy.encode(message).finish();
+  },
+  toProtoMsg(message: MatchableOrderOrderBy): MatchableOrderOrderByProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.database.trade.MatchableOrderOrderBy",
+      value: MatchableOrderOrderBy.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(MatchableOrderOrderBy.typeUrl, MatchableOrderOrderBy);

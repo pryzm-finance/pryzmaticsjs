@@ -30,7 +30,7 @@ import { QueryExitAllTokensExactLptSimulationRequest, QueryExitAllTokensExactLpt
 import { QueryUserTradeHistoryRequest, QueryUserTradeHistoryResponseSDKType, QueryUserTradeVolumeRequest, QueryUserTradeVolumeResponseSDKType } from "./trade/user_trade_history";
 import { QueryTokenTradeVolumeRequest, QueryTokenTradeVolumeResponseSDKType, QueryPoolTradeVolumeRequest, QueryPoolTradeVolumeResponseSDKType, QueryFavoritePairsRequest, QueryFavoritePairsResponseSDKType } from "./trade/trade_volume";
 import { QueryPulseTradablePairsRequest, QueryPulseTradablePairsResponseSDKType, QueryPulseTradablePairPriceRequest, QueryPulseTradablePairPriceResponseSDKType } from "./trade/pulse_tradable_pairs";
-import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType, QueryOrderPairsToDisableRequest, QueryOrderPairsToDisableResponseSDKType, QueryOrderPairMetricsRequest, QueryOrderPairMetricsResponseSDKType, QueryOrderPairPriceBucketsRequest, QueryOrderPairPriceBucketsResponseSDKType, QueryOrderMetricsRequest, QueryOrderMetricsResponseSDKType } from "./trade/order";
+import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType, QueryMatchableBuyOrdersForPairRequest, QueryMatchableBuyOrdersForPairResponseSDKType, QueryOrderPairsToDisableRequest, QueryOrderPairsToDisableResponseSDKType, QueryOrderPairMetricsRequest, QueryOrderPairMetricsResponseSDKType, QueryOrderPairPriceBucketsRequest, QueryOrderPairPriceBucketsResponseSDKType, QueryOrderMetricsRequest, QueryOrderMetricsResponseSDKType } from "./trade/order";
 import { QueryDirectlyConnectedTokenPairsRequest, QueryDirectlyConnectedTokenPairsResponseSDKType } from "./trade/directly_connected_token_pairs";
 import { QueryTickersRequest, QueryTickersResponseSDKType } from "./trade/tickers";
 import { QueryHostChainUnbondingTimeRequest, QueryHostChainUnbondingTimeResponseSDKType, QueryHostChainRequest, QueryHostChainResponseSDKType, QueryHostChainsRequest, QueryHostChainsResponseSDKType, QueryHostChainByUnderlyingDenomRequest, QueryHostChainByUnderlyingDenomResponseSDKType } from "./icstaking/host_chain";
@@ -104,6 +104,7 @@ export class LCDQueryClient {
     this.orders = this.orders.bind(this);
     this.matchableOrderCounts = this.matchableOrderCounts.bind(this);
     this.matchableOrdersForPair = this.matchableOrdersForPair.bind(this);
+    this.matchableBuyOrdersForPair = this.matchableBuyOrdersForPair.bind(this);
     this.orderPairsToDisable = this.orderPairsToDisable.bind(this);
     this.orderPairMetrics = this.orderPairMetrics.bind(this);
     this.orderPairPriceBuckets = this.orderPairPriceBuckets.bind(this);
@@ -586,6 +587,9 @@ export class LCDQueryClient {
     if (typeof params?.includeProxyTrades !== "undefined") {
       options.params.include_proxy_trades = params.includeProxyTrades;
     }
+    if (typeof params?.address !== "undefined") {
+      options.params.address = params.address;
+    }
     const endpoint = `pryzmatics/trade/user_trade_volume`;
     return await this.req.get<QueryUserTradeVolumeResponseSDKType>(endpoint, options);
   }
@@ -727,8 +731,31 @@ export class LCDQueryClient {
     if (typeof params?.minSellPrice !== "undefined") {
       options.params.min_sell_price = params.minSellPrice;
     }
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
     const endpoint = `pryzmatics/trade/matchable_orders_for_pair/${params.tokenIn}/${params.tokenOut}/${params.poolId}/${params.whitelistedRoute}`;
     return await this.req.get<QueryMatchableOrdersForPairResponseSDKType>(endpoint, options);
+  }
+  /* MatchableBuyOrdersForPair */
+  async matchableBuyOrdersForPair(params: QueryMatchableBuyOrdersForPairRequest): Promise<QueryMatchableBuyOrdersForPairResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.minPrice !== "undefined") {
+      options.params.min_price = params.minPrice;
+    }
+    if (typeof params?.minRemainingAmount !== "undefined") {
+      options.params.min_remaining_amount = params.minRemainingAmount;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    const endpoint = `pryzmatics/trade/matchable_buy_orders_for_pair/${params.tokenIn}/${params.tokenOut}/${params.poolId}/${params.whitelistedRoute}`;
+    return await this.req.get<QueryMatchableBuyOrdersForPairResponseSDKType>(endpoint, options);
   }
   /* OrderPairsToDisable */
   async orderPairsToDisable(_params: QueryOrderPairsToDisableRequest = {}): Promise<QueryOrderPairsToDisableResponseSDKType> {
@@ -764,12 +791,6 @@ export class LCDQueryClient {
     }
     if (typeof params?.whitelistedRoute !== "undefined") {
       options.params.whitelisted_route = params.whitelistedRoute;
-    }
-    if (typeof params?.windowStart !== "undefined") {
-      options.params.window_start = params.windowStart;
-    }
-    if (typeof params?.windowEnd !== "undefined") {
-      options.params.window_end = params.windowEnd;
     }
     if (typeof params?.bucketSize !== "undefined") {
       options.params.bucket_size = params.bucketSize;

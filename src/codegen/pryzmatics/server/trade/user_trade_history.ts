@@ -65,6 +65,8 @@ export interface QueryUserTradeVolumeRequest {
   intervalHours: bigint;
   pagination?: PageRequest;
   includeProxyTrades: boolean;
+  /** partial address supported */
+  address: string;
 }
 export interface QueryUserTradeVolumeRequestProtoMsg {
   typeUrl: "/pryzmatics.server.trade.QueryUserTradeVolumeRequest";
@@ -76,6 +78,8 @@ export interface QueryUserTradeVolumeRequestAmino {
   interval_hours?: string;
   pagination?: PageRequestAmino;
   include_proxy_trades?: boolean;
+  /** partial address supported */
+  address?: string;
 }
 export interface QueryUserTradeVolumeRequestAminoMsg {
   type: "/pryzmatics.server.trade.QueryUserTradeVolumeRequest";
@@ -87,6 +91,7 @@ export interface QueryUserTradeVolumeRequestSDKType {
   interval_hours: bigint;
   pagination?: PageRequestSDKType;
   include_proxy_trades: boolean;
+  address: string;
 }
 export interface QueryUserTradeVolumeResponse {
   userTradeVolumeRecords: UserTradeVolume[];
@@ -399,19 +404,20 @@ function createBaseQueryUserTradeVolumeRequest(): QueryUserTradeVolumeRequest {
     orderBy: undefined,
     intervalHours: BigInt(0),
     pagination: undefined,
-    includeProxyTrades: false
+    includeProxyTrades: false,
+    address: ""
   };
 }
 export const QueryUserTradeVolumeRequest = {
   typeUrl: "/pryzmatics.server.trade.QueryUserTradeVolumeRequest",
   is(o: any): o is QueryUserTradeVolumeRequest {
-    return o && (o.$typeUrl === QueryUserTradeVolumeRequest.typeUrl || Array.isArray(o.operationTypes) && typeof o.intervalHours === "bigint" && typeof o.includeProxyTrades === "boolean");
+    return o && (o.$typeUrl === QueryUserTradeVolumeRequest.typeUrl || Array.isArray(o.operationTypes) && typeof o.intervalHours === "bigint" && typeof o.includeProxyTrades === "boolean" && typeof o.address === "string");
   },
   isSDK(o: any): o is QueryUserTradeVolumeRequestSDKType {
-    return o && (o.$typeUrl === QueryUserTradeVolumeRequest.typeUrl || Array.isArray(o.operation_types) && typeof o.interval_hours === "bigint" && typeof o.include_proxy_trades === "boolean");
+    return o && (o.$typeUrl === QueryUserTradeVolumeRequest.typeUrl || Array.isArray(o.operation_types) && typeof o.interval_hours === "bigint" && typeof o.include_proxy_trades === "boolean" && typeof o.address === "string");
   },
   isAmino(o: any): o is QueryUserTradeVolumeRequestAmino {
-    return o && (o.$typeUrl === QueryUserTradeVolumeRequest.typeUrl || Array.isArray(o.operation_types) && typeof o.interval_hours === "bigint" && typeof o.include_proxy_trades === "boolean");
+    return o && (o.$typeUrl === QueryUserTradeVolumeRequest.typeUrl || Array.isArray(o.operation_types) && typeof o.interval_hours === "bigint" && typeof o.include_proxy_trades === "boolean" && typeof o.address === "string");
   },
   encode(message: QueryUserTradeVolumeRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     writer.uint32(10).fork();
@@ -430,6 +436,9 @@ export const QueryUserTradeVolumeRequest = {
     }
     if (message.includeProxyTrades === true) {
       writer.uint32(40).bool(message.includeProxyTrades);
+    }
+    if (message.address !== "") {
+      writer.uint32(50).string(message.address);
     }
     return writer;
   },
@@ -462,6 +471,9 @@ export const QueryUserTradeVolumeRequest = {
         case 5:
           message.includeProxyTrades = reader.bool();
           break;
+        case 6:
+          message.address = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -475,7 +487,8 @@ export const QueryUserTradeVolumeRequest = {
       orderBy: isSet(object.orderBy) ? UserTradeVolumeOrderBy.fromJSON(object.orderBy) : undefined,
       intervalHours: isSet(object.intervalHours) ? BigInt(object.intervalHours.toString()) : BigInt(0),
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      includeProxyTrades: isSet(object.includeProxyTrades) ? Boolean(object.includeProxyTrades) : false
+      includeProxyTrades: isSet(object.includeProxyTrades) ? Boolean(object.includeProxyTrades) : false,
+      address: isSet(object.address) ? String(object.address) : ""
     };
   },
   toJSON(message: QueryUserTradeVolumeRequest): unknown {
@@ -489,6 +502,7 @@ export const QueryUserTradeVolumeRequest = {
     message.intervalHours !== undefined && (obj.intervalHours = (message.intervalHours || BigInt(0)).toString());
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.includeProxyTrades !== undefined && (obj.includeProxyTrades = message.includeProxyTrades);
+    message.address !== undefined && (obj.address = message.address);
     return obj;
   },
   fromPartial(object: Partial<QueryUserTradeVolumeRequest>): QueryUserTradeVolumeRequest {
@@ -498,6 +512,7 @@ export const QueryUserTradeVolumeRequest = {
     message.intervalHours = object.intervalHours !== undefined && object.intervalHours !== null ? BigInt(object.intervalHours.toString()) : BigInt(0);
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.includeProxyTrades = object.includeProxyTrades ?? false;
+    message.address = object.address ?? "";
     return message;
   },
   fromAmino(object: QueryUserTradeVolumeRequestAmino): QueryUserTradeVolumeRequest {
@@ -515,6 +530,9 @@ export const QueryUserTradeVolumeRequest = {
     if (object.include_proxy_trades !== undefined && object.include_proxy_trades !== null) {
       message.includeProxyTrades = object.include_proxy_trades;
     }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
     return message;
   },
   toAmino(message: QueryUserTradeVolumeRequest, useInterfaces: boolean = true): QueryUserTradeVolumeRequestAmino {
@@ -528,6 +546,7 @@ export const QueryUserTradeVolumeRequest = {
     obj.interval_hours = message.intervalHours ? message.intervalHours.toString() : undefined;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
     obj.include_proxy_trades = message.includeProxyTrades === false ? undefined : message.includeProxyTrades;
+    obj.address = message.address === "" ? undefined : message.address;
     return obj;
   },
   fromAminoMsg(object: QueryUserTradeVolumeRequestAminoMsg): QueryUserTradeVolumeRequest {
