@@ -34,3 +34,15 @@ message OrderPairMetricsOrderBy {
   OrderPairMetricsOrderByProperty property = 1;
   bool descending = 2;
 }
+
+enum MatchableOrderOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  MATCHABLE_ORDER_BY_PROPERTY_REMAINING_AMOUNT = 0;
+  MATCHABLE_ORDER_BY_PROPERTY_MAX_MATCHING_SPOT_PRICE = 1;
+}
+
+message MatchableOrderOrderBy {
+  MatchableOrderOrderByProperty property = 1;
+  bool descending = 2;
+}
+

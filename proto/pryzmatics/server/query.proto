@@ -254,6 +254,10 @@ service Query {
     option (google.api.http).get = "/pryzmatics/trade/matchable_orders_for_pair/{token_in}/{token_out}/{pool_id}/{whitelisted_route}";
   }
 
+  rpc MatchableBuyOrdersForPair(pryzmatics.server.trade.QueryMatchableBuyOrdersForPairRequest) returns (pryzmatics.server.trade.QueryMatchableBuyOrdersForPairResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/matchable_buy_orders_for_pair/{token_in}/{token_out}/{pool_id}/{whitelisted_route}";
+  }
+
   rpc OrderPairsToDisable(pryzmatics.server.trade.QueryOrderPairsToDisableRequest) returns (pryzmatics.server.trade.QueryOrderPairsToDisableResponse) {
     option (google.api.http).get = "/pryzmatics/trade/order_pairs_to_disable";
   }

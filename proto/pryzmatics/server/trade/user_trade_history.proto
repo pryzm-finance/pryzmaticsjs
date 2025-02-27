@@ -29,6 +29,7 @@ message QueryUserTradeVolumeRequest {
   uint64 interval_hours = 3;
   cosmos.base.query.v1beta1.PageRequest pagination = 4 [(gogoproto.nullable) = true];
   bool include_proxy_trades = 5;
+  string address = 6; // partial address supported
 }
 
 message QueryUserTradeVolumeResponse {

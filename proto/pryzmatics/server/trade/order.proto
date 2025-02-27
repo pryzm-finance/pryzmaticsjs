@@ -64,11 +64,36 @@ message QueryMatchableOrdersForPairRequest {
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
+  pryzmatics.database.trade.MatchableOrderOrderBy order_by = 7 [(gogoproto.nullable) = true];
 }
 
 message QueryMatchableOrdersForPairResponse {
   repeated pryzmatics.trade.MatchableOrder buy_orders = 1 [(gogoproto.nullable) = false];
   repeated pryzmatics.trade.MatchableOrder sell_orders = 2 [(gogoproto.nullable) = false];
+}
+
+message QueryMatchableBuyOrdersForPairRequest {
+  string token_in = 1;
+  string token_out = 2;
+  uint64 pool_id = 3;
+  bool whitelisted_route = 4;
+  string min_price = 5 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string min_remaining_amount = 6 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  cosmos.base.query.v1beta1.PageRequest pagination = 7 [(gogoproto.nullable) = true];
+  pryzmatics.database.trade.MatchableOrderOrderBy order_by = 8 [(gogoproto.nullable) = true];
+}
+
+message QueryMatchableBuyOrdersForPairResponse {
+  repeated pryzmatics.trade.MatchableOrder orders = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
 }
 
 message QueryOrderPairsToDisableRequest {
@@ -101,17 +126,7 @@ message QueryOrderPairPriceBucketsRequest {
   string token_out = 2;
   uint64 pool_id = 3;
   bool whitelisted_route = 4;
-  string window_start = 5 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
-  string window_end = 6 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
-  string bucket_size = 7 [
+  string bucket_size = 5 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
