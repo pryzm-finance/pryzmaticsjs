@@ -1,0 +1,13 @@
+syntax = "proto3";
+package pryzmatics.icns;
+
+import "gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/icns";
+
+message IcnsRecord {
+  string address = 1;
+  string icns = 2;
+  google.protobuf.Timestamp fetch_time = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = false];
+}

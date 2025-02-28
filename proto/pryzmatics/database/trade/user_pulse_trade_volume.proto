@@ -1,0 +1,19 @@
+syntax = "proto3";
+package pryzmatics.database.trade;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/database/trade";
+
+enum UserPulseTradeVolumeOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  ORDER_BY_PROPERTY_TOTAL_VOLUME = 0 [(gogoproto.enumvalue_customname) = "PulseTradeOrderByPropertyTotalVolume"];
+  ORDER_BY_PROPERTY_VOLUME_24H = 1 [(gogoproto.enumvalue_customname) = "PulseTradeOrderByPropertyVolume24H"];
+  ORDER_BY_PROPERTY_VOLUME_7D = 2 [(gogoproto.enumvalue_customname) = "PulseTradeOrderByPropertyVolume7D"];
+  ORDER_BY_PROPERTY_VOLUME_30D = 3 [(gogoproto.enumvalue_customname) = "PulseTradeOrderByPropertyVolume30D"];
+}
+
+message UserPulseTradeVolumeOrderBy {
+  UserPulseTradeVolumeOrderByProperty property = 1;
+  bool descending = 2;
+}

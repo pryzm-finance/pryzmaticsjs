@@ -54,6 +54,8 @@ import { QueryProposalVotesRequest, QueryProposalVotesResponseSDKType } from "./
 import { QueryStatisticsRequest, QueryStatisticsResponseSDKType } from "./statistics/statistics";
 import { QueryHistoricalBankSupplyRequest, QueryHistoricalBankSupplyResponseSDKType } from "./bank/historical_bank_supply";
 import { QueryPortfolioRequest, QueryPortfolioResponseSDKType } from "./portfolio/portfolio";
+import { QueryIcnsByAddressRequest, QueryIcnsByAddressResponseSDKType, QueryIcnsByNameRequest, QueryIcnsByNameResponseSDKType } from "./icns/icns";
+import { QueryUserPulseTradeVolumeRequest, QueryUserPulseTradeVolumeResponseSDKType } from "./trade/user_pulse_trade_volume";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -140,6 +142,9 @@ export class LCDQueryClient {
     this.statistics = this.statistics.bind(this);
     this.historicalBankSupply = this.historicalBankSupply.bind(this);
     this.portfolio = this.portfolio.bind(this);
+    this.icnsByAddress = this.icnsByAddress.bind(this);
+    this.icnsByName = this.icnsByName.bind(this);
+    this.userPulseTradeVolume = this.userPulseTradeVolume.bind(this);
   }
   /* Asset */
   async asset(params: QueryAssetRequest): Promise<QueryAssetResponseSDKType> {
@@ -1242,5 +1247,32 @@ export class LCDQueryClient {
   async portfolio(params: QueryPortfolioRequest): Promise<QueryPortfolioResponseSDKType> {
     const endpoint = `pryzmatics/portfolio/${params.address}`;
     return await this.req.get<QueryPortfolioResponseSDKType>(endpoint);
+  }
+  /* IcnsByAddress */
+  async icnsByAddress(params: QueryIcnsByAddressRequest): Promise<QueryIcnsByAddressResponseSDKType> {
+    const endpoint = `pryzmatics/icns/by_address/${params.address}`;
+    return await this.req.get<QueryIcnsByAddressResponseSDKType>(endpoint);
+  }
+  /* IcnsByName */
+  async icnsByName(params: QueryIcnsByNameRequest): Promise<QueryIcnsByNameResponseSDKType> {
+    const endpoint = `pryzmatics/icns/by_name/${params.icns}`;
+    return await this.req.get<QueryIcnsByNameResponseSDKType>(endpoint);
+  }
+  /* UserPulseTradeVolume */
+  async userPulseTradeVolume(params: QueryUserPulseTradeVolumeRequest): Promise<QueryUserPulseTradeVolumeResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.address !== "undefined") {
+      options.params.address = params.address;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `pryzmatics/trade/user_pulse_trade_volume`;
+    return await this.req.get<QueryUserPulseTradeVolumeResponseSDKType>(endpoint, options);
   }
 }

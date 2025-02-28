@@ -36,6 +36,7 @@ import "pryzmatics/server/trade/exit_token_exact_lpt_simulation.proto";
 import "pryzmatics/server/trade/exit_exact_tokens_simulation.proto";
 import "pryzmatics/server/trade/exit_all_tokens_exact_lpt_simulation.proto";
 import "pryzmatics/server/trade/trade_volume.proto";
+import "pryzmatics/server/trade/user_pulse_trade_volume.proto";
 import "pryzmatics/server/trade/user_trade_history.proto";
 import "pryzmatics/server/trade/order.proto";
 import "pryzmatics/server/trade/directly_connected_token_pairs.proto";
@@ -73,6 +74,8 @@ import "pryzmatics/server/statistics/statistics.proto";
 import "pryzmatics/server/bank/historical_bank_supply.proto";
 
 import "pryzmatics/server/portfolio/portfolio.proto";
+
+import "pryzmatics/server/icns/icns.proto";
 
 option go_package = "github.com/pryzm-finance/pryzmatics/server";
 
@@ -158,9 +161,9 @@ service Query {
     option (google.api.http).get = "/pryzmatics/price/bounds/{denom}";
   }
 
-//  rpc PriceChange(pryzmatics.server.price.QueryPriceChangeRequest) returns (pryzmatics.server.price.QueryPriceChangeResponse) {
-//    option (google.api.http).get = "/pryzmatics/price/change/{denom}";
-//  } TODO remove
+  //  rpc PriceChange(pryzmatics.server.price.QueryPriceChangeRequest) returns (pryzmatics.server.price.QueryPriceChangeResponse) {
+  //    option (google.api.http).get = "/pryzmatics/price/change/{denom}";
+  //  } TODO remove
 
   rpc TradeSimulation(pryzmatics.server.trade.QueryTradeSimulationRequest) returns (pryzmatics.server.trade.QueryTradeSimulationResponse) {
     option (google.api.http).get = "/pryzmatics/trade/simulation";
@@ -214,9 +217,9 @@ service Query {
     option (google.api.http).get = "/pryzmatics/trade/user_trade_volume";
   }
 
-//  rpc PoolTradeHistory(pryzmatics.server.trade.QueryPoolTradeHistoryRequest) returns (pryzmatics.server.trade.QueryPoolTradeHistoryResponse) {
-//    option (google.api.http).get = "/pryzmatics/trade/pool_trade_history";
-//  } TODO remove
+  //  rpc PoolTradeHistory(pryzmatics.server.trade.QueryPoolTradeHistoryRequest) returns (pryzmatics.server.trade.QueryPoolTradeHistoryResponse) {
+  //    option (google.api.http).get = "/pryzmatics/trade/pool_trade_history";
+  //  } TODO remove
 
   rpc TokenTradeVolume(pryzmatics.server.trade.QueryTokenTradeVolumeRequest) returns (pryzmatics.server.trade.QueryTokenTradeVolumeResponse) {
     option (google.api.http).get = "/pryzmatics/trade/volume/token/{denom}";
@@ -397,5 +400,17 @@ service Query {
 
   rpc Portfolio(pryzmatics.server.portfolio.QueryPortfolioRequest) returns (pryzmatics.server.portfolio.QueryPortfolioResponse) {
     option (google.api.http).get = "/pryzmatics/portfolio/{address}";
+  }
+
+  rpc IcnsByAddress(pryzmatics.server.icns.QueryIcnsByAddressRequest) returns (pryzmatics.server.icns.QueryIcnsByAddressResponse) {
+    option (google.api.http).get = "/pryzmatics/icns/by_address/{address}";
+  }
+
+  rpc IcnsByName(pryzmatics.server.icns.QueryIcnsByNameRequest) returns (pryzmatics.server.icns.QueryIcnsByNameResponse) {
+    option (google.api.http).get = "/pryzmatics/icns/by_name/{icns}";
+  }
+
+  rpc UserPulseTradeVolume(pryzmatics.server.trade.QueryUserPulseTradeVolumeRequest) returns (pryzmatics.server.trade.QueryUserPulseTradeVolumeResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/user_pulse_trade_volume";
   }
 }

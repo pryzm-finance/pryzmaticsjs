@@ -1,0 +1,24 @@
+syntax = "proto3";
+package pryzmatics.server.icns;
+
+import "gogoproto/gogo.proto";
+import "pryzmatics/icns/icns.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/icns";
+
+message QueryIcnsByAddressRequest {
+  string address = 1;
+}
+
+message QueryIcnsByAddressResponse {
+  pryzmatics.icns.IcnsRecord icns = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryIcnsByNameRequest {
+  string icns = 1;
+}
+
+message QueryIcnsByNameResponse {
+  pryzmatics.icns.IcnsRecord icns = 1 [(gogoproto.nullable) = false];
+}

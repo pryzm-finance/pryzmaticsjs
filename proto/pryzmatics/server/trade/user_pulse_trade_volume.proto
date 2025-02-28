@@ -1,0 +1,21 @@
+syntax = "proto3";
+package pryzmatics.server.trade;
+
+import "gogoproto/gogo.proto";
+import "pryzmatics/database/trade/user_pulse_trade_volume.proto";
+import "pryzmatics/trade/user_pulse_trade_volume.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/trade";
+
+
+message QueryUserPulseTradeVolumeRequest {
+  pryzmatics.database.trade.UserPulseTradeVolumeOrderBy order_by = 1 [(gogoproto.nullable) = true];
+  string address = 2; // allowed to be partial address
+  cosmos.base.query.v1beta1.PageRequest pagination = 3 [(gogoproto.nullable) = true];
+}
+
+message QueryUserPulseTradeVolumeResponse {
+  repeated pryzmatics.trade.UserPulseTradeVolume volumes = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}
