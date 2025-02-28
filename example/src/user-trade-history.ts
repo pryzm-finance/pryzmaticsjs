@@ -48,6 +48,7 @@ async function main() {
 
     let volumes = await fetchAll(pryzmaticsClient, async (client: PryzmaticsClient, request: PageRequest) => {
         const result = await pryzmaticsClient.pryzmatics.userTradeVolume({
+            address: "",
             intervalHours: 24n,
             operationTypes: [
                 OperationType.OPERATION_TYPE_BATCH_SWAP,
