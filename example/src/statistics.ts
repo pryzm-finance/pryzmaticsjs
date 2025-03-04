@@ -26,6 +26,8 @@ async function main() {
     console.log(statistics.staking_delegators_count)
     console.log(statistics.alliance_delegators_count)
     console.log(statistics.error)
+
+    console.log(statistics.total_claimed_upryzms)
 }
 
 main().catch(console.error)
