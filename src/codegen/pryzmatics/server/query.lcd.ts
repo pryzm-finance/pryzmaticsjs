@@ -56,6 +56,7 @@ import { QueryHistoricalBankSupplyRequest, QueryHistoricalBankSupplyResponseSDKT
 import { QueryPortfolioRequest, QueryPortfolioResponseSDKType } from "./portfolio/portfolio";
 import { QueryIcnsByAddressRequest, QueryIcnsByAddressResponseSDKType, QueryIcnsByNameRequest, QueryIcnsByNameResponseSDKType } from "./icns/icns";
 import { QueryUserPulseTradeVolumeRequest, QueryUserPulseTradeVolumeResponseSDKType } from "./trade/user_pulse_trade_volume";
+import { QueryUserPryzmClaimHistoryRequest, QueryUserPryzmClaimHistoryResponseSDKType } from "./trade/user_pryzm_claim_history";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -145,6 +146,7 @@ export class LCDQueryClient {
     this.icnsByAddress = this.icnsByAddress.bind(this);
     this.icnsByName = this.icnsByName.bind(this);
     this.userPulseTradeVolume = this.userPulseTradeVolume.bind(this);
+    this.userPryzmClaimHistory = this.userPryzmClaimHistory.bind(this);
   }
   /* Asset */
   async asset(params: QueryAssetRequest): Promise<QueryAssetResponseSDKType> {
@@ -1274,5 +1276,16 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/trade/user_pulse_trade_volume`;
     return await this.req.get<QueryUserPulseTradeVolumeResponseSDKType>(endpoint, options);
+  }
+  /* UserPryzmClaimHistory */
+  async userPryzmClaimHistory(params: QueryUserPryzmClaimHistoryRequest): Promise<QueryUserPryzmClaimHistoryResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.denom !== "undefined") {
+      options.params.denom = params.denom;
+    }
+    const endpoint = `pryzmatics/trade/user_pryzm_claim_history/${params.address}`;
+    return await this.req.get<QueryUserPryzmClaimHistoryResponseSDKType>(endpoint, options);
   }
 }

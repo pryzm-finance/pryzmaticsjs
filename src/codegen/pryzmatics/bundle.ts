@@ -56,15 +56,16 @@ import * as _250 from "./trade/directly_connected_token_pair";
 import * as _251 from "./trade/operation_volume";
 import * as _252 from "./trade/order";
 import * as _253 from "./trade/pool_trade_history";
-import * as _254 from "./trade/pulse_tradable_pair";
-import * as _255 from "./trade/route_steps";
-import * as _256 from "./trade/swap_steps";
-import * as _257 from "./trade/token_amounts";
-import * as _258 from "./trade/trade_volume";
-import * as _259 from "./trade/user_pulse_trade_volume";
-import * as _260 from "./trade/user_trade_history";
-import * as _261 from "./ystaking/user_stake";
-import * as _356 from "./server/query.lcd";
+import * as _254 from "./trade/pryzm_claim_history_record";
+import * as _255 from "./trade/pulse_tradable_pair";
+import * as _256 from "./trade/route_steps";
+import * as _257 from "./trade/swap_steps";
+import * as _258 from "./trade/token_amounts";
+import * as _259 from "./trade/trade_volume";
+import * as _260 from "./trade/user_pulse_trade_volume";
+import * as _261 from "./trade/user_trade_history";
+import * as _262 from "./ystaking/user_stake";
+import * as _357 from "./server/query.lcd";
 export namespace pryzmatics {
   export const asset = {
     ..._196
@@ -157,7 +158,7 @@ export namespace pryzmatics {
   };
   export const server = {
     ..._245,
-    ..._356
+    ..._357
   };
   export const statistics = {
     ..._246,
@@ -176,9 +177,10 @@ export namespace pryzmatics {
     ..._257,
     ..._258,
     ..._259,
-    ..._260
+    ..._260,
+    ..._261
   };
   export const ystaking = {
-    ..._261
+    ..._262
   };
 }

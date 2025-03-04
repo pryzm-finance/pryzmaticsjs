@@ -41,6 +41,7 @@ import "pryzmatics/server/trade/user_trade_history.proto";
 import "pryzmatics/server/trade/order.proto";
 import "pryzmatics/server/trade/directly_connected_token_pairs.proto";
 import "pryzmatics/server/trade/tickers.proto";
+import "pryzmatics/server/trade/user_pryzm_claim_history.proto";
 
 import "pryzmatics/server/icstaking/host_chain.proto";
 
@@ -412,5 +413,9 @@ service Query {
 
   rpc UserPulseTradeVolume(pryzmatics.server.trade.QueryUserPulseTradeVolumeRequest) returns (pryzmatics.server.trade.QueryUserPulseTradeVolumeResponse) {
     option (google.api.http).get = "/pryzmatics/trade/user_pulse_trade_volume";
+  }
+
+  rpc UserPryzmClaimHistory(pryzmatics.server.trade.QueryUserPryzmClaimHistoryRequest) returns (pryzmatics.server.trade.QueryUserPryzmClaimHistoryResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/user_pryzm_claim_history/{address}";
   }
 }

@@ -41,4 +41,9 @@ message QueryStatisticsResponse {
   uint64 staking_delegators_count = 11;
   uint64 alliance_delegators_count = 12;
   string error = 13;
+  string total_claimed_upryzms = 14 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
 }

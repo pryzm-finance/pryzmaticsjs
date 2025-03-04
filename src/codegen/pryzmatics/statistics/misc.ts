@@ -9,6 +9,7 @@ export interface Misc {
   walletsCount: bigint;
   totalTxCount: bigint;
   error: string;
+  totalClaimedUpryzms: string;
 }
 export interface MiscProtoMsg {
   typeUrl: "/pryzmatics.statistics.Misc";
@@ -20,6 +21,7 @@ export interface MiscAmino {
   wallets_count?: string;
   total_tx_count?: string;
   error?: string;
+  total_claimed_upryzms?: string;
 }
 export interface MiscAminoMsg {
   type: "/pryzmatics.statistics.Misc";
@@ -31,6 +33,7 @@ export interface MiscSDKType {
   wallets_count: bigint;
   total_tx_count: bigint;
   error: string;
+  total_claimed_upryzms: string;
 }
 function createBaseMisc(): Misc {
   return {
@@ -38,19 +41,20 @@ function createBaseMisc(): Misc {
     liquidity: "",
     walletsCount: BigInt(0),
     totalTxCount: BigInt(0),
-    error: ""
+    error: "",
+    totalClaimedUpryzms: ""
   };
 }
 export const Misc = {
   typeUrl: "/pryzmatics.statistics.Misc",
   is(o: any): o is Misc {
-    return o && (o.$typeUrl === Misc.typeUrl || Timestamp.is(o.blockTime) && typeof o.liquidity === "string" && typeof o.walletsCount === "bigint" && typeof o.totalTxCount === "bigint" && typeof o.error === "string");
+    return o && (o.$typeUrl === Misc.typeUrl || Timestamp.is(o.blockTime) && typeof o.liquidity === "string" && typeof o.walletsCount === "bigint" && typeof o.totalTxCount === "bigint" && typeof o.error === "string" && typeof o.totalClaimedUpryzms === "string");
   },
   isSDK(o: any): o is MiscSDKType {
-    return o && (o.$typeUrl === Misc.typeUrl || Timestamp.isSDK(o.block_time) && typeof o.liquidity === "string" && typeof o.wallets_count === "bigint" && typeof o.total_tx_count === "bigint" && typeof o.error === "string");
+    return o && (o.$typeUrl === Misc.typeUrl || Timestamp.isSDK(o.block_time) && typeof o.liquidity === "string" && typeof o.wallets_count === "bigint" && typeof o.total_tx_count === "bigint" && typeof o.error === "string" && typeof o.total_claimed_upryzms === "string");
   },
   isAmino(o: any): o is MiscAmino {
-    return o && (o.$typeUrl === Misc.typeUrl || Timestamp.isAmino(o.block_time) && typeof o.liquidity === "string" && typeof o.wallets_count === "bigint" && typeof o.total_tx_count === "bigint" && typeof o.error === "string");
+    return o && (o.$typeUrl === Misc.typeUrl || Timestamp.isAmino(o.block_time) && typeof o.liquidity === "string" && typeof o.wallets_count === "bigint" && typeof o.total_tx_count === "bigint" && typeof o.error === "string" && typeof o.total_claimed_upryzms === "string");
   },
   encode(message: Misc, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.blockTime !== undefined) {
@@ -67,6 +71,9 @@ export const Misc = {
     }
     if (message.error !== "") {
       writer.uint32(42).string(message.error);
+    }
+    if (message.totalClaimedUpryzms !== "") {
+      writer.uint32(50).string(message.totalClaimedUpryzms);
     }
     return writer;
   },
@@ -92,6 +99,9 @@ export const Misc = {
         case 5:
           message.error = reader.string();
           break;
+        case 6:
+          message.totalClaimedUpryzms = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -105,7 +115,8 @@ export const Misc = {
       liquidity: isSet(object.liquidity) ? String(object.liquidity) : "",
       walletsCount: isSet(object.walletsCount) ? BigInt(object.walletsCount.toString()) : BigInt(0),
       totalTxCount: isSet(object.totalTxCount) ? BigInt(object.totalTxCount.toString()) : BigInt(0),
-      error: isSet(object.error) ? String(object.error) : ""
+      error: isSet(object.error) ? String(object.error) : "",
+      totalClaimedUpryzms: isSet(object.totalClaimedUpryzms) ? String(object.totalClaimedUpryzms) : ""
     };
   },
   toJSON(message: Misc): unknown {
@@ -115,6 +126,7 @@ export const Misc = {
     message.walletsCount !== undefined && (obj.walletsCount = (message.walletsCount || BigInt(0)).toString());
     message.totalTxCount !== undefined && (obj.totalTxCount = (message.totalTxCount || BigInt(0)).toString());
     message.error !== undefined && (obj.error = message.error);
+    message.totalClaimedUpryzms !== undefined && (obj.totalClaimedUpryzms = message.totalClaimedUpryzms);
     return obj;
   },
   fromPartial(object: Partial<Misc>): Misc {
@@ -124,6 +136,7 @@ export const Misc = {
     message.walletsCount = object.walletsCount !== undefined && object.walletsCount !== null ? BigInt(object.walletsCount.toString()) : BigInt(0);
     message.totalTxCount = object.totalTxCount !== undefined && object.totalTxCount !== null ? BigInt(object.totalTxCount.toString()) : BigInt(0);
     message.error = object.error ?? "";
+    message.totalClaimedUpryzms = object.totalClaimedUpryzms ?? "";
     return message;
   },
   fromAmino(object: MiscAmino): Misc {
@@ -143,6 +156,9 @@ export const Misc = {
     if (object.error !== undefined && object.error !== null) {
       message.error = object.error;
     }
+    if (object.total_claimed_upryzms !== undefined && object.total_claimed_upryzms !== null) {
+      message.totalClaimedUpryzms = object.total_claimed_upryzms;
+    }
     return message;
   },
   toAmino(message: Misc, useInterfaces: boolean = true): MiscAmino {
@@ -152,6 +168,7 @@ export const Misc = {
     obj.wallets_count = message.walletsCount ? message.walletsCount.toString() : undefined;
     obj.total_tx_count = message.totalTxCount ? message.totalTxCount.toString() : undefined;
     obj.error = message.error === "" ? undefined : message.error;
+    obj.total_claimed_upryzms = message.totalClaimedUpryzms === "" ? undefined : message.totalClaimedUpryzms;
     return obj;
   },
   fromAminoMsg(object: MiscAminoMsg): Misc {

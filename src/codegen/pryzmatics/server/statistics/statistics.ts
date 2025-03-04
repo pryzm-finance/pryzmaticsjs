@@ -31,6 +31,7 @@ export interface QueryStatisticsResponse {
   stakingDelegatorsCount: bigint;
   allianceDelegatorsCount: bigint;
   error: string;
+  totalClaimedUpryzms: string;
 }
 export interface QueryStatisticsResponseProtoMsg {
   typeUrl: "/pryzmatics.server.statistics.QueryStatisticsResponse";
@@ -50,6 +51,7 @@ export interface QueryStatisticsResponseAmino {
   staking_delegators_count?: string;
   alliance_delegators_count?: string;
   error?: string;
+  total_claimed_upryzms?: string;
 }
 export interface QueryStatisticsResponseAminoMsg {
   type: "/pryzmatics.server.statistics.QueryStatisticsResponse";
@@ -69,6 +71,7 @@ export interface QueryStatisticsResponseSDKType {
   staking_delegators_count: bigint;
   alliance_delegators_count: bigint;
   error: string;
+  total_claimed_upryzms: string;
 }
 function createBaseQueryStatisticsRequest(): QueryStatisticsRequest {
   return {};
@@ -151,19 +154,20 @@ function createBaseQueryStatisticsResponse(): QueryStatisticsResponse {
     delegatorsCount: BigInt(0),
     stakingDelegatorsCount: BigInt(0),
     allianceDelegatorsCount: BigInt(0),
-    error: ""
+    error: "",
+    totalClaimedUpryzms: ""
   };
 }
 export const QueryStatisticsResponse = {
   typeUrl: "/pryzmatics.server.statistics.QueryStatisticsResponse",
   is(o: any): o is QueryStatisticsResponse {
-    return o && (o.$typeUrl === QueryStatisticsResponse.typeUrl || Array.isArray(o.treasuryBalances) && (!o.treasuryBalances.length || TreasuryBalance.is(o.treasuryBalances[0])) && typeof o.annualisedTreasury === "string" && MarketCap.is(o.marketCap) && TVL.is(o.tvl) && typeof o.totalTxCount === "bigint" && typeof o.totalTradeVolume === "string" && OperationVolume.is(o.volume24h) && typeof o.liquidity === "string" && typeof o.walletsCount === "bigint" && typeof o.delegatorsCount === "bigint" && typeof o.stakingDelegatorsCount === "bigint" && typeof o.allianceDelegatorsCount === "bigint" && typeof o.error === "string");
+    return o && (o.$typeUrl === QueryStatisticsResponse.typeUrl || Array.isArray(o.treasuryBalances) && (!o.treasuryBalances.length || TreasuryBalance.is(o.treasuryBalances[0])) && typeof o.annualisedTreasury === "string" && MarketCap.is(o.marketCap) && TVL.is(o.tvl) && typeof o.totalTxCount === "bigint" && typeof o.totalTradeVolume === "string" && OperationVolume.is(o.volume24h) && typeof o.liquidity === "string" && typeof o.walletsCount === "bigint" && typeof o.delegatorsCount === "bigint" && typeof o.stakingDelegatorsCount === "bigint" && typeof o.allianceDelegatorsCount === "bigint" && typeof o.error === "string" && typeof o.totalClaimedUpryzms === "string");
   },
   isSDK(o: any): o is QueryStatisticsResponseSDKType {
-    return o && (o.$typeUrl === QueryStatisticsResponse.typeUrl || Array.isArray(o.treasury_balances) && (!o.treasury_balances.length || TreasuryBalance.isSDK(o.treasury_balances[0])) && typeof o.annualised_treasury === "string" && MarketCap.isSDK(o.market_cap) && TVL.isSDK(o.tvl) && typeof o.total_tx_count === "bigint" && typeof o.total_trade_volume === "string" && OperationVolume.isSDK(o.volume_24h) && typeof o.liquidity === "string" && typeof o.wallets_count === "bigint" && typeof o.delegators_count === "bigint" && typeof o.staking_delegators_count === "bigint" && typeof o.alliance_delegators_count === "bigint" && typeof o.error === "string");
+    return o && (o.$typeUrl === QueryStatisticsResponse.typeUrl || Array.isArray(o.treasury_balances) && (!o.treasury_balances.length || TreasuryBalance.isSDK(o.treasury_balances[0])) && typeof o.annualised_treasury === "string" && MarketCap.isSDK(o.market_cap) && TVL.isSDK(o.tvl) && typeof o.total_tx_count === "bigint" && typeof o.total_trade_volume === "string" && OperationVolume.isSDK(o.volume_24h) && typeof o.liquidity === "string" && typeof o.wallets_count === "bigint" && typeof o.delegators_count === "bigint" && typeof o.staking_delegators_count === "bigint" && typeof o.alliance_delegators_count === "bigint" && typeof o.error === "string" && typeof o.total_claimed_upryzms === "string");
   },
   isAmino(o: any): o is QueryStatisticsResponseAmino {
-    return o && (o.$typeUrl === QueryStatisticsResponse.typeUrl || Array.isArray(o.treasury_balances) && (!o.treasury_balances.length || TreasuryBalance.isAmino(o.treasury_balances[0])) && typeof o.annualised_treasury === "string" && MarketCap.isAmino(o.market_cap) && TVL.isAmino(o.tvl) && typeof o.total_tx_count === "bigint" && typeof o.total_trade_volume === "string" && OperationVolume.isAmino(o.volume_24h) && typeof o.liquidity === "string" && typeof o.wallets_count === "bigint" && typeof o.delegators_count === "bigint" && typeof o.staking_delegators_count === "bigint" && typeof o.alliance_delegators_count === "bigint" && typeof o.error === "string");
+    return o && (o.$typeUrl === QueryStatisticsResponse.typeUrl || Array.isArray(o.treasury_balances) && (!o.treasury_balances.length || TreasuryBalance.isAmino(o.treasury_balances[0])) && typeof o.annualised_treasury === "string" && MarketCap.isAmino(o.market_cap) && TVL.isAmino(o.tvl) && typeof o.total_tx_count === "bigint" && typeof o.total_trade_volume === "string" && OperationVolume.isAmino(o.volume_24h) && typeof o.liquidity === "string" && typeof o.wallets_count === "bigint" && typeof o.delegators_count === "bigint" && typeof o.staking_delegators_count === "bigint" && typeof o.alliance_delegators_count === "bigint" && typeof o.error === "string" && typeof o.total_claimed_upryzms === "string");
   },
   encode(message: QueryStatisticsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.treasuryBalances) {
@@ -204,6 +208,9 @@ export const QueryStatisticsResponse = {
     }
     if (message.error !== "") {
       writer.uint32(106).string(message.error);
+    }
+    if (message.totalClaimedUpryzms !== "") {
+      writer.uint32(114).string(message.totalClaimedUpryzms);
     }
     return writer;
   },
@@ -253,6 +260,9 @@ export const QueryStatisticsResponse = {
         case 13:
           message.error = reader.string();
           break;
+        case 14:
+          message.totalClaimedUpryzms = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -274,7 +284,8 @@ export const QueryStatisticsResponse = {
       delegatorsCount: isSet(object.delegatorsCount) ? BigInt(object.delegatorsCount.toString()) : BigInt(0),
       stakingDelegatorsCount: isSet(object.stakingDelegatorsCount) ? BigInt(object.stakingDelegatorsCount.toString()) : BigInt(0),
       allianceDelegatorsCount: isSet(object.allianceDelegatorsCount) ? BigInt(object.allianceDelegatorsCount.toString()) : BigInt(0),
-      error: isSet(object.error) ? String(object.error) : ""
+      error: isSet(object.error) ? String(object.error) : "",
+      totalClaimedUpryzms: isSet(object.totalClaimedUpryzms) ? String(object.totalClaimedUpryzms) : ""
     };
   },
   toJSON(message: QueryStatisticsResponse): unknown {
@@ -296,6 +307,7 @@ export const QueryStatisticsResponse = {
     message.stakingDelegatorsCount !== undefined && (obj.stakingDelegatorsCount = (message.stakingDelegatorsCount || BigInt(0)).toString());
     message.allianceDelegatorsCount !== undefined && (obj.allianceDelegatorsCount = (message.allianceDelegatorsCount || BigInt(0)).toString());
     message.error !== undefined && (obj.error = message.error);
+    message.totalClaimedUpryzms !== undefined && (obj.totalClaimedUpryzms = message.totalClaimedUpryzms);
     return obj;
   },
   fromPartial(object: Partial<QueryStatisticsResponse>): QueryStatisticsResponse {
@@ -313,6 +325,7 @@ export const QueryStatisticsResponse = {
     message.stakingDelegatorsCount = object.stakingDelegatorsCount !== undefined && object.stakingDelegatorsCount !== null ? BigInt(object.stakingDelegatorsCount.toString()) : BigInt(0);
     message.allianceDelegatorsCount = object.allianceDelegatorsCount !== undefined && object.allianceDelegatorsCount !== null ? BigInt(object.allianceDelegatorsCount.toString()) : BigInt(0);
     message.error = object.error ?? "";
+    message.totalClaimedUpryzms = object.totalClaimedUpryzms ?? "";
     return message;
   },
   fromAmino(object: QueryStatisticsResponseAmino): QueryStatisticsResponse {
@@ -354,6 +367,9 @@ export const QueryStatisticsResponse = {
     if (object.error !== undefined && object.error !== null) {
       message.error = object.error;
     }
+    if (object.total_claimed_upryzms !== undefined && object.total_claimed_upryzms !== null) {
+      message.totalClaimedUpryzms = object.total_claimed_upryzms;
+    }
     return message;
   },
   toAmino(message: QueryStatisticsResponse, useInterfaces: boolean = true): QueryStatisticsResponseAmino {
@@ -375,6 +391,7 @@ export const QueryStatisticsResponse = {
     obj.staking_delegators_count = message.stakingDelegatorsCount ? message.stakingDelegatorsCount.toString() : undefined;
     obj.alliance_delegators_count = message.allianceDelegatorsCount ? message.allianceDelegatorsCount.toString() : undefined;
     obj.error = message.error === "" ? undefined : message.error;
+    obj.total_claimed_upryzms = message.totalClaimedUpryzms === "" ? undefined : message.totalClaimedUpryzms;
     return obj;
   },
   fromAminoMsg(object: QueryStatisticsResponseAminoMsg): QueryStatisticsResponse {

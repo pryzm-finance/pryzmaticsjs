@@ -45,17 +45,17 @@ import * as _192 from "./pgov/v1/reply";
 import * as _193 from "./pgov/v1/staked_p_asset";
 import * as _194 from "./pgov/v1/tx";
 import * as _195 from "./pgov/v1/vote";
-import * as _345 from "./amm/v1/tx.amino";
-import * as _346 from "./amm/v2/tx.amino";
-import * as _347 from "./icstaking/v1/tx.amino";
-import * as _348 from "./pgov/v1/tx.amino";
-import * as _349 from "./amm/v1/tx.registry";
-import * as _350 from "./amm/v2/tx.registry";
-import * as _351 from "./icstaking/v1/tx.registry";
-import * as _352 from "./pgov/v1/tx.registry";
-import * as _353 from "./amm/v1/query.lcd";
-import * as _354 from "./icstaking/v1/query.lcd";
-import * as _355 from "./pgov/v1/query.lcd";
+import * as _346 from "./amm/v1/tx.amino";
+import * as _347 from "./amm/v2/tx.amino";
+import * as _348 from "./icstaking/v1/tx.amino";
+import * as _349 from "./pgov/v1/tx.amino";
+import * as _350 from "./amm/v1/tx.registry";
+import * as _351 from "./amm/v2/tx.registry";
+import * as _352 from "./icstaking/v1/tx.registry";
+import * as _353 from "./pgov/v1/tx.registry";
+import * as _354 from "./amm/v1/query.lcd";
+import * as _355 from "./icstaking/v1/query.lcd";
+import * as _356 from "./pgov/v1/query.lcd";
 export namespace pryzm {
   export namespace amm {
     export const v1 = {
@@ -82,15 +82,15 @@ export namespace pryzm {
       ..._169,
       ..._170,
       ..._171,
-      ..._345,
-      ..._349,
-      ..._353
+      ..._346,
+      ..._350,
+      ..._354
     };
     export const v2 = {
       ..._172,
       ..._173,
-      ..._346,
-      ..._350
+      ..._347,
+      ..._351
     };
   }
   export namespace icstaking {
@@ -108,9 +108,9 @@ export namespace pryzm {
       ..._184,
       ..._185,
       ..._186,
-      ..._347,
-      ..._351,
-      ..._354
+      ..._348,
+      ..._352,
+      ..._355
     };
   }
   export namespace pgov {
@@ -124,9 +124,9 @@ export namespace pryzm {
       ..._193,
       ..._194,
       ..._195,
-      ..._348,
-      ..._352,
-      ..._355
+      ..._349,
+      ..._353,
+      ..._356
     };
   }
 }

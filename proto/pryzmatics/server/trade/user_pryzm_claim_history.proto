@@ -1,0 +1,22 @@
+syntax = "proto3";
+package pryzmatics.server.trade;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "pryzmatics/trade/pryzm_claim_history_record.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/trade";
+
+message QueryUserPryzmClaimHistoryRequest {
+  string address = 1;
+  string denom = 2; // optional
+}
+
+message QueryUserPryzmClaimHistoryResponse {
+  repeated pryzmatics.trade.PryzmClaimHistoryRecord records = 1 [(gogoproto.nullable) = false];
+  string total_upryzms = 2 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+}
