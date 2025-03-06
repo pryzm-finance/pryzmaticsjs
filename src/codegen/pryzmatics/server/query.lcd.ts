@@ -27,7 +27,7 @@ import { QueryZeroImpactJoinAssetToYammSimulationRequest, QueryZeroImpactJoinAss
 import { QueryExitTokenExactLptSimulationRequest, QueryExitTokenExactLptSimulationResponseSDKType } from "./trade/exit_token_exact_lpt_simulation";
 import { QueryExitExactTokensSimulationRequest, QueryExitExactTokensSimulationResponseSDKType } from "./trade/exit_exact_tokens_simulation";
 import { QueryExitAllTokensExactLptSimulationRequest, QueryExitAllTokensExactLptSimulationResponseSDKType } from "./trade/exit_all_tokens_exact_lpt_simulation";
-import { QueryUserTradeHistoryRequest, QueryUserTradeHistoryResponseSDKType, QueryUserTradeVolumeRequest, QueryUserTradeVolumeResponseSDKType } from "./trade/user_trade_history";
+import { QueryUserTradeHistoryRequest, QueryUserTradeHistoryResponseSDKType, QueryUserTradeVolumeRequest, QueryUserTradeVolumeResponseSDKType, QueryIntervalUserTradeVolumeRequest, QueryIntervalUserTradeVolumeResponseSDKType } from "./trade/user_trade_history";
 import { QueryTokenTradeVolumeRequest, QueryTokenTradeVolumeResponseSDKType, QueryPoolTradeVolumeRequest, QueryPoolTradeVolumeResponseSDKType, QueryFavoritePairsRequest, QueryFavoritePairsResponseSDKType } from "./trade/trade_volume";
 import { QueryPulseTradablePairsRequest, QueryPulseTradablePairsResponseSDKType, QueryPulseTradablePairPriceRequest, QueryPulseTradablePairPriceResponseSDKType } from "./trade/pulse_tradable_pairs";
 import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType, QueryMatchableBuyOrdersForPairRequest, QueryMatchableBuyOrdersForPairResponseSDKType, QueryOrderPairsToDisableRequest, QueryOrderPairsToDisableResponseSDKType, QueryOrderPairMetricsRequest, QueryOrderPairMetricsResponseSDKType, QueryOrderPairPriceBucketsRequest, QueryOrderPairPriceBucketsResponseSDKType, QueryOrderMetricsRequest, QueryOrderMetricsResponseSDKType } from "./trade/order";
@@ -98,6 +98,7 @@ export class LCDQueryClient {
     this.exitAllTokensExactLptSimulation = this.exitAllTokensExactLptSimulation.bind(this);
     this.userTradeHistory = this.userTradeHistory.bind(this);
     this.userTradeVolume = this.userTradeVolume.bind(this);
+    this.intervalUserTradeVolume = this.intervalUserTradeVolume.bind(this);
     this.tokenTradeVolume = this.tokenTradeVolume.bind(this);
     this.poolTradeVolume = this.poolTradeVolume.bind(this);
     this.favoritePairs = this.favoritePairs.bind(this);
@@ -599,6 +600,35 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/trade/user_trade_volume`;
     return await this.req.get<QueryUserTradeVolumeResponseSDKType>(endpoint, options);
+  }
+  /* IntervalUserTradeVolume */
+  async intervalUserTradeVolume(params: QueryIntervalUserTradeVolumeRequest): Promise<QueryIntervalUserTradeVolumeResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.operationTypes !== "undefined") {
+      options.params.operation_types = params.operationTypes;
+    }
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.from !== "undefined") {
+      options.params.from = params.from;
+    }
+    if (typeof params?.to !== "undefined") {
+      options.params.to = params.to;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    if (typeof params?.includeProxyTrades !== "undefined") {
+      options.params.include_proxy_trades = params.includeProxyTrades;
+    }
+    if (typeof params?.address !== "undefined") {
+      options.params.address = params.address;
+    }
+    const endpoint = `pryzmatics/trade/interval_user_trade_volume`;
+    return await this.req.get<QueryIntervalUserTradeVolumeResponseSDKType>(endpoint, options);
   }
   /* TokenTradeVolume */
   async tokenTradeVolume(params: QueryTokenTradeVolumeRequest): Promise<QueryTokenTradeVolumeResponseSDKType> {

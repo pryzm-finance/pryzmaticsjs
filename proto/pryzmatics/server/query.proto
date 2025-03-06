@@ -218,6 +218,10 @@ service Query {
     option (google.api.http).get = "/pryzmatics/trade/user_trade_volume";
   }
 
+  rpc IntervalUserTradeVolume(pryzmatics.server.trade.QueryIntervalUserTradeVolumeRequest) returns (pryzmatics.server.trade.QueryIntervalUserTradeVolumeResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/interval_user_trade_volume";
+  }
+
   //  rpc PoolTradeHistory(pryzmatics.server.trade.QueryPoolTradeHistoryRequest) returns (pryzmatics.server.trade.QueryPoolTradeHistoryResponse) {
   //    option (google.api.http).get = "/pryzmatics/trade/pool_trade_history";
   //  } TODO remove

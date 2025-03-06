@@ -113,6 +113,63 @@ export interface QueryUserTradeVolumeResponseSDKType {
   user_trade_volume_records: UserTradeVolumeSDKType[];
   pagination?: PageResponseSDKType;
 }
+export interface QueryIntervalUserTradeVolumeRequest {
+  operationTypes: OperationType[];
+  orderBy?: UserTradeVolumeOrderBy;
+  from: string;
+  to: string;
+  pagination?: PageRequest;
+  includeProxyTrades: boolean;
+  /** partial address supported */
+  address: string;
+}
+export interface QueryIntervalUserTradeVolumeRequestProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryIntervalUserTradeVolumeRequest";
+  value: Uint8Array;
+}
+export interface QueryIntervalUserTradeVolumeRequestAmino {
+  operation_types?: OperationType[];
+  order_by?: UserTradeVolumeOrderByAmino;
+  from?: string;
+  to?: string;
+  pagination?: PageRequestAmino;
+  include_proxy_trades?: boolean;
+  /** partial address supported */
+  address?: string;
+}
+export interface QueryIntervalUserTradeVolumeRequestAminoMsg {
+  type: "/pryzmatics.server.trade.QueryIntervalUserTradeVolumeRequest";
+  value: QueryIntervalUserTradeVolumeRequestAmino;
+}
+export interface QueryIntervalUserTradeVolumeRequestSDKType {
+  operation_types: OperationType[];
+  order_by?: UserTradeVolumeOrderBySDKType;
+  from: string;
+  to: string;
+  pagination?: PageRequestSDKType;
+  include_proxy_trades: boolean;
+  address: string;
+}
+export interface QueryIntervalUserTradeVolumeResponse {
+  userTradeVolumeRecords: UserTradeVolume[];
+  pagination?: PageResponse;
+}
+export interface QueryIntervalUserTradeVolumeResponseProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryIntervalUserTradeVolumeResponse";
+  value: Uint8Array;
+}
+export interface QueryIntervalUserTradeVolumeResponseAmino {
+  user_trade_volume_records?: UserTradeVolumeAmino[];
+  pagination?: PageResponseAmino;
+}
+export interface QueryIntervalUserTradeVolumeResponseAminoMsg {
+  type: "/pryzmatics.server.trade.QueryIntervalUserTradeVolumeResponse";
+  value: QueryIntervalUserTradeVolumeResponseAmino;
+}
+export interface QueryIntervalUserTradeVolumeResponseSDKType {
+  user_trade_volume_records: UserTradeVolumeSDKType[];
+  pagination?: PageResponseSDKType;
+}
 function createBaseQueryUserTradeHistoryRequest(): QueryUserTradeHistoryRequest {
   return {
     firstToken: "",
@@ -669,3 +726,288 @@ export const QueryUserTradeVolumeResponse = {
   }
 };
 GlobalDecoderRegistry.register(QueryUserTradeVolumeResponse.typeUrl, QueryUserTradeVolumeResponse);
+function createBaseQueryIntervalUserTradeVolumeRequest(): QueryIntervalUserTradeVolumeRequest {
+  return {
+    operationTypes: [],
+    orderBy: undefined,
+    from: "",
+    to: "",
+    pagination: undefined,
+    includeProxyTrades: false,
+    address: ""
+  };
+}
+export const QueryIntervalUserTradeVolumeRequest = {
+  typeUrl: "/pryzmatics.server.trade.QueryIntervalUserTradeVolumeRequest",
+  is(o: any): o is QueryIntervalUserTradeVolumeRequest {
+    return o && (o.$typeUrl === QueryIntervalUserTradeVolumeRequest.typeUrl || Array.isArray(o.operationTypes) && typeof o.from === "string" && typeof o.to === "string" && typeof o.includeProxyTrades === "boolean" && typeof o.address === "string");
+  },
+  isSDK(o: any): o is QueryIntervalUserTradeVolumeRequestSDKType {
+    return o && (o.$typeUrl === QueryIntervalUserTradeVolumeRequest.typeUrl || Array.isArray(o.operation_types) && typeof o.from === "string" && typeof o.to === "string" && typeof o.include_proxy_trades === "boolean" && typeof o.address === "string");
+  },
+  isAmino(o: any): o is QueryIntervalUserTradeVolumeRequestAmino {
+    return o && (o.$typeUrl === QueryIntervalUserTradeVolumeRequest.typeUrl || Array.isArray(o.operation_types) && typeof o.from === "string" && typeof o.to === "string" && typeof o.include_proxy_trades === "boolean" && typeof o.address === "string");
+  },
+  encode(message: QueryIntervalUserTradeVolumeRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    writer.uint32(10).fork();
+    for (const v of message.operationTypes) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    if (message.orderBy !== undefined) {
+      UserTradeVolumeOrderBy.encode(message.orderBy, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.from !== "") {
+      writer.uint32(26).string(message.from);
+    }
+    if (message.to !== "") {
+      writer.uint32(34).string(message.to);
+    }
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.includeProxyTrades === true) {
+      writer.uint32(48).bool(message.includeProxyTrades);
+    }
+    if (message.address !== "") {
+      writer.uint32(58).string(message.address);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryIntervalUserTradeVolumeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryIntervalUserTradeVolumeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.operationTypes.push((reader.int32() as any));
+            }
+          } else {
+            message.operationTypes.push((reader.int32() as any));
+          }
+          break;
+        case 2:
+          message.orderBy = UserTradeVolumeOrderBy.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 3:
+          message.from = reader.string();
+          break;
+        case 4:
+          message.to = reader.string();
+          break;
+        case 5:
+          message.pagination = PageRequest.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 6:
+          message.includeProxyTrades = reader.bool();
+          break;
+        case 7:
+          message.address = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryIntervalUserTradeVolumeRequest {
+    return {
+      operationTypes: Array.isArray(object?.operationTypes) ? object.operationTypes.map((e: any) => operationTypeFromJSON(e)) : [],
+      orderBy: isSet(object.orderBy) ? UserTradeVolumeOrderBy.fromJSON(object.orderBy) : undefined,
+      from: isSet(object.from) ? String(object.from) : "",
+      to: isSet(object.to) ? String(object.to) : "",
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
+      includeProxyTrades: isSet(object.includeProxyTrades) ? Boolean(object.includeProxyTrades) : false,
+      address: isSet(object.address) ? String(object.address) : ""
+    };
+  },
+  toJSON(message: QueryIntervalUserTradeVolumeRequest): unknown {
+    const obj: any = {};
+    if (message.operationTypes) {
+      obj.operationTypes = message.operationTypes.map(e => operationTypeToJSON(e));
+    } else {
+      obj.operationTypes = [];
+    }
+    message.orderBy !== undefined && (obj.orderBy = message.orderBy ? UserTradeVolumeOrderBy.toJSON(message.orderBy) : undefined);
+    message.from !== undefined && (obj.from = message.from);
+    message.to !== undefined && (obj.to = message.to);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.includeProxyTrades !== undefined && (obj.includeProxyTrades = message.includeProxyTrades);
+    message.address !== undefined && (obj.address = message.address);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryIntervalUserTradeVolumeRequest>): QueryIntervalUserTradeVolumeRequest {
+    const message = createBaseQueryIntervalUserTradeVolumeRequest();
+    message.operationTypes = object.operationTypes?.map(e => e) || [];
+    message.orderBy = object.orderBy !== undefined && object.orderBy !== null ? UserTradeVolumeOrderBy.fromPartial(object.orderBy) : undefined;
+    message.from = object.from ?? "";
+    message.to = object.to ?? "";
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    message.includeProxyTrades = object.includeProxyTrades ?? false;
+    message.address = object.address ?? "";
+    return message;
+  },
+  fromAmino(object: QueryIntervalUserTradeVolumeRequestAmino): QueryIntervalUserTradeVolumeRequest {
+    const message = createBaseQueryIntervalUserTradeVolumeRequest();
+    message.operationTypes = object.operation_types?.map(e => e) || [];
+    if (object.order_by !== undefined && object.order_by !== null) {
+      message.orderBy = UserTradeVolumeOrderBy.fromAmino(object.order_by);
+    }
+    if (object.from !== undefined && object.from !== null) {
+      message.from = object.from;
+    }
+    if (object.to !== undefined && object.to !== null) {
+      message.to = object.to;
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    if (object.include_proxy_trades !== undefined && object.include_proxy_trades !== null) {
+      message.includeProxyTrades = object.include_proxy_trades;
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    return message;
+  },
+  toAmino(message: QueryIntervalUserTradeVolumeRequest, useInterfaces: boolean = true): QueryIntervalUserTradeVolumeRequestAmino {
+    const obj: any = {};
+    if (message.operationTypes) {
+      obj.operation_types = message.operationTypes.map(e => e);
+    } else {
+      obj.operation_types = message.operationTypes;
+    }
+    obj.order_by = message.orderBy ? UserTradeVolumeOrderBy.toAmino(message.orderBy, useInterfaces) : undefined;
+    obj.from = message.from === "" ? undefined : message.from;
+    obj.to = message.to === "" ? undefined : message.to;
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
+    obj.include_proxy_trades = message.includeProxyTrades === false ? undefined : message.includeProxyTrades;
+    obj.address = message.address === "" ? undefined : message.address;
+    return obj;
+  },
+  fromAminoMsg(object: QueryIntervalUserTradeVolumeRequestAminoMsg): QueryIntervalUserTradeVolumeRequest {
+    return QueryIntervalUserTradeVolumeRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryIntervalUserTradeVolumeRequestProtoMsg, useInterfaces: boolean = true): QueryIntervalUserTradeVolumeRequest {
+    return QueryIntervalUserTradeVolumeRequest.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryIntervalUserTradeVolumeRequest): Uint8Array {
+    return QueryIntervalUserTradeVolumeRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryIntervalUserTradeVolumeRequest): QueryIntervalUserTradeVolumeRequestProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryIntervalUserTradeVolumeRequest",
+      value: QueryIntervalUserTradeVolumeRequest.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryIntervalUserTradeVolumeRequest.typeUrl, QueryIntervalUserTradeVolumeRequest);
+function createBaseQueryIntervalUserTradeVolumeResponse(): QueryIntervalUserTradeVolumeResponse {
+  return {
+    userTradeVolumeRecords: [],
+    pagination: undefined
+  };
+}
+export const QueryIntervalUserTradeVolumeResponse = {
+  typeUrl: "/pryzmatics.server.trade.QueryIntervalUserTradeVolumeResponse",
+  is(o: any): o is QueryIntervalUserTradeVolumeResponse {
+    return o && (o.$typeUrl === QueryIntervalUserTradeVolumeResponse.typeUrl || Array.isArray(o.userTradeVolumeRecords) && (!o.userTradeVolumeRecords.length || UserTradeVolume.is(o.userTradeVolumeRecords[0])));
+  },
+  isSDK(o: any): o is QueryIntervalUserTradeVolumeResponseSDKType {
+    return o && (o.$typeUrl === QueryIntervalUserTradeVolumeResponse.typeUrl || Array.isArray(o.user_trade_volume_records) && (!o.user_trade_volume_records.length || UserTradeVolume.isSDK(o.user_trade_volume_records[0])));
+  },
+  isAmino(o: any): o is QueryIntervalUserTradeVolumeResponseAmino {
+    return o && (o.$typeUrl === QueryIntervalUserTradeVolumeResponse.typeUrl || Array.isArray(o.user_trade_volume_records) && (!o.user_trade_volume_records.length || UserTradeVolume.isAmino(o.user_trade_volume_records[0])));
+  },
+  encode(message: QueryIntervalUserTradeVolumeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    for (const v of message.userTradeVolumeRecords) {
+      UserTradeVolume.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryIntervalUserTradeVolumeResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryIntervalUserTradeVolumeResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.userTradeVolumeRecords.push(UserTradeVolume.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryIntervalUserTradeVolumeResponse {
+    return {
+      userTradeVolumeRecords: Array.isArray(object?.userTradeVolumeRecords) ? object.userTradeVolumeRecords.map((e: any) => UserTradeVolume.fromJSON(e)) : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
+    };
+  },
+  toJSON(message: QueryIntervalUserTradeVolumeResponse): unknown {
+    const obj: any = {};
+    if (message.userTradeVolumeRecords) {
+      obj.userTradeVolumeRecords = message.userTradeVolumeRecords.map(e => e ? UserTradeVolume.toJSON(e) : undefined);
+    } else {
+      obj.userTradeVolumeRecords = [];
+    }
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryIntervalUserTradeVolumeResponse>): QueryIntervalUserTradeVolumeResponse {
+    const message = createBaseQueryIntervalUserTradeVolumeResponse();
+    message.userTradeVolumeRecords = object.userTradeVolumeRecords?.map(e => UserTradeVolume.fromPartial(e)) || [];
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryIntervalUserTradeVolumeResponseAmino): QueryIntervalUserTradeVolumeResponse {
+    const message = createBaseQueryIntervalUserTradeVolumeResponse();
+    message.userTradeVolumeRecords = object.user_trade_volume_records?.map(e => UserTradeVolume.fromAmino(e)) || [];
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryIntervalUserTradeVolumeResponse, useInterfaces: boolean = true): QueryIntervalUserTradeVolumeResponseAmino {
+    const obj: any = {};
+    if (message.userTradeVolumeRecords) {
+      obj.user_trade_volume_records = message.userTradeVolumeRecords.map(e => e ? UserTradeVolume.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.user_trade_volume_records = message.userTradeVolumeRecords;
+    }
+    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination, useInterfaces) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryIntervalUserTradeVolumeResponseAminoMsg): QueryIntervalUserTradeVolumeResponse {
+    return QueryIntervalUserTradeVolumeResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryIntervalUserTradeVolumeResponseProtoMsg, useInterfaces: boolean = true): QueryIntervalUserTradeVolumeResponse {
+    return QueryIntervalUserTradeVolumeResponse.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryIntervalUserTradeVolumeResponse): Uint8Array {
+    return QueryIntervalUserTradeVolumeResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryIntervalUserTradeVolumeResponse): QueryIntervalUserTradeVolumeResponseProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryIntervalUserTradeVolumeResponse",
+      value: QueryIntervalUserTradeVolumeResponse.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryIntervalUserTradeVolumeResponse.typeUrl, QueryIntervalUserTradeVolumeResponse);

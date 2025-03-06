@@ -2,6 +2,7 @@ syntax = "proto3";
 package pryzmatics.server.trade;
 
 import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
 import "pryzmatics/trade/user_trade_history.proto";
 import "pryzmatics/database/trade/user_trade_history.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
@@ -33,6 +34,29 @@ message QueryUserTradeVolumeRequest {
 }
 
 message QueryUserTradeVolumeResponse {
+  repeated pryzmatics.trade.UserTradeVolume user_trade_volume_records = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}
+
+message QueryIntervalUserTradeVolumeRequest {
+  repeated pryzmatics.trade.OperationType operation_types = 1;
+  pryzmatics.database.trade.UserTradeVolumeOrderBy order_by = 2 [(gogoproto.nullable) = true];
+  string from = 3 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string to = 4 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  cosmos.base.query.v1beta1.PageRequest pagination = 5 [(gogoproto.nullable) = true];
+  bool include_proxy_trades = 6;
+  string address = 7; // partial address supported
+}
+
+message QueryIntervalUserTradeVolumeResponse {
   repeated pryzmatics.trade.UserTradeVolume user_trade_volume_records = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
 }
