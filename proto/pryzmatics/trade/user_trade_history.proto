@@ -59,6 +59,11 @@ message UserTradeHistory {
   ];
   repeated pryzmatics.pryzmnexus.ExecutedOperation nexus_path = 13 [(gogoproto.nullable) = false];
   repeated pryzm.amm.v1.RouteStep order_path = 14 [(gogoproto.nullable) = false];
+  string volume = 15 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
 }
 
 message UserTradeVolume {

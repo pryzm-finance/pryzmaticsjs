@@ -214,6 +214,10 @@ service Query {
     option (google.api.http).get = "/pryzmatics/trade/user_trade_history";
   }
 
+  rpc UserTradeHistorySummary(pryzmatics.server.trade.QueryUserTradeHistorySummaryRequest) returns (pryzmatics.server.trade.QueryUserTradeHistorySummaryResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/user_trade_history_summary";
+  }
+
   rpc UserTradeVolume(pryzmatics.server.trade.QueryUserTradeVolumeRequest) returns (pryzmatics.server.trade.QueryUserTradeVolumeResponse) {
     option (google.api.http).get = "/pryzmatics/trade/user_trade_volume";
   }

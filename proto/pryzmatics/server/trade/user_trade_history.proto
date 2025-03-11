@@ -17,11 +17,33 @@ message QueryUserTradeHistoryRequest {
   pryzmatics.database.trade.UserTradeHistoryOrderBy order_by = 5 [(gogoproto.nullable) = true];
   cosmos.base.query.v1beta1.PageRequest pagination = 6 [(gogoproto.nullable) = true];
   bool include_proxy_trades = 7;
+  string min_volume = 8 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
 }
 
 message QueryUserTradeHistoryResponse {
   repeated pryzmatics.trade.UserTradeHistory user_trade_history_records = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}
+
+message QueryUserTradeHistorySummaryRequest {
+  string token_in = 1;
+  string token_out = 2;
+  string address = 3;
+  repeated pryzmatics.trade.OperationType operation_types = 4;
+  uint64 interval_hours = 5;
+}
+
+message QueryUserTradeHistorySummaryResponse {
+  string volume = 1 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  uint64 count = 2;
 }
 
 message QueryUserTradeVolumeRequest {
@@ -54,6 +76,11 @@ message QueryIntervalUserTradeVolumeRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 5 [(gogoproto.nullable) = true];
   bool include_proxy_trades = 6;
   string address = 7; // partial address supported
+  string min_volume = 8 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
 }
 
 message QueryIntervalUserTradeVolumeResponse {

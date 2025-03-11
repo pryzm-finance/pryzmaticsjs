@@ -27,7 +27,7 @@ import { QueryZeroImpactJoinAssetToYammSimulationRequest, QueryZeroImpactJoinAss
 import { QueryExitTokenExactLptSimulationRequest, QueryExitTokenExactLptSimulationResponseSDKType } from "./trade/exit_token_exact_lpt_simulation";
 import { QueryExitExactTokensSimulationRequest, QueryExitExactTokensSimulationResponseSDKType } from "./trade/exit_exact_tokens_simulation";
 import { QueryExitAllTokensExactLptSimulationRequest, QueryExitAllTokensExactLptSimulationResponseSDKType } from "./trade/exit_all_tokens_exact_lpt_simulation";
-import { QueryUserTradeHistoryRequest, QueryUserTradeHistoryResponseSDKType, QueryUserTradeVolumeRequest, QueryUserTradeVolumeResponseSDKType, QueryIntervalUserTradeVolumeRequest, QueryIntervalUserTradeVolumeResponseSDKType } from "./trade/user_trade_history";
+import { QueryUserTradeHistoryRequest, QueryUserTradeHistoryResponseSDKType, QueryUserTradeHistorySummaryRequest, QueryUserTradeHistorySummaryResponseSDKType, QueryUserTradeVolumeRequest, QueryUserTradeVolumeResponseSDKType, QueryIntervalUserTradeVolumeRequest, QueryIntervalUserTradeVolumeResponseSDKType } from "./trade/user_trade_history";
 import { QueryTokenTradeVolumeRequest, QueryTokenTradeVolumeResponseSDKType, QueryPoolTradeVolumeRequest, QueryPoolTradeVolumeResponseSDKType, QueryFavoritePairsRequest, QueryFavoritePairsResponseSDKType } from "./trade/trade_volume";
 import { QueryPulseTradablePairsRequest, QueryPulseTradablePairsResponseSDKType, QueryPulseTradablePairPriceRequest, QueryPulseTradablePairPriceResponseSDKType } from "./trade/pulse_tradable_pairs";
 import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType, QueryMatchableBuyOrdersForPairRequest, QueryMatchableBuyOrdersForPairResponseSDKType, QueryOrderPairsToDisableRequest, QueryOrderPairsToDisableResponseSDKType, QueryOrderPairMetricsRequest, QueryOrderPairMetricsResponseSDKType, QueryOrderPairPriceBucketsRequest, QueryOrderPairPriceBucketsResponseSDKType, QueryOrderMetricsRequest, QueryOrderMetricsResponseSDKType } from "./trade/order";
@@ -97,6 +97,7 @@ export class LCDQueryClient {
     this.exitExactTokensSimulation = this.exitExactTokensSimulation.bind(this);
     this.exitAllTokensExactLptSimulation = this.exitAllTokensExactLptSimulation.bind(this);
     this.userTradeHistory = this.userTradeHistory.bind(this);
+    this.userTradeHistorySummary = this.userTradeHistorySummary.bind(this);
     this.userTradeVolume = this.userTradeVolume.bind(this);
     this.intervalUserTradeVolume = this.intervalUserTradeVolume.bind(this);
     this.tokenTradeVolume = this.tokenTradeVolume.bind(this);
@@ -572,8 +573,34 @@ export class LCDQueryClient {
     if (typeof params?.includeProxyTrades !== "undefined") {
       options.params.include_proxy_trades = params.includeProxyTrades;
     }
+    if (typeof params?.minVolume !== "undefined") {
+      options.params.min_volume = params.minVolume;
+    }
     const endpoint = `pryzmatics/trade/user_trade_history`;
     return await this.req.get<QueryUserTradeHistoryResponseSDKType>(endpoint, options);
+  }
+  /* UserTradeHistorySummary */
+  async userTradeHistorySummary(params: QueryUserTradeHistorySummaryRequest): Promise<QueryUserTradeHistorySummaryResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.tokenIn !== "undefined") {
+      options.params.token_in = params.tokenIn;
+    }
+    if (typeof params?.tokenOut !== "undefined") {
+      options.params.token_out = params.tokenOut;
+    }
+    if (typeof params?.address !== "undefined") {
+      options.params.address = params.address;
+    }
+    if (typeof params?.operationTypes !== "undefined") {
+      options.params.operation_types = params.operationTypes;
+    }
+    if (typeof params?.intervalHours !== "undefined") {
+      options.params.interval_hours = params.intervalHours;
+    }
+    const endpoint = `pryzmatics/trade/user_trade_history_summary`;
+    return await this.req.get<QueryUserTradeHistorySummaryResponseSDKType>(endpoint, options);
   }
   /* UserTradeVolume */
   async userTradeVolume(params: QueryUserTradeVolumeRequest): Promise<QueryUserTradeVolumeResponseSDKType> {
@@ -626,6 +653,9 @@ export class LCDQueryClient {
     }
     if (typeof params?.address !== "undefined") {
       options.params.address = params.address;
+    }
+    if (typeof params?.minVolume !== "undefined") {
+      options.params.min_volume = params.minVolume;
     }
     const endpoint = `pryzmatics/trade/interval_user_trade_volume`;
     return await this.req.get<QueryIntervalUserTradeVolumeResponseSDKType>(endpoint, options);

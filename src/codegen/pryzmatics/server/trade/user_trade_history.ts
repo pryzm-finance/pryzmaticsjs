@@ -2,7 +2,8 @@ import { OperationType, UserTradeHistory, UserTradeHistoryAmino, UserTradeHistor
 import { UserTradeHistoryOrderBy, UserTradeHistoryOrderByAmino, UserTradeHistoryOrderBySDKType, UserTradeVolumeOrderBy, UserTradeVolumeOrderByAmino, UserTradeVolumeOrderBySDKType } from "../../database/trade/user_trade_history";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
 import { BinaryReader, BinaryWriter } from "../../../binary";
-import { isSet } from "../../../helpers";
+import { Decimal } from "@cosmjs/math";
+import { isSet, padDecimal } from "../../../helpers";
 import { GlobalDecoderRegistry } from "../../../registry";
 export interface QueryUserTradeHistoryRequest {
   firstToken: string;
@@ -12,6 +13,7 @@ export interface QueryUserTradeHistoryRequest {
   orderBy?: UserTradeHistoryOrderBy;
   pagination?: PageRequest;
   includeProxyTrades: boolean;
+  minVolume?: string;
 }
 export interface QueryUserTradeHistoryRequestProtoMsg {
   typeUrl: "/pryzmatics.server.trade.QueryUserTradeHistoryRequest";
@@ -25,6 +27,7 @@ export interface QueryUserTradeHistoryRequestAmino {
   order_by?: UserTradeHistoryOrderByAmino;
   pagination?: PageRequestAmino;
   include_proxy_trades?: boolean;
+  min_volume?: string;
 }
 export interface QueryUserTradeHistoryRequestAminoMsg {
   type: "/pryzmatics.server.trade.QueryUserTradeHistoryRequest";
@@ -38,6 +41,7 @@ export interface QueryUserTradeHistoryRequestSDKType {
   order_by?: UserTradeHistoryOrderBySDKType;
   pagination?: PageRequestSDKType;
   include_proxy_trades: boolean;
+  min_volume?: string;
 }
 export interface QueryUserTradeHistoryResponse {
   userTradeHistoryRecords: UserTradeHistory[];
@@ -58,6 +62,55 @@ export interface QueryUserTradeHistoryResponseAminoMsg {
 export interface QueryUserTradeHistoryResponseSDKType {
   user_trade_history_records: UserTradeHistorySDKType[];
   pagination?: PageResponseSDKType;
+}
+export interface QueryUserTradeHistorySummaryRequest {
+  tokenIn: string;
+  tokenOut: string;
+  address: string;
+  operationTypes: OperationType[];
+  intervalHours: bigint;
+}
+export interface QueryUserTradeHistorySummaryRequestProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryUserTradeHistorySummaryRequest";
+  value: Uint8Array;
+}
+export interface QueryUserTradeHistorySummaryRequestAmino {
+  token_in?: string;
+  token_out?: string;
+  address?: string;
+  operation_types?: OperationType[];
+  interval_hours?: string;
+}
+export interface QueryUserTradeHistorySummaryRequestAminoMsg {
+  type: "/pryzmatics.server.trade.QueryUserTradeHistorySummaryRequest";
+  value: QueryUserTradeHistorySummaryRequestAmino;
+}
+export interface QueryUserTradeHistorySummaryRequestSDKType {
+  token_in: string;
+  token_out: string;
+  address: string;
+  operation_types: OperationType[];
+  interval_hours: bigint;
+}
+export interface QueryUserTradeHistorySummaryResponse {
+  volume: string;
+  count: bigint;
+}
+export interface QueryUserTradeHistorySummaryResponseProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryUserTradeHistorySummaryResponse";
+  value: Uint8Array;
+}
+export interface QueryUserTradeHistorySummaryResponseAmino {
+  volume?: string;
+  count?: string;
+}
+export interface QueryUserTradeHistorySummaryResponseAminoMsg {
+  type: "/pryzmatics.server.trade.QueryUserTradeHistorySummaryResponse";
+  value: QueryUserTradeHistorySummaryResponseAmino;
+}
+export interface QueryUserTradeHistorySummaryResponseSDKType {
+  volume: string;
+  count: bigint;
 }
 export interface QueryUserTradeVolumeRequest {
   operationTypes: OperationType[];
@@ -122,6 +175,7 @@ export interface QueryIntervalUserTradeVolumeRequest {
   includeProxyTrades: boolean;
   /** partial address supported */
   address: string;
+  minVolume?: string;
 }
 export interface QueryIntervalUserTradeVolumeRequestProtoMsg {
   typeUrl: "/pryzmatics.server.trade.QueryIntervalUserTradeVolumeRequest";
@@ -136,6 +190,7 @@ export interface QueryIntervalUserTradeVolumeRequestAmino {
   include_proxy_trades?: boolean;
   /** partial address supported */
   address?: string;
+  min_volume?: string;
 }
 export interface QueryIntervalUserTradeVolumeRequestAminoMsg {
   type: "/pryzmatics.server.trade.QueryIntervalUserTradeVolumeRequest";
@@ -149,6 +204,7 @@ export interface QueryIntervalUserTradeVolumeRequestSDKType {
   pagination?: PageRequestSDKType;
   include_proxy_trades: boolean;
   address: string;
+  min_volume?: string;
 }
 export interface QueryIntervalUserTradeVolumeResponse {
   userTradeVolumeRecords: UserTradeVolume[];
@@ -178,7 +234,8 @@ function createBaseQueryUserTradeHistoryRequest(): QueryUserTradeHistoryRequest 
     operationTypes: [],
     orderBy: undefined,
     pagination: undefined,
-    includeProxyTrades: false
+    includeProxyTrades: false,
+    minVolume: undefined
   };
 }
 export const QueryUserTradeHistoryRequest = {
@@ -215,6 +272,9 @@ export const QueryUserTradeHistoryRequest = {
     }
     if (message.includeProxyTrades === true) {
       writer.uint32(56).bool(message.includeProxyTrades);
+    }
+    if (message.minVolume !== undefined) {
+      writer.uint32(66).string(Decimal.fromUserInput(message.minVolume, 18).atomics);
     }
     return writer;
   },
@@ -253,6 +313,9 @@ export const QueryUserTradeHistoryRequest = {
         case 7:
           message.includeProxyTrades = reader.bool();
           break;
+        case 8:
+          message.minVolume = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -268,7 +331,8 @@ export const QueryUserTradeHistoryRequest = {
       operationTypes: Array.isArray(object?.operationTypes) ? object.operationTypes.map((e: any) => operationTypeFromJSON(e)) : [],
       orderBy: isSet(object.orderBy) ? UserTradeHistoryOrderBy.fromJSON(object.orderBy) : undefined,
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      includeProxyTrades: isSet(object.includeProxyTrades) ? Boolean(object.includeProxyTrades) : false
+      includeProxyTrades: isSet(object.includeProxyTrades) ? Boolean(object.includeProxyTrades) : false,
+      minVolume: isSet(object.minVolume) ? String(object.minVolume) : undefined
     };
   },
   toJSON(message: QueryUserTradeHistoryRequest): unknown {
@@ -284,6 +348,7 @@ export const QueryUserTradeHistoryRequest = {
     message.orderBy !== undefined && (obj.orderBy = message.orderBy ? UserTradeHistoryOrderBy.toJSON(message.orderBy) : undefined);
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.includeProxyTrades !== undefined && (obj.includeProxyTrades = message.includeProxyTrades);
+    message.minVolume !== undefined && (obj.minVolume = message.minVolume);
     return obj;
   },
   fromPartial(object: Partial<QueryUserTradeHistoryRequest>): QueryUserTradeHistoryRequest {
@@ -295,6 +360,7 @@ export const QueryUserTradeHistoryRequest = {
     message.orderBy = object.orderBy !== undefined && object.orderBy !== null ? UserTradeHistoryOrderBy.fromPartial(object.orderBy) : undefined;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.includeProxyTrades = object.includeProxyTrades ?? false;
+    message.minVolume = object.minVolume ?? undefined;
     return message;
   },
   fromAmino(object: QueryUserTradeHistoryRequestAmino): QueryUserTradeHistoryRequest {
@@ -318,6 +384,9 @@ export const QueryUserTradeHistoryRequest = {
     if (object.include_proxy_trades !== undefined && object.include_proxy_trades !== null) {
       message.includeProxyTrades = object.include_proxy_trades;
     }
+    if (object.min_volume !== undefined && object.min_volume !== null) {
+      message.minVolume = object.min_volume;
+    }
     return message;
   },
   toAmino(message: QueryUserTradeHistoryRequest, useInterfaces: boolean = true): QueryUserTradeHistoryRequestAmino {
@@ -333,6 +402,7 @@ export const QueryUserTradeHistoryRequest = {
     obj.order_by = message.orderBy ? UserTradeHistoryOrderBy.toAmino(message.orderBy, useInterfaces) : undefined;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
     obj.include_proxy_trades = message.includeProxyTrades === false ? undefined : message.includeProxyTrades;
+    obj.min_volume = padDecimal(message.minVolume) === null ? undefined : padDecimal(message.minVolume);
     return obj;
   },
   fromAminoMsg(object: QueryUserTradeHistoryRequestAminoMsg): QueryUserTradeHistoryRequest {
@@ -455,6 +525,257 @@ export const QueryUserTradeHistoryResponse = {
   }
 };
 GlobalDecoderRegistry.register(QueryUserTradeHistoryResponse.typeUrl, QueryUserTradeHistoryResponse);
+function createBaseQueryUserTradeHistorySummaryRequest(): QueryUserTradeHistorySummaryRequest {
+  return {
+    tokenIn: "",
+    tokenOut: "",
+    address: "",
+    operationTypes: [],
+    intervalHours: BigInt(0)
+  };
+}
+export const QueryUserTradeHistorySummaryRequest = {
+  typeUrl: "/pryzmatics.server.trade.QueryUserTradeHistorySummaryRequest",
+  is(o: any): o is QueryUserTradeHistorySummaryRequest {
+    return o && (o.$typeUrl === QueryUserTradeHistorySummaryRequest.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.address === "string" && Array.isArray(o.operationTypes) && typeof o.intervalHours === "bigint");
+  },
+  isSDK(o: any): o is QueryUserTradeHistorySummaryRequestSDKType {
+    return o && (o.$typeUrl === QueryUserTradeHistorySummaryRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.address === "string" && Array.isArray(o.operation_types) && typeof o.interval_hours === "bigint");
+  },
+  isAmino(o: any): o is QueryUserTradeHistorySummaryRequestAmino {
+    return o && (o.$typeUrl === QueryUserTradeHistorySummaryRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.address === "string" && Array.isArray(o.operation_types) && typeof o.interval_hours === "bigint");
+  },
+  encode(message: QueryUserTradeHistorySummaryRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.tokenIn !== "") {
+      writer.uint32(10).string(message.tokenIn);
+    }
+    if (message.tokenOut !== "") {
+      writer.uint32(18).string(message.tokenOut);
+    }
+    if (message.address !== "") {
+      writer.uint32(26).string(message.address);
+    }
+    writer.uint32(34).fork();
+    for (const v of message.operationTypes) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    if (message.intervalHours !== BigInt(0)) {
+      writer.uint32(40).uint64(message.intervalHours);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryUserTradeHistorySummaryRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryUserTradeHistorySummaryRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tokenIn = reader.string();
+          break;
+        case 2:
+          message.tokenOut = reader.string();
+          break;
+        case 3:
+          message.address = reader.string();
+          break;
+        case 4:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.operationTypes.push((reader.int32() as any));
+            }
+          } else {
+            message.operationTypes.push((reader.int32() as any));
+          }
+          break;
+        case 5:
+          message.intervalHours = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryUserTradeHistorySummaryRequest {
+    return {
+      tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
+      tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
+      address: isSet(object.address) ? String(object.address) : "",
+      operationTypes: Array.isArray(object?.operationTypes) ? object.operationTypes.map((e: any) => operationTypeFromJSON(e)) : [],
+      intervalHours: isSet(object.intervalHours) ? BigInt(object.intervalHours.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: QueryUserTradeHistorySummaryRequest): unknown {
+    const obj: any = {};
+    message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
+    message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
+    message.address !== undefined && (obj.address = message.address);
+    if (message.operationTypes) {
+      obj.operationTypes = message.operationTypes.map(e => operationTypeToJSON(e));
+    } else {
+      obj.operationTypes = [];
+    }
+    message.intervalHours !== undefined && (obj.intervalHours = (message.intervalHours || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<QueryUserTradeHistorySummaryRequest>): QueryUserTradeHistorySummaryRequest {
+    const message = createBaseQueryUserTradeHistorySummaryRequest();
+    message.tokenIn = object.tokenIn ?? "";
+    message.tokenOut = object.tokenOut ?? "";
+    message.address = object.address ?? "";
+    message.operationTypes = object.operationTypes?.map(e => e) || [];
+    message.intervalHours = object.intervalHours !== undefined && object.intervalHours !== null ? BigInt(object.intervalHours.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: QueryUserTradeHistorySummaryRequestAmino): QueryUserTradeHistorySummaryRequest {
+    const message = createBaseQueryUserTradeHistorySummaryRequest();
+    if (object.token_in !== undefined && object.token_in !== null) {
+      message.tokenIn = object.token_in;
+    }
+    if (object.token_out !== undefined && object.token_out !== null) {
+      message.tokenOut = object.token_out;
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    message.operationTypes = object.operation_types?.map(e => e) || [];
+    if (object.interval_hours !== undefined && object.interval_hours !== null) {
+      message.intervalHours = BigInt(object.interval_hours);
+    }
+    return message;
+  },
+  toAmino(message: QueryUserTradeHistorySummaryRequest, useInterfaces: boolean = true): QueryUserTradeHistorySummaryRequestAmino {
+    const obj: any = {};
+    obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
+    obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
+    obj.address = message.address === "" ? undefined : message.address;
+    if (message.operationTypes) {
+      obj.operation_types = message.operationTypes.map(e => e);
+    } else {
+      obj.operation_types = message.operationTypes;
+    }
+    obj.interval_hours = message.intervalHours ? message.intervalHours.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryUserTradeHistorySummaryRequestAminoMsg): QueryUserTradeHistorySummaryRequest {
+    return QueryUserTradeHistorySummaryRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryUserTradeHistorySummaryRequestProtoMsg, useInterfaces: boolean = true): QueryUserTradeHistorySummaryRequest {
+    return QueryUserTradeHistorySummaryRequest.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryUserTradeHistorySummaryRequest): Uint8Array {
+    return QueryUserTradeHistorySummaryRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryUserTradeHistorySummaryRequest): QueryUserTradeHistorySummaryRequestProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryUserTradeHistorySummaryRequest",
+      value: QueryUserTradeHistorySummaryRequest.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryUserTradeHistorySummaryRequest.typeUrl, QueryUserTradeHistorySummaryRequest);
+function createBaseQueryUserTradeHistorySummaryResponse(): QueryUserTradeHistorySummaryResponse {
+  return {
+    volume: "",
+    count: BigInt(0)
+  };
+}
+export const QueryUserTradeHistorySummaryResponse = {
+  typeUrl: "/pryzmatics.server.trade.QueryUserTradeHistorySummaryResponse",
+  is(o: any): o is QueryUserTradeHistorySummaryResponse {
+    return o && (o.$typeUrl === QueryUserTradeHistorySummaryResponse.typeUrl || typeof o.volume === "string" && typeof o.count === "bigint");
+  },
+  isSDK(o: any): o is QueryUserTradeHistorySummaryResponseSDKType {
+    return o && (o.$typeUrl === QueryUserTradeHistorySummaryResponse.typeUrl || typeof o.volume === "string" && typeof o.count === "bigint");
+  },
+  isAmino(o: any): o is QueryUserTradeHistorySummaryResponseAmino {
+    return o && (o.$typeUrl === QueryUserTradeHistorySummaryResponse.typeUrl || typeof o.volume === "string" && typeof o.count === "bigint");
+  },
+  encode(message: QueryUserTradeHistorySummaryResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.volume !== "") {
+      writer.uint32(10).string(Decimal.fromUserInput(message.volume, 18).atomics);
+    }
+    if (message.count !== BigInt(0)) {
+      writer.uint32(16).uint64(message.count);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryUserTradeHistorySummaryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryUserTradeHistorySummaryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.volume = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 2:
+          message.count = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryUserTradeHistorySummaryResponse {
+    return {
+      volume: isSet(object.volume) ? String(object.volume) : "",
+      count: isSet(object.count) ? BigInt(object.count.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: QueryUserTradeHistorySummaryResponse): unknown {
+    const obj: any = {};
+    message.volume !== undefined && (obj.volume = message.volume);
+    message.count !== undefined && (obj.count = (message.count || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<QueryUserTradeHistorySummaryResponse>): QueryUserTradeHistorySummaryResponse {
+    const message = createBaseQueryUserTradeHistorySummaryResponse();
+    message.volume = object.volume ?? "";
+    message.count = object.count !== undefined && object.count !== null ? BigInt(object.count.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: QueryUserTradeHistorySummaryResponseAmino): QueryUserTradeHistorySummaryResponse {
+    const message = createBaseQueryUserTradeHistorySummaryResponse();
+    if (object.volume !== undefined && object.volume !== null) {
+      message.volume = object.volume;
+    }
+    if (object.count !== undefined && object.count !== null) {
+      message.count = BigInt(object.count);
+    }
+    return message;
+  },
+  toAmino(message: QueryUserTradeHistorySummaryResponse, useInterfaces: boolean = true): QueryUserTradeHistorySummaryResponseAmino {
+    const obj: any = {};
+    obj.volume = padDecimal(message.volume) === "" ? undefined : padDecimal(message.volume);
+    obj.count = message.count ? message.count.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryUserTradeHistorySummaryResponseAminoMsg): QueryUserTradeHistorySummaryResponse {
+    return QueryUserTradeHistorySummaryResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryUserTradeHistorySummaryResponseProtoMsg, useInterfaces: boolean = true): QueryUserTradeHistorySummaryResponse {
+    return QueryUserTradeHistorySummaryResponse.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryUserTradeHistorySummaryResponse): Uint8Array {
+    return QueryUserTradeHistorySummaryResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryUserTradeHistorySummaryResponse): QueryUserTradeHistorySummaryResponseProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryUserTradeHistorySummaryResponse",
+      value: QueryUserTradeHistorySummaryResponse.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryUserTradeHistorySummaryResponse.typeUrl, QueryUserTradeHistorySummaryResponse);
 function createBaseQueryUserTradeVolumeRequest(): QueryUserTradeVolumeRequest {
   return {
     operationTypes: [],
@@ -734,7 +1055,8 @@ function createBaseQueryIntervalUserTradeVolumeRequest(): QueryIntervalUserTrade
     to: "",
     pagination: undefined,
     includeProxyTrades: false,
-    address: ""
+    address: "",
+    minVolume: undefined
   };
 }
 export const QueryIntervalUserTradeVolumeRequest = {
@@ -771,6 +1093,9 @@ export const QueryIntervalUserTradeVolumeRequest = {
     }
     if (message.address !== "") {
       writer.uint32(58).string(message.address);
+    }
+    if (message.minVolume !== undefined) {
+      writer.uint32(66).string(Decimal.fromUserInput(message.minVolume, 18).atomics);
     }
     return writer;
   },
@@ -809,6 +1134,9 @@ export const QueryIntervalUserTradeVolumeRequest = {
         case 7:
           message.address = reader.string();
           break;
+        case 8:
+          message.minVolume = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -824,7 +1152,8 @@ export const QueryIntervalUserTradeVolumeRequest = {
       to: isSet(object.to) ? String(object.to) : "",
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
       includeProxyTrades: isSet(object.includeProxyTrades) ? Boolean(object.includeProxyTrades) : false,
-      address: isSet(object.address) ? String(object.address) : ""
+      address: isSet(object.address) ? String(object.address) : "",
+      minVolume: isSet(object.minVolume) ? String(object.minVolume) : undefined
     };
   },
   toJSON(message: QueryIntervalUserTradeVolumeRequest): unknown {
@@ -840,6 +1169,7 @@ export const QueryIntervalUserTradeVolumeRequest = {
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.includeProxyTrades !== undefined && (obj.includeProxyTrades = message.includeProxyTrades);
     message.address !== undefined && (obj.address = message.address);
+    message.minVolume !== undefined && (obj.minVolume = message.minVolume);
     return obj;
   },
   fromPartial(object: Partial<QueryIntervalUserTradeVolumeRequest>): QueryIntervalUserTradeVolumeRequest {
@@ -851,6 +1181,7 @@ export const QueryIntervalUserTradeVolumeRequest = {
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.includeProxyTrades = object.includeProxyTrades ?? false;
     message.address = object.address ?? "";
+    message.minVolume = object.minVolume ?? undefined;
     return message;
   },
   fromAmino(object: QueryIntervalUserTradeVolumeRequestAmino): QueryIntervalUserTradeVolumeRequest {
@@ -874,6 +1205,9 @@ export const QueryIntervalUserTradeVolumeRequest = {
     if (object.address !== undefined && object.address !== null) {
       message.address = object.address;
     }
+    if (object.min_volume !== undefined && object.min_volume !== null) {
+      message.minVolume = object.min_volume;
+    }
     return message;
   },
   toAmino(message: QueryIntervalUserTradeVolumeRequest, useInterfaces: boolean = true): QueryIntervalUserTradeVolumeRequestAmino {
@@ -889,6 +1223,7 @@ export const QueryIntervalUserTradeVolumeRequest = {
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
     obj.include_proxy_trades = message.includeProxyTrades === false ? undefined : message.includeProxyTrades;
     obj.address = message.address === "" ? undefined : message.address;
+    obj.min_volume = padDecimal(message.minVolume) === null ? undefined : padDecimal(message.minVolume);
     return obj;
   },
   fromAminoMsg(object: QueryIntervalUserTradeVolumeRequestAminoMsg): QueryIntervalUserTradeVolumeRequest {
