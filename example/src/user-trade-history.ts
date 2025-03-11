@@ -23,6 +23,7 @@ async function main() {
             },
             pagination: request,
             includeProxyTrades: false,
+            minVolume: "123"
         })
         return [result.pagination.next_key, result.user_trade_history_records]
     })
@@ -41,6 +42,7 @@ async function main() {
             },
             pagination: request,
             includeProxyTrades: false,
+            minVolume: undefined
         })
         return [result.pagination.next_key, result.user_trade_history_records]
     })
@@ -80,6 +82,7 @@ async function main() {
             },
             pagination: request,
             includeProxyTrades: false,
+            minVolume: undefined
         })
         return [result.pagination.next_key, result.user_trade_history_records]
     })
