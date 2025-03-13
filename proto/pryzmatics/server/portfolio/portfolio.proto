@@ -13,59 +13,121 @@ message QueryPortfolioRequest {
   string address = 1;
 }
 
-enum PortfolioTokenCategory {
-  option (gogoproto.goproto_enum_prefix) = false;
-  ANY = 0 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryAny"];
-  BANK_SPENDABLE_BALANCE = 1 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryBankSpendableBalance"];
-  Y_STAKING = 2 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryYStaking"];
-  Y_LAUNCH_STAKING = 3 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryYLaunchStaking"];
-  P_GOV = 4 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryPGov"];
-  INCENTIVES = 5 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryIncentives"];
-  ALLIANCE = 6 [(gogoproto.enumvalue_customname) = "PortfolioTokenCategoryAlliance"];
-}
-
 message PortfolioToken {
-  cosmos.base.v1beta1.Coin coin = 1 [(gogoproto.nullable) = false];
-  PortfolioTokenCategory category = 2;
-  string value_in_stable_coin_terms = 3 [
+  cosmos.base.v1beta1.Coin amount = 1 [(gogoproto.nullable) = false];
+  string value_in_stable_coin_terms = 2 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = true
   ];
-  string value_in_asset_terms = 4 [
+  string value_in_underlying_terms = 3 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = true
   ];
-  pryzmatics.pool.Token token = 5 [(gogoproto.nullable) = true];
+  pryzmatics.pool.Token token = 4 [(gogoproto.nullable) = true];
 }
 
-message PortfolioDelegation {
-  string validator_address = 1;
-  cosmos.base.v1beta1.Coin amount = 2 [(gogoproto.nullable) = false];
-  string value_in_stable_coin_terms = 3 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = true
+message PortfolioYStake {
+  cosmos.base.v1beta1.Coin reward = 1 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
   ];
+  PortfolioToken token = 2 [(gogoproto.nullable) = false];
 }
 
-message PortfolioUnbondingDelegation {
+
+message PortfolioStakingDelegation {
   string validator_address = 1;
-  cosmos.base.v1beta1.Coin amount = 2 [(gogoproto.nullable) = false];
-  string value_in_stable_coin_terms = 3 [
+  repeated cosmos.base.v1beta1.DecCoin rewards = 2 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins"
+  ];
+  string shares = 3 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = true
+    (gogoproto.nullable) = false
   ];
-  google.protobuf.Timestamp completion_time = 4 [
+  PortfolioToken token = 4 [(gogoproto.nullable) = false];
+}
+
+message PortfolioStakingUnbonding {
+  string validator_address = 1;
+  google.protobuf.Timestamp completion_time = 2 [
     (gogoproto.nullable) = false,
     (gogoproto.stdtime) = true
   ];
+  uint64 unbonding_id = 3;
+  PortfolioToken token = 4 [(gogoproto.nullable) = false];
+}
+
+message PortfolioIncentivesBond {
+  repeated cosmos.base.v1beta1.Coin rewards = 1 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+  PortfolioToken token = 2 [(gogoproto.nullable) = false];
+}
+
+message PortfolioIncentivesUnbonding {
+  google.protobuf.Timestamp completion_time = 1 [
+    (gogoproto.nullable) = false,
+    (gogoproto.stdtime) = true
+  ];
+  uint64 unbonding_id = 2;
+  PortfolioToken token = 3 [(gogoproto.nullable) = false];
+}
+
+message PortfolioAllianceDelegation {
+  string validator_address = 1;
+  repeated cosmos.base.v1beta1.Coin rewards = 2 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+  string shares = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  PortfolioToken token = 4 [(gogoproto.nullable) = false];
+}
+
+message PortfolioAllianceUnbonding {
+  string validator_address = 1;
+  google.protobuf.Timestamp completion_time = 2 [
+    (gogoproto.nullable) = false,
+    (gogoproto.stdtime) = true
+  ];
+  PortfolioToken token = 3 [(gogoproto.nullable) = false];
+}
+
+message PortfolioIcstakingUnbonding {
+  string host_chain_id = 1;
+  uint64 epoch = 2;
+  string transfer_channel = 3;
+  bool received = 4;
+  google.protobuf.Timestamp completion_time = 5 [
+    (gogoproto.nullable) = false,
+    (gogoproto.stdtime) = true
+  ];
+  string exchange_rate = 6 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  PortfolioToken token = 7 [(gogoproto.nullable) = false];
 }
 
 message QueryPortfolioResponse {
-  repeated PortfolioToken tokens = 1 [(gogoproto.nullable) = false];
-  repeated PortfolioDelegation delegations = 2 [(gogoproto.nullable) = false];
-  repeated PortfolioUnbondingDelegation unbonding_delegations = 3 [(gogoproto.nullable) = false];
+  repeated PortfolioToken wallet_tokens = 1 [(gogoproto.nullable) = false];
+  repeated PortfolioYStake y_staking_tokens = 2 [(gogoproto.nullable) = false];
+  repeated PortfolioToken y_launch_staking_tokens = 3 [(gogoproto.nullable) = false];
+  repeated PortfolioToken p_gov_tokens = 4 [(gogoproto.nullable) = false];
+  repeated PortfolioStakingDelegation staking_delegations = 5 [(gogoproto.nullable) = false];
+  repeated PortfolioStakingUnbonding staking_unbondings = 6 [(gogoproto.nullable) = false];
+  repeated PortfolioIncentivesBond incentives_bonds = 7 [(gogoproto.nullable) = false];
+  repeated PortfolioIncentivesUnbonding incentives_unbondings = 8 [(gogoproto.nullable) = false];
+  repeated PortfolioAllianceDelegation alliance_delegations = 9 [(gogoproto.nullable) = false];
+  repeated PortfolioAllianceUnbonding alliance_unbondings = 10 [(gogoproto.nullable) = false];
+  repeated PortfolioIcstakingUnbonding icstaking_unbondings = 11 [(gogoproto.nullable) = false];
 }
