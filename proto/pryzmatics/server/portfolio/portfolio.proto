@@ -28,14 +28,15 @@ message PortfolioToken {
   pryzmatics.pool.Token token = 4 [(gogoproto.nullable) = true];
 }
 
-message PortfolioYStake {
-  cosmos.base.v1beta1.Coin reward = 1 [
-    (gogoproto.nullable) = false,
-    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
-  ];
+message PortfolioYStaking {
+  cosmos.base.v1beta1.Coin reward = 1 [(gogoproto.nullable) = false];
   PortfolioToken token = 2 [(gogoproto.nullable) = false];
 }
 
+message PortfolioYLaunchStaking {
+  cosmos.base.v1beta1.DecCoin reward = 1 [(gogoproto.nullable) = false];
+  PortfolioToken token = 2 [(gogoproto.nullable) = false];
+}
 
 message PortfolioStakingDelegation {
   string validator_address = 1;
@@ -120,9 +121,9 @@ message PortfolioIcstakingUnbonding {
 
 message QueryPortfolioResponse {
   repeated PortfolioToken wallet_tokens = 1 [(gogoproto.nullable) = false];
-  repeated PortfolioYStake y_staking_tokens = 2 [(gogoproto.nullable) = false];
-  repeated PortfolioToken y_launch_staking_tokens = 3 [(gogoproto.nullable) = false];
-  repeated PortfolioToken p_gov_tokens = 4 [(gogoproto.nullable) = false];
+  repeated PortfolioYStaking y_stakings = 2 [(gogoproto.nullable) = false];
+  repeated PortfolioYLaunchStaking y_launch_stakings = 3 [(gogoproto.nullable) = false];
+  repeated PortfolioToken p_gov_staked_tokens = 4 [(gogoproto.nullable) = false];
   repeated PortfolioStakingDelegation staking_delegations = 5 [(gogoproto.nullable) = false];
   repeated PortfolioStakingUnbonding staking_unbondings = 6 [(gogoproto.nullable) = false];
   repeated PortfolioIncentivesBond incentives_bonds = 7 [(gogoproto.nullable) = false];
@@ -130,4 +131,79 @@ message QueryPortfolioResponse {
   repeated PortfolioAllianceDelegation alliance_delegations = 9 [(gogoproto.nullable) = false];
   repeated PortfolioAllianceUnbonding alliance_unbondings = 10 [(gogoproto.nullable) = false];
   repeated PortfolioIcstakingUnbonding icstaking_unbondings = 11 [(gogoproto.nullable) = false];
+
+  string wallet_tokens_value_in_stable_coin_terms = 12 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string y_stakings_value_in_stable_coin_terms = 13 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string y_launch_stakings_value_in_stable_coin_terms = 14 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string p_gov_tokens_value_in_stable_coin_terms = 15 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string staking_delegations_value_in_stable_coin_terms = 16 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string staking_unbondings_value_in_stable_coin_terms = 17 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string incentives_bonds_value_in_stable_coin_terms = 18 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string incentives_unbondings_value_in_stable_coin_terms = 19 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string alliance_delegations_value_in_stable_coin_terms = 20 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string alliance_unbondings_value_in_stable_coin_terms = 21 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string icstaking_unbondings_value_in_stable_coin_terms = 22 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+
+  // sum of the values of all assets in wallet, bonded, or unbonded
+  string total_value_in_stable_coin_terms = 23 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  // sum of the values of all assets in wallet or bonded
+  string total_excluding_unbonding_value_in_stable_coin_terms = 24 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  // sum of the values of all bonding/delegation rewards to be claimed
+  string rewards_value_in_stable_coin_terms = 25 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
 }

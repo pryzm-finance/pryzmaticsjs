@@ -48,24 +48,44 @@ export interface PortfolioTokenSDKType {
   value_in_underlying_terms?: string;
   token?: TokenSDKType;
 }
-export interface PortfolioYStake {
+export interface PortfolioYStaking {
   reward: Coin;
   token: PortfolioToken;
 }
-export interface PortfolioYStakeProtoMsg {
-  typeUrl: "/pryzmatics.server.portfolio.PortfolioYStake";
+export interface PortfolioYStakingProtoMsg {
+  typeUrl: "/pryzmatics.server.portfolio.PortfolioYStaking";
   value: Uint8Array;
 }
-export interface PortfolioYStakeAmino {
+export interface PortfolioYStakingAmino {
   reward?: CoinAmino;
   token?: PortfolioTokenAmino;
 }
-export interface PortfolioYStakeAminoMsg {
-  type: "/pryzmatics.server.portfolio.PortfolioYStake";
-  value: PortfolioYStakeAmino;
+export interface PortfolioYStakingAminoMsg {
+  type: "/pryzmatics.server.portfolio.PortfolioYStaking";
+  value: PortfolioYStakingAmino;
 }
-export interface PortfolioYStakeSDKType {
+export interface PortfolioYStakingSDKType {
   reward: CoinSDKType;
+  token: PortfolioTokenSDKType;
+}
+export interface PortfolioYLaunchStaking {
+  reward: DecCoin;
+  token: PortfolioToken;
+}
+export interface PortfolioYLaunchStakingProtoMsg {
+  typeUrl: "/pryzmatics.server.portfolio.PortfolioYLaunchStaking";
+  value: Uint8Array;
+}
+export interface PortfolioYLaunchStakingAmino {
+  reward?: DecCoinAmino;
+  token?: PortfolioTokenAmino;
+}
+export interface PortfolioYLaunchStakingAminoMsg {
+  type: "/pryzmatics.server.portfolio.PortfolioYLaunchStaking";
+  value: PortfolioYLaunchStakingAmino;
+}
+export interface PortfolioYLaunchStakingSDKType {
+  reward: DecCoinSDKType;
   token: PortfolioTokenSDKType;
 }
 export interface PortfolioStakingDelegation {
@@ -249,9 +269,9 @@ export interface PortfolioIcstakingUnbondingSDKType {
 }
 export interface QueryPortfolioResponse {
   walletTokens: PortfolioToken[];
-  yStakingTokens: PortfolioYStake[];
-  yLaunchStakingTokens: PortfolioToken[];
-  pGovTokens: PortfolioToken[];
+  yStakings: PortfolioYStaking[];
+  yLaunchStakings: PortfolioYLaunchStaking[];
+  pGovStakedTokens: PortfolioToken[];
   stakingDelegations: PortfolioStakingDelegation[];
   stakingUnbondings: PortfolioStakingUnbonding[];
   incentivesBonds: PortfolioIncentivesBond[];
@@ -259,6 +279,23 @@ export interface QueryPortfolioResponse {
   allianceDelegations: PortfolioAllianceDelegation[];
   allianceUnbondings: PortfolioAllianceUnbonding[];
   icstakingUnbondings: PortfolioIcstakingUnbonding[];
+  walletTokensValueInStableCoinTerms: string;
+  yStakingsValueInStableCoinTerms: string;
+  yLaunchStakingsValueInStableCoinTerms: string;
+  pGovTokensValueInStableCoinTerms: string;
+  stakingDelegationsValueInStableCoinTerms: string;
+  stakingUnbondingsValueInStableCoinTerms: string;
+  incentivesBondsValueInStableCoinTerms: string;
+  incentivesUnbondingsValueInStableCoinTerms: string;
+  allianceDelegationsValueInStableCoinTerms: string;
+  allianceUnbondingsValueInStableCoinTerms: string;
+  icstakingUnbondingsValueInStableCoinTerms: string;
+  /** sum of the values of all assets in wallet, bonded, or unbonded */
+  totalValueInStableCoinTerms: string;
+  /** sum of the values of all assets in wallet or bonded */
+  totalExcludingUnbondingValueInStableCoinTerms: string;
+  /** sum of the values of all bonding/delegation rewards to be claimed */
+  rewardsValueInStableCoinTerms: string;
 }
 export interface QueryPortfolioResponseProtoMsg {
   typeUrl: "/pryzmatics.server.portfolio.QueryPortfolioResponse";
@@ -266,9 +303,9 @@ export interface QueryPortfolioResponseProtoMsg {
 }
 export interface QueryPortfolioResponseAmino {
   wallet_tokens?: PortfolioTokenAmino[];
-  y_staking_tokens?: PortfolioYStakeAmino[];
-  y_launch_staking_tokens?: PortfolioTokenAmino[];
-  p_gov_tokens?: PortfolioTokenAmino[];
+  y_stakings?: PortfolioYStakingAmino[];
+  y_launch_stakings?: PortfolioYLaunchStakingAmino[];
+  p_gov_staked_tokens?: PortfolioTokenAmino[];
   staking_delegations?: PortfolioStakingDelegationAmino[];
   staking_unbondings?: PortfolioStakingUnbondingAmino[];
   incentives_bonds?: PortfolioIncentivesBondAmino[];
@@ -276,6 +313,23 @@ export interface QueryPortfolioResponseAmino {
   alliance_delegations?: PortfolioAllianceDelegationAmino[];
   alliance_unbondings?: PortfolioAllianceUnbondingAmino[];
   icstaking_unbondings?: PortfolioIcstakingUnbondingAmino[];
+  wallet_tokens_value_in_stable_coin_terms?: string;
+  y_stakings_value_in_stable_coin_terms?: string;
+  y_launch_stakings_value_in_stable_coin_terms?: string;
+  p_gov_tokens_value_in_stable_coin_terms?: string;
+  staking_delegations_value_in_stable_coin_terms?: string;
+  staking_unbondings_value_in_stable_coin_terms?: string;
+  incentives_bonds_value_in_stable_coin_terms?: string;
+  incentives_unbondings_value_in_stable_coin_terms?: string;
+  alliance_delegations_value_in_stable_coin_terms?: string;
+  alliance_unbondings_value_in_stable_coin_terms?: string;
+  icstaking_unbondings_value_in_stable_coin_terms?: string;
+  /** sum of the values of all assets in wallet, bonded, or unbonded */
+  total_value_in_stable_coin_terms?: string;
+  /** sum of the values of all assets in wallet or bonded */
+  total_excluding_unbonding_value_in_stable_coin_terms?: string;
+  /** sum of the values of all bonding/delegation rewards to be claimed */
+  rewards_value_in_stable_coin_terms?: string;
 }
 export interface QueryPortfolioResponseAminoMsg {
   type: "/pryzmatics.server.portfolio.QueryPortfolioResponse";
@@ -283,9 +337,9 @@ export interface QueryPortfolioResponseAminoMsg {
 }
 export interface QueryPortfolioResponseSDKType {
   wallet_tokens: PortfolioTokenSDKType[];
-  y_staking_tokens: PortfolioYStakeSDKType[];
-  y_launch_staking_tokens: PortfolioTokenSDKType[];
-  p_gov_tokens: PortfolioTokenSDKType[];
+  y_stakings: PortfolioYStakingSDKType[];
+  y_launch_stakings: PortfolioYLaunchStakingSDKType[];
+  p_gov_staked_tokens: PortfolioTokenSDKType[];
   staking_delegations: PortfolioStakingDelegationSDKType[];
   staking_unbondings: PortfolioStakingUnbondingSDKType[];
   incentives_bonds: PortfolioIncentivesBondSDKType[];
@@ -293,6 +347,20 @@ export interface QueryPortfolioResponseSDKType {
   alliance_delegations: PortfolioAllianceDelegationSDKType[];
   alliance_unbondings: PortfolioAllianceUnbondingSDKType[];
   icstaking_unbondings: PortfolioIcstakingUnbondingSDKType[];
+  wallet_tokens_value_in_stable_coin_terms: string;
+  y_stakings_value_in_stable_coin_terms: string;
+  y_launch_stakings_value_in_stable_coin_terms: string;
+  p_gov_tokens_value_in_stable_coin_terms: string;
+  staking_delegations_value_in_stable_coin_terms: string;
+  staking_unbondings_value_in_stable_coin_terms: string;
+  incentives_bonds_value_in_stable_coin_terms: string;
+  incentives_unbondings_value_in_stable_coin_terms: string;
+  alliance_delegations_value_in_stable_coin_terms: string;
+  alliance_unbondings_value_in_stable_coin_terms: string;
+  icstaking_unbondings_value_in_stable_coin_terms: string;
+  total_value_in_stable_coin_terms: string;
+  total_excluding_unbonding_value_in_stable_coin_terms: string;
+  rewards_value_in_stable_coin_terms: string;
 }
 function createBaseQueryPortfolioRequest(): QueryPortfolioRequest {
   return {
@@ -502,24 +570,24 @@ export const PortfolioToken = {
   }
 };
 GlobalDecoderRegistry.register(PortfolioToken.typeUrl, PortfolioToken);
-function createBasePortfolioYStake(): PortfolioYStake {
+function createBasePortfolioYStaking(): PortfolioYStaking {
   return {
     reward: Coin.fromPartial({}),
     token: PortfolioToken.fromPartial({})
   };
 }
-export const PortfolioYStake = {
-  typeUrl: "/pryzmatics.server.portfolio.PortfolioYStake",
-  is(o: any): o is PortfolioYStake {
-    return o && (o.$typeUrl === PortfolioYStake.typeUrl || Coin.is(o.reward) && PortfolioToken.is(o.token));
+export const PortfolioYStaking = {
+  typeUrl: "/pryzmatics.server.portfolio.PortfolioYStaking",
+  is(o: any): o is PortfolioYStaking {
+    return o && (o.$typeUrl === PortfolioYStaking.typeUrl || Coin.is(o.reward) && PortfolioToken.is(o.token));
   },
-  isSDK(o: any): o is PortfolioYStakeSDKType {
-    return o && (o.$typeUrl === PortfolioYStake.typeUrl || Coin.isSDK(o.reward) && PortfolioToken.isSDK(o.token));
+  isSDK(o: any): o is PortfolioYStakingSDKType {
+    return o && (o.$typeUrl === PortfolioYStaking.typeUrl || Coin.isSDK(o.reward) && PortfolioToken.isSDK(o.token));
   },
-  isAmino(o: any): o is PortfolioYStakeAmino {
-    return o && (o.$typeUrl === PortfolioYStake.typeUrl || Coin.isAmino(o.reward) && PortfolioToken.isAmino(o.token));
+  isAmino(o: any): o is PortfolioYStakingAmino {
+    return o && (o.$typeUrl === PortfolioYStaking.typeUrl || Coin.isAmino(o.reward) && PortfolioToken.isAmino(o.token));
   },
-  encode(message: PortfolioYStake, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: PortfolioYStaking, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.reward !== undefined) {
       Coin.encode(message.reward, writer.uint32(10).fork()).ldelim();
     }
@@ -528,10 +596,10 @@ export const PortfolioYStake = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): PortfolioYStake {
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): PortfolioYStaking {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePortfolioYStake();
+    const message = createBasePortfolioYStaking();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -548,26 +616,26 @@ export const PortfolioYStake = {
     }
     return message;
   },
-  fromJSON(object: any): PortfolioYStake {
+  fromJSON(object: any): PortfolioYStaking {
     return {
       reward: isSet(object.reward) ? Coin.fromJSON(object.reward) : undefined,
       token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined
     };
   },
-  toJSON(message: PortfolioYStake): unknown {
+  toJSON(message: PortfolioYStaking): unknown {
     const obj: any = {};
     message.reward !== undefined && (obj.reward = message.reward ? Coin.toJSON(message.reward) : undefined);
     message.token !== undefined && (obj.token = message.token ? PortfolioToken.toJSON(message.token) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<PortfolioYStake>): PortfolioYStake {
-    const message = createBasePortfolioYStake();
+  fromPartial(object: Partial<PortfolioYStaking>): PortfolioYStaking {
+    const message = createBasePortfolioYStaking();
     message.reward = object.reward !== undefined && object.reward !== null ? Coin.fromPartial(object.reward) : undefined;
     message.token = object.token !== undefined && object.token !== null ? PortfolioToken.fromPartial(object.token) : undefined;
     return message;
   },
-  fromAmino(object: PortfolioYStakeAmino): PortfolioYStake {
-    const message = createBasePortfolioYStake();
+  fromAmino(object: PortfolioYStakingAmino): PortfolioYStaking {
+    const message = createBasePortfolioYStaking();
     if (object.reward !== undefined && object.reward !== null) {
       message.reward = Coin.fromAmino(object.reward);
     }
@@ -576,29 +644,126 @@ export const PortfolioYStake = {
     }
     return message;
   },
-  toAmino(message: PortfolioYStake, useInterfaces: boolean = true): PortfolioYStakeAmino {
+  toAmino(message: PortfolioYStaking, useInterfaces: boolean = true): PortfolioYStakingAmino {
     const obj: any = {};
     obj.reward = message.reward ? Coin.toAmino(message.reward, useInterfaces) : undefined;
     obj.token = message.token ? PortfolioToken.toAmino(message.token, useInterfaces) : undefined;
     return obj;
   },
-  fromAminoMsg(object: PortfolioYStakeAminoMsg): PortfolioYStake {
-    return PortfolioYStake.fromAmino(object.value);
+  fromAminoMsg(object: PortfolioYStakingAminoMsg): PortfolioYStaking {
+    return PortfolioYStaking.fromAmino(object.value);
   },
-  fromProtoMsg(message: PortfolioYStakeProtoMsg, useInterfaces: boolean = true): PortfolioYStake {
-    return PortfolioYStake.decode(message.value, undefined, useInterfaces);
+  fromProtoMsg(message: PortfolioYStakingProtoMsg, useInterfaces: boolean = true): PortfolioYStaking {
+    return PortfolioYStaking.decode(message.value, undefined, useInterfaces);
   },
-  toProto(message: PortfolioYStake): Uint8Array {
-    return PortfolioYStake.encode(message).finish();
+  toProto(message: PortfolioYStaking): Uint8Array {
+    return PortfolioYStaking.encode(message).finish();
   },
-  toProtoMsg(message: PortfolioYStake): PortfolioYStakeProtoMsg {
+  toProtoMsg(message: PortfolioYStaking): PortfolioYStakingProtoMsg {
     return {
-      typeUrl: "/pryzmatics.server.portfolio.PortfolioYStake",
-      value: PortfolioYStake.encode(message).finish()
+      typeUrl: "/pryzmatics.server.portfolio.PortfolioYStaking",
+      value: PortfolioYStaking.encode(message).finish()
     };
   }
 };
-GlobalDecoderRegistry.register(PortfolioYStake.typeUrl, PortfolioYStake);
+GlobalDecoderRegistry.register(PortfolioYStaking.typeUrl, PortfolioYStaking);
+function createBasePortfolioYLaunchStaking(): PortfolioYLaunchStaking {
+  return {
+    reward: DecCoin.fromPartial({}),
+    token: PortfolioToken.fromPartial({})
+  };
+}
+export const PortfolioYLaunchStaking = {
+  typeUrl: "/pryzmatics.server.portfolio.PortfolioYLaunchStaking",
+  is(o: any): o is PortfolioYLaunchStaking {
+    return o && (o.$typeUrl === PortfolioYLaunchStaking.typeUrl || DecCoin.is(o.reward) && PortfolioToken.is(o.token));
+  },
+  isSDK(o: any): o is PortfolioYLaunchStakingSDKType {
+    return o && (o.$typeUrl === PortfolioYLaunchStaking.typeUrl || DecCoin.isSDK(o.reward) && PortfolioToken.isSDK(o.token));
+  },
+  isAmino(o: any): o is PortfolioYLaunchStakingAmino {
+    return o && (o.$typeUrl === PortfolioYLaunchStaking.typeUrl || DecCoin.isAmino(o.reward) && PortfolioToken.isAmino(o.token));
+  },
+  encode(message: PortfolioYLaunchStaking, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.reward !== undefined) {
+      DecCoin.encode(message.reward, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.token !== undefined) {
+      PortfolioToken.encode(message.token, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): PortfolioYLaunchStaking {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePortfolioYLaunchStaking();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.reward = DecCoin.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 2:
+          message.token = PortfolioToken.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): PortfolioYLaunchStaking {
+    return {
+      reward: isSet(object.reward) ? DecCoin.fromJSON(object.reward) : undefined,
+      token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined
+    };
+  },
+  toJSON(message: PortfolioYLaunchStaking): unknown {
+    const obj: any = {};
+    message.reward !== undefined && (obj.reward = message.reward ? DecCoin.toJSON(message.reward) : undefined);
+    message.token !== undefined && (obj.token = message.token ? PortfolioToken.toJSON(message.token) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<PortfolioYLaunchStaking>): PortfolioYLaunchStaking {
+    const message = createBasePortfolioYLaunchStaking();
+    message.reward = object.reward !== undefined && object.reward !== null ? DecCoin.fromPartial(object.reward) : undefined;
+    message.token = object.token !== undefined && object.token !== null ? PortfolioToken.fromPartial(object.token) : undefined;
+    return message;
+  },
+  fromAmino(object: PortfolioYLaunchStakingAmino): PortfolioYLaunchStaking {
+    const message = createBasePortfolioYLaunchStaking();
+    if (object.reward !== undefined && object.reward !== null) {
+      message.reward = DecCoin.fromAmino(object.reward);
+    }
+    if (object.token !== undefined && object.token !== null) {
+      message.token = PortfolioToken.fromAmino(object.token);
+    }
+    return message;
+  },
+  toAmino(message: PortfolioYLaunchStaking, useInterfaces: boolean = true): PortfolioYLaunchStakingAmino {
+    const obj: any = {};
+    obj.reward = message.reward ? DecCoin.toAmino(message.reward, useInterfaces) : undefined;
+    obj.token = message.token ? PortfolioToken.toAmino(message.token, useInterfaces) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: PortfolioYLaunchStakingAminoMsg): PortfolioYLaunchStaking {
+    return PortfolioYLaunchStaking.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PortfolioYLaunchStakingProtoMsg, useInterfaces: boolean = true): PortfolioYLaunchStaking {
+    return PortfolioYLaunchStaking.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: PortfolioYLaunchStaking): Uint8Array {
+    return PortfolioYLaunchStaking.encode(message).finish();
+  },
+  toProtoMsg(message: PortfolioYLaunchStaking): PortfolioYLaunchStakingProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.portfolio.PortfolioYLaunchStaking",
+      value: PortfolioYLaunchStaking.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(PortfolioYLaunchStaking.typeUrl, PortfolioYLaunchStaking);
 function createBasePortfolioStakingDelegation(): PortfolioStakingDelegation {
   return {
     validatorAddress: "",
@@ -1481,40 +1646,54 @@ GlobalDecoderRegistry.register(PortfolioIcstakingUnbonding.typeUrl, PortfolioIcs
 function createBaseQueryPortfolioResponse(): QueryPortfolioResponse {
   return {
     walletTokens: [],
-    yStakingTokens: [],
-    yLaunchStakingTokens: [],
-    pGovTokens: [],
+    yStakings: [],
+    yLaunchStakings: [],
+    pGovStakedTokens: [],
     stakingDelegations: [],
     stakingUnbondings: [],
     incentivesBonds: [],
     incentivesUnbondings: [],
     allianceDelegations: [],
     allianceUnbondings: [],
-    icstakingUnbondings: []
+    icstakingUnbondings: [],
+    walletTokensValueInStableCoinTerms: "",
+    yStakingsValueInStableCoinTerms: "",
+    yLaunchStakingsValueInStableCoinTerms: "",
+    pGovTokensValueInStableCoinTerms: "",
+    stakingDelegationsValueInStableCoinTerms: "",
+    stakingUnbondingsValueInStableCoinTerms: "",
+    incentivesBondsValueInStableCoinTerms: "",
+    incentivesUnbondingsValueInStableCoinTerms: "",
+    allianceDelegationsValueInStableCoinTerms: "",
+    allianceUnbondingsValueInStableCoinTerms: "",
+    icstakingUnbondingsValueInStableCoinTerms: "",
+    totalValueInStableCoinTerms: "",
+    totalExcludingUnbondingValueInStableCoinTerms: "",
+    rewardsValueInStableCoinTerms: ""
   };
 }
 export const QueryPortfolioResponse = {
   typeUrl: "/pryzmatics.server.portfolio.QueryPortfolioResponse",
   is(o: any): o is QueryPortfolioResponse {
-    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.walletTokens) && (!o.walletTokens.length || PortfolioToken.is(o.walletTokens[0])) && Array.isArray(o.yStakingTokens) && (!o.yStakingTokens.length || PortfolioYStake.is(o.yStakingTokens[0])) && Array.isArray(o.yLaunchStakingTokens) && (!o.yLaunchStakingTokens.length || PortfolioToken.is(o.yLaunchStakingTokens[0])) && Array.isArray(o.pGovTokens) && (!o.pGovTokens.length || PortfolioToken.is(o.pGovTokens[0])) && Array.isArray(o.stakingDelegations) && (!o.stakingDelegations.length || PortfolioStakingDelegation.is(o.stakingDelegations[0])) && Array.isArray(o.stakingUnbondings) && (!o.stakingUnbondings.length || PortfolioStakingUnbonding.is(o.stakingUnbondings[0])) && Array.isArray(o.incentivesBonds) && (!o.incentivesBonds.length || PortfolioIncentivesBond.is(o.incentivesBonds[0])) && Array.isArray(o.incentivesUnbondings) && (!o.incentivesUnbondings.length || PortfolioIncentivesUnbonding.is(o.incentivesUnbondings[0])) && Array.isArray(o.allianceDelegations) && (!o.allianceDelegations.length || PortfolioAllianceDelegation.is(o.allianceDelegations[0])) && Array.isArray(o.allianceUnbondings) && (!o.allianceUnbondings.length || PortfolioAllianceUnbonding.is(o.allianceUnbondings[0])) && Array.isArray(o.icstakingUnbondings) && (!o.icstakingUnbondings.length || PortfolioIcstakingUnbonding.is(o.icstakingUnbondings[0])));
+    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.walletTokens) && (!o.walletTokens.length || PortfolioToken.is(o.walletTokens[0])) && Array.isArray(o.yStakings) && (!o.yStakings.length || PortfolioYStaking.is(o.yStakings[0])) && Array.isArray(o.yLaunchStakings) && (!o.yLaunchStakings.length || PortfolioYLaunchStaking.is(o.yLaunchStakings[0])) && Array.isArray(o.pGovStakedTokens) && (!o.pGovStakedTokens.length || PortfolioToken.is(o.pGovStakedTokens[0])) && Array.isArray(o.stakingDelegations) && (!o.stakingDelegations.length || PortfolioStakingDelegation.is(o.stakingDelegations[0])) && Array.isArray(o.stakingUnbondings) && (!o.stakingUnbondings.length || PortfolioStakingUnbonding.is(o.stakingUnbondings[0])) && Array.isArray(o.incentivesBonds) && (!o.incentivesBonds.length || PortfolioIncentivesBond.is(o.incentivesBonds[0])) && Array.isArray(o.incentivesUnbondings) && (!o.incentivesUnbondings.length || PortfolioIncentivesUnbonding.is(o.incentivesUnbondings[0])) && Array.isArray(o.allianceDelegations) && (!o.allianceDelegations.length || PortfolioAllianceDelegation.is(o.allianceDelegations[0])) && Array.isArray(o.allianceUnbondings) && (!o.allianceUnbondings.length || PortfolioAllianceUnbonding.is(o.allianceUnbondings[0])) && Array.isArray(o.icstakingUnbondings) && (!o.icstakingUnbondings.length || PortfolioIcstakingUnbonding.is(o.icstakingUnbondings[0])) && typeof o.walletTokensValueInStableCoinTerms === "string" && typeof o.yStakingsValueInStableCoinTerms === "string" && typeof o.yLaunchStakingsValueInStableCoinTerms === "string" && typeof o.pGovTokensValueInStableCoinTerms === "string" && typeof o.stakingDelegationsValueInStableCoinTerms === "string" && typeof o.stakingUnbondingsValueInStableCoinTerms === "string" && typeof o.incentivesBondsValueInStableCoinTerms === "string" && typeof o.incentivesUnbondingsValueInStableCoinTerms === "string" && typeof o.allianceDelegationsValueInStableCoinTerms === "string" && typeof o.allianceUnbondingsValueInStableCoinTerms === "string" && typeof o.icstakingUnbondingsValueInStableCoinTerms === "string" && typeof o.totalValueInStableCoinTerms === "string" && typeof o.totalExcludingUnbondingValueInStableCoinTerms === "string" && typeof o.rewardsValueInStableCoinTerms === "string");
   },
   isSDK(o: any): o is QueryPortfolioResponseSDKType {
-    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.wallet_tokens) && (!o.wallet_tokens.length || PortfolioToken.isSDK(o.wallet_tokens[0])) && Array.isArray(o.y_staking_tokens) && (!o.y_staking_tokens.length || PortfolioYStake.isSDK(o.y_staking_tokens[0])) && Array.isArray(o.y_launch_staking_tokens) && (!o.y_launch_staking_tokens.length || PortfolioToken.isSDK(o.y_launch_staking_tokens[0])) && Array.isArray(o.p_gov_tokens) && (!o.p_gov_tokens.length || PortfolioToken.isSDK(o.p_gov_tokens[0])) && Array.isArray(o.staking_delegations) && (!o.staking_delegations.length || PortfolioStakingDelegation.isSDK(o.staking_delegations[0])) && Array.isArray(o.staking_unbondings) && (!o.staking_unbondings.length || PortfolioStakingUnbonding.isSDK(o.staking_unbondings[0])) && Array.isArray(o.incentives_bonds) && (!o.incentives_bonds.length || PortfolioIncentivesBond.isSDK(o.incentives_bonds[0])) && Array.isArray(o.incentives_unbondings) && (!o.incentives_unbondings.length || PortfolioIncentivesUnbonding.isSDK(o.incentives_unbondings[0])) && Array.isArray(o.alliance_delegations) && (!o.alliance_delegations.length || PortfolioAllianceDelegation.isSDK(o.alliance_delegations[0])) && Array.isArray(o.alliance_unbondings) && (!o.alliance_unbondings.length || PortfolioAllianceUnbonding.isSDK(o.alliance_unbondings[0])) && Array.isArray(o.icstaking_unbondings) && (!o.icstaking_unbondings.length || PortfolioIcstakingUnbonding.isSDK(o.icstaking_unbondings[0])));
+    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.wallet_tokens) && (!o.wallet_tokens.length || PortfolioToken.isSDK(o.wallet_tokens[0])) && Array.isArray(o.y_stakings) && (!o.y_stakings.length || PortfolioYStaking.isSDK(o.y_stakings[0])) && Array.isArray(o.y_launch_stakings) && (!o.y_launch_stakings.length || PortfolioYLaunchStaking.isSDK(o.y_launch_stakings[0])) && Array.isArray(o.p_gov_staked_tokens) && (!o.p_gov_staked_tokens.length || PortfolioToken.isSDK(o.p_gov_staked_tokens[0])) && Array.isArray(o.staking_delegations) && (!o.staking_delegations.length || PortfolioStakingDelegation.isSDK(o.staking_delegations[0])) && Array.isArray(o.staking_unbondings) && (!o.staking_unbondings.length || PortfolioStakingUnbonding.isSDK(o.staking_unbondings[0])) && Array.isArray(o.incentives_bonds) && (!o.incentives_bonds.length || PortfolioIncentivesBond.isSDK(o.incentives_bonds[0])) && Array.isArray(o.incentives_unbondings) && (!o.incentives_unbondings.length || PortfolioIncentivesUnbonding.isSDK(o.incentives_unbondings[0])) && Array.isArray(o.alliance_delegations) && (!o.alliance_delegations.length || PortfolioAllianceDelegation.isSDK(o.alliance_delegations[0])) && Array.isArray(o.alliance_unbondings) && (!o.alliance_unbondings.length || PortfolioAllianceUnbonding.isSDK(o.alliance_unbondings[0])) && Array.isArray(o.icstaking_unbondings) && (!o.icstaking_unbondings.length || PortfolioIcstakingUnbonding.isSDK(o.icstaking_unbondings[0])) && typeof o.wallet_tokens_value_in_stable_coin_terms === "string" && typeof o.y_stakings_value_in_stable_coin_terms === "string" && typeof o.y_launch_stakings_value_in_stable_coin_terms === "string" && typeof o.p_gov_tokens_value_in_stable_coin_terms === "string" && typeof o.staking_delegations_value_in_stable_coin_terms === "string" && typeof o.staking_unbondings_value_in_stable_coin_terms === "string" && typeof o.incentives_bonds_value_in_stable_coin_terms === "string" && typeof o.incentives_unbondings_value_in_stable_coin_terms === "string" && typeof o.alliance_delegations_value_in_stable_coin_terms === "string" && typeof o.alliance_unbondings_value_in_stable_coin_terms === "string" && typeof o.icstaking_unbondings_value_in_stable_coin_terms === "string" && typeof o.total_value_in_stable_coin_terms === "string" && typeof o.total_excluding_unbonding_value_in_stable_coin_terms === "string" && typeof o.rewards_value_in_stable_coin_terms === "string");
   },
   isAmino(o: any): o is QueryPortfolioResponseAmino {
-    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.wallet_tokens) && (!o.wallet_tokens.length || PortfolioToken.isAmino(o.wallet_tokens[0])) && Array.isArray(o.y_staking_tokens) && (!o.y_staking_tokens.length || PortfolioYStake.isAmino(o.y_staking_tokens[0])) && Array.isArray(o.y_launch_staking_tokens) && (!o.y_launch_staking_tokens.length || PortfolioToken.isAmino(o.y_launch_staking_tokens[0])) && Array.isArray(o.p_gov_tokens) && (!o.p_gov_tokens.length || PortfolioToken.isAmino(o.p_gov_tokens[0])) && Array.isArray(o.staking_delegations) && (!o.staking_delegations.length || PortfolioStakingDelegation.isAmino(o.staking_delegations[0])) && Array.isArray(o.staking_unbondings) && (!o.staking_unbondings.length || PortfolioStakingUnbonding.isAmino(o.staking_unbondings[0])) && Array.isArray(o.incentives_bonds) && (!o.incentives_bonds.length || PortfolioIncentivesBond.isAmino(o.incentives_bonds[0])) && Array.isArray(o.incentives_unbondings) && (!o.incentives_unbondings.length || PortfolioIncentivesUnbonding.isAmino(o.incentives_unbondings[0])) && Array.isArray(o.alliance_delegations) && (!o.alliance_delegations.length || PortfolioAllianceDelegation.isAmino(o.alliance_delegations[0])) && Array.isArray(o.alliance_unbondings) && (!o.alliance_unbondings.length || PortfolioAllianceUnbonding.isAmino(o.alliance_unbondings[0])) && Array.isArray(o.icstaking_unbondings) && (!o.icstaking_unbondings.length || PortfolioIcstakingUnbonding.isAmino(o.icstaking_unbondings[0])));
+    return o && (o.$typeUrl === QueryPortfolioResponse.typeUrl || Array.isArray(o.wallet_tokens) && (!o.wallet_tokens.length || PortfolioToken.isAmino(o.wallet_tokens[0])) && Array.isArray(o.y_stakings) && (!o.y_stakings.length || PortfolioYStaking.isAmino(o.y_stakings[0])) && Array.isArray(o.y_launch_stakings) && (!o.y_launch_stakings.length || PortfolioYLaunchStaking.isAmino(o.y_launch_stakings[0])) && Array.isArray(o.p_gov_staked_tokens) && (!o.p_gov_staked_tokens.length || PortfolioToken.isAmino(o.p_gov_staked_tokens[0])) && Array.isArray(o.staking_delegations) && (!o.staking_delegations.length || PortfolioStakingDelegation.isAmino(o.staking_delegations[0])) && Array.isArray(o.staking_unbondings) && (!o.staking_unbondings.length || PortfolioStakingUnbonding.isAmino(o.staking_unbondings[0])) && Array.isArray(o.incentives_bonds) && (!o.incentives_bonds.length || PortfolioIncentivesBond.isAmino(o.incentives_bonds[0])) && Array.isArray(o.incentives_unbondings) && (!o.incentives_unbondings.length || PortfolioIncentivesUnbonding.isAmino(o.incentives_unbondings[0])) && Array.isArray(o.alliance_delegations) && (!o.alliance_delegations.length || PortfolioAllianceDelegation.isAmino(o.alliance_delegations[0])) && Array.isArray(o.alliance_unbondings) && (!o.alliance_unbondings.length || PortfolioAllianceUnbonding.isAmino(o.alliance_unbondings[0])) && Array.isArray(o.icstaking_unbondings) && (!o.icstaking_unbondings.length || PortfolioIcstakingUnbonding.isAmino(o.icstaking_unbondings[0])) && typeof o.wallet_tokens_value_in_stable_coin_terms === "string" && typeof o.y_stakings_value_in_stable_coin_terms === "string" && typeof o.y_launch_stakings_value_in_stable_coin_terms === "string" && typeof o.p_gov_tokens_value_in_stable_coin_terms === "string" && typeof o.staking_delegations_value_in_stable_coin_terms === "string" && typeof o.staking_unbondings_value_in_stable_coin_terms === "string" && typeof o.incentives_bonds_value_in_stable_coin_terms === "string" && typeof o.incentives_unbondings_value_in_stable_coin_terms === "string" && typeof o.alliance_delegations_value_in_stable_coin_terms === "string" && typeof o.alliance_unbondings_value_in_stable_coin_terms === "string" && typeof o.icstaking_unbondings_value_in_stable_coin_terms === "string" && typeof o.total_value_in_stable_coin_terms === "string" && typeof o.total_excluding_unbonding_value_in_stable_coin_terms === "string" && typeof o.rewards_value_in_stable_coin_terms === "string");
   },
   encode(message: QueryPortfolioResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.walletTokens) {
       PortfolioToken.encode(v!, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.yStakingTokens) {
-      PortfolioYStake.encode(v!, writer.uint32(18).fork()).ldelim();
+    for (const v of message.yStakings) {
+      PortfolioYStaking.encode(v!, writer.uint32(18).fork()).ldelim();
     }
-    for (const v of message.yLaunchStakingTokens) {
-      PortfolioToken.encode(v!, writer.uint32(26).fork()).ldelim();
+    for (const v of message.yLaunchStakings) {
+      PortfolioYLaunchStaking.encode(v!, writer.uint32(26).fork()).ldelim();
     }
-    for (const v of message.pGovTokens) {
+    for (const v of message.pGovStakedTokens) {
       PortfolioToken.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     for (const v of message.stakingDelegations) {
@@ -1538,6 +1717,48 @@ export const QueryPortfolioResponse = {
     for (const v of message.icstakingUnbondings) {
       PortfolioIcstakingUnbonding.encode(v!, writer.uint32(90).fork()).ldelim();
     }
+    if (message.walletTokensValueInStableCoinTerms !== "") {
+      writer.uint32(98).string(Decimal.fromUserInput(message.walletTokensValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.yStakingsValueInStableCoinTerms !== "") {
+      writer.uint32(106).string(Decimal.fromUserInput(message.yStakingsValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.yLaunchStakingsValueInStableCoinTerms !== "") {
+      writer.uint32(114).string(Decimal.fromUserInput(message.yLaunchStakingsValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.pGovTokensValueInStableCoinTerms !== "") {
+      writer.uint32(122).string(Decimal.fromUserInput(message.pGovTokensValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.stakingDelegationsValueInStableCoinTerms !== "") {
+      writer.uint32(130).string(Decimal.fromUserInput(message.stakingDelegationsValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.stakingUnbondingsValueInStableCoinTerms !== "") {
+      writer.uint32(138).string(Decimal.fromUserInput(message.stakingUnbondingsValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.incentivesBondsValueInStableCoinTerms !== "") {
+      writer.uint32(146).string(Decimal.fromUserInput(message.incentivesBondsValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.incentivesUnbondingsValueInStableCoinTerms !== "") {
+      writer.uint32(154).string(Decimal.fromUserInput(message.incentivesUnbondingsValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.allianceDelegationsValueInStableCoinTerms !== "") {
+      writer.uint32(162).string(Decimal.fromUserInput(message.allianceDelegationsValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.allianceUnbondingsValueInStableCoinTerms !== "") {
+      writer.uint32(170).string(Decimal.fromUserInput(message.allianceUnbondingsValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.icstakingUnbondingsValueInStableCoinTerms !== "") {
+      writer.uint32(178).string(Decimal.fromUserInput(message.icstakingUnbondingsValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.totalValueInStableCoinTerms !== "") {
+      writer.uint32(186).string(Decimal.fromUserInput(message.totalValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.totalExcludingUnbondingValueInStableCoinTerms !== "") {
+      writer.uint32(194).string(Decimal.fromUserInput(message.totalExcludingUnbondingValueInStableCoinTerms, 18).atomics);
+    }
+    if (message.rewardsValueInStableCoinTerms !== "") {
+      writer.uint32(202).string(Decimal.fromUserInput(message.rewardsValueInStableCoinTerms, 18).atomics);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryPortfolioResponse {
@@ -1551,13 +1772,13 @@ export const QueryPortfolioResponse = {
           message.walletTokens.push(PortfolioToken.decode(reader, reader.uint32(), useInterfaces));
           break;
         case 2:
-          message.yStakingTokens.push(PortfolioYStake.decode(reader, reader.uint32(), useInterfaces));
+          message.yStakings.push(PortfolioYStaking.decode(reader, reader.uint32(), useInterfaces));
           break;
         case 3:
-          message.yLaunchStakingTokens.push(PortfolioToken.decode(reader, reader.uint32(), useInterfaces));
+          message.yLaunchStakings.push(PortfolioYLaunchStaking.decode(reader, reader.uint32(), useInterfaces));
           break;
         case 4:
-          message.pGovTokens.push(PortfolioToken.decode(reader, reader.uint32(), useInterfaces));
+          message.pGovStakedTokens.push(PortfolioToken.decode(reader, reader.uint32(), useInterfaces));
           break;
         case 5:
           message.stakingDelegations.push(PortfolioStakingDelegation.decode(reader, reader.uint32(), useInterfaces));
@@ -1580,6 +1801,48 @@ export const QueryPortfolioResponse = {
         case 11:
           message.icstakingUnbondings.push(PortfolioIcstakingUnbonding.decode(reader, reader.uint32(), useInterfaces));
           break;
+        case 12:
+          message.walletTokensValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 13:
+          message.yStakingsValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 14:
+          message.yLaunchStakingsValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 15:
+          message.pGovTokensValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 16:
+          message.stakingDelegationsValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 17:
+          message.stakingUnbondingsValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 18:
+          message.incentivesBondsValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 19:
+          message.incentivesUnbondingsValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 20:
+          message.allianceDelegationsValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 21:
+          message.allianceUnbondingsValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 22:
+          message.icstakingUnbondingsValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 23:
+          message.totalValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 24:
+          message.totalExcludingUnbondingValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 25:
+          message.rewardsValueInStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1590,16 +1853,30 @@ export const QueryPortfolioResponse = {
   fromJSON(object: any): QueryPortfolioResponse {
     return {
       walletTokens: Array.isArray(object?.walletTokens) ? object.walletTokens.map((e: any) => PortfolioToken.fromJSON(e)) : [],
-      yStakingTokens: Array.isArray(object?.yStakingTokens) ? object.yStakingTokens.map((e: any) => PortfolioYStake.fromJSON(e)) : [],
-      yLaunchStakingTokens: Array.isArray(object?.yLaunchStakingTokens) ? object.yLaunchStakingTokens.map((e: any) => PortfolioToken.fromJSON(e)) : [],
-      pGovTokens: Array.isArray(object?.pGovTokens) ? object.pGovTokens.map((e: any) => PortfolioToken.fromJSON(e)) : [],
+      yStakings: Array.isArray(object?.yStakings) ? object.yStakings.map((e: any) => PortfolioYStaking.fromJSON(e)) : [],
+      yLaunchStakings: Array.isArray(object?.yLaunchStakings) ? object.yLaunchStakings.map((e: any) => PortfolioYLaunchStaking.fromJSON(e)) : [],
+      pGovStakedTokens: Array.isArray(object?.pGovStakedTokens) ? object.pGovStakedTokens.map((e: any) => PortfolioToken.fromJSON(e)) : [],
       stakingDelegations: Array.isArray(object?.stakingDelegations) ? object.stakingDelegations.map((e: any) => PortfolioStakingDelegation.fromJSON(e)) : [],
       stakingUnbondings: Array.isArray(object?.stakingUnbondings) ? object.stakingUnbondings.map((e: any) => PortfolioStakingUnbonding.fromJSON(e)) : [],
       incentivesBonds: Array.isArray(object?.incentivesBonds) ? object.incentivesBonds.map((e: any) => PortfolioIncentivesBond.fromJSON(e)) : [],
       incentivesUnbondings: Array.isArray(object?.incentivesUnbondings) ? object.incentivesUnbondings.map((e: any) => PortfolioIncentivesUnbonding.fromJSON(e)) : [],
       allianceDelegations: Array.isArray(object?.allianceDelegations) ? object.allianceDelegations.map((e: any) => PortfolioAllianceDelegation.fromJSON(e)) : [],
       allianceUnbondings: Array.isArray(object?.allianceUnbondings) ? object.allianceUnbondings.map((e: any) => PortfolioAllianceUnbonding.fromJSON(e)) : [],
-      icstakingUnbondings: Array.isArray(object?.icstakingUnbondings) ? object.icstakingUnbondings.map((e: any) => PortfolioIcstakingUnbonding.fromJSON(e)) : []
+      icstakingUnbondings: Array.isArray(object?.icstakingUnbondings) ? object.icstakingUnbondings.map((e: any) => PortfolioIcstakingUnbonding.fromJSON(e)) : [],
+      walletTokensValueInStableCoinTerms: isSet(object.walletTokensValueInStableCoinTerms) ? String(object.walletTokensValueInStableCoinTerms) : "",
+      yStakingsValueInStableCoinTerms: isSet(object.yStakingsValueInStableCoinTerms) ? String(object.yStakingsValueInStableCoinTerms) : "",
+      yLaunchStakingsValueInStableCoinTerms: isSet(object.yLaunchStakingsValueInStableCoinTerms) ? String(object.yLaunchStakingsValueInStableCoinTerms) : "",
+      pGovTokensValueInStableCoinTerms: isSet(object.pGovTokensValueInStableCoinTerms) ? String(object.pGovTokensValueInStableCoinTerms) : "",
+      stakingDelegationsValueInStableCoinTerms: isSet(object.stakingDelegationsValueInStableCoinTerms) ? String(object.stakingDelegationsValueInStableCoinTerms) : "",
+      stakingUnbondingsValueInStableCoinTerms: isSet(object.stakingUnbondingsValueInStableCoinTerms) ? String(object.stakingUnbondingsValueInStableCoinTerms) : "",
+      incentivesBondsValueInStableCoinTerms: isSet(object.incentivesBondsValueInStableCoinTerms) ? String(object.incentivesBondsValueInStableCoinTerms) : "",
+      incentivesUnbondingsValueInStableCoinTerms: isSet(object.incentivesUnbondingsValueInStableCoinTerms) ? String(object.incentivesUnbondingsValueInStableCoinTerms) : "",
+      allianceDelegationsValueInStableCoinTerms: isSet(object.allianceDelegationsValueInStableCoinTerms) ? String(object.allianceDelegationsValueInStableCoinTerms) : "",
+      allianceUnbondingsValueInStableCoinTerms: isSet(object.allianceUnbondingsValueInStableCoinTerms) ? String(object.allianceUnbondingsValueInStableCoinTerms) : "",
+      icstakingUnbondingsValueInStableCoinTerms: isSet(object.icstakingUnbondingsValueInStableCoinTerms) ? String(object.icstakingUnbondingsValueInStableCoinTerms) : "",
+      totalValueInStableCoinTerms: isSet(object.totalValueInStableCoinTerms) ? String(object.totalValueInStableCoinTerms) : "",
+      totalExcludingUnbondingValueInStableCoinTerms: isSet(object.totalExcludingUnbondingValueInStableCoinTerms) ? String(object.totalExcludingUnbondingValueInStableCoinTerms) : "",
+      rewardsValueInStableCoinTerms: isSet(object.rewardsValueInStableCoinTerms) ? String(object.rewardsValueInStableCoinTerms) : ""
     };
   },
   toJSON(message: QueryPortfolioResponse): unknown {
@@ -1609,20 +1886,20 @@ export const QueryPortfolioResponse = {
     } else {
       obj.walletTokens = [];
     }
-    if (message.yStakingTokens) {
-      obj.yStakingTokens = message.yStakingTokens.map(e => e ? PortfolioYStake.toJSON(e) : undefined);
+    if (message.yStakings) {
+      obj.yStakings = message.yStakings.map(e => e ? PortfolioYStaking.toJSON(e) : undefined);
     } else {
-      obj.yStakingTokens = [];
+      obj.yStakings = [];
     }
-    if (message.yLaunchStakingTokens) {
-      obj.yLaunchStakingTokens = message.yLaunchStakingTokens.map(e => e ? PortfolioToken.toJSON(e) : undefined);
+    if (message.yLaunchStakings) {
+      obj.yLaunchStakings = message.yLaunchStakings.map(e => e ? PortfolioYLaunchStaking.toJSON(e) : undefined);
     } else {
-      obj.yLaunchStakingTokens = [];
+      obj.yLaunchStakings = [];
     }
-    if (message.pGovTokens) {
-      obj.pGovTokens = message.pGovTokens.map(e => e ? PortfolioToken.toJSON(e) : undefined);
+    if (message.pGovStakedTokens) {
+      obj.pGovStakedTokens = message.pGovStakedTokens.map(e => e ? PortfolioToken.toJSON(e) : undefined);
     } else {
-      obj.pGovTokens = [];
+      obj.pGovStakedTokens = [];
     }
     if (message.stakingDelegations) {
       obj.stakingDelegations = message.stakingDelegations.map(e => e ? PortfolioStakingDelegation.toJSON(e) : undefined);
@@ -1659,14 +1936,28 @@ export const QueryPortfolioResponse = {
     } else {
       obj.icstakingUnbondings = [];
     }
+    message.walletTokensValueInStableCoinTerms !== undefined && (obj.walletTokensValueInStableCoinTerms = message.walletTokensValueInStableCoinTerms);
+    message.yStakingsValueInStableCoinTerms !== undefined && (obj.yStakingsValueInStableCoinTerms = message.yStakingsValueInStableCoinTerms);
+    message.yLaunchStakingsValueInStableCoinTerms !== undefined && (obj.yLaunchStakingsValueInStableCoinTerms = message.yLaunchStakingsValueInStableCoinTerms);
+    message.pGovTokensValueInStableCoinTerms !== undefined && (obj.pGovTokensValueInStableCoinTerms = message.pGovTokensValueInStableCoinTerms);
+    message.stakingDelegationsValueInStableCoinTerms !== undefined && (obj.stakingDelegationsValueInStableCoinTerms = message.stakingDelegationsValueInStableCoinTerms);
+    message.stakingUnbondingsValueInStableCoinTerms !== undefined && (obj.stakingUnbondingsValueInStableCoinTerms = message.stakingUnbondingsValueInStableCoinTerms);
+    message.incentivesBondsValueInStableCoinTerms !== undefined && (obj.incentivesBondsValueInStableCoinTerms = message.incentivesBondsValueInStableCoinTerms);
+    message.incentivesUnbondingsValueInStableCoinTerms !== undefined && (obj.incentivesUnbondingsValueInStableCoinTerms = message.incentivesUnbondingsValueInStableCoinTerms);
+    message.allianceDelegationsValueInStableCoinTerms !== undefined && (obj.allianceDelegationsValueInStableCoinTerms = message.allianceDelegationsValueInStableCoinTerms);
+    message.allianceUnbondingsValueInStableCoinTerms !== undefined && (obj.allianceUnbondingsValueInStableCoinTerms = message.allianceUnbondingsValueInStableCoinTerms);
+    message.icstakingUnbondingsValueInStableCoinTerms !== undefined && (obj.icstakingUnbondingsValueInStableCoinTerms = message.icstakingUnbondingsValueInStableCoinTerms);
+    message.totalValueInStableCoinTerms !== undefined && (obj.totalValueInStableCoinTerms = message.totalValueInStableCoinTerms);
+    message.totalExcludingUnbondingValueInStableCoinTerms !== undefined && (obj.totalExcludingUnbondingValueInStableCoinTerms = message.totalExcludingUnbondingValueInStableCoinTerms);
+    message.rewardsValueInStableCoinTerms !== undefined && (obj.rewardsValueInStableCoinTerms = message.rewardsValueInStableCoinTerms);
     return obj;
   },
   fromPartial(object: Partial<QueryPortfolioResponse>): QueryPortfolioResponse {
     const message = createBaseQueryPortfolioResponse();
     message.walletTokens = object.walletTokens?.map(e => PortfolioToken.fromPartial(e)) || [];
-    message.yStakingTokens = object.yStakingTokens?.map(e => PortfolioYStake.fromPartial(e)) || [];
-    message.yLaunchStakingTokens = object.yLaunchStakingTokens?.map(e => PortfolioToken.fromPartial(e)) || [];
-    message.pGovTokens = object.pGovTokens?.map(e => PortfolioToken.fromPartial(e)) || [];
+    message.yStakings = object.yStakings?.map(e => PortfolioYStaking.fromPartial(e)) || [];
+    message.yLaunchStakings = object.yLaunchStakings?.map(e => PortfolioYLaunchStaking.fromPartial(e)) || [];
+    message.pGovStakedTokens = object.pGovStakedTokens?.map(e => PortfolioToken.fromPartial(e)) || [];
     message.stakingDelegations = object.stakingDelegations?.map(e => PortfolioStakingDelegation.fromPartial(e)) || [];
     message.stakingUnbondings = object.stakingUnbondings?.map(e => PortfolioStakingUnbonding.fromPartial(e)) || [];
     message.incentivesBonds = object.incentivesBonds?.map(e => PortfolioIncentivesBond.fromPartial(e)) || [];
@@ -1674,14 +1965,28 @@ export const QueryPortfolioResponse = {
     message.allianceDelegations = object.allianceDelegations?.map(e => PortfolioAllianceDelegation.fromPartial(e)) || [];
     message.allianceUnbondings = object.allianceUnbondings?.map(e => PortfolioAllianceUnbonding.fromPartial(e)) || [];
     message.icstakingUnbondings = object.icstakingUnbondings?.map(e => PortfolioIcstakingUnbonding.fromPartial(e)) || [];
+    message.walletTokensValueInStableCoinTerms = object.walletTokensValueInStableCoinTerms ?? "";
+    message.yStakingsValueInStableCoinTerms = object.yStakingsValueInStableCoinTerms ?? "";
+    message.yLaunchStakingsValueInStableCoinTerms = object.yLaunchStakingsValueInStableCoinTerms ?? "";
+    message.pGovTokensValueInStableCoinTerms = object.pGovTokensValueInStableCoinTerms ?? "";
+    message.stakingDelegationsValueInStableCoinTerms = object.stakingDelegationsValueInStableCoinTerms ?? "";
+    message.stakingUnbondingsValueInStableCoinTerms = object.stakingUnbondingsValueInStableCoinTerms ?? "";
+    message.incentivesBondsValueInStableCoinTerms = object.incentivesBondsValueInStableCoinTerms ?? "";
+    message.incentivesUnbondingsValueInStableCoinTerms = object.incentivesUnbondingsValueInStableCoinTerms ?? "";
+    message.allianceDelegationsValueInStableCoinTerms = object.allianceDelegationsValueInStableCoinTerms ?? "";
+    message.allianceUnbondingsValueInStableCoinTerms = object.allianceUnbondingsValueInStableCoinTerms ?? "";
+    message.icstakingUnbondingsValueInStableCoinTerms = object.icstakingUnbondingsValueInStableCoinTerms ?? "";
+    message.totalValueInStableCoinTerms = object.totalValueInStableCoinTerms ?? "";
+    message.totalExcludingUnbondingValueInStableCoinTerms = object.totalExcludingUnbondingValueInStableCoinTerms ?? "";
+    message.rewardsValueInStableCoinTerms = object.rewardsValueInStableCoinTerms ?? "";
     return message;
   },
   fromAmino(object: QueryPortfolioResponseAmino): QueryPortfolioResponse {
     const message = createBaseQueryPortfolioResponse();
     message.walletTokens = object.wallet_tokens?.map(e => PortfolioToken.fromAmino(e)) || [];
-    message.yStakingTokens = object.y_staking_tokens?.map(e => PortfolioYStake.fromAmino(e)) || [];
-    message.yLaunchStakingTokens = object.y_launch_staking_tokens?.map(e => PortfolioToken.fromAmino(e)) || [];
-    message.pGovTokens = object.p_gov_tokens?.map(e => PortfolioToken.fromAmino(e)) || [];
+    message.yStakings = object.y_stakings?.map(e => PortfolioYStaking.fromAmino(e)) || [];
+    message.yLaunchStakings = object.y_launch_stakings?.map(e => PortfolioYLaunchStaking.fromAmino(e)) || [];
+    message.pGovStakedTokens = object.p_gov_staked_tokens?.map(e => PortfolioToken.fromAmino(e)) || [];
     message.stakingDelegations = object.staking_delegations?.map(e => PortfolioStakingDelegation.fromAmino(e)) || [];
     message.stakingUnbondings = object.staking_unbondings?.map(e => PortfolioStakingUnbonding.fromAmino(e)) || [];
     message.incentivesBonds = object.incentives_bonds?.map(e => PortfolioIncentivesBond.fromAmino(e)) || [];
@@ -1689,6 +1994,48 @@ export const QueryPortfolioResponse = {
     message.allianceDelegations = object.alliance_delegations?.map(e => PortfolioAllianceDelegation.fromAmino(e)) || [];
     message.allianceUnbondings = object.alliance_unbondings?.map(e => PortfolioAllianceUnbonding.fromAmino(e)) || [];
     message.icstakingUnbondings = object.icstaking_unbondings?.map(e => PortfolioIcstakingUnbonding.fromAmino(e)) || [];
+    if (object.wallet_tokens_value_in_stable_coin_terms !== undefined && object.wallet_tokens_value_in_stable_coin_terms !== null) {
+      message.walletTokensValueInStableCoinTerms = object.wallet_tokens_value_in_stable_coin_terms;
+    }
+    if (object.y_stakings_value_in_stable_coin_terms !== undefined && object.y_stakings_value_in_stable_coin_terms !== null) {
+      message.yStakingsValueInStableCoinTerms = object.y_stakings_value_in_stable_coin_terms;
+    }
+    if (object.y_launch_stakings_value_in_stable_coin_terms !== undefined && object.y_launch_stakings_value_in_stable_coin_terms !== null) {
+      message.yLaunchStakingsValueInStableCoinTerms = object.y_launch_stakings_value_in_stable_coin_terms;
+    }
+    if (object.p_gov_tokens_value_in_stable_coin_terms !== undefined && object.p_gov_tokens_value_in_stable_coin_terms !== null) {
+      message.pGovTokensValueInStableCoinTerms = object.p_gov_tokens_value_in_stable_coin_terms;
+    }
+    if (object.staking_delegations_value_in_stable_coin_terms !== undefined && object.staking_delegations_value_in_stable_coin_terms !== null) {
+      message.stakingDelegationsValueInStableCoinTerms = object.staking_delegations_value_in_stable_coin_terms;
+    }
+    if (object.staking_unbondings_value_in_stable_coin_terms !== undefined && object.staking_unbondings_value_in_stable_coin_terms !== null) {
+      message.stakingUnbondingsValueInStableCoinTerms = object.staking_unbondings_value_in_stable_coin_terms;
+    }
+    if (object.incentives_bonds_value_in_stable_coin_terms !== undefined && object.incentives_bonds_value_in_stable_coin_terms !== null) {
+      message.incentivesBondsValueInStableCoinTerms = object.incentives_bonds_value_in_stable_coin_terms;
+    }
+    if (object.incentives_unbondings_value_in_stable_coin_terms !== undefined && object.incentives_unbondings_value_in_stable_coin_terms !== null) {
+      message.incentivesUnbondingsValueInStableCoinTerms = object.incentives_unbondings_value_in_stable_coin_terms;
+    }
+    if (object.alliance_delegations_value_in_stable_coin_terms !== undefined && object.alliance_delegations_value_in_stable_coin_terms !== null) {
+      message.allianceDelegationsValueInStableCoinTerms = object.alliance_delegations_value_in_stable_coin_terms;
+    }
+    if (object.alliance_unbondings_value_in_stable_coin_terms !== undefined && object.alliance_unbondings_value_in_stable_coin_terms !== null) {
+      message.allianceUnbondingsValueInStableCoinTerms = object.alliance_unbondings_value_in_stable_coin_terms;
+    }
+    if (object.icstaking_unbondings_value_in_stable_coin_terms !== undefined && object.icstaking_unbondings_value_in_stable_coin_terms !== null) {
+      message.icstakingUnbondingsValueInStableCoinTerms = object.icstaking_unbondings_value_in_stable_coin_terms;
+    }
+    if (object.total_value_in_stable_coin_terms !== undefined && object.total_value_in_stable_coin_terms !== null) {
+      message.totalValueInStableCoinTerms = object.total_value_in_stable_coin_terms;
+    }
+    if (object.total_excluding_unbonding_value_in_stable_coin_terms !== undefined && object.total_excluding_unbonding_value_in_stable_coin_terms !== null) {
+      message.totalExcludingUnbondingValueInStableCoinTerms = object.total_excluding_unbonding_value_in_stable_coin_terms;
+    }
+    if (object.rewards_value_in_stable_coin_terms !== undefined && object.rewards_value_in_stable_coin_terms !== null) {
+      message.rewardsValueInStableCoinTerms = object.rewards_value_in_stable_coin_terms;
+    }
     return message;
   },
   toAmino(message: QueryPortfolioResponse, useInterfaces: boolean = true): QueryPortfolioResponseAmino {
@@ -1698,20 +2045,20 @@ export const QueryPortfolioResponse = {
     } else {
       obj.wallet_tokens = message.walletTokens;
     }
-    if (message.yStakingTokens) {
-      obj.y_staking_tokens = message.yStakingTokens.map(e => e ? PortfolioYStake.toAmino(e, useInterfaces) : undefined);
+    if (message.yStakings) {
+      obj.y_stakings = message.yStakings.map(e => e ? PortfolioYStaking.toAmino(e, useInterfaces) : undefined);
     } else {
-      obj.y_staking_tokens = message.yStakingTokens;
+      obj.y_stakings = message.yStakings;
     }
-    if (message.yLaunchStakingTokens) {
-      obj.y_launch_staking_tokens = message.yLaunchStakingTokens.map(e => e ? PortfolioToken.toAmino(e, useInterfaces) : undefined);
+    if (message.yLaunchStakings) {
+      obj.y_launch_stakings = message.yLaunchStakings.map(e => e ? PortfolioYLaunchStaking.toAmino(e, useInterfaces) : undefined);
     } else {
-      obj.y_launch_staking_tokens = message.yLaunchStakingTokens;
+      obj.y_launch_stakings = message.yLaunchStakings;
     }
-    if (message.pGovTokens) {
-      obj.p_gov_tokens = message.pGovTokens.map(e => e ? PortfolioToken.toAmino(e, useInterfaces) : undefined);
+    if (message.pGovStakedTokens) {
+      obj.p_gov_staked_tokens = message.pGovStakedTokens.map(e => e ? PortfolioToken.toAmino(e, useInterfaces) : undefined);
     } else {
-      obj.p_gov_tokens = message.pGovTokens;
+      obj.p_gov_staked_tokens = message.pGovStakedTokens;
     }
     if (message.stakingDelegations) {
       obj.staking_delegations = message.stakingDelegations.map(e => e ? PortfolioStakingDelegation.toAmino(e, useInterfaces) : undefined);
@@ -1748,6 +2095,20 @@ export const QueryPortfolioResponse = {
     } else {
       obj.icstaking_unbondings = message.icstakingUnbondings;
     }
+    obj.wallet_tokens_value_in_stable_coin_terms = padDecimal(message.walletTokensValueInStableCoinTerms) === "" ? undefined : padDecimal(message.walletTokensValueInStableCoinTerms);
+    obj.y_stakings_value_in_stable_coin_terms = padDecimal(message.yStakingsValueInStableCoinTerms) === "" ? undefined : padDecimal(message.yStakingsValueInStableCoinTerms);
+    obj.y_launch_stakings_value_in_stable_coin_terms = padDecimal(message.yLaunchStakingsValueInStableCoinTerms) === "" ? undefined : padDecimal(message.yLaunchStakingsValueInStableCoinTerms);
+    obj.p_gov_tokens_value_in_stable_coin_terms = padDecimal(message.pGovTokensValueInStableCoinTerms) === "" ? undefined : padDecimal(message.pGovTokensValueInStableCoinTerms);
+    obj.staking_delegations_value_in_stable_coin_terms = padDecimal(message.stakingDelegationsValueInStableCoinTerms) === "" ? undefined : padDecimal(message.stakingDelegationsValueInStableCoinTerms);
+    obj.staking_unbondings_value_in_stable_coin_terms = padDecimal(message.stakingUnbondingsValueInStableCoinTerms) === "" ? undefined : padDecimal(message.stakingUnbondingsValueInStableCoinTerms);
+    obj.incentives_bonds_value_in_stable_coin_terms = padDecimal(message.incentivesBondsValueInStableCoinTerms) === "" ? undefined : padDecimal(message.incentivesBondsValueInStableCoinTerms);
+    obj.incentives_unbondings_value_in_stable_coin_terms = padDecimal(message.incentivesUnbondingsValueInStableCoinTerms) === "" ? undefined : padDecimal(message.incentivesUnbondingsValueInStableCoinTerms);
+    obj.alliance_delegations_value_in_stable_coin_terms = padDecimal(message.allianceDelegationsValueInStableCoinTerms) === "" ? undefined : padDecimal(message.allianceDelegationsValueInStableCoinTerms);
+    obj.alliance_unbondings_value_in_stable_coin_terms = padDecimal(message.allianceUnbondingsValueInStableCoinTerms) === "" ? undefined : padDecimal(message.allianceUnbondingsValueInStableCoinTerms);
+    obj.icstaking_unbondings_value_in_stable_coin_terms = padDecimal(message.icstakingUnbondingsValueInStableCoinTerms) === "" ? undefined : padDecimal(message.icstakingUnbondingsValueInStableCoinTerms);
+    obj.total_value_in_stable_coin_terms = padDecimal(message.totalValueInStableCoinTerms) === "" ? undefined : padDecimal(message.totalValueInStableCoinTerms);
+    obj.total_excluding_unbonding_value_in_stable_coin_terms = padDecimal(message.totalExcludingUnbondingValueInStableCoinTerms) === "" ? undefined : padDecimal(message.totalExcludingUnbondingValueInStableCoinTerms);
+    obj.rewards_value_in_stable_coin_terms = padDecimal(message.rewardsValueInStableCoinTerms) === "" ? undefined : padDecimal(message.rewardsValueInStableCoinTerms);
     return obj;
   },
   fromAminoMsg(object: QueryPortfolioResponseAminoMsg): QueryPortfolioResponse {
