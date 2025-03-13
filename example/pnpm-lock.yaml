@@ -15,8 +15,8 @@ importers:
         specifier: 0.32.4
         version: 0.32.4
       '@pryzm-finance/pryzmaticsjs':
-        specifier: 0.12.8
-        version: 0.12.8(google-protobuf@3.21.2)(starknet@6.11.0)
+        specifier: 0.13.0
+        version: 0.13.0(google-protobuf@3.21.2)(starknet@6.11.0)
       '@refractedlabs/internal-js-utils':
         specifier: 0.6.5
         version: 0.6.5
@@ -95,13 +95,13 @@ packages:
     peerDependencies:
       google-protobuf: ^3.14.0
 
-  '@keplr-wallet/types@0.12.197':
-    resolution: {integrity: sha512-FEvjjfQECMy4ZvhDtFeNljqensf/lqQWBK8h5/PhyAqEPhPhXlcXyTpjwN2wOUQSQQdottszGEzy7i+w1t/7Og==}
+  '@keplr-wallet/types@0.12.198':
+    resolution: {integrity: sha512-WZ3Zc2KR7fD6Nx6czFXM2TiWM6dip2fJSnK1vfHd4lACD+qxjVKl3cdx0cs2eWBQ2Dzf8Bnz9ri+wrAPSLWm8g==}
     peerDependencies:
       starknet: ^6
 
-  '@keplr-wallet/unit@0.12.197':
-    resolution: {integrity: sha512-UM+b+6ft6SF05L927OmPyuhyXhH9eZ5jf0nJ/yIp6bBD0cpaFyQZixsg8dtM1Et9Ksz123aSBOolgRmsj+49sA==}
+  '@keplr-wallet/unit@0.12.198':
+    resolution: {integrity: sha512-H++NWKn+y44X5BWahgHLLOVeDC5+kl88pTFWYH7aVQFlnHQtm6euM8bhfRsQ9baySPOFh3lVLZUS2z1TwomeWQ==}
 
   '@noble/curves@1.3.0':
     resolution: {integrity: sha512-t01iSXPuN+Eqzb4eBX0S5oubSqXbK/xXa1Ne18Hj8f9pStxztHCE2gfboSp/dZRLSqfuLpRK2nDXDK+W9puocA==}
@@ -151,8 +151,8 @@ packages:
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
 
-  '@pryzm-finance/pryzmaticsjs@0.12.8':
-    resolution: {integrity: sha512-ziUpE9EMlbX/yAjf26XJ8ZPkmM/7OvdGwy8Tr0BitcjsHiQ/IDRSmDwFcosDr/zH6MjICh4MJ/PyR212h97DCA==}
+  '@pryzm-finance/pryzmaticsjs@0.13.0':
+    resolution: {integrity: sha512-14A51tM2LLpj0rzHYBeGSrpNwTcbDlZ6R0/qMYQG3PIXZ4f/+DD0ltdm00J4WrZMnoktQfZAjs1oLN5BAv9SNQ==}
 
   '@refractedlabs/cosmology-lcd-fork@0.13.7':
     resolution: {integrity: sha512-5DEQy8DHzSIsTfl+amlISteWCWmAokWC1pJkMit8H16Mx1ycaDfSrvREHHJlB5bfOkTkc3YHMmd8e8izihEHng==}
@@ -800,14 +800,14 @@ snapshots:
       browser-headers: 0.4.1
       google-protobuf: 3.21.2
 
-  '@keplr-wallet/types@0.12.197(starknet@6.11.0)':
+  '@keplr-wallet/types@0.12.198(starknet@6.11.0)':
     dependencies:
       long: 4.0.0
       starknet: 6.11.0
 
-  '@keplr-wallet/unit@0.12.197(starknet@6.11.0)':
+  '@keplr-wallet/unit@0.12.198(starknet@6.11.0)':
     dependencies:
-      '@keplr-wallet/types': 0.12.197(starknet@6.11.0)
+      '@keplr-wallet/types': 0.12.198(starknet@6.11.0)
       big-integer: 1.6.52
       utility-types: 3.11.0
     transitivePeerDependencies:
@@ -850,7 +850,7 @@ snapshots:
 
   '@protobufjs/utf8@1.1.0': {}
 
-  '@pryzm-finance/pryzmaticsjs@0.12.8(google-protobuf@3.21.2)(starknet@6.11.0)':
+  '@pryzm-finance/pryzmaticsjs@0.13.0(google-protobuf@3.21.2)(starknet@6.11.0)':
     dependencies:
       '@cosmjs/math': 0.32.4
       '@cosmjs/proto-signing': 0.32.4
@@ -858,7 +858,7 @@ snapshots:
       '@cosmjs/tendermint-rpc': 0.32.4
       '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.2)
       '@improbable-eng/grpc-web-node-http-transport': 0.15.0(@improbable-eng/grpc-web@0.15.0(google-protobuf@3.21.2))
-      '@keplr-wallet/unit': 0.12.197(starknet@6.11.0)
+      '@keplr-wallet/unit': 0.12.198(starknet@6.11.0)
       '@refractedlabs/cosmology-lcd-fork': 0.13.7
       '@refractedlabs/internal-js-utils': 0.6.5
       browser-headers: 0.4.1
