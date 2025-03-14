@@ -21,6 +21,8 @@ async function main() {
     resp.staking_unbondings
     resp.incentives_bonds
     resp.incentives_unbondings
+    resp.incentives_unbondings[0].auto_claim
+
     resp.alliance_delegations
     resp.alliance_unbondings
 
