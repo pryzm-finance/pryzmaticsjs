@@ -76,7 +76,8 @@ message PortfolioIncentivesUnbonding {
     (gogoproto.stdtime) = true
   ];
   uint64 unbonding_id = 2;
-  PortfolioToken token = 3 [(gogoproto.nullable) = false];
+  bool auto_claim = 3;
+  PortfolioToken token = 4 [(gogoproto.nullable) = false];
 }
 
 message PortfolioAllianceDelegation {

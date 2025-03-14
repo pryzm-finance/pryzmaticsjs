@@ -163,6 +163,7 @@ export interface PortfolioIncentivesBondSDKType {
 export interface PortfolioIncentivesUnbonding {
   completionTime: Timestamp;
   unbondingId: bigint;
+  autoClaim: boolean;
   token: PortfolioToken;
 }
 export interface PortfolioIncentivesUnbondingProtoMsg {
@@ -172,6 +173,7 @@ export interface PortfolioIncentivesUnbondingProtoMsg {
 export interface PortfolioIncentivesUnbondingAmino {
   completion_time?: string;
   unbonding_id?: string;
+  auto_claim?: boolean;
   token?: PortfolioTokenAmino;
 }
 export interface PortfolioIncentivesUnbondingAminoMsg {
@@ -181,6 +183,7 @@ export interface PortfolioIncentivesUnbondingAminoMsg {
 export interface PortfolioIncentivesUnbondingSDKType {
   completion_time: TimestampSDKType;
   unbonding_id: bigint;
+  auto_claim: boolean;
   token: PortfolioTokenSDKType;
 }
 export interface PortfolioAllianceDelegation {
@@ -1127,19 +1130,20 @@ function createBasePortfolioIncentivesUnbonding(): PortfolioIncentivesUnbonding 
   return {
     completionTime: Timestamp.fromPartial({}),
     unbondingId: BigInt(0),
+    autoClaim: false,
     token: PortfolioToken.fromPartial({})
   };
 }
 export const PortfolioIncentivesUnbonding = {
   typeUrl: "/pryzmatics.server.portfolio.PortfolioIncentivesUnbonding",
   is(o: any): o is PortfolioIncentivesUnbonding {
-    return o && (o.$typeUrl === PortfolioIncentivesUnbonding.typeUrl || Timestamp.is(o.completionTime) && typeof o.unbondingId === "bigint" && PortfolioToken.is(o.token));
+    return o && (o.$typeUrl === PortfolioIncentivesUnbonding.typeUrl || Timestamp.is(o.completionTime) && typeof o.unbondingId === "bigint" && typeof o.autoClaim === "boolean" && PortfolioToken.is(o.token));
   },
   isSDK(o: any): o is PortfolioIncentivesUnbondingSDKType {
-    return o && (o.$typeUrl === PortfolioIncentivesUnbonding.typeUrl || Timestamp.isSDK(o.completion_time) && typeof o.unbonding_id === "bigint" && PortfolioToken.isSDK(o.token));
+    return o && (o.$typeUrl === PortfolioIncentivesUnbonding.typeUrl || Timestamp.isSDK(o.completion_time) && typeof o.unbonding_id === "bigint" && typeof o.auto_claim === "boolean" && PortfolioToken.isSDK(o.token));
   },
   isAmino(o: any): o is PortfolioIncentivesUnbondingAmino {
-    return o && (o.$typeUrl === PortfolioIncentivesUnbonding.typeUrl || Timestamp.isAmino(o.completion_time) && typeof o.unbonding_id === "bigint" && PortfolioToken.isAmino(o.token));
+    return o && (o.$typeUrl === PortfolioIncentivesUnbonding.typeUrl || Timestamp.isAmino(o.completion_time) && typeof o.unbonding_id === "bigint" && typeof o.auto_claim === "boolean" && PortfolioToken.isAmino(o.token));
   },
   encode(message: PortfolioIncentivesUnbonding, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.completionTime !== undefined) {
@@ -1148,8 +1152,11 @@ export const PortfolioIncentivesUnbonding = {
     if (message.unbondingId !== BigInt(0)) {
       writer.uint32(16).uint64(message.unbondingId);
     }
+    if (message.autoClaim === true) {
+      writer.uint32(24).bool(message.autoClaim);
+    }
     if (message.token !== undefined) {
-      PortfolioToken.encode(message.token, writer.uint32(26).fork()).ldelim();
+      PortfolioToken.encode(message.token, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -1167,6 +1174,9 @@ export const PortfolioIncentivesUnbonding = {
           message.unbondingId = reader.uint64();
           break;
         case 3:
+          message.autoClaim = reader.bool();
+          break;
+        case 4:
           message.token = PortfolioToken.decode(reader, reader.uint32(), useInterfaces);
           break;
         default:
@@ -1180,6 +1190,7 @@ export const PortfolioIncentivesUnbonding = {
     return {
       completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined,
       unbondingId: isSet(object.unbondingId) ? BigInt(object.unbondingId.toString()) : BigInt(0),
+      autoClaim: isSet(object.autoClaim) ? Boolean(object.autoClaim) : false,
       token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined
     };
   },
@@ -1187,6 +1198,7 @@ export const PortfolioIncentivesUnbonding = {
     const obj: any = {};
     message.completionTime !== undefined && (obj.completionTime = fromTimestamp(message.completionTime).toISOString());
     message.unbondingId !== undefined && (obj.unbondingId = (message.unbondingId || BigInt(0)).toString());
+    message.autoClaim !== undefined && (obj.autoClaim = message.autoClaim);
     message.token !== undefined && (obj.token = message.token ? PortfolioToken.toJSON(message.token) : undefined);
     return obj;
   },
@@ -1194,6 +1206,7 @@ export const PortfolioIncentivesUnbonding = {
     const message = createBasePortfolioIncentivesUnbonding();
     message.completionTime = object.completionTime !== undefined && object.completionTime !== null ? Timestamp.fromPartial(object.completionTime) : undefined;
     message.unbondingId = object.unbondingId !== undefined && object.unbondingId !== null ? BigInt(object.unbondingId.toString()) : BigInt(0);
+    message.autoClaim = object.autoClaim ?? false;
     message.token = object.token !== undefined && object.token !== null ? PortfolioToken.fromPartial(object.token) : undefined;
     return message;
   },
@@ -1205,6 +1218,9 @@ export const PortfolioIncentivesUnbonding = {
     if (object.unbonding_id !== undefined && object.unbonding_id !== null) {
       message.unbondingId = BigInt(object.unbonding_id);
     }
+    if (object.auto_claim !== undefined && object.auto_claim !== null) {
+      message.autoClaim = object.auto_claim;
+    }
     if (object.token !== undefined && object.token !== null) {
       message.token = PortfolioToken.fromAmino(object.token);
     }
@@ -1214,6 +1230,7 @@ export const PortfolioIncentivesUnbonding = {
     const obj: any = {};
     obj.completion_time = message.completionTime ? Timestamp.toAmino(message.completionTime, useInterfaces) : undefined;
     obj.unbonding_id = message.unbondingId ? message.unbondingId.toString() : undefined;
+    obj.auto_claim = message.autoClaim === false ? undefined : message.autoClaim;
     obj.token = message.token ? PortfolioToken.toAmino(message.token, useInterfaces) : undefined;
     return obj;
   },
