@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgUpdateParams, MsgRegisterHostChain, MsgUpdateHostChain, MsgStake, MsgStakeLsmShares, MsgUnstake, MsgRedeemUnstaked, MsgInstantUnstake, MsgRebalanceDelegations, MsgRegisterInterchainAccount, MsgCreateMultiSigConnection, MsgUpdateMultiSigConnection, MsgAcknowledgeMultiSigPacket, MsgRegisterHostAccounts, MsgRetryFailedLsmTransfer } from "./tx";
+import { MsgUpdateParams, MsgRegisterHostChain, MsgUpdateHostChain, MsgStake, MsgStakeLsmShares, MsgUnstake, MsgRedeemUnstaked, MsgInstantUnstake, MsgRebalanceDelegations, MsgRedelegate, MsgRegisterInterchainAccount, MsgCreateMultiSigConnection, MsgUpdateMultiSigConnection, MsgAcknowledgeMultiSigPacket, MsgRegisterHostAccounts, MsgRetryFailedLsmTransfer } from "./tx";
 export const AminoConverter = {
   "/pryzm.icstaking.v1.MsgUpdateParams": {
     aminoType: "pryzm/icstaking/v1/UpdateParams",
@@ -45,6 +45,11 @@ export const AminoConverter = {
     aminoType: "pryzm/icstaking/v1/RebalanceDelegations",
     toAmino: MsgRebalanceDelegations.toAmino,
     fromAmino: MsgRebalanceDelegations.fromAmino
+  },
+  "/pryzm.icstaking.v1.MsgRedelegate": {
+    aminoType: "pryzm/icstaking/v1/Redelegate",
+    toAmino: MsgRedelegate.toAmino,
+    fromAmino: MsgRedelegate.fromAmino
   },
   "/pryzm.icstaking.v1.MsgRegisterInterchainAccount": {
     aminoType: "pryzm/icstaking/v1/RegInterchainAccount",

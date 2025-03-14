@@ -2,6 +2,7 @@ import { Params, ParamsAmino, ParamsSDKType, Height, HeightAmino, HeightSDKType 
 import { HostChain, HostChainAmino, HostChainSDKType, Validator, ValidatorAmino, ValidatorSDKType } from "./host_chain";
 import { StakingParams, StakingParamsAmino, StakingParamsSDKType } from "./params";
 import { BoolValue, BoolValueAmino, BoolValueSDKType } from "../../../google/protobuf/wrappers";
+import { RedelegationEntry, RedelegationEntryAmino, RedelegationEntrySDKType } from "./reply";
 import { Acknowledgement, AcknowledgementAmino, AcknowledgementSDKType } from "./multisig";
 import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
@@ -424,6 +425,40 @@ export interface MsgRebalanceDelegationsResponseAminoMsg {
   value: MsgRebalanceDelegationsResponseAmino;
 }
 export interface MsgRebalanceDelegationsResponseSDKType {}
+export interface MsgRedelegate {
+  creator: string;
+  hostChain: string;
+  redelegations: RedelegationEntry[];
+}
+export interface MsgRedelegateProtoMsg {
+  typeUrl: "/pryzm.icstaking.v1.MsgRedelegate";
+  value: Uint8Array;
+}
+export interface MsgRedelegateAmino {
+  creator?: string;
+  host_chain?: string;
+  redelegations?: RedelegationEntryAmino[];
+}
+export interface MsgRedelegateAminoMsg {
+  type: "pryzm/icstaking/v1/Redelegate";
+  value: MsgRedelegateAmino;
+}
+export interface MsgRedelegateSDKType {
+  creator: string;
+  host_chain: string;
+  redelegations: RedelegationEntrySDKType[];
+}
+export interface MsgRedelegateResponse {}
+export interface MsgRedelegateResponseProtoMsg {
+  typeUrl: "/pryzm.icstaking.v1.MsgRedelegateResponse";
+  value: Uint8Array;
+}
+export interface MsgRedelegateResponseAmino {}
+export interface MsgRedelegateResponseAminoMsg {
+  type: "/pryzm.icstaking.v1.MsgRedelegateResponse";
+  value: MsgRedelegateResponseAmino;
+}
+export interface MsgRedelegateResponseSDKType {}
 export interface MsgRegisterInterchainAccount {
   creator: string;
   hostChain: string;
@@ -2560,6 +2595,198 @@ export const MsgRebalanceDelegationsResponse = {
   }
 };
 GlobalDecoderRegistry.register(MsgRebalanceDelegationsResponse.typeUrl, MsgRebalanceDelegationsResponse);
+function createBaseMsgRedelegate(): MsgRedelegate {
+  return {
+    creator: "",
+    hostChain: "",
+    redelegations: []
+  };
+}
+export const MsgRedelegate = {
+  typeUrl: "/pryzm.icstaking.v1.MsgRedelegate",
+  aminoType: "pryzm/icstaking/v1/Redelegate",
+  is(o: any): o is MsgRedelegate {
+    return o && (o.$typeUrl === MsgRedelegate.typeUrl || typeof o.creator === "string" && typeof o.hostChain === "string" && Array.isArray(o.redelegations) && (!o.redelegations.length || RedelegationEntry.is(o.redelegations[0])));
+  },
+  isSDK(o: any): o is MsgRedelegateSDKType {
+    return o && (o.$typeUrl === MsgRedelegate.typeUrl || typeof o.creator === "string" && typeof o.host_chain === "string" && Array.isArray(o.redelegations) && (!o.redelegations.length || RedelegationEntry.isSDK(o.redelegations[0])));
+  },
+  isAmino(o: any): o is MsgRedelegateAmino {
+    return o && (o.$typeUrl === MsgRedelegate.typeUrl || typeof o.creator === "string" && typeof o.host_chain === "string" && Array.isArray(o.redelegations) && (!o.redelegations.length || RedelegationEntry.isAmino(o.redelegations[0])));
+  },
+  encode(message: MsgRedelegate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.hostChain !== "") {
+      writer.uint32(18).string(message.hostChain);
+    }
+    for (const v of message.redelegations) {
+      RedelegationEntry.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): MsgRedelegate {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRedelegate();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.hostChain = reader.string();
+          break;
+        case 3:
+          message.redelegations.push(RedelegationEntry.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgRedelegate {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      hostChain: isSet(object.hostChain) ? String(object.hostChain) : "",
+      redelegations: Array.isArray(object?.redelegations) ? object.redelegations.map((e: any) => RedelegationEntry.fromJSON(e)) : []
+    };
+  },
+  toJSON(message: MsgRedelegate): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.hostChain !== undefined && (obj.hostChain = message.hostChain);
+    if (message.redelegations) {
+      obj.redelegations = message.redelegations.map(e => e ? RedelegationEntry.toJSON(e) : undefined);
+    } else {
+      obj.redelegations = [];
+    }
+    return obj;
+  },
+  fromPartial(object: Partial<MsgRedelegate>): MsgRedelegate {
+    const message = createBaseMsgRedelegate();
+    message.creator = object.creator ?? "";
+    message.hostChain = object.hostChain ?? "";
+    message.redelegations = object.redelegations?.map(e => RedelegationEntry.fromPartial(e)) || [];
+    return message;
+  },
+  fromAmino(object: MsgRedelegateAmino): MsgRedelegate {
+    const message = createBaseMsgRedelegate();
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    if (object.host_chain !== undefined && object.host_chain !== null) {
+      message.hostChain = object.host_chain;
+    }
+    message.redelegations = object.redelegations?.map(e => RedelegationEntry.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: MsgRedelegate, useInterfaces: boolean = true): MsgRedelegateAmino {
+    const obj: any = {};
+    obj.creator = message.creator === "" ? undefined : message.creator;
+    obj.host_chain = message.hostChain === "" ? undefined : message.hostChain;
+    if (message.redelegations) {
+      obj.redelegations = message.redelegations.map(e => e ? RedelegationEntry.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.redelegations = message.redelegations;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: MsgRedelegateAminoMsg): MsgRedelegate {
+    return MsgRedelegate.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgRedelegate, useInterfaces: boolean = true): MsgRedelegateAminoMsg {
+    return {
+      type: "pryzm/icstaking/v1/Redelegate",
+      value: MsgRedelegate.toAmino(message, useInterfaces)
+    };
+  },
+  fromProtoMsg(message: MsgRedelegateProtoMsg, useInterfaces: boolean = true): MsgRedelegate {
+    return MsgRedelegate.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: MsgRedelegate): Uint8Array {
+    return MsgRedelegate.encode(message).finish();
+  },
+  toProtoMsg(message: MsgRedelegate): MsgRedelegateProtoMsg {
+    return {
+      typeUrl: "/pryzm.icstaking.v1.MsgRedelegate",
+      value: MsgRedelegate.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(MsgRedelegate.typeUrl, MsgRedelegate);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRedelegate.aminoType, MsgRedelegate.typeUrl);
+function createBaseMsgRedelegateResponse(): MsgRedelegateResponse {
+  return {};
+}
+export const MsgRedelegateResponse = {
+  typeUrl: "/pryzm.icstaking.v1.MsgRedelegateResponse",
+  is(o: any): o is MsgRedelegateResponse {
+    return o && o.$typeUrl === MsgRedelegateResponse.typeUrl;
+  },
+  isSDK(o: any): o is MsgRedelegateResponseSDKType {
+    return o && o.$typeUrl === MsgRedelegateResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgRedelegateResponseAmino {
+    return o && o.$typeUrl === MsgRedelegateResponse.typeUrl;
+  },
+  encode(_: MsgRedelegateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): MsgRedelegateResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRedelegateResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgRedelegateResponse {
+    return {};
+  },
+  toJSON(_: MsgRedelegateResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<MsgRedelegateResponse>): MsgRedelegateResponse {
+    const message = createBaseMsgRedelegateResponse();
+    return message;
+  },
+  fromAmino(_: MsgRedelegateResponseAmino): MsgRedelegateResponse {
+    const message = createBaseMsgRedelegateResponse();
+    return message;
+  },
+  toAmino(_: MsgRedelegateResponse, useInterfaces: boolean = true): MsgRedelegateResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgRedelegateResponseAminoMsg): MsgRedelegateResponse {
+    return MsgRedelegateResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgRedelegateResponseProtoMsg, useInterfaces: boolean = true): MsgRedelegateResponse {
+    return MsgRedelegateResponse.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: MsgRedelegateResponse): Uint8Array {
+    return MsgRedelegateResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgRedelegateResponse): MsgRedelegateResponseProtoMsg {
+    return {
+      typeUrl: "/pryzm.icstaking.v1.MsgRedelegateResponse",
+      value: MsgRedelegateResponse.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(MsgRedelegateResponse.typeUrl, MsgRedelegateResponse);
 function createBaseMsgRegisterInterchainAccount(): MsgRegisterInterchainAccount {
   return {
     creator: "",
