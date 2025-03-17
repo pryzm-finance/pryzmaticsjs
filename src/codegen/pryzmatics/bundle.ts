@@ -13,59 +13,60 @@ import * as _207 from "./database/trade/user_trade_history";
 import * as _208 from "./database/ystaking/user_stake";
 import * as _209 from "./flowtrade/flow_historical_price";
 import * as _210 from "./flowtrade/flow_position_pair";
-import * as _211 from "./flowtrade/participation_type";
-import * as _212 from "./gov/proposal";
-import * as _213 from "./gov/tally_result";
-import * as _214 from "./gov/vote";
-import * as _215 from "./icns/icns";
-import * as _216 from "./icstaking/host_chain";
-import * as _217 from "./icstaking/transfer_channels";
-import * as _218 from "./icstaking/validator_states";
-import * as _219 from "./icstaking/validators";
-import * as _220 from "./maturity/maturity";
-import * as _221 from "./oracle/ballot_vote_result";
-import * as _222 from "./oracle/pre_vote";
-import * as _223 from "./oracle/slash_window_analysis";
-import * as _224 from "./oracle/slash_window_statistics";
-import * as _225 from "./oracle/slash_window";
-import * as _226 from "./oracle/validator_slash_window_summary";
-import * as _227 from "./oracle/validator_vote_interval_summary";
-import * as _228 from "./oracle/validator";
-import * as _229 from "./oracle/vote_interval_report";
-import * as _230 from "./oracle/vote_interval";
-import * as _231 from "./oracle/vote_summary";
-import * as _232 from "./oracle/vote";
-import * as _233 from "./pgov/proposal";
-import * as _234 from "./pool/extended_pool";
-import * as _235 from "./pool/historical_pool_apr";
-import * as _236 from "./pool/historical_token_yield";
-import * as _237 from "./pool/pool_apr";
-import * as _238 from "./pool/pool_token";
-import * as _239 from "./pool/pool";
-import * as _240 from "./pool/token_yield";
-import * as _241 from "./pool/token";
-import * as _242 from "./price/historical_price";
-import * as _243 from "./price/token_price";
-import * as _244 from "./pryzmnexus/pryzmnexus";
-import * as _245 from "./server/query";
-import * as _246 from "./statistics/market_cap";
-import * as _247 from "./statistics/misc";
-import * as _248 from "./statistics/treasury";
-import * as _249 from "./statistics/tvl";
-import * as _250 from "./trade/directly_connected_token_pair";
-import * as _251 from "./trade/operation_volume";
-import * as _252 from "./trade/order";
-import * as _253 from "./trade/pool_trade_history";
-import * as _254 from "./trade/pryzm_claim_history_record";
-import * as _255 from "./trade/pulse_tradable_pair";
-import * as _256 from "./trade/route_steps";
-import * as _257 from "./trade/swap_steps";
-import * as _258 from "./trade/token_amounts";
-import * as _259 from "./trade/trade_volume";
-import * as _260 from "./trade/user_pulse_trade_volume";
-import * as _261 from "./trade/user_trade_history";
-import * as _262 from "./ystaking/user_stake";
-import * as _357 from "./server/query.lcd";
+import * as _211 from "./flowtrade/flow";
+import * as _212 from "./flowtrade/participation_type";
+import * as _213 from "./gov/proposal";
+import * as _214 from "./gov/tally_result";
+import * as _215 from "./gov/vote";
+import * as _216 from "./icns/icns";
+import * as _217 from "./icstaking/host_chain";
+import * as _218 from "./icstaking/transfer_channels";
+import * as _219 from "./icstaking/validator_states";
+import * as _220 from "./icstaking/validators";
+import * as _221 from "./maturity/maturity";
+import * as _222 from "./oracle/ballot_vote_result";
+import * as _223 from "./oracle/pre_vote";
+import * as _224 from "./oracle/slash_window_analysis";
+import * as _225 from "./oracle/slash_window_statistics";
+import * as _226 from "./oracle/slash_window";
+import * as _227 from "./oracle/validator_slash_window_summary";
+import * as _228 from "./oracle/validator_vote_interval_summary";
+import * as _229 from "./oracle/validator";
+import * as _230 from "./oracle/vote_interval_report";
+import * as _231 from "./oracle/vote_interval";
+import * as _232 from "./oracle/vote_summary";
+import * as _233 from "./oracle/vote";
+import * as _234 from "./pgov/proposal";
+import * as _235 from "./pool/extended_pool";
+import * as _236 from "./pool/historical_pool_apr";
+import * as _237 from "./pool/historical_token_yield";
+import * as _238 from "./pool/pool_apr";
+import * as _239 from "./pool/pool_token";
+import * as _240 from "./pool/pool";
+import * as _241 from "./pool/token_yield";
+import * as _242 from "./pool/token";
+import * as _243 from "./price/historical_price";
+import * as _244 from "./price/token_price";
+import * as _245 from "./pryzmnexus/pryzmnexus";
+import * as _246 from "./server/query";
+import * as _247 from "./statistics/market_cap";
+import * as _248 from "./statistics/misc";
+import * as _249 from "./statistics/treasury";
+import * as _250 from "./statistics/tvl";
+import * as _251 from "./trade/directly_connected_token_pair";
+import * as _252 from "./trade/operation_volume";
+import * as _253 from "./trade/order";
+import * as _254 from "./trade/pool_trade_history";
+import * as _255 from "./trade/pryzm_claim_history_record";
+import * as _256 from "./trade/pulse_tradable_pair";
+import * as _257 from "./trade/route_steps";
+import * as _258 from "./trade/swap_steps";
+import * as _259 from "./trade/token_amounts";
+import * as _260 from "./trade/trade_volume";
+import * as _261 from "./trade/user_pulse_trade_volume";
+import * as _262 from "./trade/user_trade_history";
+import * as _263 from "./ystaking/user_stake";
+import * as _358 from "./server/query.lcd";
 export namespace pryzmatics {
   export const asset = {
     ..._196
@@ -103,27 +104,27 @@ export namespace pryzmatics {
   export const flowtrade = {
     ..._209,
     ..._210,
-    ..._211
+    ..._211,
+    ..._212
   };
   export const gov = {
-    ..._212,
     ..._213,
-    ..._214
-  };
-  export const icns = {
+    ..._214,
     ..._215
   };
+  export const icns = {
+    ..._216
+  };
   export const icstaking = {
-    ..._216,
     ..._217,
     ..._218,
-    ..._219
-  };
-  export const maturity = {
+    ..._219,
     ..._220
   };
+  export const maturity = {
+    ..._221
+  };
   export const oracle = {
-    ..._221,
     ..._222,
     ..._223,
     ..._224,
@@ -134,40 +135,40 @@ export namespace pryzmatics {
     ..._229,
     ..._230,
     ..._231,
-    ..._232
-  };
-  export const pgov = {
+    ..._232,
     ..._233
   };
+  export const pgov = {
+    ..._234
+  };
   export const pool = {
-    ..._234,
     ..._235,
     ..._236,
     ..._237,
     ..._238,
     ..._239,
     ..._240,
-    ..._241
+    ..._241,
+    ..._242
   };
   export const price = {
-    ..._242,
-    ..._243
-  };
-  export const pryzmnexus = {
+    ..._243,
     ..._244
   };
+  export const pryzmnexus = {
+    ..._245
+  };
   export const server = {
-    ..._245,
-    ..._357
+    ..._246,
+    ..._358
   };
   export const statistics = {
-    ..._246,
     ..._247,
     ..._248,
-    ..._249
+    ..._249,
+    ..._250
   };
   export const trade = {
-    ..._250,
     ..._251,
     ..._252,
     ..._253,
@@ -178,9 +179,10 @@ export namespace pryzmatics {
     ..._258,
     ..._259,
     ..._260,
-    ..._261
+    ..._261,
+    ..._262
   };
   export const ystaking = {
-    ..._262
+    ..._263
   };
 }

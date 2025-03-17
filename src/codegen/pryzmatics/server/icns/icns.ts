@@ -4,6 +4,8 @@ import { isSet } from "../../../helpers";
 import { GlobalDecoderRegistry } from "../../../registry";
 export interface QueryIcnsByAddressRequest {
   address: string;
+  /** if set, the icns should have been minted for the pryzm address directly (instead of the converted osmo address) */
+  strictCheck: boolean;
 }
 export interface QueryIcnsByAddressRequestProtoMsg {
   typeUrl: "/pryzmatics.server.icns.QueryIcnsByAddressRequest";
@@ -11,6 +13,8 @@ export interface QueryIcnsByAddressRequestProtoMsg {
 }
 export interface QueryIcnsByAddressRequestAmino {
   address?: string;
+  /** if set, the icns should have been minted for the pryzm address directly (instead of the converted osmo address) */
+  strict_check?: boolean;
 }
 export interface QueryIcnsByAddressRequestAminoMsg {
   type: "/pryzmatics.server.icns.QueryIcnsByAddressRequest";
@@ -18,6 +22,7 @@ export interface QueryIcnsByAddressRequestAminoMsg {
 }
 export interface QueryIcnsByAddressRequestSDKType {
   address: string;
+  strict_check: boolean;
 }
 export interface QueryIcnsByAddressResponse {
   icns: IcnsRecord;
@@ -72,23 +77,27 @@ export interface QueryIcnsByNameResponseSDKType {
 }
 function createBaseQueryIcnsByAddressRequest(): QueryIcnsByAddressRequest {
   return {
-    address: ""
+    address: "",
+    strictCheck: false
   };
 }
 export const QueryIcnsByAddressRequest = {
   typeUrl: "/pryzmatics.server.icns.QueryIcnsByAddressRequest",
   is(o: any): o is QueryIcnsByAddressRequest {
-    return o && (o.$typeUrl === QueryIcnsByAddressRequest.typeUrl || typeof o.address === "string");
+    return o && (o.$typeUrl === QueryIcnsByAddressRequest.typeUrl || typeof o.address === "string" && typeof o.strictCheck === "boolean");
   },
   isSDK(o: any): o is QueryIcnsByAddressRequestSDKType {
-    return o && (o.$typeUrl === QueryIcnsByAddressRequest.typeUrl || typeof o.address === "string");
+    return o && (o.$typeUrl === QueryIcnsByAddressRequest.typeUrl || typeof o.address === "string" && typeof o.strict_check === "boolean");
   },
   isAmino(o: any): o is QueryIcnsByAddressRequestAmino {
-    return o && (o.$typeUrl === QueryIcnsByAddressRequest.typeUrl || typeof o.address === "string");
+    return o && (o.$typeUrl === QueryIcnsByAddressRequest.typeUrl || typeof o.address === "string" && typeof o.strict_check === "boolean");
   },
   encode(message: QueryIcnsByAddressRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
+    }
+    if (message.strictCheck === true) {
+      writer.uint32(16).bool(message.strictCheck);
     }
     return writer;
   },
@@ -102,6 +111,9 @@ export const QueryIcnsByAddressRequest = {
         case 1:
           message.address = reader.string();
           break;
+        case 2:
+          message.strictCheck = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -111,17 +123,20 @@ export const QueryIcnsByAddressRequest = {
   },
   fromJSON(object: any): QueryIcnsByAddressRequest {
     return {
-      address: isSet(object.address) ? String(object.address) : ""
+      address: isSet(object.address) ? String(object.address) : "",
+      strictCheck: isSet(object.strictCheck) ? Boolean(object.strictCheck) : false
     };
   },
   toJSON(message: QueryIcnsByAddressRequest): unknown {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
+    message.strictCheck !== undefined && (obj.strictCheck = message.strictCheck);
     return obj;
   },
   fromPartial(object: Partial<QueryIcnsByAddressRequest>): QueryIcnsByAddressRequest {
     const message = createBaseQueryIcnsByAddressRequest();
     message.address = object.address ?? "";
+    message.strictCheck = object.strictCheck ?? false;
     return message;
   },
   fromAmino(object: QueryIcnsByAddressRequestAmino): QueryIcnsByAddressRequest {
@@ -129,11 +144,15 @@ export const QueryIcnsByAddressRequest = {
     if (object.address !== undefined && object.address !== null) {
       message.address = object.address;
     }
+    if (object.strict_check !== undefined && object.strict_check !== null) {
+      message.strictCheck = object.strict_check;
+    }
     return message;
   },
   toAmino(message: QueryIcnsByAddressRequest, useInterfaces: boolean = true): QueryIcnsByAddressRequestAmino {
     const obj: any = {};
     obj.address = message.address === "" ? undefined : message.address;
+    obj.strict_check = message.strictCheck === false ? undefined : message.strictCheck;
     return obj;
   },
   fromAminoMsg(object: QueryIcnsByAddressRequestAminoMsg): QueryIcnsByAddressRequest {

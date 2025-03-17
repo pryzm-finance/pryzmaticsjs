@@ -1312,8 +1312,14 @@ export class LCDQueryClient {
   }
   /* IcnsByAddress */
   async icnsByAddress(params: QueryIcnsByAddressRequest): Promise<QueryIcnsByAddressResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.strictCheck !== "undefined") {
+      options.params.strict_check = params.strictCheck;
+    }
     const endpoint = `pryzmatics/icns/by_address/${params.address}`;
-    return await this.req.get<QueryIcnsByAddressResponseSDKType>(endpoint);
+    return await this.req.get<QueryIcnsByAddressResponseSDKType>(endpoint, options);
   }
   /* IcnsByName */
   async icnsByName(params: QueryIcnsByNameRequest): Promise<QueryIcnsByNameResponseSDKType> {
