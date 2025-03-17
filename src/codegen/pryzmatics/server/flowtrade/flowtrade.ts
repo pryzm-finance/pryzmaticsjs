@@ -1,4 +1,4 @@
-import { Flow, FlowAmino, FlowSDKType } from "../../../refractedlabs/flowtrade/v1/flow";
+import { Flow, FlowAmino, FlowSDKType } from "../../flowtrade/flow";
 import { ParticipationType, participationTypeFromJSON, participationTypeToJSON } from "../../flowtrade/participation_type";
 import { FlowPositionPairOrderBy, FlowPositionPairOrderByAmino, FlowPositionPairOrderBySDKType } from "../../database/flowtrade/flow_position_pair";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
