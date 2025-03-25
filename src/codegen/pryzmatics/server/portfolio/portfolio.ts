@@ -93,6 +93,7 @@ export interface PortfolioStakingDelegation {
   rewards: DecCoin[];
   shares: string;
   token: PortfolioToken;
+  validatorMoniker: string;
 }
 export interface PortfolioStakingDelegationProtoMsg {
   typeUrl: "/pryzmatics.server.portfolio.PortfolioStakingDelegation";
@@ -103,6 +104,7 @@ export interface PortfolioStakingDelegationAmino {
   rewards?: DecCoinAmino[];
   shares?: string;
   token?: PortfolioTokenAmino;
+  validator_moniker?: string;
 }
 export interface PortfolioStakingDelegationAminoMsg {
   type: "/pryzmatics.server.portfolio.PortfolioStakingDelegation";
@@ -113,12 +115,14 @@ export interface PortfolioStakingDelegationSDKType {
   rewards: DecCoinSDKType[];
   shares: string;
   token: PortfolioTokenSDKType;
+  validator_moniker: string;
 }
 export interface PortfolioStakingUnbonding {
   validatorAddress: string;
   completionTime: Timestamp;
   unbondingId: bigint;
   token: PortfolioToken;
+  validatorMoniker: string;
 }
 export interface PortfolioStakingUnbondingProtoMsg {
   typeUrl: "/pryzmatics.server.portfolio.PortfolioStakingUnbonding";
@@ -129,6 +133,7 @@ export interface PortfolioStakingUnbondingAmino {
   completion_time?: string;
   unbonding_id?: string;
   token?: PortfolioTokenAmino;
+  validator_moniker?: string;
 }
 export interface PortfolioStakingUnbondingAminoMsg {
   type: "/pryzmatics.server.portfolio.PortfolioStakingUnbonding";
@@ -139,6 +144,7 @@ export interface PortfolioStakingUnbondingSDKType {
   completion_time: TimestampSDKType;
   unbonding_id: bigint;
   token: PortfolioTokenSDKType;
+  validator_moniker: string;
 }
 export interface PortfolioIncentivesBond {
   rewards: Coin[];
@@ -191,6 +197,7 @@ export interface PortfolioAllianceDelegation {
   rewards: Coin[];
   shares: string;
   token: PortfolioToken;
+  validatorMoniker: string;
 }
 export interface PortfolioAllianceDelegationProtoMsg {
   typeUrl: "/pryzmatics.server.portfolio.PortfolioAllianceDelegation";
@@ -201,6 +208,7 @@ export interface PortfolioAllianceDelegationAmino {
   rewards?: CoinAmino[];
   shares?: string;
   token?: PortfolioTokenAmino;
+  validator_moniker?: string;
 }
 export interface PortfolioAllianceDelegationAminoMsg {
   type: "/pryzmatics.server.portfolio.PortfolioAllianceDelegation";
@@ -211,11 +219,13 @@ export interface PortfolioAllianceDelegationSDKType {
   rewards: CoinSDKType[];
   shares: string;
   token: PortfolioTokenSDKType;
+  validator_moniker: string;
 }
 export interface PortfolioAllianceUnbonding {
   validatorAddress: string;
   completionTime: Timestamp;
   token: PortfolioToken;
+  validatorMoniker: string;
 }
 export interface PortfolioAllianceUnbondingProtoMsg {
   typeUrl: "/pryzmatics.server.portfolio.PortfolioAllianceUnbonding";
@@ -225,6 +235,7 @@ export interface PortfolioAllianceUnbondingAmino {
   validator_address?: string;
   completion_time?: string;
   token?: PortfolioTokenAmino;
+  validator_moniker?: string;
 }
 export interface PortfolioAllianceUnbondingAminoMsg {
   type: "/pryzmatics.server.portfolio.PortfolioAllianceUnbonding";
@@ -234,6 +245,7 @@ export interface PortfolioAllianceUnbondingSDKType {
   validator_address: string;
   completion_time: TimestampSDKType;
   token: PortfolioTokenSDKType;
+  validator_moniker: string;
 }
 export interface PortfolioIcstakingUnbonding {
   hostChainId: string;
@@ -772,19 +784,20 @@ function createBasePortfolioStakingDelegation(): PortfolioStakingDelegation {
     validatorAddress: "",
     rewards: [],
     shares: "",
-    token: PortfolioToken.fromPartial({})
+    token: PortfolioToken.fromPartial({}),
+    validatorMoniker: ""
   };
 }
 export const PortfolioStakingDelegation = {
   typeUrl: "/pryzmatics.server.portfolio.PortfolioStakingDelegation",
   is(o: any): o is PortfolioStakingDelegation {
-    return o && (o.$typeUrl === PortfolioStakingDelegation.typeUrl || typeof o.validatorAddress === "string" && Array.isArray(o.rewards) && (!o.rewards.length || DecCoin.is(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.is(o.token));
+    return o && (o.$typeUrl === PortfolioStakingDelegation.typeUrl || typeof o.validatorAddress === "string" && Array.isArray(o.rewards) && (!o.rewards.length || DecCoin.is(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.is(o.token) && typeof o.validatorMoniker === "string");
   },
   isSDK(o: any): o is PortfolioStakingDelegationSDKType {
-    return o && (o.$typeUrl === PortfolioStakingDelegation.typeUrl || typeof o.validator_address === "string" && Array.isArray(o.rewards) && (!o.rewards.length || DecCoin.isSDK(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.isSDK(o.token));
+    return o && (o.$typeUrl === PortfolioStakingDelegation.typeUrl || typeof o.validator_address === "string" && Array.isArray(o.rewards) && (!o.rewards.length || DecCoin.isSDK(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.isSDK(o.token) && typeof o.validator_moniker === "string");
   },
   isAmino(o: any): o is PortfolioStakingDelegationAmino {
-    return o && (o.$typeUrl === PortfolioStakingDelegation.typeUrl || typeof o.validator_address === "string" && Array.isArray(o.rewards) && (!o.rewards.length || DecCoin.isAmino(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.isAmino(o.token));
+    return o && (o.$typeUrl === PortfolioStakingDelegation.typeUrl || typeof o.validator_address === "string" && Array.isArray(o.rewards) && (!o.rewards.length || DecCoin.isAmino(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.isAmino(o.token) && typeof o.validator_moniker === "string");
   },
   encode(message: PortfolioStakingDelegation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddress !== "") {
@@ -798,6 +811,9 @@ export const PortfolioStakingDelegation = {
     }
     if (message.token !== undefined) {
       PortfolioToken.encode(message.token, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.validatorMoniker !== "") {
+      writer.uint32(42).string(message.validatorMoniker);
     }
     return writer;
   },
@@ -820,6 +836,9 @@ export const PortfolioStakingDelegation = {
         case 4:
           message.token = PortfolioToken.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 5:
+          message.validatorMoniker = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -832,7 +851,8 @@ export const PortfolioStakingDelegation = {
       validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
       rewards: Array.isArray(object?.rewards) ? object.rewards.map((e: any) => DecCoin.fromJSON(e)) : [],
       shares: isSet(object.shares) ? String(object.shares) : "",
-      token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined
+      token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined,
+      validatorMoniker: isSet(object.validatorMoniker) ? String(object.validatorMoniker) : ""
     };
   },
   toJSON(message: PortfolioStakingDelegation): unknown {
@@ -845,6 +865,7 @@ export const PortfolioStakingDelegation = {
     }
     message.shares !== undefined && (obj.shares = message.shares);
     message.token !== undefined && (obj.token = message.token ? PortfolioToken.toJSON(message.token) : undefined);
+    message.validatorMoniker !== undefined && (obj.validatorMoniker = message.validatorMoniker);
     return obj;
   },
   fromPartial(object: Partial<PortfolioStakingDelegation>): PortfolioStakingDelegation {
@@ -853,6 +874,7 @@ export const PortfolioStakingDelegation = {
     message.rewards = object.rewards?.map(e => DecCoin.fromPartial(e)) || [];
     message.shares = object.shares ?? "";
     message.token = object.token !== undefined && object.token !== null ? PortfolioToken.fromPartial(object.token) : undefined;
+    message.validatorMoniker = object.validatorMoniker ?? "";
     return message;
   },
   fromAmino(object: PortfolioStakingDelegationAmino): PortfolioStakingDelegation {
@@ -867,6 +889,9 @@ export const PortfolioStakingDelegation = {
     if (object.token !== undefined && object.token !== null) {
       message.token = PortfolioToken.fromAmino(object.token);
     }
+    if (object.validator_moniker !== undefined && object.validator_moniker !== null) {
+      message.validatorMoniker = object.validator_moniker;
+    }
     return message;
   },
   toAmino(message: PortfolioStakingDelegation, useInterfaces: boolean = true): PortfolioStakingDelegationAmino {
@@ -879,6 +904,7 @@ export const PortfolioStakingDelegation = {
     }
     obj.shares = padDecimal(message.shares) === "" ? undefined : padDecimal(message.shares);
     obj.token = message.token ? PortfolioToken.toAmino(message.token, useInterfaces) : undefined;
+    obj.validator_moniker = message.validatorMoniker === "" ? undefined : message.validatorMoniker;
     return obj;
   },
   fromAminoMsg(object: PortfolioStakingDelegationAminoMsg): PortfolioStakingDelegation {
@@ -903,19 +929,20 @@ function createBasePortfolioStakingUnbonding(): PortfolioStakingUnbonding {
     validatorAddress: "",
     completionTime: Timestamp.fromPartial({}),
     unbondingId: BigInt(0),
-    token: PortfolioToken.fromPartial({})
+    token: PortfolioToken.fromPartial({}),
+    validatorMoniker: ""
   };
 }
 export const PortfolioStakingUnbonding = {
   typeUrl: "/pryzmatics.server.portfolio.PortfolioStakingUnbonding",
   is(o: any): o is PortfolioStakingUnbonding {
-    return o && (o.$typeUrl === PortfolioStakingUnbonding.typeUrl || typeof o.validatorAddress === "string" && Timestamp.is(o.completionTime) && typeof o.unbondingId === "bigint" && PortfolioToken.is(o.token));
+    return o && (o.$typeUrl === PortfolioStakingUnbonding.typeUrl || typeof o.validatorAddress === "string" && Timestamp.is(o.completionTime) && typeof o.unbondingId === "bigint" && PortfolioToken.is(o.token) && typeof o.validatorMoniker === "string");
   },
   isSDK(o: any): o is PortfolioStakingUnbondingSDKType {
-    return o && (o.$typeUrl === PortfolioStakingUnbonding.typeUrl || typeof o.validator_address === "string" && Timestamp.isSDK(o.completion_time) && typeof o.unbonding_id === "bigint" && PortfolioToken.isSDK(o.token));
+    return o && (o.$typeUrl === PortfolioStakingUnbonding.typeUrl || typeof o.validator_address === "string" && Timestamp.isSDK(o.completion_time) && typeof o.unbonding_id === "bigint" && PortfolioToken.isSDK(o.token) && typeof o.validator_moniker === "string");
   },
   isAmino(o: any): o is PortfolioStakingUnbondingAmino {
-    return o && (o.$typeUrl === PortfolioStakingUnbonding.typeUrl || typeof o.validator_address === "string" && Timestamp.isAmino(o.completion_time) && typeof o.unbonding_id === "bigint" && PortfolioToken.isAmino(o.token));
+    return o && (o.$typeUrl === PortfolioStakingUnbonding.typeUrl || typeof o.validator_address === "string" && Timestamp.isAmino(o.completion_time) && typeof o.unbonding_id === "bigint" && PortfolioToken.isAmino(o.token) && typeof o.validator_moniker === "string");
   },
   encode(message: PortfolioStakingUnbonding, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddress !== "") {
@@ -929,6 +956,9 @@ export const PortfolioStakingUnbonding = {
     }
     if (message.token !== undefined) {
       PortfolioToken.encode(message.token, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.validatorMoniker !== "") {
+      writer.uint32(42).string(message.validatorMoniker);
     }
     return writer;
   },
@@ -951,6 +981,9 @@ export const PortfolioStakingUnbonding = {
         case 4:
           message.token = PortfolioToken.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 5:
+          message.validatorMoniker = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -963,7 +996,8 @@ export const PortfolioStakingUnbonding = {
       validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
       completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined,
       unbondingId: isSet(object.unbondingId) ? BigInt(object.unbondingId.toString()) : BigInt(0),
-      token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined
+      token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined,
+      validatorMoniker: isSet(object.validatorMoniker) ? String(object.validatorMoniker) : ""
     };
   },
   toJSON(message: PortfolioStakingUnbonding): unknown {
@@ -972,6 +1006,7 @@ export const PortfolioStakingUnbonding = {
     message.completionTime !== undefined && (obj.completionTime = fromTimestamp(message.completionTime).toISOString());
     message.unbondingId !== undefined && (obj.unbondingId = (message.unbondingId || BigInt(0)).toString());
     message.token !== undefined && (obj.token = message.token ? PortfolioToken.toJSON(message.token) : undefined);
+    message.validatorMoniker !== undefined && (obj.validatorMoniker = message.validatorMoniker);
     return obj;
   },
   fromPartial(object: Partial<PortfolioStakingUnbonding>): PortfolioStakingUnbonding {
@@ -980,6 +1015,7 @@ export const PortfolioStakingUnbonding = {
     message.completionTime = object.completionTime !== undefined && object.completionTime !== null ? Timestamp.fromPartial(object.completionTime) : undefined;
     message.unbondingId = object.unbondingId !== undefined && object.unbondingId !== null ? BigInt(object.unbondingId.toString()) : BigInt(0);
     message.token = object.token !== undefined && object.token !== null ? PortfolioToken.fromPartial(object.token) : undefined;
+    message.validatorMoniker = object.validatorMoniker ?? "";
     return message;
   },
   fromAmino(object: PortfolioStakingUnbondingAmino): PortfolioStakingUnbonding {
@@ -996,6 +1032,9 @@ export const PortfolioStakingUnbonding = {
     if (object.token !== undefined && object.token !== null) {
       message.token = PortfolioToken.fromAmino(object.token);
     }
+    if (object.validator_moniker !== undefined && object.validator_moniker !== null) {
+      message.validatorMoniker = object.validator_moniker;
+    }
     return message;
   },
   toAmino(message: PortfolioStakingUnbonding, useInterfaces: boolean = true): PortfolioStakingUnbondingAmino {
@@ -1004,6 +1043,7 @@ export const PortfolioStakingUnbonding = {
     obj.completion_time = message.completionTime ? Timestamp.toAmino(message.completionTime, useInterfaces) : undefined;
     obj.unbonding_id = message.unbondingId ? message.unbondingId.toString() : undefined;
     obj.token = message.token ? PortfolioToken.toAmino(message.token, useInterfaces) : undefined;
+    obj.validator_moniker = message.validatorMoniker === "" ? undefined : message.validatorMoniker;
     return obj;
   },
   fromAminoMsg(object: PortfolioStakingUnbondingAminoMsg): PortfolioStakingUnbonding {
@@ -1256,19 +1296,20 @@ function createBasePortfolioAllianceDelegation(): PortfolioAllianceDelegation {
     validatorAddress: "",
     rewards: [],
     shares: "",
-    token: PortfolioToken.fromPartial({})
+    token: PortfolioToken.fromPartial({}),
+    validatorMoniker: ""
   };
 }
 export const PortfolioAllianceDelegation = {
   typeUrl: "/pryzmatics.server.portfolio.PortfolioAllianceDelegation",
   is(o: any): o is PortfolioAllianceDelegation {
-    return o && (o.$typeUrl === PortfolioAllianceDelegation.typeUrl || typeof o.validatorAddress === "string" && Array.isArray(o.rewards) && (!o.rewards.length || Coin.is(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.is(o.token));
+    return o && (o.$typeUrl === PortfolioAllianceDelegation.typeUrl || typeof o.validatorAddress === "string" && Array.isArray(o.rewards) && (!o.rewards.length || Coin.is(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.is(o.token) && typeof o.validatorMoniker === "string");
   },
   isSDK(o: any): o is PortfolioAllianceDelegationSDKType {
-    return o && (o.$typeUrl === PortfolioAllianceDelegation.typeUrl || typeof o.validator_address === "string" && Array.isArray(o.rewards) && (!o.rewards.length || Coin.isSDK(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.isSDK(o.token));
+    return o && (o.$typeUrl === PortfolioAllianceDelegation.typeUrl || typeof o.validator_address === "string" && Array.isArray(o.rewards) && (!o.rewards.length || Coin.isSDK(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.isSDK(o.token) && typeof o.validator_moniker === "string");
   },
   isAmino(o: any): o is PortfolioAllianceDelegationAmino {
-    return o && (o.$typeUrl === PortfolioAllianceDelegation.typeUrl || typeof o.validator_address === "string" && Array.isArray(o.rewards) && (!o.rewards.length || Coin.isAmino(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.isAmino(o.token));
+    return o && (o.$typeUrl === PortfolioAllianceDelegation.typeUrl || typeof o.validator_address === "string" && Array.isArray(o.rewards) && (!o.rewards.length || Coin.isAmino(o.rewards[0])) && typeof o.shares === "string" && PortfolioToken.isAmino(o.token) && typeof o.validator_moniker === "string");
   },
   encode(message: PortfolioAllianceDelegation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddress !== "") {
@@ -1282,6 +1323,9 @@ export const PortfolioAllianceDelegation = {
     }
     if (message.token !== undefined) {
       PortfolioToken.encode(message.token, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.validatorMoniker !== "") {
+      writer.uint32(42).string(message.validatorMoniker);
     }
     return writer;
   },
@@ -1304,6 +1348,9 @@ export const PortfolioAllianceDelegation = {
         case 4:
           message.token = PortfolioToken.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 5:
+          message.validatorMoniker = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1316,7 +1363,8 @@ export const PortfolioAllianceDelegation = {
       validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
       rewards: Array.isArray(object?.rewards) ? object.rewards.map((e: any) => Coin.fromJSON(e)) : [],
       shares: isSet(object.shares) ? String(object.shares) : "",
-      token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined
+      token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined,
+      validatorMoniker: isSet(object.validatorMoniker) ? String(object.validatorMoniker) : ""
     };
   },
   toJSON(message: PortfolioAllianceDelegation): unknown {
@@ -1329,6 +1377,7 @@ export const PortfolioAllianceDelegation = {
     }
     message.shares !== undefined && (obj.shares = message.shares);
     message.token !== undefined && (obj.token = message.token ? PortfolioToken.toJSON(message.token) : undefined);
+    message.validatorMoniker !== undefined && (obj.validatorMoniker = message.validatorMoniker);
     return obj;
   },
   fromPartial(object: Partial<PortfolioAllianceDelegation>): PortfolioAllianceDelegation {
@@ -1337,6 +1386,7 @@ export const PortfolioAllianceDelegation = {
     message.rewards = object.rewards?.map(e => Coin.fromPartial(e)) || [];
     message.shares = object.shares ?? "";
     message.token = object.token !== undefined && object.token !== null ? PortfolioToken.fromPartial(object.token) : undefined;
+    message.validatorMoniker = object.validatorMoniker ?? "";
     return message;
   },
   fromAmino(object: PortfolioAllianceDelegationAmino): PortfolioAllianceDelegation {
@@ -1351,6 +1401,9 @@ export const PortfolioAllianceDelegation = {
     if (object.token !== undefined && object.token !== null) {
       message.token = PortfolioToken.fromAmino(object.token);
     }
+    if (object.validator_moniker !== undefined && object.validator_moniker !== null) {
+      message.validatorMoniker = object.validator_moniker;
+    }
     return message;
   },
   toAmino(message: PortfolioAllianceDelegation, useInterfaces: boolean = true): PortfolioAllianceDelegationAmino {
@@ -1363,6 +1416,7 @@ export const PortfolioAllianceDelegation = {
     }
     obj.shares = padDecimal(message.shares) === "" ? undefined : padDecimal(message.shares);
     obj.token = message.token ? PortfolioToken.toAmino(message.token, useInterfaces) : undefined;
+    obj.validator_moniker = message.validatorMoniker === "" ? undefined : message.validatorMoniker;
     return obj;
   },
   fromAminoMsg(object: PortfolioAllianceDelegationAminoMsg): PortfolioAllianceDelegation {
@@ -1386,19 +1440,20 @@ function createBasePortfolioAllianceUnbonding(): PortfolioAllianceUnbonding {
   return {
     validatorAddress: "",
     completionTime: Timestamp.fromPartial({}),
-    token: PortfolioToken.fromPartial({})
+    token: PortfolioToken.fromPartial({}),
+    validatorMoniker: ""
   };
 }
 export const PortfolioAllianceUnbonding = {
   typeUrl: "/pryzmatics.server.portfolio.PortfolioAllianceUnbonding",
   is(o: any): o is PortfolioAllianceUnbonding {
-    return o && (o.$typeUrl === PortfolioAllianceUnbonding.typeUrl || typeof o.validatorAddress === "string" && Timestamp.is(o.completionTime) && PortfolioToken.is(o.token));
+    return o && (o.$typeUrl === PortfolioAllianceUnbonding.typeUrl || typeof o.validatorAddress === "string" && Timestamp.is(o.completionTime) && PortfolioToken.is(o.token) && typeof o.validatorMoniker === "string");
   },
   isSDK(o: any): o is PortfolioAllianceUnbondingSDKType {
-    return o && (o.$typeUrl === PortfolioAllianceUnbonding.typeUrl || typeof o.validator_address === "string" && Timestamp.isSDK(o.completion_time) && PortfolioToken.isSDK(o.token));
+    return o && (o.$typeUrl === PortfolioAllianceUnbonding.typeUrl || typeof o.validator_address === "string" && Timestamp.isSDK(o.completion_time) && PortfolioToken.isSDK(o.token) && typeof o.validator_moniker === "string");
   },
   isAmino(o: any): o is PortfolioAllianceUnbondingAmino {
-    return o && (o.$typeUrl === PortfolioAllianceUnbonding.typeUrl || typeof o.validator_address === "string" && Timestamp.isAmino(o.completion_time) && PortfolioToken.isAmino(o.token));
+    return o && (o.$typeUrl === PortfolioAllianceUnbonding.typeUrl || typeof o.validator_address === "string" && Timestamp.isAmino(o.completion_time) && PortfolioToken.isAmino(o.token) && typeof o.validator_moniker === "string");
   },
   encode(message: PortfolioAllianceUnbonding, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddress !== "") {
@@ -1409,6 +1464,9 @@ export const PortfolioAllianceUnbonding = {
     }
     if (message.token !== undefined) {
       PortfolioToken.encode(message.token, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.validatorMoniker !== "") {
+      writer.uint32(34).string(message.validatorMoniker);
     }
     return writer;
   },
@@ -1428,6 +1486,9 @@ export const PortfolioAllianceUnbonding = {
         case 3:
           message.token = PortfolioToken.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 4:
+          message.validatorMoniker = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1439,7 +1500,8 @@ export const PortfolioAllianceUnbonding = {
     return {
       validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
       completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined,
-      token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined
+      token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined,
+      validatorMoniker: isSet(object.validatorMoniker) ? String(object.validatorMoniker) : ""
     };
   },
   toJSON(message: PortfolioAllianceUnbonding): unknown {
@@ -1447,6 +1509,7 @@ export const PortfolioAllianceUnbonding = {
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
     message.completionTime !== undefined && (obj.completionTime = fromTimestamp(message.completionTime).toISOString());
     message.token !== undefined && (obj.token = message.token ? PortfolioToken.toJSON(message.token) : undefined);
+    message.validatorMoniker !== undefined && (obj.validatorMoniker = message.validatorMoniker);
     return obj;
   },
   fromPartial(object: Partial<PortfolioAllianceUnbonding>): PortfolioAllianceUnbonding {
@@ -1454,6 +1517,7 @@ export const PortfolioAllianceUnbonding = {
     message.validatorAddress = object.validatorAddress ?? "";
     message.completionTime = object.completionTime !== undefined && object.completionTime !== null ? Timestamp.fromPartial(object.completionTime) : undefined;
     message.token = object.token !== undefined && object.token !== null ? PortfolioToken.fromPartial(object.token) : undefined;
+    message.validatorMoniker = object.validatorMoniker ?? "";
     return message;
   },
   fromAmino(object: PortfolioAllianceUnbondingAmino): PortfolioAllianceUnbonding {
@@ -1467,6 +1531,9 @@ export const PortfolioAllianceUnbonding = {
     if (object.token !== undefined && object.token !== null) {
       message.token = PortfolioToken.fromAmino(object.token);
     }
+    if (object.validator_moniker !== undefined && object.validator_moniker !== null) {
+      message.validatorMoniker = object.validator_moniker;
+    }
     return message;
   },
   toAmino(message: PortfolioAllianceUnbonding, useInterfaces: boolean = true): PortfolioAllianceUnbondingAmino {
@@ -1474,6 +1541,7 @@ export const PortfolioAllianceUnbonding = {
     obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
     obj.completion_time = message.completionTime ? Timestamp.toAmino(message.completionTime, useInterfaces) : undefined;
     obj.token = message.token ? PortfolioToken.toAmino(message.token, useInterfaces) : undefined;
+    obj.validator_moniker = message.validatorMoniker === "" ? undefined : message.validatorMoniker;
     return obj;
   },
   fromAminoMsg(object: PortfolioAllianceUnbondingAminoMsg): PortfolioAllianceUnbonding {

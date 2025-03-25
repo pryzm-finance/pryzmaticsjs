@@ -50,6 +50,7 @@ message PortfolioStakingDelegation {
     (gogoproto.nullable) = false
   ];
   PortfolioToken token = 4 [(gogoproto.nullable) = false];
+  string validator_moniker = 5;
 }
 
 message PortfolioStakingUnbonding {
@@ -60,6 +61,7 @@ message PortfolioStakingUnbonding {
   ];
   uint64 unbonding_id = 3;
   PortfolioToken token = 4 [(gogoproto.nullable) = false];
+  string validator_moniker = 5;
 }
 
 message PortfolioIncentivesBond {
@@ -92,6 +94,7 @@ message PortfolioAllianceDelegation {
     (gogoproto.nullable) = false
   ];
   PortfolioToken token = 4 [(gogoproto.nullable) = false];
+  string validator_moniker = 5;
 }
 
 message PortfolioAllianceUnbonding {
@@ -101,6 +104,7 @@ message PortfolioAllianceUnbonding {
     (gogoproto.stdtime) = true
   ];
   PortfolioToken token = 3 [(gogoproto.nullable) = false];
+  string validator_moniker = 4;
 }
 
 message PortfolioIcstakingUnbonding {
