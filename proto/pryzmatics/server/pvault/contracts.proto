@@ -1,0 +1,19 @@
+syntax = "proto3";
+package pryzmatics.server.pvault;
+
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "pryzmatics/pvault/contract.proto";
+import "pryzmatics/database/pvault/contract.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/pvault";
+
+message QueryPVaultContractsRequest {
+  pryzmatics.database.pvault.PVaultContractOrderBy order_by = 1 [(gogoproto.nullable) = true];
+  cosmos.base.query.v1beta1.PageRequest pagination = 2 [(gogoproto.nullable) = true];
+}
+
+message QueryPVaultContractsResponse {
+  repeated pryzmatics.pvault.PVaultContract contracts = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}

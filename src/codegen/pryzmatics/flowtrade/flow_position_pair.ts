@@ -1,4 +1,4 @@
-import { Flow, FlowAmino, FlowSDKType } from "../../refractedlabs/flowtrade/v1/flow";
+import { Flow, FlowAmino, FlowSDKType } from "./flow";
 import { Position, PositionAmino, PositionSDKType } from "../../refractedlabs/flowtrade/v1/position";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet } from "../../helpers";

@@ -78,6 +78,9 @@ import "pryzmatics/server/portfolio/portfolio.proto";
 
 import "pryzmatics/server/icns/icns.proto";
 
+import "pryzmatics/server/pvault/purchase_simulation.proto";
+import "pryzmatics/server/pvault/contracts.proto";
+
 option go_package = "github.com/pryzm-finance/pryzmatics/server";
 
 service Query {
@@ -425,5 +428,13 @@ service Query {
 
   rpc UserPryzmClaimHistory(pryzmatics.server.trade.QueryUserPryzmClaimHistoryRequest) returns (pryzmatics.server.trade.QueryUserPryzmClaimHistoryResponse) {
     option (google.api.http).get = "/pryzmatics/trade/user_pryzm_claim_history/{address}";
+  }
+
+  rpc PVaultContracts(pryzmatics.server.pvault.QueryPVaultContractsRequest) returns (pryzmatics.server.pvault.QueryPVaultContractsResponse) {
+    option (google.api.http).get = "/pryzmatics/pvault/contracts";
+  }
+
+  rpc PVaultSimulatePurchase(pryzmatics.server.pvault.QueryPurchaseSimulationRequest) returns (pryzmatics.server.pvault.QueryPurchaseSimulationResponse) {
+    option (google.api.http).get = "/pryzmatics/pvault/simulate_purchase";
   }
 }

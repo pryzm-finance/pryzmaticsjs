@@ -1,0 +1,21 @@
+syntax = "proto3";
+package pryzmatics.pvault;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/pvault";
+
+message PVaultContract {
+  string contract_address = 1;
+  string asset_id = 2;
+  string underlying_asset = 3;
+  string c_asset_denom = 4;
+  bool accept_underlying_asset = 5;
+  bool accept_c_asset = 6;
+  string reward_per_dollar = 7 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+}

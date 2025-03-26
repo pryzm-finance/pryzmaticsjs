@@ -1,0 +1,16 @@
+syntax = "proto3";
+package pryzmatics.database.pvault;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/database/pvault";
+
+enum PVaultContractOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  ORDER_BY_PROPERTY_CONTRACT_ADDRESS = 0;
+}
+
+message PVaultContractOrderBy {
+  PVaultContractOrderByProperty property = 1;
+  bool descending = 2;
+}

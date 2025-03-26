@@ -57,6 +57,8 @@ import { QueryPortfolioRequest, QueryPortfolioResponseSDKType } from "./portfoli
 import { QueryIcnsByAddressRequest, QueryIcnsByAddressResponseSDKType, QueryIcnsByNameRequest, QueryIcnsByNameResponseSDKType } from "./icns/icns";
 import { QueryUserPulseTradeVolumeRequest, QueryUserPulseTradeVolumeResponseSDKType } from "./trade/user_pulse_trade_volume";
 import { QueryUserPryzmClaimHistoryRequest, QueryUserPryzmClaimHistoryResponseSDKType } from "./trade/user_pryzm_claim_history";
+import { QueryPVaultContractsRequest, QueryPVaultContractsResponseSDKType } from "./pvault/contracts";
+import { QueryPurchaseSimulationRequest, QueryPurchaseSimulationResponseSDKType } from "./pvault/purchase_simulation";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -149,6 +151,8 @@ export class LCDQueryClient {
     this.icnsByName = this.icnsByName.bind(this);
     this.userPulseTradeVolume = this.userPulseTradeVolume.bind(this);
     this.userPryzmClaimHistory = this.userPryzmClaimHistory.bind(this);
+    this.pVaultContracts = this.pVaultContracts.bind(this);
+    this.pVaultSimulatePurchase = this.pVaultSimulatePurchase.bind(this);
   }
   /* Asset */
   async asset(params: QueryAssetRequest): Promise<QueryAssetResponseSDKType> {
@@ -1312,8 +1316,14 @@ export class LCDQueryClient {
   }
   /* IcnsByAddress */
   async icnsByAddress(params: QueryIcnsByAddressRequest): Promise<QueryIcnsByAddressResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.strictCheck !== "undefined") {
+      options.params.strict_check = params.strictCheck;
+    }
     const endpoint = `pryzmatics/icns/by_address/${params.address}`;
-    return await this.req.get<QueryIcnsByAddressResponseSDKType>(endpoint);
+    return await this.req.get<QueryIcnsByAddressResponseSDKType>(endpoint, options);
   }
   /* IcnsByName */
   async icnsByName(params: QueryIcnsByNameRequest): Promise<QueryIcnsByNameResponseSDKType> {
@@ -1347,5 +1357,39 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/trade/user_pryzm_claim_history/${params.address}`;
     return await this.req.get<QueryUserPryzmClaimHistoryResponseSDKType>(endpoint, options);
+  }
+  /* PVaultContracts */
+  async pVaultContracts(params: QueryPVaultContractsRequest): Promise<QueryPVaultContractsResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `pryzmatics/pvault/contracts`;
+    return await this.req.get<QueryPVaultContractsResponseSDKType>(endpoint, options);
+  }
+  /* PVaultSimulatePurchase */
+  async pVaultSimulatePurchase(params: QueryPurchaseSimulationRequest): Promise<QueryPurchaseSimulationResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.tokenIn !== "undefined") {
+      options.params.token_in = params.tokenIn;
+    }
+    if (typeof params?.tokenOut !== "undefined") {
+      options.params.token_out = params.tokenOut;
+    }
+    if (typeof params?.amount !== "undefined") {
+      options.params.amount = params.amount;
+    }
+    if (typeof params?.steps !== "undefined") {
+      options.params.steps = params.steps;
+    }
+    const endpoint = `pryzmatics/pvault/simulate_purchase`;
+    return await this.req.get<QueryPurchaseSimulationResponseSDKType>(endpoint, options);
   }
 }

@@ -9,6 +9,7 @@ option go_package = "github.com/pryzm-finance/pryzmatics/server/icns";
 
 message QueryIcnsByAddressRequest {
   string address = 1;
+  bool strict_check = 2; // if set, the icns should have been minted for the pryzm address directly (instead of the converted osmo address)
 }
 
 message QueryIcnsByAddressResponse {

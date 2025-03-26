@@ -11,6 +11,7 @@ export enum FlowPositionPairOrderByProperty {
   ORDER_BY_PROPERTY_FLOW_TOTAL_TOKEN_OUT_AMOUNT = 6,
   ORDER_BY_PROPERTY_FLOW_START_TIME = 7,
   ORDER_BY_PROPERTY_FLOW_LIMIT_PRICE = 8,
+  ORDER_BY_PROPERTY_FLOW_NEXT_PRICE = 9,
   UNRECOGNIZED = -1,
 }
 export const FlowPositionPairOrderByPropertySDKType = FlowPositionPairOrderByProperty;
@@ -44,6 +45,9 @@ export function flowPositionPairOrderByPropertyFromJSON(object: any): FlowPositi
     case 8:
     case "ORDER_BY_PROPERTY_FLOW_LIMIT_PRICE":
       return FlowPositionPairOrderByProperty.ORDER_BY_PROPERTY_FLOW_LIMIT_PRICE;
+    case 9:
+    case "ORDER_BY_PROPERTY_FLOW_NEXT_PRICE":
+      return FlowPositionPairOrderByProperty.ORDER_BY_PROPERTY_FLOW_NEXT_PRICE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -70,6 +74,8 @@ export function flowPositionPairOrderByPropertyToJSON(object: FlowPositionPairOr
       return "ORDER_BY_PROPERTY_FLOW_START_TIME";
     case FlowPositionPairOrderByProperty.ORDER_BY_PROPERTY_FLOW_LIMIT_PRICE:
       return "ORDER_BY_PROPERTY_FLOW_LIMIT_PRICE";
+    case FlowPositionPairOrderByProperty.ORDER_BY_PROPERTY_FLOW_NEXT_PRICE:
+      return "ORDER_BY_PROPERTY_FLOW_NEXT_PRICE";
     case FlowPositionPairOrderByProperty.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

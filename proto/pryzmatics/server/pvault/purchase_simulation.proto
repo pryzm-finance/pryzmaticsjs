@@ -1,0 +1,57 @@
+syntax = "proto3";
+package pryzmatics.server.pvault;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "pryzmatics/pryzmnexus/pryzmnexus.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/pvault";
+
+message PurchaseSummary {
+  cosmos.base.v1beta1.Coin amount_in = 1 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin amount_out = 2 [(gogoproto.nullable) = false];
+  repeated cosmos.base.v1beta1.Coin fees = 3 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin discount_yield = 4 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin discount_yield_in_underlying_terms = 5 [(gogoproto.nullable) = false];
+  string reward_amount = 6 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  cosmos.base.v1beta1.Coin minted_reward = 7;
+  string user_address = 8;
+}
+
+message QueryPurchaseSimulationRequest {
+  string token_in = 1;
+  string token_out = 2;
+  string amount = 3 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  repeated pryzmatics.pryzmnexus.Operation steps = 4 [(gogoproto.nullable) = false];
+}
+
+message QueryPurchaseSimulationResponse {
+  PurchaseSummary purchase_summary = 1 [(gogoproto.nullable) = false];
+  string price_token_in_token_out_terms = 2 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  cosmos.base.v1beta1.Coin fee_amount = 3 [(gogoproto.nullable) = false];
+  string fee_percentage = 4 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string price_impact = 5 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  repeated pryzmatics.pryzmnexus.Operation swap_steps = 6 [(gogoproto.nullable) = false];
+  string error = 7;
+}

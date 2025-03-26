@@ -1,0 +1,17 @@
+syntax = "proto3";
+package pryzmatics.flowtrade;
+
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "refractedlabs/flowtrade/v1/flow.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/flowtrade";
+
+message Flow {
+  refractedlabs.flowtrade.v1.Flow flow = 1 [(gogoproto.nullable) = false];
+  string next_price = 2 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+}
