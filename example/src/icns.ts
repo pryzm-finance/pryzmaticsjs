@@ -17,7 +17,8 @@ async function main() {
     const c = await createPryzmaticsClient({ restEndpoint: PRYZMATICS_ENDPOINT })
 
     let icnsRecord = (await c.pryzmatics.icnsByAddress({
-        address: "pryzm_address"
+        address: "pryzm_address",
+        strictCheck: false
     })).icns
     console.log(icnsRecord.icns)
     console.log(icnsRecord.fetch_time)
