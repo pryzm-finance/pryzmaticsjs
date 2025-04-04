@@ -35,13 +35,13 @@ message TokenYield {
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = true,
-    deprecated=true // use staking_yield field for y assets as well
+    deprecated = true // use staking_yield field for y assets as well
   ];
   string y_roi = 8 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = true,
-    deprecated=true // use roi
+    deprecated = true // use roi
   ];
   string staking_yield = 9 [
     (cosmos_proto.scalar) = "cosmos.Dec",
@@ -53,7 +53,7 @@ message TokenYield {
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = true,
-    deprecated=true // use roi
+    deprecated = true // use roi
   ];
 
   string yield_to_maturity_in_underlying_terms = 12 [

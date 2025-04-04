@@ -64,4 +64,10 @@ message Asset {
   string yield_error = 15;
   string display_name = 16;
   int64 decimals = 17;
+  int64 underlying_decimals = 18;
+  string daily_yield_per_y_asset_stable_coin_terms = 19 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
 }

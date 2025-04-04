@@ -12,6 +12,7 @@ import { QueryPoolRequest, QueryPoolResponseSDKType, QueryPoolsRequest, QueryPoo
 import { QueryTokenRequest, QueryTokenResponseSDKType, QueryTokensRequest, QueryTokensResponseSDKType } from "./pool/token";
 import { QueryHistoricalTokenYieldRequest, QueryHistoricalTokenYieldResponseSDKType } from "./pool/historical_token_yield";
 import { QueryHistoricalPoolAprRequest, QueryHistoricalPoolAprResponseSDKType } from "./pool/historical_pool_apr";
+import { QueryTokenYieldsRequest, QueryTokenYieldsResponseSDKType } from "./pool/token_yield";
 import { QueryPriceRequest, QueryPriceResponseSDKType, QueryPricesRequest, QueryPricesResponseSDKType } from "./price/price";
 import { QueryHistoricalPriceRequest, QueryHistoricalPriceResponseSDKType } from "./price/historical_price";
 import { QuerySwappableTokensRequest, QuerySwappableTokensResponseSDKType } from "./price/swappable_tokens";
@@ -82,6 +83,7 @@ export class LCDQueryClient {
     this.tokens = this.tokens.bind(this);
     this.historicalTokenYield = this.historicalTokenYield.bind(this);
     this.historicalPoolApr = this.historicalPoolApr.bind(this);
+    this.tokenYields = this.tokenYields.bind(this);
     this.tokenPrice = this.tokenPrice.bind(this);
     this.tokenPrices = this.tokenPrices.bind(this);
     this.historicalPrice = this.historicalPrice.bind(this);
@@ -329,6 +331,17 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/pool/historical_apr/${params.poolId}`;
     return await this.req.get<QueryHistoricalPoolAprResponseSDKType>(endpoint, options);
+  }
+  /* TokenYields */
+  async tokenYields(params: QueryTokenYieldsRequest): Promise<QueryTokenYieldsResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.tokenType !== "undefined") {
+      options.params.token_type = params.tokenType;
+    }
+    const endpoint = `pryzmatics/token/yield/${params.blockHeight}`;
+    return await this.req.get<QueryTokenYieldsResponseSDKType>(endpoint, options);
   }
   /* TokenPrice */
   async tokenPrice(params: QueryPriceRequest): Promise<QueryPriceResponseSDKType> {

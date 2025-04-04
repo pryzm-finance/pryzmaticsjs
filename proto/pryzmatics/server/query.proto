@@ -16,7 +16,7 @@ import "pryzmatics/server/pool/pool.proto";
 import "pryzmatics/server/pool/token.proto";
 import "pryzmatics/server/pool/historical_token_yield.proto";
 import "pryzmatics/server/pool/historical_pool_apr.proto";
-
+import "pryzmatics/server/pool/token_yield.proto";
 
 import "pryzmatics/server/price/historical_price.proto";
 import "pryzmatics/server/price/price.proto";
@@ -143,6 +143,10 @@ service Query {
 
   rpc HistoricalPoolApr(pryzmatics.server.pool.QueryHistoricalPoolAprRequest) returns (pryzmatics.server.pool.QueryHistoricalPoolAprResponse) {
     option (google.api.http).get = "/pryzmatics/pool/historical_apr/{pool_id}";
+  }
+
+  rpc TokenYields(pryzmatics.server.pool.QueryTokenYieldsRequest) returns (pryzmatics.server.pool.QueryTokenYieldsResponse) {
+    option (google.api.http).get = "/pryzmatics/token/yield/{block_height}";
   }
 
   rpc TokenPrice(pryzmatics.server.price.QueryPriceRequest) returns (pryzmatics.server.price.QueryPriceResponse) {
