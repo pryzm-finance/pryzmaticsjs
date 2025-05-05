@@ -6,6 +6,10 @@ export enum UserPulseTradeVolumeOrderByProperty {
   ORDER_BY_PROPERTY_VOLUME_24H = 1,
   ORDER_BY_PROPERTY_VOLUME_7D = 2,
   ORDER_BY_PROPERTY_VOLUME_30D = 3,
+  ORDER_BY_PROPERTY_TOTAL_VOLUME_EXCLUDING_PRYZM = 4,
+  ORDER_BY_PROPERTY_VOLUME_24H_EXCLUDING_PRYZM = 5,
+  ORDER_BY_PROPERTY_VOLUME_7D_EXCLUDING_PRYZM = 6,
+  ORDER_BY_PROPERTY_VOLUME_30D_EXCLUDING_PRYZM = 7,
   UNRECOGNIZED = -1,
 }
 export const UserPulseTradeVolumeOrderByPropertySDKType = UserPulseTradeVolumeOrderByProperty;
@@ -24,6 +28,18 @@ export function userPulseTradeVolumeOrderByPropertyFromJSON(object: any): UserPu
     case 3:
     case "ORDER_BY_PROPERTY_VOLUME_30D":
       return UserPulseTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_VOLUME_30D;
+    case 4:
+    case "ORDER_BY_PROPERTY_TOTAL_VOLUME_EXCLUDING_PRYZM":
+      return UserPulseTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_TOTAL_VOLUME_EXCLUDING_PRYZM;
+    case 5:
+    case "ORDER_BY_PROPERTY_VOLUME_24H_EXCLUDING_PRYZM":
+      return UserPulseTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_VOLUME_24H_EXCLUDING_PRYZM;
+    case 6:
+    case "ORDER_BY_PROPERTY_VOLUME_7D_EXCLUDING_PRYZM":
+      return UserPulseTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_VOLUME_7D_EXCLUDING_PRYZM;
+    case 7:
+    case "ORDER_BY_PROPERTY_VOLUME_30D_EXCLUDING_PRYZM":
+      return UserPulseTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_VOLUME_30D_EXCLUDING_PRYZM;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -40,6 +56,14 @@ export function userPulseTradeVolumeOrderByPropertyToJSON(object: UserPulseTrade
       return "ORDER_BY_PROPERTY_VOLUME_7D";
     case UserPulseTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_VOLUME_30D:
       return "ORDER_BY_PROPERTY_VOLUME_30D";
+    case UserPulseTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_TOTAL_VOLUME_EXCLUDING_PRYZM:
+      return "ORDER_BY_PROPERTY_TOTAL_VOLUME_EXCLUDING_PRYZM";
+    case UserPulseTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_VOLUME_24H_EXCLUDING_PRYZM:
+      return "ORDER_BY_PROPERTY_VOLUME_24H_EXCLUDING_PRYZM";
+    case UserPulseTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_VOLUME_7D_EXCLUDING_PRYZM:
+      return "ORDER_BY_PROPERTY_VOLUME_7D_EXCLUDING_PRYZM";
+    case UserPulseTradeVolumeOrderByProperty.ORDER_BY_PROPERTY_VOLUME_30D_EXCLUDING_PRYZM:
+      return "ORDER_BY_PROPERTY_VOLUME_30D_EXCLUDING_PRYZM";
     case UserPulseTradeVolumeOrderByProperty.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

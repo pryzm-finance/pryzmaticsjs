@@ -33,4 +33,28 @@ message UserPulseTradeVolume {
   uint64 rank_volume_24h = 8;
   uint64 rank_volume_7d = 9;
   uint64 rank_volume_30d = 10;
+  string total_volume_excluding_pryzm = 11 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string volume_24h_excluding_pryzm = 12 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string volume_7d_excluding_pryzm = 13 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string volume_30d_excluding_pryzm = 14 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  uint64 rank_total_volume_excluding_pryzm = 15;
+  uint64 rank_volume_24h_excluding_pryzm = 16;
+  uint64 rank_volume_7d_excluding_pryzm = 17;
+  uint64 rank_volume_30d_excluding_pryzm = 18;
 }

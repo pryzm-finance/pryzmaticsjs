@@ -11,6 +11,10 @@ enum UserPulseTradeVolumeOrderByProperty {
   ORDER_BY_PROPERTY_VOLUME_24H = 1 [(gogoproto.enumvalue_customname) = "PulseTradeOrderByPropertyVolume24H"];
   ORDER_BY_PROPERTY_VOLUME_7D = 2 [(gogoproto.enumvalue_customname) = "PulseTradeOrderByPropertyVolume7D"];
   ORDER_BY_PROPERTY_VOLUME_30D = 3 [(gogoproto.enumvalue_customname) = "PulseTradeOrderByPropertyVolume30D"];
+  ORDER_BY_PROPERTY_TOTAL_VOLUME_EXCLUDING_PRYZM = 4 [(gogoproto.enumvalue_customname) = "PulseTradeOrderByPropertyTotalExcludingPryzmVolume"];
+  ORDER_BY_PROPERTY_VOLUME_24H_EXCLUDING_PRYZM = 5 [(gogoproto.enumvalue_customname) = "PulseTradeOrderByPropertyExcludingPryzmVolume24H"];
+  ORDER_BY_PROPERTY_VOLUME_7D_EXCLUDING_PRYZM = 6 [(gogoproto.enumvalue_customname) = "PulseTradeOrderByPropertyExcludingPryzmVolume7D"];
+  ORDER_BY_PROPERTY_VOLUME_30D_EXCLUDING_PRYZM = 7 [(gogoproto.enumvalue_customname) = "PulseTradeOrderByPropertyExcludingPryzmVolume30D"];
 }
 
 message UserPulseTradeVolumeOrderBy {
