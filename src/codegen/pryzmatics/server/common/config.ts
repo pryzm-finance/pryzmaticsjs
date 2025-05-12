@@ -427,6 +427,7 @@ export interface FaucetCaptchaConfigSDKType {
 export interface StableCoinConfig {
   denom: string;
   decimals: number;
+  displayName: string;
 }
 export interface StableCoinConfigProtoMsg {
   typeUrl: "/pryzmatics.server.common.StableCoinConfig";
@@ -435,6 +436,7 @@ export interface StableCoinConfigProtoMsg {
 export interface StableCoinConfigAmino {
   denom?: string;
   decimals?: number;
+  display_name?: string;
 }
 export interface StableCoinConfigAminoMsg {
   type: "/pryzmatics.server.common.StableCoinConfig";
@@ -443,6 +445,7 @@ export interface StableCoinConfigAminoMsg {
 export interface StableCoinConfigSDKType {
   denom: string;
   decimals: number;
+  display_name: string;
 }
 export interface AssetConfig {
   underlyingTokenDenom: string;
@@ -2520,19 +2523,20 @@ GlobalDecoderRegistry.register(FaucetCaptchaConfig.typeUrl, FaucetCaptchaConfig)
 function createBaseStableCoinConfig(): StableCoinConfig {
   return {
     denom: "",
-    decimals: 0
+    decimals: 0,
+    displayName: ""
   };
 }
 export const StableCoinConfig = {
   typeUrl: "/pryzmatics.server.common.StableCoinConfig",
   is(o: any): o is StableCoinConfig {
-    return o && (o.$typeUrl === StableCoinConfig.typeUrl || typeof o.denom === "string" && typeof o.decimals === "number");
+    return o && (o.$typeUrl === StableCoinConfig.typeUrl || typeof o.denom === "string" && typeof o.decimals === "number" && typeof o.displayName === "string");
   },
   isSDK(o: any): o is StableCoinConfigSDKType {
-    return o && (o.$typeUrl === StableCoinConfig.typeUrl || typeof o.denom === "string" && typeof o.decimals === "number");
+    return o && (o.$typeUrl === StableCoinConfig.typeUrl || typeof o.denom === "string" && typeof o.decimals === "number" && typeof o.display_name === "string");
   },
   isAmino(o: any): o is StableCoinConfigAmino {
-    return o && (o.$typeUrl === StableCoinConfig.typeUrl || typeof o.denom === "string" && typeof o.decimals === "number");
+    return o && (o.$typeUrl === StableCoinConfig.typeUrl || typeof o.denom === "string" && typeof o.decimals === "number" && typeof o.display_name === "string");
   },
   encode(message: StableCoinConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
@@ -2540,6 +2544,9 @@ export const StableCoinConfig = {
     }
     if (message.decimals !== 0) {
       writer.uint32(16).uint32(message.decimals);
+    }
+    if (message.displayName !== "") {
+      writer.uint32(26).string(message.displayName);
     }
     return writer;
   },
@@ -2556,6 +2563,9 @@ export const StableCoinConfig = {
         case 2:
           message.decimals = reader.uint32();
           break;
+        case 3:
+          message.displayName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2566,19 +2576,22 @@ export const StableCoinConfig = {
   fromJSON(object: any): StableCoinConfig {
     return {
       denom: isSet(object.denom) ? String(object.denom) : "",
-      decimals: isSet(object.decimals) ? Number(object.decimals) : 0
+      decimals: isSet(object.decimals) ? Number(object.decimals) : 0,
+      displayName: isSet(object.displayName) ? String(object.displayName) : ""
     };
   },
   toJSON(message: StableCoinConfig): unknown {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     message.decimals !== undefined && (obj.decimals = Math.round(message.decimals));
+    message.displayName !== undefined && (obj.displayName = message.displayName);
     return obj;
   },
   fromPartial(object: Partial<StableCoinConfig>): StableCoinConfig {
     const message = createBaseStableCoinConfig();
     message.denom = object.denom ?? "";
     message.decimals = object.decimals ?? 0;
+    message.displayName = object.displayName ?? "";
     return message;
   },
   fromAmino(object: StableCoinConfigAmino): StableCoinConfig {
@@ -2589,12 +2602,16 @@ export const StableCoinConfig = {
     if (object.decimals !== undefined && object.decimals !== null) {
       message.decimals = object.decimals;
     }
+    if (object.display_name !== undefined && object.display_name !== null) {
+      message.displayName = object.display_name;
+    }
     return message;
   },
   toAmino(message: StableCoinConfig, useInterfaces: boolean = true): StableCoinConfigAmino {
     const obj: any = {};
     obj.denom = message.denom === "" ? undefined : message.denom;
     obj.decimals = message.decimals === 0 ? undefined : message.decimals;
+    obj.display_name = message.displayName === "" ? undefined : message.displayName;
     return obj;
   },
   fromAminoMsg(object: StableCoinConfigAminoMsg): StableCoinConfig {

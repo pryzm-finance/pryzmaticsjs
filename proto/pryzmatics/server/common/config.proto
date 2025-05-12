@@ -111,6 +111,7 @@ message FaucetCaptchaConfig {
 message StableCoinConfig {
   string denom = 1;
   uint32 decimals = 2;
+  string display_name = 3;
 }
 
 message AssetConfig {

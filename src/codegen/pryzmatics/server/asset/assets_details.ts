@@ -8,7 +8,7 @@ export interface AssetDetails {
   cAssetToken: Token;
   underlyingAssetToken?: Token;
   yammLpToken: Token;
-  boostLpToken?: Token;
+  baseLpToken?: Token;
   usdcLpToken?: Token;
   yTokens: Token[];
   pTokens: Token[];
@@ -22,7 +22,7 @@ export interface AssetDetailsAmino {
   c_asset_token?: TokenAmino;
   underlying_asset_token?: TokenAmino;
   yamm_lp_token?: TokenAmino;
-  boost_lp_token?: TokenAmino;
+  base_lp_token?: TokenAmino;
   usdc_lp_token?: TokenAmino;
   y_tokens?: TokenAmino[];
   p_tokens?: TokenAmino[];
@@ -36,7 +36,7 @@ export interface AssetDetailsSDKType {
   c_asset_token: TokenSDKType;
   underlying_asset_token?: TokenSDKType;
   yamm_lp_token: TokenSDKType;
-  boost_lp_token?: TokenSDKType;
+  base_lp_token?: TokenSDKType;
   usdc_lp_token?: TokenSDKType;
   y_tokens: TokenSDKType[];
   p_tokens: TokenSDKType[];
@@ -83,7 +83,7 @@ function createBaseAssetDetails(): AssetDetails {
     cAssetToken: Token.fromPartial({}),
     underlyingAssetToken: undefined,
     yammLpToken: Token.fromPartial({}),
-    boostLpToken: undefined,
+    baseLpToken: undefined,
     usdcLpToken: undefined,
     yTokens: [],
     pTokens: []
@@ -113,8 +113,8 @@ export const AssetDetails = {
     if (message.yammLpToken !== undefined) {
       Token.encode(message.yammLpToken, writer.uint32(34).fork()).ldelim();
     }
-    if (message.boostLpToken !== undefined) {
-      Token.encode(message.boostLpToken, writer.uint32(42).fork()).ldelim();
+    if (message.baseLpToken !== undefined) {
+      Token.encode(message.baseLpToken, writer.uint32(42).fork()).ldelim();
     }
     if (message.usdcLpToken !== undefined) {
       Token.encode(message.usdcLpToken, writer.uint32(50).fork()).ldelim();
@@ -147,7 +147,7 @@ export const AssetDetails = {
           message.yammLpToken = Token.decode(reader, reader.uint32(), useInterfaces);
           break;
         case 5:
-          message.boostLpToken = Token.decode(reader, reader.uint32(), useInterfaces);
+          message.baseLpToken = Token.decode(reader, reader.uint32(), useInterfaces);
           break;
         case 6:
           message.usdcLpToken = Token.decode(reader, reader.uint32(), useInterfaces);
@@ -171,7 +171,7 @@ export const AssetDetails = {
       cAssetToken: isSet(object.cAssetToken) ? Token.fromJSON(object.cAssetToken) : undefined,
       underlyingAssetToken: isSet(object.underlyingAssetToken) ? Token.fromJSON(object.underlyingAssetToken) : undefined,
       yammLpToken: isSet(object.yammLpToken) ? Token.fromJSON(object.yammLpToken) : undefined,
-      boostLpToken: isSet(object.boostLpToken) ? Token.fromJSON(object.boostLpToken) : undefined,
+      baseLpToken: isSet(object.baseLpToken) ? Token.fromJSON(object.baseLpToken) : undefined,
       usdcLpToken: isSet(object.usdcLpToken) ? Token.fromJSON(object.usdcLpToken) : undefined,
       yTokens: Array.isArray(object?.yTokens) ? object.yTokens.map((e: any) => Token.fromJSON(e)) : [],
       pTokens: Array.isArray(object?.pTokens) ? object.pTokens.map((e: any) => Token.fromJSON(e)) : []
@@ -183,7 +183,7 @@ export const AssetDetails = {
     message.cAssetToken !== undefined && (obj.cAssetToken = message.cAssetToken ? Token.toJSON(message.cAssetToken) : undefined);
     message.underlyingAssetToken !== undefined && (obj.underlyingAssetToken = message.underlyingAssetToken ? Token.toJSON(message.underlyingAssetToken) : undefined);
     message.yammLpToken !== undefined && (obj.yammLpToken = message.yammLpToken ? Token.toJSON(message.yammLpToken) : undefined);
-    message.boostLpToken !== undefined && (obj.boostLpToken = message.boostLpToken ? Token.toJSON(message.boostLpToken) : undefined);
+    message.baseLpToken !== undefined && (obj.baseLpToken = message.baseLpToken ? Token.toJSON(message.baseLpToken) : undefined);
     message.usdcLpToken !== undefined && (obj.usdcLpToken = message.usdcLpToken ? Token.toJSON(message.usdcLpToken) : undefined);
     if (message.yTokens) {
       obj.yTokens = message.yTokens.map(e => e ? Token.toJSON(e) : undefined);
@@ -203,7 +203,7 @@ export const AssetDetails = {
     message.cAssetToken = object.cAssetToken !== undefined && object.cAssetToken !== null ? Token.fromPartial(object.cAssetToken) : undefined;
     message.underlyingAssetToken = object.underlyingAssetToken !== undefined && object.underlyingAssetToken !== null ? Token.fromPartial(object.underlyingAssetToken) : undefined;
     message.yammLpToken = object.yammLpToken !== undefined && object.yammLpToken !== null ? Token.fromPartial(object.yammLpToken) : undefined;
-    message.boostLpToken = object.boostLpToken !== undefined && object.boostLpToken !== null ? Token.fromPartial(object.boostLpToken) : undefined;
+    message.baseLpToken = object.baseLpToken !== undefined && object.baseLpToken !== null ? Token.fromPartial(object.baseLpToken) : undefined;
     message.usdcLpToken = object.usdcLpToken !== undefined && object.usdcLpToken !== null ? Token.fromPartial(object.usdcLpToken) : undefined;
     message.yTokens = object.yTokens?.map(e => Token.fromPartial(e)) || [];
     message.pTokens = object.pTokens?.map(e => Token.fromPartial(e)) || [];
@@ -223,8 +223,8 @@ export const AssetDetails = {
     if (object.yamm_lp_token !== undefined && object.yamm_lp_token !== null) {
       message.yammLpToken = Token.fromAmino(object.yamm_lp_token);
     }
-    if (object.boost_lp_token !== undefined && object.boost_lp_token !== null) {
-      message.boostLpToken = Token.fromAmino(object.boost_lp_token);
+    if (object.base_lp_token !== undefined && object.base_lp_token !== null) {
+      message.baseLpToken = Token.fromAmino(object.base_lp_token);
     }
     if (object.usdc_lp_token !== undefined && object.usdc_lp_token !== null) {
       message.usdcLpToken = Token.fromAmino(object.usdc_lp_token);
@@ -239,7 +239,7 @@ export const AssetDetails = {
     obj.c_asset_token = message.cAssetToken ? Token.toAmino(message.cAssetToken, useInterfaces) : undefined;
     obj.underlying_asset_token = message.underlyingAssetToken ? Token.toAmino(message.underlyingAssetToken, useInterfaces) : undefined;
     obj.yamm_lp_token = message.yammLpToken ? Token.toAmino(message.yammLpToken, useInterfaces) : undefined;
-    obj.boost_lp_token = message.boostLpToken ? Token.toAmino(message.boostLpToken, useInterfaces) : undefined;
+    obj.base_lp_token = message.baseLpToken ? Token.toAmino(message.baseLpToken, useInterfaces) : undefined;
     obj.usdc_lp_token = message.usdcLpToken ? Token.toAmino(message.usdcLpToken, useInterfaces) : undefined;
     if (message.yTokens) {
       obj.y_tokens = message.yTokens.map(e => e ? Token.toAmino(e, useInterfaces) : undefined);

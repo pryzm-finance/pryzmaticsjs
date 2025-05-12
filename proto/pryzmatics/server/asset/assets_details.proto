@@ -14,7 +14,7 @@ message AssetDetails {
   pryzmatics.pool.Token c_asset_token = 2 [(gogoproto.nullable) = false];
   pryzmatics.pool.Token underlying_asset_token = 3 [(gogoproto.nullable) = true];
   pryzmatics.pool.Token yamm_lp_token = 4 [(gogoproto.nullable) = false];
-  pryzmatics.pool.Token boost_lp_token = 5 [(gogoproto.nullable) = true];
+  pryzmatics.pool.Token base_lp_token = 5 [(gogoproto.nullable) = true];
   pryzmatics.pool.Token usdc_lp_token = 6 [(gogoproto.nullable) = true];
   repeated pryzmatics.pool.Token y_tokens = 7 [(gogoproto.nullable) = false];
   repeated pryzmatics.pool.Token p_tokens = 8 [(gogoproto.nullable) = false];
