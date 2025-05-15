@@ -1,0 +1,28 @@
+syntax = "proto3";
+package pryzmatics.server.statistics;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "pryzmatics/common/time_resolution.proto";
+import "pryzmatics/statistics/historical_market_cap.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/statistics";
+
+message QueryHistoricalMarketCapRequest {
+  pryzmatics.common.TimeResolutionType time_resolution_type = 1;
+  uint32 time_resolution_value = 2;
+  string from = 3 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string to = 4 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message QueryHistoricalMarketCapResponse {
+  repeated pryzmatics.statistics.HistoricalMarketCap historical_market_caps = 1 [(gogoproto.nullable) = false];
+}

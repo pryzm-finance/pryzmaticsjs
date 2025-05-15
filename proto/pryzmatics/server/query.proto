@@ -71,6 +71,7 @@ import "pryzmatics/server/gov/proposal.proto";
 import "pryzmatics/server/gov/vote.proto";
 
 import "pryzmatics/server/statistics/statistics.proto";
+import "pryzmatics/server/statistics/historical_market_cap.proto";
 
 import "pryzmatics/server/bank/historical_bank_supply.proto";
 
@@ -159,6 +160,11 @@ service Query {
 
   rpc HistoricalPrice(pryzmatics.server.price.QueryHistoricalPriceRequest) returns (pryzmatics.server.price.QueryHistoricalPriceResponse) {
     option (google.api.http).get = "/pryzmatics/price/historical/{denom}";
+  }
+
+  rpc HistoricalMarketCap(pryzmatics.server.statistics.QueryHistoricalMarketCapRequest) returns (
+  pryzmatics.server.statistics.QueryHistoricalMarketCapResponse) {
+    option (google.api.http).get = "/pryzmatics/statistics/historical_market_cap";
   }
 
   rpc SwappableTokens(pryzmatics.server.price.QuerySwappableTokensRequest) returns (pryzmatics.server.price.QuerySwappableTokensResponse) {

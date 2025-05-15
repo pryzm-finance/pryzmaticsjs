@@ -15,6 +15,7 @@ import { QueryHistoricalPoolAprRequest, QueryHistoricalPoolAprResponseSDKType } 
 import { QueryTokenYieldsRequest, QueryTokenYieldsResponseSDKType } from "./pool/token_yield";
 import { QueryPriceRequest, QueryPriceResponseSDKType, QueryPricesRequest, QueryPricesResponseSDKType } from "./price/price";
 import { QueryHistoricalPriceRequest, QueryHistoricalPriceResponseSDKType } from "./price/historical_price";
+import { QueryHistoricalMarketCapRequest, QueryHistoricalMarketCapResponseSDKType } from "./statistics/historical_market_cap";
 import { QuerySwappableTokensRequest, QuerySwappableTokensResponseSDKType } from "./price/swappable_tokens";
 import { QueryPriceBoundsRequest, QueryPriceBoundsResponseSDKType } from "./price/price_bounds";
 import { QueryTradeSimulationRequest, QueryTradeSimulationResponseSDKType } from "./trade/trade_simulation";
@@ -87,6 +88,7 @@ export class LCDQueryClient {
     this.tokenPrice = this.tokenPrice.bind(this);
     this.tokenPrices = this.tokenPrices.bind(this);
     this.historicalPrice = this.historicalPrice.bind(this);
+    this.historicalMarketCap = this.historicalMarketCap.bind(this);
     this.swappableTokens = this.swappableTokens.bind(this);
     this.priceBounds = this.priceBounds.bind(this);
     this.tradeSimulation = this.tradeSimulation.bind(this);
@@ -387,6 +389,26 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/price/historical/${params.denom}`;
     return await this.req.get<QueryHistoricalPriceResponseSDKType>(endpoint, options);
+  }
+  /* HistoricalMarketCap */
+  async historicalMarketCap(params: QueryHistoricalMarketCapRequest): Promise<QueryHistoricalMarketCapResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.timeResolutionType !== "undefined") {
+      options.params.time_resolution_type = params.timeResolutionType;
+    }
+    if (typeof params?.timeResolutionValue !== "undefined") {
+      options.params.time_resolution_value = params.timeResolutionValue;
+    }
+    if (typeof params?.from !== "undefined") {
+      options.params.from = params.from;
+    }
+    if (typeof params?.to !== "undefined") {
+      options.params.to = params.to;
+    }
+    const endpoint = `pryzmatics/statistics/historical_market_cap`;
+    return await this.req.get<QueryHistoricalMarketCapResponseSDKType>(endpoint, options);
   }
   /* SwappableTokens */
   async swappableTokens(_params: QuerySwappableTokensRequest = {}): Promise<QuerySwappableTokensResponseSDKType> {

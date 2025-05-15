@@ -51,24 +51,25 @@ import * as _245 from "./price/token_price";
 import * as _246 from "./pryzmnexus/pryzmnexus";
 import * as _247 from "./pvault/contract";
 import * as _248 from "./server/query";
-import * as _249 from "./statistics/market_cap";
-import * as _250 from "./statistics/misc";
-import * as _251 from "./statistics/treasury";
-import * as _252 from "./statistics/tvl";
-import * as _253 from "./trade/directly_connected_token_pair";
-import * as _254 from "./trade/operation_volume";
-import * as _255 from "./trade/order";
-import * as _256 from "./trade/pool_trade_history";
-import * as _257 from "./trade/pryzm_claim_history_record";
-import * as _258 from "./trade/pulse_tradable_pair";
-import * as _259 from "./trade/route_steps";
-import * as _260 from "./trade/swap_steps";
-import * as _261 from "./trade/token_amounts";
-import * as _262 from "./trade/trade_volume";
-import * as _263 from "./trade/user_pulse_trade_volume";
-import * as _264 from "./trade/user_trade_history";
-import * as _265 from "./ystaking/user_stake";
-import * as _360 from "./server/query.lcd";
+import * as _249 from "./statistics/historical_market_cap";
+import * as _250 from "./statistics/market_cap";
+import * as _251 from "./statistics/misc";
+import * as _252 from "./statistics/treasury";
+import * as _253 from "./statistics/tvl";
+import * as _254 from "./trade/directly_connected_token_pair";
+import * as _255 from "./trade/operation_volume";
+import * as _256 from "./trade/order";
+import * as _257 from "./trade/pool_trade_history";
+import * as _258 from "./trade/pryzm_claim_history_record";
+import * as _259 from "./trade/pulse_tradable_pair";
+import * as _260 from "./trade/route_steps";
+import * as _261 from "./trade/swap_steps";
+import * as _262 from "./trade/token_amounts";
+import * as _263 from "./trade/trade_volume";
+import * as _264 from "./trade/user_pulse_trade_volume";
+import * as _265 from "./trade/user_trade_history";
+import * as _266 from "./ystaking/user_stake";
+import * as _361 from "./server/query.lcd";
 export namespace pryzmatics {
   export const asset = {
     ..._196
@@ -168,16 +169,16 @@ export namespace pryzmatics {
   };
   export const server = {
     ..._248,
-    ..._360
+    ..._361
   };
   export const statistics = {
     ..._249,
     ..._250,
     ..._251,
-    ..._252
+    ..._252,
+    ..._253
   };
   export const trade = {
-    ..._253,
     ..._254,
     ..._255,
     ..._256,
@@ -188,9 +189,10 @@ export namespace pryzmatics {
     ..._261,
     ..._262,
     ..._263,
-    ..._264
+    ..._264,
+    ..._265
   };
   export const ystaking = {
-    ..._265
+    ..._266
   };
 }
