@@ -19,6 +19,7 @@ import "pryzmatics/server/pool/historical_pool_apr.proto";
 import "pryzmatics/server/pool/token_yield.proto";
 
 import "pryzmatics/server/price/historical_price.proto";
+import "pryzmatics/server/price/historical_nav.proto";
 import "pryzmatics/server/price/price.proto";
 import "pryzmatics/server/price/price_bounds.proto";
 import "pryzmatics/server/price/swappable_tokens.proto";
@@ -160,6 +161,11 @@ service Query {
 
   rpc HistoricalPrice(pryzmatics.server.price.QueryHistoricalPriceRequest) returns (pryzmatics.server.price.QueryHistoricalPriceResponse) {
     option (google.api.http).get = "/pryzmatics/price/historical/{denom}";
+  }
+
+  rpc HistoricalNav(pryzmatics.server.price.QueryHistoricalNavRequest) returns (
+  pryzmatics.server.price.QueryHistoricalNavResponse) {
+    option (google.api.http).get = "/pryzmatics/nav/historical/{denom}";
   }
 
   rpc HistoricalMarketCap(pryzmatics.server.statistics.QueryHistoricalMarketCapRequest) returns (
