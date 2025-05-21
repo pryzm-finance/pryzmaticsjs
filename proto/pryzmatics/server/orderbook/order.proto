@@ -1,0 +1,34 @@
+syntax = "proto3";
+package pryzmatics.server.orderbook;
+
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "pryzmatics/database/orderbook/order.proto";
+import "pryzmatics/orderbook/order.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/orderbook";
+
+message QueryOrderBookOrdersRequest {
+  pryzmatics.database.orderbook.OrderBookOrderOrderBy order_by = 1 [(gogoproto.nullable) = true];
+  cosmos.base.query.v1beta1.PageRequest pagination = 2 [(gogoproto.nullable) = true];
+  bool live = 3;
+  string owner = 4;
+  string token_in_denom = 5;
+  string token_out_denom = 6;
+}
+
+message QueryOrderBookOrdersResponse {
+  repeated pryzmatics.orderbook.Order orders = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}
+
+message QueryOrderBookOrderFeedRequest {
+  uint64 order_id = 1;
+  pryzmatics.database.orderbook.OrderBookOrderEventOrderBy order_by = 2 [(gogoproto.nullable) = true];
+  cosmos.base.query.v1beta1.PageRequest pagination = 3 [(gogoproto.nullable) = true];
+}
+
+message QueryOrderBookOrderFeedResponse {
+  repeated pryzmatics.orderbook.OrderEvent events = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}

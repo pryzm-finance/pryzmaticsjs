@@ -47,6 +47,8 @@ export interface QueryPurchaseSimulationRequest {
   tokenOut: string;
   amount: string;
   steps: Operation[];
+  /** optional; if not set contract is loaded from database based on derived assetId from token_out */
+  contract: string;
 }
 export interface QueryPurchaseSimulationRequestProtoMsg {
   typeUrl: "/pryzmatics.server.pvault.QueryPurchaseSimulationRequest";
@@ -57,6 +59,8 @@ export interface QueryPurchaseSimulationRequestAmino {
   token_out?: string;
   amount?: string;
   steps?: OperationAmino[];
+  /** optional; if not set contract is loaded from database based on derived assetId from token_out */
+  contract?: string;
 }
 export interface QueryPurchaseSimulationRequestAminoMsg {
   type: "/pryzmatics.server.pvault.QueryPurchaseSimulationRequest";
@@ -67,6 +71,7 @@ export interface QueryPurchaseSimulationRequestSDKType {
   token_out: string;
   amount: string;
   steps: OperationSDKType[];
+  contract: string;
 }
 export interface QueryPurchaseSimulationResponse {
   purchaseSummary: PurchaseSummary;
@@ -295,19 +300,20 @@ function createBaseQueryPurchaseSimulationRequest(): QueryPurchaseSimulationRequ
     tokenIn: "",
     tokenOut: "",
     amount: "",
-    steps: []
+    steps: [],
+    contract: ""
   };
 }
 export const QueryPurchaseSimulationRequest = {
   typeUrl: "/pryzmatics.server.pvault.QueryPurchaseSimulationRequest",
   is(o: any): o is QueryPurchaseSimulationRequest {
-    return o && (o.$typeUrl === QueryPurchaseSimulationRequest.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || Operation.is(o.steps[0])));
+    return o && (o.$typeUrl === QueryPurchaseSimulationRequest.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || Operation.is(o.steps[0])) && typeof o.contract === "string");
   },
   isSDK(o: any): o is QueryPurchaseSimulationRequestSDKType {
-    return o && (o.$typeUrl === QueryPurchaseSimulationRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || Operation.isSDK(o.steps[0])));
+    return o && (o.$typeUrl === QueryPurchaseSimulationRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || Operation.isSDK(o.steps[0])) && typeof o.contract === "string");
   },
   isAmino(o: any): o is QueryPurchaseSimulationRequestAmino {
-    return o && (o.$typeUrl === QueryPurchaseSimulationRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || Operation.isAmino(o.steps[0])));
+    return o && (o.$typeUrl === QueryPurchaseSimulationRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.amount === "string" && Array.isArray(o.steps) && (!o.steps.length || Operation.isAmino(o.steps[0])) && typeof o.contract === "string");
   },
   encode(message: QueryPurchaseSimulationRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.tokenIn !== "") {
@@ -321,6 +327,9 @@ export const QueryPurchaseSimulationRequest = {
     }
     for (const v of message.steps) {
       Operation.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.contract !== "") {
+      writer.uint32(42).string(message.contract);
     }
     return writer;
   },
@@ -343,6 +352,9 @@ export const QueryPurchaseSimulationRequest = {
         case 4:
           message.steps.push(Operation.decode(reader, reader.uint32(), useInterfaces));
           break;
+        case 5:
+          message.contract = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -355,7 +367,8 @@ export const QueryPurchaseSimulationRequest = {
       tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
       tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
       amount: isSet(object.amount) ? String(object.amount) : "",
-      steps: Array.isArray(object?.steps) ? object.steps.map((e: any) => Operation.fromJSON(e)) : []
+      steps: Array.isArray(object?.steps) ? object.steps.map((e: any) => Operation.fromJSON(e)) : [],
+      contract: isSet(object.contract) ? String(object.contract) : ""
     };
   },
   toJSON(message: QueryPurchaseSimulationRequest): unknown {
@@ -368,6 +381,7 @@ export const QueryPurchaseSimulationRequest = {
     } else {
       obj.steps = [];
     }
+    message.contract !== undefined && (obj.contract = message.contract);
     return obj;
   },
   fromPartial(object: Partial<QueryPurchaseSimulationRequest>): QueryPurchaseSimulationRequest {
@@ -376,6 +390,7 @@ export const QueryPurchaseSimulationRequest = {
     message.tokenOut = object.tokenOut ?? "";
     message.amount = object.amount ?? "";
     message.steps = object.steps?.map(e => Operation.fromPartial(e)) || [];
+    message.contract = object.contract ?? "";
     return message;
   },
   fromAmino(object: QueryPurchaseSimulationRequestAmino): QueryPurchaseSimulationRequest {
@@ -390,6 +405,9 @@ export const QueryPurchaseSimulationRequest = {
       message.amount = object.amount;
     }
     message.steps = object.steps?.map(e => Operation.fromAmino(e)) || [];
+    if (object.contract !== undefined && object.contract !== null) {
+      message.contract = object.contract;
+    }
     return message;
   },
   toAmino(message: QueryPurchaseSimulationRequest, useInterfaces: boolean = true): QueryPurchaseSimulationRequestAmino {
@@ -402,6 +420,7 @@ export const QueryPurchaseSimulationRequest = {
     } else {
       obj.steps = message.steps;
     }
+    obj.contract = message.contract === "" ? undefined : message.contract;
     return obj;
   },
   fromAminoMsg(object: QueryPurchaseSimulationRequestAminoMsg): QueryPurchaseSimulationRequest {

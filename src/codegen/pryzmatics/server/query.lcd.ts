@@ -62,6 +62,8 @@ import { QueryUserPulseTradeVolumeRequest, QueryUserPulseTradeVolumeResponseSDKT
 import { QueryUserPryzmClaimHistoryRequest, QueryUserPryzmClaimHistoryResponseSDKType } from "./trade/user_pryzm_claim_history";
 import { QueryPVaultContractsRequest, QueryPVaultContractsResponseSDKType } from "./pvault/contracts";
 import { QueryPurchaseSimulationRequest, QueryPurchaseSimulationResponseSDKType } from "./pvault/purchase_simulation";
+import { QueryOrderBookOrdersRequest, QueryOrderBookOrdersResponseSDKType, QueryOrderBookOrderFeedRequest, QueryOrderBookOrderFeedResponseSDKType } from "./orderbook/order";
+import { QueryOrderBookReservationsRequest, QueryOrderBookReservationsResponseSDKType } from "./orderbook/reservation";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -159,6 +161,9 @@ export class LCDQueryClient {
     this.userPryzmClaimHistory = this.userPryzmClaimHistory.bind(this);
     this.pVaultContracts = this.pVaultContracts.bind(this);
     this.pVaultSimulatePurchase = this.pVaultSimulatePurchase.bind(this);
+    this.orderBookOrders = this.orderBookOrders.bind(this);
+    this.orderBookOrderFeed = this.orderBookOrderFeed.bind(this);
+    this.orderBookReservations = this.orderBookReservations.bind(this);
   }
   /* Asset */
   async asset(params: QueryAssetRequest): Promise<QueryAssetResponseSDKType> {
@@ -1446,7 +1451,64 @@ export class LCDQueryClient {
     if (typeof params?.steps !== "undefined") {
       options.params.steps = params.steps;
     }
+    if (typeof params?.contract !== "undefined") {
+      options.params.contract = params.contract;
+    }
     const endpoint = `pryzmatics/pvault/simulate_purchase`;
     return await this.req.get<QueryPurchaseSimulationResponseSDKType>(endpoint, options);
+  }
+  /* OrderBookOrders */
+  async orderBookOrders(params: QueryOrderBookOrdersRequest): Promise<QueryOrderBookOrdersResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    if (typeof params?.live !== "undefined") {
+      options.params.live = params.live;
+    }
+    if (typeof params?.owner !== "undefined") {
+      options.params.owner = params.owner;
+    }
+    if (typeof params?.tokenInDenom !== "undefined") {
+      options.params.token_in_denom = params.tokenInDenom;
+    }
+    if (typeof params?.tokenOutDenom !== "undefined") {
+      options.params.token_out_denom = params.tokenOutDenom;
+    }
+    const endpoint = `pryzmatics/orderbook/orders`;
+    return await this.req.get<QueryOrderBookOrdersResponseSDKType>(endpoint, options);
+  }
+  /* OrderBookOrderFeed */
+  async orderBookOrderFeed(params: QueryOrderBookOrderFeedRequest): Promise<QueryOrderBookOrderFeedResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `pryzmatics/orderbook/order/${params.orderId}/feed`;
+    return await this.req.get<QueryOrderBookOrderFeedResponseSDKType>(endpoint, options);
+  }
+  /* OrderBookReservations */
+  async orderBookReservations(params: QueryOrderBookReservationsRequest): Promise<QueryOrderBookReservationsResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `pryzmatics/orderbook/reservations`;
+    return await this.req.get<QueryOrderBookReservationsResponseSDKType>(endpoint, options);
   }
 }

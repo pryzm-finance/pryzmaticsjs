@@ -32,6 +32,7 @@ message QueryPurchaseSimulationRequest {
     (gogoproto.nullable) = false
   ];
   repeated pryzmatics.pryzmnexus.Operation steps = 4 [(gogoproto.nullable) = false];
+  string contract = 5; // optional; if not set contract is loaded from database based on derived assetId from token_out
 }
 
 message QueryPurchaseSimulationResponse {

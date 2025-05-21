@@ -83,6 +83,9 @@ import "pryzmatics/server/icns/icns.proto";
 import "pryzmatics/server/pvault/purchase_simulation.proto";
 import "pryzmatics/server/pvault/contracts.proto";
 
+import "pryzmatics/server/orderbook/order.proto";
+import "pryzmatics/server/orderbook/reservation.proto";
+
 option go_package = "github.com/pryzm-finance/pryzmatics/server";
 
 service Query {
@@ -452,5 +455,17 @@ service Query {
 
   rpc PVaultSimulatePurchase(pryzmatics.server.pvault.QueryPurchaseSimulationRequest) returns (pryzmatics.server.pvault.QueryPurchaseSimulationResponse) {
     option (google.api.http).get = "/pryzmatics/pvault/simulate_purchase";
+  }
+
+  rpc OrderBookOrders(pryzmatics.server.orderbook.QueryOrderBookOrdersRequest) returns (pryzmatics.server.orderbook.QueryOrderBookOrdersResponse) {
+    option (google.api.http).get = "/pryzmatics/orderbook/orders";
+  }
+
+  rpc OrderBookOrderFeed(pryzmatics.server.orderbook.QueryOrderBookOrderFeedRequest) returns (pryzmatics.server.orderbook.QueryOrderBookOrderFeedResponse) {
+    option (google.api.http).get = "/pryzmatics/orderbook/order/{order_id}/feed";
+  }
+
+  rpc OrderBookReservations(pryzmatics.server.orderbook.QueryOrderBookReservationsRequest) returns (pryzmatics.server.orderbook.QueryOrderBookReservationsResponse) {
+    option (google.api.http).get = "/pryzmatics/orderbook/reservations";
   }
 }
