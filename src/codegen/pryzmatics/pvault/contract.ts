@@ -10,6 +10,7 @@ export interface PVaultContract {
   acceptUnderlyingAsset: boolean;
   acceptCAsset: boolean;
   rewardPerDollar: string;
+  rewardMintDenom: string;
 }
 export interface PVaultContractProtoMsg {
   typeUrl: "/pryzmatics.pvault.PVaultContract";
@@ -23,6 +24,7 @@ export interface PVaultContractAmino {
   accept_underlying_asset?: boolean;
   accept_c_asset?: boolean;
   reward_per_dollar?: string;
+  reward_mint_denom?: string;
 }
 export interface PVaultContractAminoMsg {
   type: "/pryzmatics.pvault.PVaultContract";
@@ -36,6 +38,7 @@ export interface PVaultContractSDKType {
   accept_underlying_asset: boolean;
   accept_c_asset: boolean;
   reward_per_dollar: string;
+  reward_mint_denom: string;
 }
 function createBasePVaultContract(): PVaultContract {
   return {
@@ -45,19 +48,20 @@ function createBasePVaultContract(): PVaultContract {
     cAssetDenom: "",
     acceptUnderlyingAsset: false,
     acceptCAsset: false,
-    rewardPerDollar: ""
+    rewardPerDollar: "",
+    rewardMintDenom: ""
   };
 }
 export const PVaultContract = {
   typeUrl: "/pryzmatics.pvault.PVaultContract",
   is(o: any): o is PVaultContract {
-    return o && (o.$typeUrl === PVaultContract.typeUrl || typeof o.contractAddress === "string" && typeof o.assetId === "string" && typeof o.underlyingAsset === "string" && typeof o.cAssetDenom === "string" && typeof o.acceptUnderlyingAsset === "boolean" && typeof o.acceptCAsset === "boolean" && typeof o.rewardPerDollar === "string");
+    return o && (o.$typeUrl === PVaultContract.typeUrl || typeof o.contractAddress === "string" && typeof o.assetId === "string" && typeof o.underlyingAsset === "string" && typeof o.cAssetDenom === "string" && typeof o.acceptUnderlyingAsset === "boolean" && typeof o.acceptCAsset === "boolean" && typeof o.rewardPerDollar === "string" && typeof o.rewardMintDenom === "string");
   },
   isSDK(o: any): o is PVaultContractSDKType {
-    return o && (o.$typeUrl === PVaultContract.typeUrl || typeof o.contract_address === "string" && typeof o.asset_id === "string" && typeof o.underlying_asset === "string" && typeof o.c_asset_denom === "string" && typeof o.accept_underlying_asset === "boolean" && typeof o.accept_c_asset === "boolean" && typeof o.reward_per_dollar === "string");
+    return o && (o.$typeUrl === PVaultContract.typeUrl || typeof o.contract_address === "string" && typeof o.asset_id === "string" && typeof o.underlying_asset === "string" && typeof o.c_asset_denom === "string" && typeof o.accept_underlying_asset === "boolean" && typeof o.accept_c_asset === "boolean" && typeof o.reward_per_dollar === "string" && typeof o.reward_mint_denom === "string");
   },
   isAmino(o: any): o is PVaultContractAmino {
-    return o && (o.$typeUrl === PVaultContract.typeUrl || typeof o.contract_address === "string" && typeof o.asset_id === "string" && typeof o.underlying_asset === "string" && typeof o.c_asset_denom === "string" && typeof o.accept_underlying_asset === "boolean" && typeof o.accept_c_asset === "boolean" && typeof o.reward_per_dollar === "string");
+    return o && (o.$typeUrl === PVaultContract.typeUrl || typeof o.contract_address === "string" && typeof o.asset_id === "string" && typeof o.underlying_asset === "string" && typeof o.c_asset_denom === "string" && typeof o.accept_underlying_asset === "boolean" && typeof o.accept_c_asset === "boolean" && typeof o.reward_per_dollar === "string" && typeof o.reward_mint_denom === "string");
   },
   encode(message: PVaultContract, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.contractAddress !== "") {
@@ -80,6 +84,9 @@ export const PVaultContract = {
     }
     if (message.rewardPerDollar !== "") {
       writer.uint32(58).string(Decimal.fromUserInput(message.rewardPerDollar, 18).atomics);
+    }
+    if (message.rewardMintDenom !== "") {
+      writer.uint32(66).string(message.rewardMintDenom);
     }
     return writer;
   },
@@ -111,6 +118,9 @@ export const PVaultContract = {
         case 7:
           message.rewardPerDollar = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
+        case 8:
+          message.rewardMintDenom = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -126,7 +136,8 @@ export const PVaultContract = {
       cAssetDenom: isSet(object.cAssetDenom) ? String(object.cAssetDenom) : "",
       acceptUnderlyingAsset: isSet(object.acceptUnderlyingAsset) ? Boolean(object.acceptUnderlyingAsset) : false,
       acceptCAsset: isSet(object.acceptCAsset) ? Boolean(object.acceptCAsset) : false,
-      rewardPerDollar: isSet(object.rewardPerDollar) ? String(object.rewardPerDollar) : ""
+      rewardPerDollar: isSet(object.rewardPerDollar) ? String(object.rewardPerDollar) : "",
+      rewardMintDenom: isSet(object.rewardMintDenom) ? String(object.rewardMintDenom) : ""
     };
   },
   toJSON(message: PVaultContract): unknown {
@@ -138,6 +149,7 @@ export const PVaultContract = {
     message.acceptUnderlyingAsset !== undefined && (obj.acceptUnderlyingAsset = message.acceptUnderlyingAsset);
     message.acceptCAsset !== undefined && (obj.acceptCAsset = message.acceptCAsset);
     message.rewardPerDollar !== undefined && (obj.rewardPerDollar = message.rewardPerDollar);
+    message.rewardMintDenom !== undefined && (obj.rewardMintDenom = message.rewardMintDenom);
     return obj;
   },
   fromPartial(object: Partial<PVaultContract>): PVaultContract {
@@ -149,6 +161,7 @@ export const PVaultContract = {
     message.acceptUnderlyingAsset = object.acceptUnderlyingAsset ?? false;
     message.acceptCAsset = object.acceptCAsset ?? false;
     message.rewardPerDollar = object.rewardPerDollar ?? "";
+    message.rewardMintDenom = object.rewardMintDenom ?? "";
     return message;
   },
   fromAmino(object: PVaultContractAmino): PVaultContract {
@@ -174,6 +187,9 @@ export const PVaultContract = {
     if (object.reward_per_dollar !== undefined && object.reward_per_dollar !== null) {
       message.rewardPerDollar = object.reward_per_dollar;
     }
+    if (object.reward_mint_denom !== undefined && object.reward_mint_denom !== null) {
+      message.rewardMintDenom = object.reward_mint_denom;
+    }
     return message;
   },
   toAmino(message: PVaultContract, useInterfaces: boolean = true): PVaultContractAmino {
@@ -185,6 +201,7 @@ export const PVaultContract = {
     obj.accept_underlying_asset = message.acceptUnderlyingAsset === false ? undefined : message.acceptUnderlyingAsset;
     obj.accept_c_asset = message.acceptCAsset === false ? undefined : message.acceptCAsset;
     obj.reward_per_dollar = padDecimal(message.rewardPerDollar) === "" ? undefined : padDecimal(message.rewardPerDollar);
+    obj.reward_mint_denom = message.rewardMintDenom === "" ? undefined : message.rewardMintDenom;
     return obj;
   },
   fromAminoMsg(object: PVaultContractAminoMsg): PVaultContract {
