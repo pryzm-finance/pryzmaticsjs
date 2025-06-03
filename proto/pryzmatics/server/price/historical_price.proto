@@ -23,7 +23,7 @@ message QueryHistoricalPriceRequest {
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
     (gogoproto.nullable) = false
   ];
-  bool use_external_price_source = 7; // if set, quote should be left empty
+  bool use_external_price_source = 7 [(gogoproto.nullable) = true]; // if set, quote should be left empty
 }
 
 message QueryHistoricalPriceResponse {
