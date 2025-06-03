@@ -10,6 +10,8 @@ export interface QueryHistoricalPriceRequest {
   timeResolutionValue: number;
   from: string;
   to: string;
+  /** if set, quote should be left empty */
+  useExternalPriceSource: boolean;
 }
 export interface QueryHistoricalPriceRequestProtoMsg {
   typeUrl: "/pryzmatics.server.price.QueryHistoricalPriceRequest";
@@ -22,6 +24,8 @@ export interface QueryHistoricalPriceRequestAmino {
   time_resolution_value?: number;
   from?: string;
   to?: string;
+  /** if set, quote should be left empty */
+  use_external_price_source?: boolean;
 }
 export interface QueryHistoricalPriceRequestAminoMsg {
   type: "/pryzmatics.server.price.QueryHistoricalPriceRequest";
@@ -34,6 +38,7 @@ export interface QueryHistoricalPriceRequestSDKType {
   time_resolution_value: number;
   from: string;
   to: string;
+  use_external_price_source: boolean;
 }
 export interface QueryHistoricalPriceResponse {
   historicalPrices: HistoricalPrice[];
@@ -59,19 +64,20 @@ function createBaseQueryHistoricalPriceRequest(): QueryHistoricalPriceRequest {
     timeResolutionType: 0,
     timeResolutionValue: 0,
     from: "",
-    to: ""
+    to: "",
+    useExternalPriceSource: false
   };
 }
 export const QueryHistoricalPriceRequest = {
   typeUrl: "/pryzmatics.server.price.QueryHistoricalPriceRequest",
   is(o: any): o is QueryHistoricalPriceRequest {
-    return o && (o.$typeUrl === QueryHistoricalPriceRequest.typeUrl || typeof o.denom === "string" && typeof o.quote === "string" && isSet(o.timeResolutionType) && typeof o.timeResolutionValue === "number" && typeof o.from === "string" && typeof o.to === "string");
+    return o && (o.$typeUrl === QueryHistoricalPriceRequest.typeUrl || typeof o.denom === "string" && typeof o.quote === "string" && isSet(o.timeResolutionType) && typeof o.timeResolutionValue === "number" && typeof o.from === "string" && typeof o.to === "string" && typeof o.useExternalPriceSource === "boolean");
   },
   isSDK(o: any): o is QueryHistoricalPriceRequestSDKType {
-    return o && (o.$typeUrl === QueryHistoricalPriceRequest.typeUrl || typeof o.denom === "string" && typeof o.quote === "string" && isSet(o.time_resolution_type) && typeof o.time_resolution_value === "number" && typeof o.from === "string" && typeof o.to === "string");
+    return o && (o.$typeUrl === QueryHistoricalPriceRequest.typeUrl || typeof o.denom === "string" && typeof o.quote === "string" && isSet(o.time_resolution_type) && typeof o.time_resolution_value === "number" && typeof o.from === "string" && typeof o.to === "string" && typeof o.use_external_price_source === "boolean");
   },
   isAmino(o: any): o is QueryHistoricalPriceRequestAmino {
-    return o && (o.$typeUrl === QueryHistoricalPriceRequest.typeUrl || typeof o.denom === "string" && typeof o.quote === "string" && isSet(o.time_resolution_type) && typeof o.time_resolution_value === "number" && typeof o.from === "string" && typeof o.to === "string");
+    return o && (o.$typeUrl === QueryHistoricalPriceRequest.typeUrl || typeof o.denom === "string" && typeof o.quote === "string" && isSet(o.time_resolution_type) && typeof o.time_resolution_value === "number" && typeof o.from === "string" && typeof o.to === "string" && typeof o.use_external_price_source === "boolean");
   },
   encode(message: QueryHistoricalPriceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
@@ -91,6 +97,9 @@ export const QueryHistoricalPriceRequest = {
     }
     if (message.to !== "") {
       writer.uint32(50).string(message.to);
+    }
+    if (message.useExternalPriceSource === true) {
+      writer.uint32(56).bool(message.useExternalPriceSource);
     }
     return writer;
   },
@@ -119,6 +128,9 @@ export const QueryHistoricalPriceRequest = {
         case 6:
           message.to = reader.string();
           break;
+        case 7:
+          message.useExternalPriceSource = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -133,7 +145,8 @@ export const QueryHistoricalPriceRequest = {
       timeResolutionType: isSet(object.timeResolutionType) ? timeResolutionTypeFromJSON(object.timeResolutionType) : -1,
       timeResolutionValue: isSet(object.timeResolutionValue) ? Number(object.timeResolutionValue) : 0,
       from: isSet(object.from) ? String(object.from) : "",
-      to: isSet(object.to) ? String(object.to) : ""
+      to: isSet(object.to) ? String(object.to) : "",
+      useExternalPriceSource: isSet(object.useExternalPriceSource) ? Boolean(object.useExternalPriceSource) : false
     };
   },
   toJSON(message: QueryHistoricalPriceRequest): unknown {
@@ -144,6 +157,7 @@ export const QueryHistoricalPriceRequest = {
     message.timeResolutionValue !== undefined && (obj.timeResolutionValue = Math.round(message.timeResolutionValue));
     message.from !== undefined && (obj.from = message.from);
     message.to !== undefined && (obj.to = message.to);
+    message.useExternalPriceSource !== undefined && (obj.useExternalPriceSource = message.useExternalPriceSource);
     return obj;
   },
   fromPartial(object: Partial<QueryHistoricalPriceRequest>): QueryHistoricalPriceRequest {
@@ -154,6 +168,7 @@ export const QueryHistoricalPriceRequest = {
     message.timeResolutionValue = object.timeResolutionValue ?? 0;
     message.from = object.from ?? "";
     message.to = object.to ?? "";
+    message.useExternalPriceSource = object.useExternalPriceSource ?? false;
     return message;
   },
   fromAmino(object: QueryHistoricalPriceRequestAmino): QueryHistoricalPriceRequest {
@@ -176,6 +191,9 @@ export const QueryHistoricalPriceRequest = {
     if (object.to !== undefined && object.to !== null) {
       message.to = object.to;
     }
+    if (object.use_external_price_source !== undefined && object.use_external_price_source !== null) {
+      message.useExternalPriceSource = object.use_external_price_source;
+    }
     return message;
   },
   toAmino(message: QueryHistoricalPriceRequest, useInterfaces: boolean = true): QueryHistoricalPriceRequestAmino {
@@ -186,6 +204,7 @@ export const QueryHistoricalPriceRequest = {
     obj.time_resolution_value = message.timeResolutionValue === 0 ? undefined : message.timeResolutionValue;
     obj.from = message.from === "" ? undefined : message.from;
     obj.to = message.to === "" ? undefined : message.to;
+    obj.use_external_price_source = message.useExternalPriceSource === false ? undefined : message.useExternalPriceSource;
     return obj;
   },
   fromAminoMsg(object: QueryHistoricalPriceRequestAminoMsg): QueryHistoricalPriceRequest {

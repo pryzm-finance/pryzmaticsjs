@@ -394,6 +394,9 @@ export class LCDQueryClient {
     if (typeof params?.to !== "undefined") {
       options.params.to = params.to;
     }
+    if (typeof params?.useExternalPriceSource !== "undefined") {
+      options.params.use_external_price_source = params.useExternalPriceSource;
+    }
     const endpoint = `pryzmatics/price/historical/${params.denom}`;
     return await this.req.get<QueryHistoricalPriceResponseSDKType>(endpoint, options);
   }

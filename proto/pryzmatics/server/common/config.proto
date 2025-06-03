@@ -30,6 +30,7 @@ message Config {
   FaucetConfig faucet_config = 13 [(gogoproto.nullable) = false];
   map<string, AssetConfig> assets = 14 [(gogoproto.nullable) = false];
   string pvault_factory_contract_address = 15;
+  repeated string supported_denoms_for_external_price = 16;
 }
 
 message DatabaseConfig {

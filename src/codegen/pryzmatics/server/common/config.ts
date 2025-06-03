@@ -95,6 +95,7 @@ export interface Config {
     [key: string]: AssetConfig;
   };
   pvaultFactoryContractAddress: string;
+  supportedDenomsForExternalPrice: string[];
 }
 export interface ConfigProtoMsg {
   typeUrl: "/pryzmatics.server.common.Config";
@@ -120,6 +121,7 @@ export interface ConfigAmino {
     [key: string]: AssetConfigAmino;
   };
   pvault_factory_contract_address?: string;
+  supported_denoms_for_external_price?: string[];
 }
 export interface ConfigAminoMsg {
   type: "/pryzmatics.server.common.Config";
@@ -145,6 +147,7 @@ export interface ConfigSDKType {
     [key: string]: AssetConfigSDKType;
   };
   pvault_factory_contract_address: string;
+  supported_denoms_for_external_price: string[];
 }
 export interface DatabaseConfig {
   poolMinConns: number;
@@ -827,19 +830,20 @@ function createBaseConfig(): Config {
     yieldReturnConfig: YieldReturnConfig.fromPartial({}),
     faucetConfig: FaucetConfig.fromPartial({}),
     assets: {},
-    pvaultFactoryContractAddress: ""
+    pvaultFactoryContractAddress: "",
+    supportedDenomsForExternalPrice: []
   };
 }
 export const Config = {
   typeUrl: "/pryzmatics.server.common.Config",
   is(o: any): o is Config {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.productionMode === "boolean" && Array.isArray(o.stableCoins) && (!o.stableCoins.length || StableCoinConfig.is(o.stableCoins[0])) && typeof o.favoritePairsMaxCount === "number" && typeof o.metricCalculationIntervalBlocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpcEndpoints) && DatabaseConfig.is(o.databaseConfig) && ChainConfig.is(o.chainConfig) && LoggerConfig.is(o.loggerConfig) && IndexerConfig.is(o.indexerConfig) && ProfilerConfig.is(o.profilerConfig) && YieldReturnConfig.is(o.yieldReturnConfig) && FaucetConfig.is(o.faucetConfig) && isSet(o.assets) && typeof o.pvaultFactoryContractAddress === "string");
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.productionMode === "boolean" && Array.isArray(o.stableCoins) && (!o.stableCoins.length || StableCoinConfig.is(o.stableCoins[0])) && typeof o.favoritePairsMaxCount === "number" && typeof o.metricCalculationIntervalBlocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpcEndpoints) && DatabaseConfig.is(o.databaseConfig) && ChainConfig.is(o.chainConfig) && LoggerConfig.is(o.loggerConfig) && IndexerConfig.is(o.indexerConfig) && ProfilerConfig.is(o.profilerConfig) && YieldReturnConfig.is(o.yieldReturnConfig) && FaucetConfig.is(o.faucetConfig) && isSet(o.assets) && typeof o.pvaultFactoryContractAddress === "string" && Array.isArray(o.supportedDenomsForExternalPrice) && (!o.supportedDenomsForExternalPrice.length || typeof o.supportedDenomsForExternalPrice[0] === "string"));
   },
   isSDK(o: any): o is ConfigSDKType {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isSDK(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isSDK(o.database_config) && ChainConfig.isSDK(o.chain_config) && LoggerConfig.isSDK(o.logger_config) && IndexerConfig.isSDK(o.indexer_config) && ProfilerConfig.isSDK(o.profiler_config) && YieldReturnConfig.isSDK(o.yield_return_config) && FaucetConfig.isSDK(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string");
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isSDK(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isSDK(o.database_config) && ChainConfig.isSDK(o.chain_config) && LoggerConfig.isSDK(o.logger_config) && IndexerConfig.isSDK(o.indexer_config) && ProfilerConfig.isSDK(o.profiler_config) && YieldReturnConfig.isSDK(o.yield_return_config) && FaucetConfig.isSDK(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string"));
   },
   isAmino(o: any): o is ConfigAmino {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isAmino(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isAmino(o.database_config) && ChainConfig.isAmino(o.chain_config) && LoggerConfig.isAmino(o.logger_config) && IndexerConfig.isAmino(o.indexer_config) && ProfilerConfig.isAmino(o.profiler_config) && YieldReturnConfig.isAmino(o.yield_return_config) && FaucetConfig.isAmino(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string");
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isAmino(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isAmino(o.database_config) && ChainConfig.isAmino(o.chain_config) && LoggerConfig.isAmino(o.logger_config) && IndexerConfig.isAmino(o.indexer_config) && ProfilerConfig.isAmino(o.profiler_config) && YieldReturnConfig.isAmino(o.yield_return_config) && FaucetConfig.isAmino(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string"));
   },
   encode(message: Config, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.productionMode === true) {
@@ -892,6 +896,9 @@ export const Config = {
     });
     if (message.pvaultFactoryContractAddress !== "") {
       writer.uint32(122).string(message.pvaultFactoryContractAddress);
+    }
+    for (const v of message.supportedDenomsForExternalPrice) {
+      writer.uint32(130).string(v!);
     }
     return writer;
   },
@@ -953,6 +960,9 @@ export const Config = {
         case 15:
           message.pvaultFactoryContractAddress = reader.string();
           break;
+        case 16:
+          message.supportedDenomsForExternalPrice.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -986,7 +996,8 @@ export const Config = {
         acc[key] = AssetConfig.fromJSON(value);
         return acc;
       }, {}) : {},
-      pvaultFactoryContractAddress: isSet(object.pvaultFactoryContractAddress) ? String(object.pvaultFactoryContractAddress) : ""
+      pvaultFactoryContractAddress: isSet(object.pvaultFactoryContractAddress) ? String(object.pvaultFactoryContractAddress) : "",
+      supportedDenomsForExternalPrice: Array.isArray(object?.supportedDenomsForExternalPrice) ? object.supportedDenomsForExternalPrice.map((e: any) => String(e)) : []
     };
   },
   toJSON(message: Config): unknown {
@@ -1020,6 +1031,11 @@ export const Config = {
       });
     }
     message.pvaultFactoryContractAddress !== undefined && (obj.pvaultFactoryContractAddress = message.pvaultFactoryContractAddress);
+    if (message.supportedDenomsForExternalPrice) {
+      obj.supportedDenomsForExternalPrice = message.supportedDenomsForExternalPrice.map(e => e);
+    } else {
+      obj.supportedDenomsForExternalPrice = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<Config>): Config {
@@ -1053,6 +1069,7 @@ export const Config = {
       return acc;
     }, {});
     message.pvaultFactoryContractAddress = object.pvaultFactoryContractAddress ?? "";
+    message.supportedDenomsForExternalPrice = object.supportedDenomsForExternalPrice?.map(e => e) || [];
     return message;
   },
   fromAmino(object: ConfigAmino): Config {
@@ -1110,6 +1127,7 @@ export const Config = {
     if (object.pvault_factory_contract_address !== undefined && object.pvault_factory_contract_address !== null) {
       message.pvaultFactoryContractAddress = object.pvault_factory_contract_address;
     }
+    message.supportedDenomsForExternalPrice = object.supported_denoms_for_external_price?.map(e => e) || [];
     return message;
   },
   toAmino(message: Config, useInterfaces: boolean = true): ConfigAmino {
@@ -1143,6 +1161,11 @@ export const Config = {
       });
     }
     obj.pvault_factory_contract_address = message.pvaultFactoryContractAddress === "" ? undefined : message.pvaultFactoryContractAddress;
+    if (message.supportedDenomsForExternalPrice) {
+      obj.supported_denoms_for_external_price = message.supportedDenomsForExternalPrice.map(e => e);
+    } else {
+      obj.supported_denoms_for_external_price = message.supportedDenomsForExternalPrice;
+    }
     return obj;
   },
   fromAminoMsg(object: ConfigAminoMsg): Config {

@@ -7,6 +7,25 @@ import "cosmos_proto/cosmos.proto";
 
 option go_package = "github.com/pryzm-finance/pryzmatics/types/price";
 
+enum ExternalPriceSource{
+  option (gogoproto.goproto_enum_prefix) = false;
+  COIN_GECKO = 0 [(gogoproto.enumvalue_customname) = "EXTERNAL_PRICE_SOURCE_COIN_GECKO"];
+}
+
+message ExternalTokenPrice {
+  string denom = 1;
+  google.protobuf.Timestamp time = 2 [
+    (gogoproto.stdtime) = true,
+    (gogoproto.nullable) = false
+  ];
+  string price = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  ExternalPriceSource source = 4;
+}
+
 message TokenPrice {
   string denom = 1;
   google.protobuf.Timestamp block_time = 2 [
