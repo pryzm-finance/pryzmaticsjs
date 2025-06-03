@@ -1,0 +1,11 @@
+syntax = "proto3";
+package pryzmatics.database.trade;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/database/trade";
+
+enum UserPairTradeVolumeOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  USER_PAIR_TRADE_VOLUME_ORDER_BY_VOLUME = 0 [(gogoproto.enumvalue_customname) = "UserPairTradeVolumeOrderByVolume"];
+}

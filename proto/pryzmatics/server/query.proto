@@ -43,6 +43,7 @@ import "pryzmatics/server/trade/order.proto";
 import "pryzmatics/server/trade/directly_connected_token_pairs.proto";
 import "pryzmatics/server/trade/tickers.proto";
 import "pryzmatics/server/trade/user_pryzm_claim_history.proto";
+import "pryzmatics/server/trade/user_pair_trade_volume.proto";
 
 import "pryzmatics/server/icstaking/host_chain.proto";
 
@@ -315,6 +316,10 @@ service Query {
   // in rest-api the response is an array of tickers, instead of QueryTickersResponse
   rpc Tickers(pryzmatics.server.trade.QueryTickersRequest) returns (pryzmatics.server.trade.QueryTickersResponse) {
     option (google.api.http).get = "/pryzmatics/trade/tickers";
+  }
+
+  rpc UserPairTradeVolume(pryzmatics.server.trade.QueryUserPairTradeVolumeRequest) returns (pryzmatics.server.trade.QueryUserPairTradeVolumeResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/user_pair_trade_volume";
   }
 
   rpc HostChainUnbondingTime(pryzmatics.server.icstaking.QueryHostChainUnbondingTimeRequest) returns (pryzmatics.server.icstaking.QueryHostChainUnbondingTimeResponse) {

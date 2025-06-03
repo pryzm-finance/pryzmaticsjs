@@ -1,0 +1,34 @@
+syntax = "proto3";
+package pryzmatics.server.trade;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "pryzmatics/trade/user_trade_history.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/trade";
+
+message QueryUserPairTradeVolumeRequest {
+  string address = 1; // partial address match supported
+  string token_in_denom = 2; // mandatory
+  string token_out_denom = 3; // mandatory
+  repeated pryzmatics.trade.OperationType operation_types = 4;
+  bool order_by_volume_desc = 5;
+  string from = 6 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = true
+  ];
+  string to = 7 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = true
+  ];
+  cosmos.base.query.v1beta1.PageRequest pagination = 8 [(gogoproto.nullable) = true];
+  bool include_proxy_trades = 9;
+}
+
+message QueryUserPairTradeVolumeResponse {
+  repeated pryzmatics.trade.UserTradeVolume user_trade_volumes = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}

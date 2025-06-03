@@ -36,6 +36,7 @@ import { QueryPulseTradablePairsRequest, QueryPulseTradablePairsResponseSDKType,
 import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType, QueryMatchableBuyOrdersForPairRequest, QueryMatchableBuyOrdersForPairResponseSDKType, QueryOrderPairsToDisableRequest, QueryOrderPairsToDisableResponseSDKType, QueryOrderPairMetricsRequest, QueryOrderPairMetricsResponseSDKType, QueryOrderPairPriceBucketsRequest, QueryOrderPairPriceBucketsResponseSDKType, QueryOrderMetricsRequest, QueryOrderMetricsResponseSDKType } from "./trade/order";
 import { QueryDirectlyConnectedTokenPairsRequest, QueryDirectlyConnectedTokenPairsResponseSDKType } from "./trade/directly_connected_token_pairs";
 import { QueryTickersRequest, QueryTickersResponseSDKType } from "./trade/tickers";
+import { QueryUserPairTradeVolumeRequest, QueryUserPairTradeVolumeResponseSDKType } from "./trade/user_pair_trade_volume";
 import { QueryHostChainUnbondingTimeRequest, QueryHostChainUnbondingTimeResponseSDKType, QueryHostChainRequest, QueryHostChainResponseSDKType, QueryHostChainsRequest, QueryHostChainsResponseSDKType, QueryHostChainByUnderlyingDenomRequest, QueryHostChainByUnderlyingDenomResponseSDKType } from "./icstaking/host_chain";
 import { QueryValidatorRequest, QueryValidatorResponseSDKType, QueryValidatorsRequest, QueryValidatorsResponseSDKType } from "./oracle/validator";
 import { QueryVoteIntervalsRequest, QueryVoteIntervalsResponseSDKType } from "./oracle/vote_interval";
@@ -126,6 +127,7 @@ export class LCDQueryClient {
     this.orderMetrics = this.orderMetrics.bind(this);
     this.directlyConnectedTokenPairs = this.directlyConnectedTokenPairs.bind(this);
     this.tickers = this.tickers.bind(this);
+    this.userPairTradeVolume = this.userPairTradeVolume.bind(this);
     this.hostChainUnbondingTime = this.hostChainUnbondingTime.bind(this);
     this.hostChain = this.hostChain.bind(this);
     this.hostChains = this.hostChains.bind(this);
@@ -965,6 +967,41 @@ export class LCDQueryClient {
   async tickers(_params: QueryTickersRequest = {}): Promise<QueryTickersResponseSDKType> {
     const endpoint = `pryzmatics/trade/tickers`;
     return await this.req.get<QueryTickersResponseSDKType>(endpoint);
+  }
+  /* UserPairTradeVolume */
+  async userPairTradeVolume(params: QueryUserPairTradeVolumeRequest): Promise<QueryUserPairTradeVolumeResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.address !== "undefined") {
+      options.params.address = params.address;
+    }
+    if (typeof params?.tokenInDenom !== "undefined") {
+      options.params.token_in_denom = params.tokenInDenom;
+    }
+    if (typeof params?.tokenOutDenom !== "undefined") {
+      options.params.token_out_denom = params.tokenOutDenom;
+    }
+    if (typeof params?.operationTypes !== "undefined") {
+      options.params.operation_types = params.operationTypes;
+    }
+    if (typeof params?.orderByVolumeDesc !== "undefined") {
+      options.params.order_by_volume_desc = params.orderByVolumeDesc;
+    }
+    if (typeof params?.from !== "undefined") {
+      options.params.from = params.from;
+    }
+    if (typeof params?.to !== "undefined") {
+      options.params.to = params.to;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    if (typeof params?.includeProxyTrades !== "undefined") {
+      options.params.include_proxy_trades = params.includeProxyTrades;
+    }
+    const endpoint = `pryzmatics/trade/user_pair_trade_volume`;
+    return await this.req.get<QueryUserPairTradeVolumeResponseSDKType>(endpoint, options);
   }
   /* HostChainUnbondingTime */
   async hostChainUnbondingTime(params: QueryHostChainUnbondingTimeRequest): Promise<QueryHostChainUnbondingTimeResponseSDKType> {
