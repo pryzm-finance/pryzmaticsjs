@@ -13,7 +13,6 @@ async function main() {
         to: `${Date.parse('2023-07-27 12:10:04.045 GMT')}`,
         timeResolutionType: TimeResolutionType.TIME_RESOLUTION_TYPE_MINUTE,
         timeResolutionValue: 5,
-        useExternalPriceSource: false
     })).historical_prices
     console.log(prices)
 
@@ -24,7 +23,6 @@ async function main() {
         to: `${Date.parse('2023-07-27 12:10:04.045 GMT')}`,
         timeResolutionType: TimeResolutionType.TIME_RESOLUTION_TYPE_MINUTE,
         timeResolutionValue: 5,
-        useExternalPriceSource: false
     })).historical_prices
     console.log(prices)
 

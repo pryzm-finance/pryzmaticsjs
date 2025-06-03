@@ -15,8 +15,8 @@ importers:
         specifier: 0.32.4
         version: 0.32.4
       '@pryzm-finance/pryzmaticsjs':
-        specifier: 0.14.21
-        version: 0.14.21(google-protobuf@3.21.2)(starknet@6.11.0)
+        specifier: 0.14.22
+        version: 0.14.22(google-protobuf@3.21.2)(starknet@6.11.0)
       '@refractedlabs/internal-js-utils':
         specifier: 0.6.5
         version: 0.6.5
@@ -151,8 +151,8 @@ packages:
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
 
-  '@pryzm-finance/pryzmaticsjs@0.14.21':
-    resolution: {integrity: sha512-WSiYq1K+ehMsJZphTsARXcsZ9V5xH0C5B+c4vyzK7CbUkHrm7nrQpl/oGAxxZoJbeYtzOweii3dcBu1Pin+qVA==}
+  '@pryzm-finance/pryzmaticsjs@0.14.22':
+    resolution: {integrity: sha512-UhbuxeaQMw2lycBxwEMapAiORMHijURp/rvWd/wwVwYtvU17kOmkLkJzY9g6zo6pHxNj+BV3syUrD2XeE+euzg==}
 
   '@refractedlabs/cosmology-lcd-fork@0.13.7':
     resolution: {integrity: sha512-5DEQy8DHzSIsTfl+amlISteWCWmAokWC1pJkMit8H16Mx1ycaDfSrvREHHJlB5bfOkTkc3YHMmd8e8izihEHng==}
@@ -854,7 +854,7 @@ snapshots:
 
   '@protobufjs/utf8@1.1.0': {}
 
-  '@pryzm-finance/pryzmaticsjs@0.14.21(google-protobuf@3.21.2)(starknet@6.11.0)':
+  '@pryzm-finance/pryzmaticsjs@0.14.22(google-protobuf@3.21.2)(starknet@6.11.0)':
     dependencies:
       '@cosmjs/math': 0.32.4
       '@cosmjs/proto-signing': 0.32.4
