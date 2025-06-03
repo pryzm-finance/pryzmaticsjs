@@ -985,8 +985,8 @@ export class LCDQueryClient {
     if (typeof params?.operationTypes !== "undefined") {
       options.params.operation_types = params.operationTypes;
     }
-    if (typeof params?.orderByVolumeDesc !== "undefined") {
-      options.params.order_by_volume_desc = params.orderByVolumeDesc;
+    if (typeof params?.orderByVolumeAsc !== "undefined") {
+      options.params.order_by_volume_asc = params.orderByVolumeAsc;
     }
     if (typeof params?.from !== "undefined") {
       options.params.from = params.from;

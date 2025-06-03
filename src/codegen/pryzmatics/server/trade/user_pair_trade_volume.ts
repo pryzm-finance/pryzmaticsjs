@@ -11,7 +11,7 @@ export interface QueryUserPairTradeVolumeRequest {
   /** mandatory */
   tokenOutDenom: string;
   operationTypes: OperationType[];
-  orderByVolumeDesc: boolean;
+  orderByVolumeAsc: boolean;
   from?: string;
   to?: string;
   pagination?: PageRequest;
@@ -29,7 +29,7 @@ export interface QueryUserPairTradeVolumeRequestAmino {
   /** mandatory */
   token_out_denom?: string;
   operation_types?: OperationType[];
-  order_by_volume_desc?: boolean;
+  order_by_volume_asc?: boolean;
   from?: string;
   to?: string;
   pagination?: PageRequestAmino;
@@ -44,7 +44,7 @@ export interface QueryUserPairTradeVolumeRequestSDKType {
   token_in_denom: string;
   token_out_denom: string;
   operation_types: OperationType[];
-  order_by_volume_desc: boolean;
+  order_by_volume_asc: boolean;
   from?: string;
   to?: string;
   pagination?: PageRequestSDKType;
@@ -76,7 +76,7 @@ function createBaseQueryUserPairTradeVolumeRequest(): QueryUserPairTradeVolumeRe
     tokenInDenom: "",
     tokenOutDenom: "",
     operationTypes: [],
-    orderByVolumeDesc: false,
+    orderByVolumeAsc: false,
     from: undefined,
     to: undefined,
     pagination: undefined,
@@ -86,13 +86,13 @@ function createBaseQueryUserPairTradeVolumeRequest(): QueryUserPairTradeVolumeRe
 export const QueryUserPairTradeVolumeRequest = {
   typeUrl: "/pryzmatics.server.trade.QueryUserPairTradeVolumeRequest",
   is(o: any): o is QueryUserPairTradeVolumeRequest {
-    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.tokenInDenom === "string" && typeof o.tokenOutDenom === "string" && Array.isArray(o.operationTypes) && typeof o.orderByVolumeDesc === "boolean" && typeof o.includeProxyTrades === "boolean");
+    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.tokenInDenom === "string" && typeof o.tokenOutDenom === "string" && Array.isArray(o.operationTypes) && typeof o.orderByVolumeAsc === "boolean" && typeof o.includeProxyTrades === "boolean");
   },
   isSDK(o: any): o is QueryUserPairTradeVolumeRequestSDKType {
-    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.token_in_denom === "string" && typeof o.token_out_denom === "string" && Array.isArray(o.operation_types) && typeof o.order_by_volume_desc === "boolean" && typeof o.include_proxy_trades === "boolean");
+    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.token_in_denom === "string" && typeof o.token_out_denom === "string" && Array.isArray(o.operation_types) && typeof o.order_by_volume_asc === "boolean" && typeof o.include_proxy_trades === "boolean");
   },
   isAmino(o: any): o is QueryUserPairTradeVolumeRequestAmino {
-    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.token_in_denom === "string" && typeof o.token_out_denom === "string" && Array.isArray(o.operation_types) && typeof o.order_by_volume_desc === "boolean" && typeof o.include_proxy_trades === "boolean");
+    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.token_in_denom === "string" && typeof o.token_out_denom === "string" && Array.isArray(o.operation_types) && typeof o.order_by_volume_asc === "boolean" && typeof o.include_proxy_trades === "boolean");
   },
   encode(message: QueryUserPairTradeVolumeRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
@@ -109,8 +109,8 @@ export const QueryUserPairTradeVolumeRequest = {
       writer.int32(v);
     }
     writer.ldelim();
-    if (message.orderByVolumeDesc === true) {
-      writer.uint32(40).bool(message.orderByVolumeDesc);
+    if (message.orderByVolumeAsc === true) {
+      writer.uint32(40).bool(message.orderByVolumeAsc);
     }
     if (message.from !== undefined) {
       writer.uint32(50).string(message.from);
@@ -153,7 +153,7 @@ export const QueryUserPairTradeVolumeRequest = {
           }
           break;
         case 5:
-          message.orderByVolumeDesc = reader.bool();
+          message.orderByVolumeAsc = reader.bool();
           break;
         case 6:
           message.from = reader.string();
@@ -180,7 +180,7 @@ export const QueryUserPairTradeVolumeRequest = {
       tokenInDenom: isSet(object.tokenInDenom) ? String(object.tokenInDenom) : "",
       tokenOutDenom: isSet(object.tokenOutDenom) ? String(object.tokenOutDenom) : "",
       operationTypes: Array.isArray(object?.operationTypes) ? object.operationTypes.map((e: any) => operationTypeFromJSON(e)) : [],
-      orderByVolumeDesc: isSet(object.orderByVolumeDesc) ? Boolean(object.orderByVolumeDesc) : false,
+      orderByVolumeAsc: isSet(object.orderByVolumeAsc) ? Boolean(object.orderByVolumeAsc) : false,
       from: isSet(object.from) ? String(object.from) : undefined,
       to: isSet(object.to) ? String(object.to) : undefined,
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
@@ -197,7 +197,7 @@ export const QueryUserPairTradeVolumeRequest = {
     } else {
       obj.operationTypes = [];
     }
-    message.orderByVolumeDesc !== undefined && (obj.orderByVolumeDesc = message.orderByVolumeDesc);
+    message.orderByVolumeAsc !== undefined && (obj.orderByVolumeAsc = message.orderByVolumeAsc);
     message.from !== undefined && (obj.from = message.from);
     message.to !== undefined && (obj.to = message.to);
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
@@ -210,7 +210,7 @@ export const QueryUserPairTradeVolumeRequest = {
     message.tokenInDenom = object.tokenInDenom ?? "";
     message.tokenOutDenom = object.tokenOutDenom ?? "";
     message.operationTypes = object.operationTypes?.map(e => e) || [];
-    message.orderByVolumeDesc = object.orderByVolumeDesc ?? false;
+    message.orderByVolumeAsc = object.orderByVolumeAsc ?? false;
     message.from = object.from ?? undefined;
     message.to = object.to ?? undefined;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
@@ -229,8 +229,8 @@ export const QueryUserPairTradeVolumeRequest = {
       message.tokenOutDenom = object.token_out_denom;
     }
     message.operationTypes = object.operation_types?.map(e => e) || [];
-    if (object.order_by_volume_desc !== undefined && object.order_by_volume_desc !== null) {
-      message.orderByVolumeDesc = object.order_by_volume_desc;
+    if (object.order_by_volume_asc !== undefined && object.order_by_volume_asc !== null) {
+      message.orderByVolumeAsc = object.order_by_volume_asc;
     }
     if (object.from !== undefined && object.from !== null) {
       message.from = object.from;
@@ -256,7 +256,7 @@ export const QueryUserPairTradeVolumeRequest = {
     } else {
       obj.operation_types = message.operationTypes;
     }
-    obj.order_by_volume_desc = message.orderByVolumeDesc === false ? undefined : message.orderByVolumeDesc;
+    obj.order_by_volume_asc = message.orderByVolumeAsc === false ? undefined : message.orderByVolumeAsc;
     obj.from = message.from === null ? undefined : message.from;
     obj.to = message.to === null ? undefined : message.to;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;

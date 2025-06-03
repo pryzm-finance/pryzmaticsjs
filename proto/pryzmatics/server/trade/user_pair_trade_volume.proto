@@ -13,7 +13,7 @@ message QueryUserPairTradeVolumeRequest {
   string token_in_denom = 2; // mandatory
   string token_out_denom = 3; // mandatory
   repeated pryzmatics.trade.OperationType operation_types = 4;
-  bool order_by_volume_desc = 5;
+  bool order_by_volume_asc = 5;
   string from = 6 [
     (cosmos_proto.scalar) = "cosmos.Int",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
