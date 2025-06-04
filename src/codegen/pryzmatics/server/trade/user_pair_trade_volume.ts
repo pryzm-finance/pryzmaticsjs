@@ -7,9 +7,9 @@ export interface QueryUserPairTradeVolumeRequest {
   /** partial address match supported */
   address: string;
   /** mandatory */
-  tokenInDenom: string;
+  tokenIn: string;
   /** mandatory */
-  tokenOutDenom: string;
+  tokenOut: string;
   operationTypes: OperationType[];
   orderByVolumeAsc: boolean;
   from?: string;
@@ -25,9 +25,9 @@ export interface QueryUserPairTradeVolumeRequestAmino {
   /** partial address match supported */
   address?: string;
   /** mandatory */
-  token_in_denom?: string;
+  token_in?: string;
   /** mandatory */
-  token_out_denom?: string;
+  token_out?: string;
   operation_types?: OperationType[];
   order_by_volume_asc?: boolean;
   from?: string;
@@ -41,8 +41,8 @@ export interface QueryUserPairTradeVolumeRequestAminoMsg {
 }
 export interface QueryUserPairTradeVolumeRequestSDKType {
   address: string;
-  token_in_denom: string;
-  token_out_denom: string;
+  token_in: string;
+  token_out: string;
   operation_types: OperationType[];
   order_by_volume_asc: boolean;
   from?: string;
@@ -73,8 +73,8 @@ export interface QueryUserPairTradeVolumeResponseSDKType {
 function createBaseQueryUserPairTradeVolumeRequest(): QueryUserPairTradeVolumeRequest {
   return {
     address: "",
-    tokenInDenom: "",
-    tokenOutDenom: "",
+    tokenIn: "",
+    tokenOut: "",
     operationTypes: [],
     orderByVolumeAsc: false,
     from: undefined,
@@ -86,23 +86,23 @@ function createBaseQueryUserPairTradeVolumeRequest(): QueryUserPairTradeVolumeRe
 export const QueryUserPairTradeVolumeRequest = {
   typeUrl: "/pryzmatics.server.trade.QueryUserPairTradeVolumeRequest",
   is(o: any): o is QueryUserPairTradeVolumeRequest {
-    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.tokenInDenom === "string" && typeof o.tokenOutDenom === "string" && Array.isArray(o.operationTypes) && typeof o.orderByVolumeAsc === "boolean" && typeof o.includeProxyTrades === "boolean");
+    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && Array.isArray(o.operationTypes) && typeof o.orderByVolumeAsc === "boolean" && typeof o.includeProxyTrades === "boolean");
   },
   isSDK(o: any): o is QueryUserPairTradeVolumeRequestSDKType {
-    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.token_in_denom === "string" && typeof o.token_out_denom === "string" && Array.isArray(o.operation_types) && typeof o.order_by_volume_asc === "boolean" && typeof o.include_proxy_trades === "boolean");
+    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.token_in === "string" && typeof o.token_out === "string" && Array.isArray(o.operation_types) && typeof o.order_by_volume_asc === "boolean" && typeof o.include_proxy_trades === "boolean");
   },
   isAmino(o: any): o is QueryUserPairTradeVolumeRequestAmino {
-    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.token_in_denom === "string" && typeof o.token_out_denom === "string" && Array.isArray(o.operation_types) && typeof o.order_by_volume_asc === "boolean" && typeof o.include_proxy_trades === "boolean");
+    return o && (o.$typeUrl === QueryUserPairTradeVolumeRequest.typeUrl || typeof o.address === "string" && typeof o.token_in === "string" && typeof o.token_out === "string" && Array.isArray(o.operation_types) && typeof o.order_by_volume_asc === "boolean" && typeof o.include_proxy_trades === "boolean");
   },
   encode(message: QueryUserPairTradeVolumeRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
-    if (message.tokenInDenom !== "") {
-      writer.uint32(18).string(message.tokenInDenom);
+    if (message.tokenIn !== "") {
+      writer.uint32(18).string(message.tokenIn);
     }
-    if (message.tokenOutDenom !== "") {
-      writer.uint32(26).string(message.tokenOutDenom);
+    if (message.tokenOut !== "") {
+      writer.uint32(26).string(message.tokenOut);
     }
     writer.uint32(34).fork();
     for (const v of message.operationTypes) {
@@ -137,10 +137,10 @@ export const QueryUserPairTradeVolumeRequest = {
           message.address = reader.string();
           break;
         case 2:
-          message.tokenInDenom = reader.string();
+          message.tokenIn = reader.string();
           break;
         case 3:
-          message.tokenOutDenom = reader.string();
+          message.tokenOut = reader.string();
           break;
         case 4:
           if ((tag & 7) === 2) {
@@ -177,8 +177,8 @@ export const QueryUserPairTradeVolumeRequest = {
   fromJSON(object: any): QueryUserPairTradeVolumeRequest {
     return {
       address: isSet(object.address) ? String(object.address) : "",
-      tokenInDenom: isSet(object.tokenInDenom) ? String(object.tokenInDenom) : "",
-      tokenOutDenom: isSet(object.tokenOutDenom) ? String(object.tokenOutDenom) : "",
+      tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
+      tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
       operationTypes: Array.isArray(object?.operationTypes) ? object.operationTypes.map((e: any) => operationTypeFromJSON(e)) : [],
       orderByVolumeAsc: isSet(object.orderByVolumeAsc) ? Boolean(object.orderByVolumeAsc) : false,
       from: isSet(object.from) ? String(object.from) : undefined,
@@ -190,8 +190,8 @@ export const QueryUserPairTradeVolumeRequest = {
   toJSON(message: QueryUserPairTradeVolumeRequest): unknown {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
-    message.tokenInDenom !== undefined && (obj.tokenInDenom = message.tokenInDenom);
-    message.tokenOutDenom !== undefined && (obj.tokenOutDenom = message.tokenOutDenom);
+    message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
+    message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
     if (message.operationTypes) {
       obj.operationTypes = message.operationTypes.map(e => operationTypeToJSON(e));
     } else {
@@ -207,8 +207,8 @@ export const QueryUserPairTradeVolumeRequest = {
   fromPartial(object: Partial<QueryUserPairTradeVolumeRequest>): QueryUserPairTradeVolumeRequest {
     const message = createBaseQueryUserPairTradeVolumeRequest();
     message.address = object.address ?? "";
-    message.tokenInDenom = object.tokenInDenom ?? "";
-    message.tokenOutDenom = object.tokenOutDenom ?? "";
+    message.tokenIn = object.tokenIn ?? "";
+    message.tokenOut = object.tokenOut ?? "";
     message.operationTypes = object.operationTypes?.map(e => e) || [];
     message.orderByVolumeAsc = object.orderByVolumeAsc ?? false;
     message.from = object.from ?? undefined;
@@ -222,11 +222,11 @@ export const QueryUserPairTradeVolumeRequest = {
     if (object.address !== undefined && object.address !== null) {
       message.address = object.address;
     }
-    if (object.token_in_denom !== undefined && object.token_in_denom !== null) {
-      message.tokenInDenom = object.token_in_denom;
+    if (object.token_in !== undefined && object.token_in !== null) {
+      message.tokenIn = object.token_in;
     }
-    if (object.token_out_denom !== undefined && object.token_out_denom !== null) {
-      message.tokenOutDenom = object.token_out_denom;
+    if (object.token_out !== undefined && object.token_out !== null) {
+      message.tokenOut = object.token_out;
     }
     message.operationTypes = object.operation_types?.map(e => e) || [];
     if (object.order_by_volume_asc !== undefined && object.order_by_volume_asc !== null) {
@@ -249,8 +249,8 @@ export const QueryUserPairTradeVolumeRequest = {
   toAmino(message: QueryUserPairTradeVolumeRequest, useInterfaces: boolean = true): QueryUserPairTradeVolumeRequestAmino {
     const obj: any = {};
     obj.address = message.address === "" ? undefined : message.address;
-    obj.token_in_denom = message.tokenInDenom === "" ? undefined : message.tokenInDenom;
-    obj.token_out_denom = message.tokenOutDenom === "" ? undefined : message.tokenOutDenom;
+    obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
+    obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
     if (message.operationTypes) {
       obj.operation_types = message.operationTypes.map(e => e);
     } else {

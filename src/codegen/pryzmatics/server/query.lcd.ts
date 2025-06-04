@@ -976,11 +976,11 @@ export class LCDQueryClient {
     if (typeof params?.address !== "undefined") {
       options.params.address = params.address;
     }
-    if (typeof params?.tokenInDenom !== "undefined") {
-      options.params.token_in_denom = params.tokenInDenom;
+    if (typeof params?.tokenIn !== "undefined") {
+      options.params.token_in = params.tokenIn;
     }
-    if (typeof params?.tokenOutDenom !== "undefined") {
-      options.params.token_out_denom = params.tokenOutDenom;
+    if (typeof params?.tokenOut !== "undefined") {
+      options.params.token_out = params.tokenOut;
     }
     if (typeof params?.operationTypes !== "undefined") {
       options.params.operation_types = params.operationTypes;

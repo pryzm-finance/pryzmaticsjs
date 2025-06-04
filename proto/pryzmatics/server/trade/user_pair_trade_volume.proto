@@ -10,8 +10,8 @@ option go_package = "github.com/pryzm-finance/pryzmatics/server/trade";
 
 message QueryUserPairTradeVolumeRequest {
   string address = 1; // partial address match supported
-  string token_in_denom = 2; // mandatory
-  string token_out_denom = 3; // mandatory
+  string token_in = 2; // mandatory
+  string token_out = 3; // mandatory
   repeated pryzmatics.trade.OperationType operation_types = 4;
   bool order_by_volume_asc = 5;
   string from = 6 [
