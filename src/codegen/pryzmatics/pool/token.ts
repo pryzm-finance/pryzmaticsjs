@@ -1,7 +1,8 @@
 import { TokenYield, TokenYieldAmino, TokenYieldSDKType } from "./token_yield";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { Decimal } from "@cosmjs/math";
-import { isSet, padDecimal } from "../../helpers";
+import { isSet, padDecimal, fromJsonTimestamp, fromTimestamp } from "../../helpers";
 import { GlobalDecoderRegistry } from "../../registry";
 export enum TokenType {
   TOKEN_TYPE_ANY = 0,
@@ -136,6 +137,9 @@ export interface Token {
   error: string;
   /** TODO move all asset related fields into a new single field */
   assetExchangeRate?: string;
+  supply: string;
+  supplyStableCoinTerms?: string;
+  supplyFetchTime: Timestamp;
 }
 export interface TokenProtoMsg {
   typeUrl: "/pryzmatics.pool.Token";
@@ -153,6 +157,9 @@ export interface TokenAmino {
   error?: string;
   /** TODO move all asset related fields into a new single field */
   asset_exchange_rate?: string;
+  supply?: string;
+  supply_stable_coin_terms?: string;
+  supply_fetch_time?: string;
 }
 export interface TokenAminoMsg {
   type: "/pryzmatics.pool.Token";
@@ -169,6 +176,9 @@ export interface TokenSDKType {
   asset_id: string;
   error: string;
   asset_exchange_rate?: string;
+  supply: string;
+  supply_stable_coin_terms?: string;
+  supply_fetch_time: TimestampSDKType;
 }
 function createBaseTokenMetrics(): TokenMetrics {
   return {
@@ -488,19 +498,22 @@ function createBaseToken(): Token {
     underlyingTokenTermsPrice: undefined,
     assetId: "",
     error: "",
-    assetExchangeRate: undefined
+    assetExchangeRate: undefined,
+    supply: "",
+    supplyStableCoinTerms: undefined,
+    supplyFetchTime: Timestamp.fromPartial({})
   };
 }
 export const Token = {
   typeUrl: "/pryzmatics.pool.Token",
   is(o: any): o is Token {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.underlyingTokenDenom === "string" && typeof o.assetId === "string" && typeof o.error === "string");
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.underlyingTokenDenom === "string" && typeof o.assetId === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.is(o.supplyFetchTime));
   },
   isSDK(o: any): o is TokenSDKType {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string");
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isSDK(o.supply_fetch_time));
   },
   isAmino(o: any): o is TokenAmino {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string");
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isAmino(o.supply_fetch_time));
   },
   encode(message: Token, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
@@ -532,6 +545,15 @@ export const Token = {
     }
     if (message.assetExchangeRate !== undefined) {
       writer.uint32(82).string(Decimal.fromUserInput(message.assetExchangeRate, 18).atomics);
+    }
+    if (message.supply !== "") {
+      writer.uint32(90).string(message.supply);
+    }
+    if (message.supplyStableCoinTerms !== undefined) {
+      writer.uint32(98).string(Decimal.fromUserInput(message.supplyStableCoinTerms, 18).atomics);
+    }
+    if (message.supplyFetchTime !== undefined) {
+      Timestamp.encode(message.supplyFetchTime, writer.uint32(106).fork()).ldelim();
     }
     return writer;
   },
@@ -572,6 +594,15 @@ export const Token = {
         case 10:
           message.assetExchangeRate = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
+        case 11:
+          message.supply = reader.string();
+          break;
+        case 12:
+          message.supplyStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 13:
+          message.supplyFetchTime = Timestamp.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -590,7 +621,10 @@ export const Token = {
       underlyingTokenTermsPrice: isSet(object.underlyingTokenTermsPrice) ? String(object.underlyingTokenTermsPrice) : undefined,
       assetId: isSet(object.assetId) ? String(object.assetId) : "",
       error: isSet(object.error) ? String(object.error) : "",
-      assetExchangeRate: isSet(object.assetExchangeRate) ? String(object.assetExchangeRate) : undefined
+      assetExchangeRate: isSet(object.assetExchangeRate) ? String(object.assetExchangeRate) : undefined,
+      supply: isSet(object.supply) ? String(object.supply) : "",
+      supplyStableCoinTerms: isSet(object.supplyStableCoinTerms) ? String(object.supplyStableCoinTerms) : undefined,
+      supplyFetchTime: isSet(object.supplyFetchTime) ? fromJsonTimestamp(object.supplyFetchTime) : undefined
     };
   },
   toJSON(message: Token): unknown {
@@ -605,6 +639,9 @@ export const Token = {
     message.assetId !== undefined && (obj.assetId = message.assetId);
     message.error !== undefined && (obj.error = message.error);
     message.assetExchangeRate !== undefined && (obj.assetExchangeRate = message.assetExchangeRate);
+    message.supply !== undefined && (obj.supply = message.supply);
+    message.supplyStableCoinTerms !== undefined && (obj.supplyStableCoinTerms = message.supplyStableCoinTerms);
+    message.supplyFetchTime !== undefined && (obj.supplyFetchTime = fromTimestamp(message.supplyFetchTime).toISOString());
     return obj;
   },
   fromPartial(object: Partial<Token>): Token {
@@ -619,6 +656,9 @@ export const Token = {
     message.assetId = object.assetId ?? "";
     message.error = object.error ?? "";
     message.assetExchangeRate = object.assetExchangeRate ?? undefined;
+    message.supply = object.supply ?? "";
+    message.supplyStableCoinTerms = object.supplyStableCoinTerms ?? undefined;
+    message.supplyFetchTime = object.supplyFetchTime !== undefined && object.supplyFetchTime !== null ? Timestamp.fromPartial(object.supplyFetchTime) : undefined;
     return message;
   },
   fromAmino(object: TokenAmino): Token {
@@ -653,6 +693,15 @@ export const Token = {
     if (object.asset_exchange_rate !== undefined && object.asset_exchange_rate !== null) {
       message.assetExchangeRate = object.asset_exchange_rate;
     }
+    if (object.supply !== undefined && object.supply !== null) {
+      message.supply = object.supply;
+    }
+    if (object.supply_stable_coin_terms !== undefined && object.supply_stable_coin_terms !== null) {
+      message.supplyStableCoinTerms = object.supply_stable_coin_terms;
+    }
+    if (object.supply_fetch_time !== undefined && object.supply_fetch_time !== null) {
+      message.supplyFetchTime = Timestamp.fromAmino(object.supply_fetch_time);
+    }
     return message;
   },
   toAmino(message: Token, useInterfaces: boolean = true): TokenAmino {
@@ -667,6 +716,9 @@ export const Token = {
     obj.asset_id = message.assetId === "" ? undefined : message.assetId;
     obj.error = message.error === "" ? undefined : message.error;
     obj.asset_exchange_rate = padDecimal(message.assetExchangeRate) === null ? undefined : padDecimal(message.assetExchangeRate);
+    obj.supply = message.supply === "" ? undefined : message.supply;
+    obj.supply_stable_coin_terms = padDecimal(message.supplyStableCoinTerms) === null ? undefined : padDecimal(message.supplyStableCoinTerms);
+    obj.supply_fetch_time = message.supplyFetchTime ? Timestamp.toAmino(message.supplyFetchTime, useInterfaces) : undefined;
     return obj;
   },
   fromAminoMsg(object: TokenAminoMsg): Token {
