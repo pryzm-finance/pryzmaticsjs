@@ -1,5 +1,6 @@
-import { OperationType, UserTradeVolume, UserTradeVolumeAmino, UserTradeVolumeSDKType, operationTypeFromJSON, operationTypeToJSON } from "../../trade/user_trade_history";
+import { OperationType, operationTypeFromJSON, operationTypeToJSON } from "../../trade/user_trade_history";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
+import { UserPairTradeVolume, UserPairTradeVolumeAmino, UserPairTradeVolumeSDKType } from "../../trade/user_pair_trade_volume";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
 import { GlobalDecoderRegistry } from "../../../registry";
@@ -51,7 +52,7 @@ export interface QueryUserPairTradeVolumeRequestSDKType {
   include_proxy_trades: boolean;
 }
 export interface QueryUserPairTradeVolumeResponse {
-  userTradeVolumes: UserTradeVolume[];
+  userTradeVolumes: UserPairTradeVolume[];
   pagination?: PageResponse;
 }
 export interface QueryUserPairTradeVolumeResponseProtoMsg {
@@ -59,7 +60,7 @@ export interface QueryUserPairTradeVolumeResponseProtoMsg {
   value: Uint8Array;
 }
 export interface QueryUserPairTradeVolumeResponseAmino {
-  user_trade_volumes?: UserTradeVolumeAmino[];
+  user_trade_volumes?: UserPairTradeVolumeAmino[];
   pagination?: PageResponseAmino;
 }
 export interface QueryUserPairTradeVolumeResponseAminoMsg {
@@ -67,7 +68,7 @@ export interface QueryUserPairTradeVolumeResponseAminoMsg {
   value: QueryUserPairTradeVolumeResponseAmino;
 }
 export interface QueryUserPairTradeVolumeResponseSDKType {
-  user_trade_volumes: UserTradeVolumeSDKType[];
+  user_trade_volumes: UserPairTradeVolumeSDKType[];
   pagination?: PageResponseSDKType;
 }
 function createBaseQueryUserPairTradeVolumeRequest(): QueryUserPairTradeVolumeRequest {
@@ -289,17 +290,17 @@ function createBaseQueryUserPairTradeVolumeResponse(): QueryUserPairTradeVolumeR
 export const QueryUserPairTradeVolumeResponse = {
   typeUrl: "/pryzmatics.server.trade.QueryUserPairTradeVolumeResponse",
   is(o: any): o is QueryUserPairTradeVolumeResponse {
-    return o && (o.$typeUrl === QueryUserPairTradeVolumeResponse.typeUrl || Array.isArray(o.userTradeVolumes) && (!o.userTradeVolumes.length || UserTradeVolume.is(o.userTradeVolumes[0])));
+    return o && (o.$typeUrl === QueryUserPairTradeVolumeResponse.typeUrl || Array.isArray(o.userTradeVolumes) && (!o.userTradeVolumes.length || UserPairTradeVolume.is(o.userTradeVolumes[0])));
   },
   isSDK(o: any): o is QueryUserPairTradeVolumeResponseSDKType {
-    return o && (o.$typeUrl === QueryUserPairTradeVolumeResponse.typeUrl || Array.isArray(o.user_trade_volumes) && (!o.user_trade_volumes.length || UserTradeVolume.isSDK(o.user_trade_volumes[0])));
+    return o && (o.$typeUrl === QueryUserPairTradeVolumeResponse.typeUrl || Array.isArray(o.user_trade_volumes) && (!o.user_trade_volumes.length || UserPairTradeVolume.isSDK(o.user_trade_volumes[0])));
   },
   isAmino(o: any): o is QueryUserPairTradeVolumeResponseAmino {
-    return o && (o.$typeUrl === QueryUserPairTradeVolumeResponse.typeUrl || Array.isArray(o.user_trade_volumes) && (!o.user_trade_volumes.length || UserTradeVolume.isAmino(o.user_trade_volumes[0])));
+    return o && (o.$typeUrl === QueryUserPairTradeVolumeResponse.typeUrl || Array.isArray(o.user_trade_volumes) && (!o.user_trade_volumes.length || UserPairTradeVolume.isAmino(o.user_trade_volumes[0])));
   },
   encode(message: QueryUserPairTradeVolumeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.userTradeVolumes) {
-      UserTradeVolume.encode(v!, writer.uint32(10).fork()).ldelim();
+      UserPairTradeVolume.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
@@ -314,7 +315,7 @@ export const QueryUserPairTradeVolumeResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.userTradeVolumes.push(UserTradeVolume.decode(reader, reader.uint32(), useInterfaces));
+          message.userTradeVolumes.push(UserPairTradeVolume.decode(reader, reader.uint32(), useInterfaces));
           break;
         case 2:
           message.pagination = PageResponse.decode(reader, reader.uint32(), useInterfaces);
@@ -328,14 +329,14 @@ export const QueryUserPairTradeVolumeResponse = {
   },
   fromJSON(object: any): QueryUserPairTradeVolumeResponse {
     return {
-      userTradeVolumes: Array.isArray(object?.userTradeVolumes) ? object.userTradeVolumes.map((e: any) => UserTradeVolume.fromJSON(e)) : [],
+      userTradeVolumes: Array.isArray(object?.userTradeVolumes) ? object.userTradeVolumes.map((e: any) => UserPairTradeVolume.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
   toJSON(message: QueryUserPairTradeVolumeResponse): unknown {
     const obj: any = {};
     if (message.userTradeVolumes) {
-      obj.userTradeVolumes = message.userTradeVolumes.map(e => e ? UserTradeVolume.toJSON(e) : undefined);
+      obj.userTradeVolumes = message.userTradeVolumes.map(e => e ? UserPairTradeVolume.toJSON(e) : undefined);
     } else {
       obj.userTradeVolumes = [];
     }
@@ -344,13 +345,13 @@ export const QueryUserPairTradeVolumeResponse = {
   },
   fromPartial(object: Partial<QueryUserPairTradeVolumeResponse>): QueryUserPairTradeVolumeResponse {
     const message = createBaseQueryUserPairTradeVolumeResponse();
-    message.userTradeVolumes = object.userTradeVolumes?.map(e => UserTradeVolume.fromPartial(e)) || [];
+    message.userTradeVolumes = object.userTradeVolumes?.map(e => UserPairTradeVolume.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   },
   fromAmino(object: QueryUserPairTradeVolumeResponseAmino): QueryUserPairTradeVolumeResponse {
     const message = createBaseQueryUserPairTradeVolumeResponse();
-    message.userTradeVolumes = object.user_trade_volumes?.map(e => UserTradeVolume.fromAmino(e)) || [];
+    message.userTradeVolumes = object.user_trade_volumes?.map(e => UserPairTradeVolume.fromAmino(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
@@ -359,7 +360,7 @@ export const QueryUserPairTradeVolumeResponse = {
   toAmino(message: QueryUserPairTradeVolumeResponse, useInterfaces: boolean = true): QueryUserPairTradeVolumeResponseAmino {
     const obj: any = {};
     if (message.userTradeVolumes) {
-      obj.user_trade_volumes = message.userTradeVolumes.map(e => e ? UserTradeVolume.toAmino(e, useInterfaces) : undefined);
+      obj.user_trade_volumes = message.userTradeVolumes.map(e => e ? UserPairTradeVolume.toAmino(e, useInterfaces) : undefined);
     } else {
       obj.user_trade_volumes = message.userTradeVolumes;
     }

@@ -30,22 +30,22 @@ import * as _145 from "./lightclients/localhost/v2/localhost";
 import * as _146 from "./lightclients/solomachine/v2/solomachine";
 import * as _147 from "./lightclients/solomachine/v3/solomachine";
 import * as _148 from "./lightclients/tendermint/v1/tendermint";
-import * as _339 from "./applications/interchain_accounts/controller/v1/tx.amino";
-import * as _340 from "./applications/transfer/v1/tx.amino";
-import * as _341 from "./core/channel/v1/tx.amino";
-import * as _342 from "./core/client/v1/tx.amino";
-import * as _343 from "./core/connection/v1/tx.amino";
-import * as _344 from "./applications/interchain_accounts/controller/v1/tx.registry";
-import * as _345 from "./applications/transfer/v1/tx.registry";
-import * as _346 from "./core/channel/v1/tx.registry";
-import * as _347 from "./core/client/v1/tx.registry";
-import * as _348 from "./core/connection/v1/tx.registry";
-import * as _349 from "./applications/interchain_accounts/controller/v1/query.lcd";
-import * as _350 from "./applications/interchain_accounts/host/v1/query.lcd";
-import * as _351 from "./applications/transfer/v1/query.lcd";
-import * as _352 from "./core/channel/v1/query.lcd";
-import * as _353 from "./core/client/v1/query.lcd";
-import * as _354 from "./core/connection/v1/query.lcd";
+import * as _340 from "./applications/interchain_accounts/controller/v1/tx.amino";
+import * as _341 from "./applications/transfer/v1/tx.amino";
+import * as _342 from "./core/channel/v1/tx.amino";
+import * as _343 from "./core/client/v1/tx.amino";
+import * as _344 from "./core/connection/v1/tx.amino";
+import * as _345 from "./applications/interchain_accounts/controller/v1/tx.registry";
+import * as _346 from "./applications/transfer/v1/tx.registry";
+import * as _347 from "./core/channel/v1/tx.registry";
+import * as _348 from "./core/client/v1/tx.registry";
+import * as _349 from "./core/connection/v1/tx.registry";
+import * as _350 from "./applications/interchain_accounts/controller/v1/query.lcd";
+import * as _351 from "./applications/interchain_accounts/host/v1/query.lcd";
+import * as _352 from "./applications/transfer/v1/query.lcd";
+import * as _353 from "./core/channel/v1/query.lcd";
+import * as _354 from "./core/client/v1/query.lcd";
+import * as _355 from "./core/connection/v1/query.lcd";
 export namespace ibc {
   export namespace applications {
     export namespace interchain_accounts {
@@ -54,9 +54,9 @@ export namespace ibc {
           ..._117,
           ..._118,
           ..._119,
-          ..._339,
-          ..._344,
-          ..._349
+          ..._340,
+          ..._345,
+          ..._350
         };
       }
       export namespace genesis {
@@ -68,7 +68,7 @@ export namespace ibc {
         export const v1 = {
           ..._121,
           ..._122,
-          ..._350
+          ..._351
         };
       }
       export const v1 = {
@@ -84,9 +84,9 @@ export namespace ibc {
         ..._128,
         ..._129,
         ..._130,
-        ..._340,
-        ..._345,
-        ..._351
+        ..._341,
+        ..._346,
+        ..._352
       };
       export const v2 = {
         ..._131
@@ -100,9 +100,9 @@ export namespace ibc {
         ..._133,
         ..._134,
         ..._135,
-        ..._341,
-        ..._346,
-        ..._352
+        ..._342,
+        ..._347,
+        ..._353
       };
     }
     export namespace client {
@@ -111,9 +111,9 @@ export namespace ibc {
         ..._137,
         ..._138,
         ..._139,
-        ..._342,
-        ..._347,
-        ..._353
+        ..._343,
+        ..._348,
+        ..._354
       };
     }
     export namespace commitment {
@@ -127,9 +127,9 @@ export namespace ibc {
         ..._142,
         ..._143,
         ..._144,
-        ..._343,
-        ..._348,
-        ..._354
+        ..._344,
+        ..._349,
+        ..._355
       };
     }
   }

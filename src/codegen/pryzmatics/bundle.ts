@@ -71,10 +71,11 @@ import * as _265 from "./trade/route_steps";
 import * as _266 from "./trade/swap_steps";
 import * as _267 from "./trade/token_amounts";
 import * as _268 from "./trade/trade_volume";
-import * as _269 from "./trade/user_pulse_trade_volume";
-import * as _270 from "./trade/user_trade_history";
-import * as _271 from "./ystaking/user_stake";
-import * as _366 from "./server/query.lcd";
+import * as _269 from "./trade/user_pair_trade_volume";
+import * as _270 from "./trade/user_pulse_trade_volume";
+import * as _271 from "./trade/user_trade_history";
+import * as _272 from "./ystaking/user_stake";
+import * as _367 from "./server/query.lcd";
 export namespace pryzmatics {
   export const asset = {
     ..._196
@@ -183,7 +184,7 @@ export namespace pryzmatics {
   };
   export const server = {
     ..._253,
-    ..._366
+    ..._367
   };
   export const statistics = {
     ..._254,
@@ -204,9 +205,10 @@ export namespace pryzmatics {
     ..._267,
     ..._268,
     ..._269,
-    ..._270
+    ..._270,
+    ..._271
   };
   export const ystaking = {
-    ..._271
+    ..._272
   };
 }
