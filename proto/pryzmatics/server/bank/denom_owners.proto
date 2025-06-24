@@ -1,0 +1,25 @@
+syntax = "proto3";
+package pryzmatics.server.bank;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "cosmos/bank/v1beta1/query.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/bank";
+
+enum DenomOwnersOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  ORDER_BY_BALANCE = 0;
+}
+
+message DenomOwnersRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1 [(gogoproto.nullable) = true];
+  bool order_by_balance_desc = 2;
+  string denom = 3;
+}
+
+message DenomOwnersResponse {
+  repeated cosmos.bank.v1beta1.DenomOwner denom_owners = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}

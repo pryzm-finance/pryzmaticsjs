@@ -65,6 +65,7 @@ import { QueryPVaultContractsRequest, QueryPVaultContractsResponseSDKType } from
 import { QueryPurchaseSimulationRequest, QueryPurchaseSimulationResponseSDKType } from "./pvault/purchase_simulation";
 import { QueryOrderBookOrdersRequest, QueryOrderBookOrdersResponseSDKType, QueryOrderBookOrderFeedRequest, QueryOrderBookOrderFeedResponseSDKType } from "./orderbook/order";
 import { QueryOrderBookReservationsRequest, QueryOrderBookReservationsResponseSDKType } from "./orderbook/reservation";
+import { DenomOwnersRequest, DenomOwnersResponseSDKType } from "./bank/denom_owners";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -166,6 +167,7 @@ export class LCDQueryClient {
     this.orderBookOrders = this.orderBookOrders.bind(this);
     this.orderBookOrderFeed = this.orderBookOrderFeed.bind(this);
     this.orderBookReservations = this.orderBookReservations.bind(this);
+    this.denomOwners = this.denomOwners.bind(this);
   }
   /* Asset */
   async asset(params: QueryAssetRequest): Promise<QueryAssetResponseSDKType> {
@@ -1550,5 +1552,19 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/orderbook/reservations`;
     return await this.req.get<QueryOrderBookReservationsResponseSDKType>(endpoint, options);
+  }
+  /* DenomOwners */
+  async denomOwners(params: DenomOwnersRequest): Promise<DenomOwnersResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    if (typeof params?.orderByBalanceDesc !== "undefined") {
+      options.params.order_by_balance_desc = params.orderByBalanceDesc;
+    }
+    const endpoint = `pryzmatics/denom_owners/${params.denom}`;
+    return await this.req.get<DenomOwnersResponseSDKType>(endpoint, options);
   }
 }

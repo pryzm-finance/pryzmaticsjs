@@ -87,6 +87,8 @@ import "pryzmatics/server/pvault/contracts.proto";
 import "pryzmatics/server/orderbook/order.proto";
 import "pryzmatics/server/orderbook/reservation.proto";
 
+import "pryzmatics/server/bank/denom_owners.proto";
+
 option go_package = "github.com/pryzm-finance/pryzmatics/server";
 
 service Query {
@@ -472,5 +474,9 @@ service Query {
 
   rpc OrderBookReservations(pryzmatics.server.orderbook.QueryOrderBookReservationsRequest) returns (pryzmatics.server.orderbook.QueryOrderBookReservationsResponse) {
     option (google.api.http).get = "/pryzmatics/orderbook/reservations";
+  }
+
+  rpc DenomOwners(pryzmatics.server.bank.DenomOwnersRequest) returns (pryzmatics.server.bank.DenomOwnersResponse) {
+    option (google.api.http).get = "/pryzmatics/denom_owners/{denom}";
   }
 }
