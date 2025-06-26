@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "cosmos_proto/cosmos.proto";
 import "google/protobuf/timestamp.proto";
 import "pryzmatics/pool/token_yield.proto";
+import "pryzmatics/statistics/market_cap.proto";
 
 
 option go_package = "github.com/pryzm-finance/pryzmatics/types/pool";
@@ -107,6 +108,35 @@ message TokenMetrics {
   ];
 }
 
+message TokenStats {
+  // null if token does not have price
+  pryzmatics.statistics.MarketCap market_cap = 1 [(gogoproto.nullable) = true];
+  pryzmatics.statistics.Supply supply = 2 [(gogoproto.nullable) = false];
+  uint64 owners_count = 3;
+  string volume_24h = 4 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  // only set when details requested
+  string volume_7d = 5 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
+  // only set when details requested
+  string volume_30d = 6 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
+  string total_volume = 7 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+}
+
 message Token {
   string denom = 1;
   TokenType type = 2;
@@ -125,7 +155,7 @@ message Token {
   ];
   string asset_id = 8;
   string error = 9;
-  string asset_exchange_rate = 10 [ //TODO move all asset related fields into a new single field
+  string asset_exchange_rate = 10 [//TODO move all asset related fields into a new single field
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = true
@@ -141,4 +171,5 @@ message Token {
     (gogoproto.nullable) = true
   ];
   google.protobuf.Timestamp supply_fetch_time = 13 [(gogoproto.stdtime) = true, (gogoproto.nullable) = false];
+  TokenStats stats = 14 [(gogoproto.nullable) = false];
 }

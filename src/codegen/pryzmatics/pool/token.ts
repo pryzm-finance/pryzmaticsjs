@@ -1,3 +1,4 @@
+import { MarketCap, MarketCapAmino, MarketCapSDKType, Supply, SupplyAmino, SupplySDKType } from "../statistics/market_cap";
 import { TokenYield, TokenYieldAmino, TokenYieldSDKType } from "./token_yield";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { BinaryReader, BinaryWriter } from "../../binary";
@@ -125,6 +126,47 @@ export interface TokenMetricsSDKType {
   price_underlying_terms_change_percentage_7d?: string;
   price_underlying_terms_change_percentage_30d?: string;
 }
+export interface TokenStats {
+  /** null if token does not have price */
+  marketCap?: MarketCap;
+  supply: Supply;
+  ownersCount: bigint;
+  volume24h: string;
+  /** only set when details requested */
+  volume7d?: string;
+  /** only set when details requested */
+  volume30d?: string;
+  totalVolume: string;
+}
+export interface TokenStatsProtoMsg {
+  typeUrl: "/pryzmatics.pool.TokenStats";
+  value: Uint8Array;
+}
+export interface TokenStatsAmino {
+  /** null if token does not have price */
+  market_cap?: MarketCapAmino;
+  supply?: SupplyAmino;
+  owners_count?: string;
+  volume_24h?: string;
+  /** only set when details requested */
+  volume_7d?: string;
+  /** only set when details requested */
+  volume_30d?: string;
+  total_volume?: string;
+}
+export interface TokenStatsAminoMsg {
+  type: "/pryzmatics.pool.TokenStats";
+  value: TokenStatsAmino;
+}
+export interface TokenStatsSDKType {
+  market_cap?: MarketCapSDKType;
+  supply: SupplySDKType;
+  owners_count: bigint;
+  volume_24h: string;
+  volume_7d?: string;
+  volume_30d?: string;
+  total_volume: string;
+}
 export interface Token {
   denom: string;
   type: TokenType;
@@ -140,6 +182,7 @@ export interface Token {
   supply: string;
   supplyStableCoinTerms?: string;
   supplyFetchTime: Timestamp;
+  stats: TokenStats;
 }
 export interface TokenProtoMsg {
   typeUrl: "/pryzmatics.pool.Token";
@@ -160,6 +203,7 @@ export interface TokenAmino {
   supply?: string;
   supply_stable_coin_terms?: string;
   supply_fetch_time?: string;
+  stats?: TokenStatsAmino;
 }
 export interface TokenAminoMsg {
   type: "/pryzmatics.pool.Token";
@@ -179,6 +223,7 @@ export interface TokenSDKType {
   supply: string;
   supply_stable_coin_terms?: string;
   supply_fetch_time: TimestampSDKType;
+  stats: TokenStatsSDKType;
 }
 function createBaseTokenMetrics(): TokenMetrics {
   return {
@@ -487,6 +532,173 @@ export const TokenMetrics = {
   }
 };
 GlobalDecoderRegistry.register(TokenMetrics.typeUrl, TokenMetrics);
+function createBaseTokenStats(): TokenStats {
+  return {
+    marketCap: undefined,
+    supply: Supply.fromPartial({}),
+    ownersCount: BigInt(0),
+    volume24h: "",
+    volume7d: undefined,
+    volume30d: undefined,
+    totalVolume: ""
+  };
+}
+export const TokenStats = {
+  typeUrl: "/pryzmatics.pool.TokenStats",
+  is(o: any): o is TokenStats {
+    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.is(o.supply) && typeof o.ownersCount === "bigint" && typeof o.volume24h === "string" && typeof o.totalVolume === "string");
+  },
+  isSDK(o: any): o is TokenStatsSDKType {
+    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.isSDK(o.supply) && typeof o.owners_count === "bigint" && typeof o.volume_24h === "string" && typeof o.total_volume === "string");
+  },
+  isAmino(o: any): o is TokenStatsAmino {
+    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.isAmino(o.supply) && typeof o.owners_count === "bigint" && typeof o.volume_24h === "string" && typeof o.total_volume === "string");
+  },
+  encode(message: TokenStats, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.marketCap !== undefined) {
+      MarketCap.encode(message.marketCap, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.supply !== undefined) {
+      Supply.encode(message.supply, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.ownersCount !== BigInt(0)) {
+      writer.uint32(24).uint64(message.ownersCount);
+    }
+    if (message.volume24h !== "") {
+      writer.uint32(34).string(Decimal.fromUserInput(message.volume24h, 18).atomics);
+    }
+    if (message.volume7d !== undefined) {
+      writer.uint32(42).string(Decimal.fromUserInput(message.volume7d, 18).atomics);
+    }
+    if (message.volume30d !== undefined) {
+      writer.uint32(50).string(Decimal.fromUserInput(message.volume30d, 18).atomics);
+    }
+    if (message.totalVolume !== "") {
+      writer.uint32(58).string(Decimal.fromUserInput(message.totalVolume, 18).atomics);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): TokenStats {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTokenStats();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.marketCap = MarketCap.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 2:
+          message.supply = Supply.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 3:
+          message.ownersCount = reader.uint64();
+          break;
+        case 4:
+          message.volume24h = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 5:
+          message.volume7d = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 6:
+          message.volume30d = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 7:
+          message.totalVolume = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): TokenStats {
+    return {
+      marketCap: isSet(object.marketCap) ? MarketCap.fromJSON(object.marketCap) : undefined,
+      supply: isSet(object.supply) ? Supply.fromJSON(object.supply) : undefined,
+      ownersCount: isSet(object.ownersCount) ? BigInt(object.ownersCount.toString()) : BigInt(0),
+      volume24h: isSet(object.volume24h) ? String(object.volume24h) : "",
+      volume7d: isSet(object.volume7d) ? String(object.volume7d) : undefined,
+      volume30d: isSet(object.volume30d) ? String(object.volume30d) : undefined,
+      totalVolume: isSet(object.totalVolume) ? String(object.totalVolume) : ""
+    };
+  },
+  toJSON(message: TokenStats): unknown {
+    const obj: any = {};
+    message.marketCap !== undefined && (obj.marketCap = message.marketCap ? MarketCap.toJSON(message.marketCap) : undefined);
+    message.supply !== undefined && (obj.supply = message.supply ? Supply.toJSON(message.supply) : undefined);
+    message.ownersCount !== undefined && (obj.ownersCount = (message.ownersCount || BigInt(0)).toString());
+    message.volume24h !== undefined && (obj.volume24h = message.volume24h);
+    message.volume7d !== undefined && (obj.volume7d = message.volume7d);
+    message.volume30d !== undefined && (obj.volume30d = message.volume30d);
+    message.totalVolume !== undefined && (obj.totalVolume = message.totalVolume);
+    return obj;
+  },
+  fromPartial(object: Partial<TokenStats>): TokenStats {
+    const message = createBaseTokenStats();
+    message.marketCap = object.marketCap !== undefined && object.marketCap !== null ? MarketCap.fromPartial(object.marketCap) : undefined;
+    message.supply = object.supply !== undefined && object.supply !== null ? Supply.fromPartial(object.supply) : undefined;
+    message.ownersCount = object.ownersCount !== undefined && object.ownersCount !== null ? BigInt(object.ownersCount.toString()) : BigInt(0);
+    message.volume24h = object.volume24h ?? "";
+    message.volume7d = object.volume7d ?? undefined;
+    message.volume30d = object.volume30d ?? undefined;
+    message.totalVolume = object.totalVolume ?? "";
+    return message;
+  },
+  fromAmino(object: TokenStatsAmino): TokenStats {
+    const message = createBaseTokenStats();
+    if (object.market_cap !== undefined && object.market_cap !== null) {
+      message.marketCap = MarketCap.fromAmino(object.market_cap);
+    }
+    if (object.supply !== undefined && object.supply !== null) {
+      message.supply = Supply.fromAmino(object.supply);
+    }
+    if (object.owners_count !== undefined && object.owners_count !== null) {
+      message.ownersCount = BigInt(object.owners_count);
+    }
+    if (object.volume_24h !== undefined && object.volume_24h !== null) {
+      message.volume24h = object.volume_24h;
+    }
+    if (object.volume_7d !== undefined && object.volume_7d !== null) {
+      message.volume7d = object.volume_7d;
+    }
+    if (object.volume_30d !== undefined && object.volume_30d !== null) {
+      message.volume30d = object.volume_30d;
+    }
+    if (object.total_volume !== undefined && object.total_volume !== null) {
+      message.totalVolume = object.total_volume;
+    }
+    return message;
+  },
+  toAmino(message: TokenStats, useInterfaces: boolean = true): TokenStatsAmino {
+    const obj: any = {};
+    obj.market_cap = message.marketCap ? MarketCap.toAmino(message.marketCap, useInterfaces) : undefined;
+    obj.supply = message.supply ? Supply.toAmino(message.supply, useInterfaces) : undefined;
+    obj.owners_count = message.ownersCount ? message.ownersCount.toString() : undefined;
+    obj.volume_24h = padDecimal(message.volume24h) === "" ? undefined : padDecimal(message.volume24h);
+    obj.volume_7d = padDecimal(message.volume7d) === null ? undefined : padDecimal(message.volume7d);
+    obj.volume_30d = padDecimal(message.volume30d) === null ? undefined : padDecimal(message.volume30d);
+    obj.total_volume = padDecimal(message.totalVolume) === "" ? undefined : padDecimal(message.totalVolume);
+    return obj;
+  },
+  fromAminoMsg(object: TokenStatsAminoMsg): TokenStats {
+    return TokenStats.fromAmino(object.value);
+  },
+  fromProtoMsg(message: TokenStatsProtoMsg, useInterfaces: boolean = true): TokenStats {
+    return TokenStats.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: TokenStats): Uint8Array {
+    return TokenStats.encode(message).finish();
+  },
+  toProtoMsg(message: TokenStats): TokenStatsProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.pool.TokenStats",
+      value: TokenStats.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(TokenStats.typeUrl, TokenStats);
 function createBaseToken(): Token {
   return {
     denom: "",
@@ -501,19 +713,20 @@ function createBaseToken(): Token {
     assetExchangeRate: undefined,
     supply: "",
     supplyStableCoinTerms: undefined,
-    supplyFetchTime: Timestamp.fromPartial({})
+    supplyFetchTime: Timestamp.fromPartial({}),
+    stats: TokenStats.fromPartial({})
   };
 }
 export const Token = {
   typeUrl: "/pryzmatics.pool.Token",
   is(o: any): o is Token {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.underlyingTokenDenom === "string" && typeof o.assetId === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.is(o.supplyFetchTime));
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.underlyingTokenDenom === "string" && typeof o.assetId === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.is(o.supplyFetchTime) && TokenStats.is(o.stats));
   },
   isSDK(o: any): o is TokenSDKType {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isSDK(o.supply_fetch_time));
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isSDK(o.supply_fetch_time) && TokenStats.isSDK(o.stats));
   },
   isAmino(o: any): o is TokenAmino {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isAmino(o.supply_fetch_time));
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isAmino(o.supply_fetch_time) && TokenStats.isAmino(o.stats));
   },
   encode(message: Token, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
@@ -554,6 +767,9 @@ export const Token = {
     }
     if (message.supplyFetchTime !== undefined) {
       Timestamp.encode(message.supplyFetchTime, writer.uint32(106).fork()).ldelim();
+    }
+    if (message.stats !== undefined) {
+      TokenStats.encode(message.stats, writer.uint32(114).fork()).ldelim();
     }
     return writer;
   },
@@ -603,6 +819,9 @@ export const Token = {
         case 13:
           message.supplyFetchTime = Timestamp.decode(reader, reader.uint32());
           break;
+        case 14:
+          message.stats = TokenStats.decode(reader, reader.uint32(), useInterfaces);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -624,7 +843,8 @@ export const Token = {
       assetExchangeRate: isSet(object.assetExchangeRate) ? String(object.assetExchangeRate) : undefined,
       supply: isSet(object.supply) ? String(object.supply) : "",
       supplyStableCoinTerms: isSet(object.supplyStableCoinTerms) ? String(object.supplyStableCoinTerms) : undefined,
-      supplyFetchTime: isSet(object.supplyFetchTime) ? fromJsonTimestamp(object.supplyFetchTime) : undefined
+      supplyFetchTime: isSet(object.supplyFetchTime) ? fromJsonTimestamp(object.supplyFetchTime) : undefined,
+      stats: isSet(object.stats) ? TokenStats.fromJSON(object.stats) : undefined
     };
   },
   toJSON(message: Token): unknown {
@@ -642,6 +862,7 @@ export const Token = {
     message.supply !== undefined && (obj.supply = message.supply);
     message.supplyStableCoinTerms !== undefined && (obj.supplyStableCoinTerms = message.supplyStableCoinTerms);
     message.supplyFetchTime !== undefined && (obj.supplyFetchTime = fromTimestamp(message.supplyFetchTime).toISOString());
+    message.stats !== undefined && (obj.stats = message.stats ? TokenStats.toJSON(message.stats) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Token>): Token {
@@ -659,6 +880,7 @@ export const Token = {
     message.supply = object.supply ?? "";
     message.supplyStableCoinTerms = object.supplyStableCoinTerms ?? undefined;
     message.supplyFetchTime = object.supplyFetchTime !== undefined && object.supplyFetchTime !== null ? Timestamp.fromPartial(object.supplyFetchTime) : undefined;
+    message.stats = object.stats !== undefined && object.stats !== null ? TokenStats.fromPartial(object.stats) : undefined;
     return message;
   },
   fromAmino(object: TokenAmino): Token {
@@ -702,6 +924,9 @@ export const Token = {
     if (object.supply_fetch_time !== undefined && object.supply_fetch_time !== null) {
       message.supplyFetchTime = Timestamp.fromAmino(object.supply_fetch_time);
     }
+    if (object.stats !== undefined && object.stats !== null) {
+      message.stats = TokenStats.fromAmino(object.stats);
+    }
     return message;
   },
   toAmino(message: Token, useInterfaces: boolean = true): TokenAmino {
@@ -719,6 +944,7 @@ export const Token = {
     obj.supply = message.supply === "" ? undefined : message.supply;
     obj.supply_stable_coin_terms = padDecimal(message.supplyStableCoinTerms) === null ? undefined : padDecimal(message.supplyStableCoinTerms);
     obj.supply_fetch_time = message.supplyFetchTime ? Timestamp.toAmino(message.supplyFetchTime, useInterfaces) : undefined;
+    obj.stats = message.stats ? TokenStats.toAmino(message.stats, useInterfaces) : undefined;
     return obj;
   },
   fromAminoMsg(object: TokenAminoMsg): Token {

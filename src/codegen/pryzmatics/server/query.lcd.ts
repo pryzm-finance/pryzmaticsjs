@@ -288,6 +288,9 @@ export class LCDQueryClient {
     if (typeof params?.tokenIn !== "undefined") {
       options.params.token_in = params.tokenIn;
     }
+    if (typeof params?.detailedStats !== "undefined") {
+      options.params.detailed_stats = params.detailedStats;
+    }
     const endpoint = `pryzmatics/token/${params.denom}`;
     return await this.req.get<QueryTokenResponseSDKType>(endpoint, options);
   }
@@ -304,6 +307,9 @@ export class LCDQueryClient {
     }
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
+    }
+    if (typeof params?.detailedStats !== "undefined") {
+      options.params.detailed_stats = params.detailedStats;
     }
     const endpoint = `pryzmatics/token`;
     return await this.req.get<QueryTokensResponseSDKType>(endpoint, options);
