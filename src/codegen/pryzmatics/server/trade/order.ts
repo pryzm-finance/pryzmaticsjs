@@ -251,6 +251,58 @@ export interface QueryMatchableBuyOrdersForPairResponseSDKType {
   orders: MatchableOrderSDKType[];
   pagination?: PageResponseSDKType;
 }
+export interface QueryMatchableBuyOrdersForPairSummaryRequest {
+  tokenIn: string;
+  tokenOut: string;
+  poolId: bigint;
+  whitelistedRoute: boolean;
+  minPrice: string;
+  minRemainingAmount: string;
+}
+export interface QueryMatchableBuyOrdersForPairSummaryRequestProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryMatchableBuyOrdersForPairSummaryRequest";
+  value: Uint8Array;
+}
+export interface QueryMatchableBuyOrdersForPairSummaryRequestAmino {
+  token_in?: string;
+  token_out?: string;
+  pool_id?: string;
+  whitelisted_route?: boolean;
+  min_price?: string;
+  min_remaining_amount?: string;
+}
+export interface QueryMatchableBuyOrdersForPairSummaryRequestAminoMsg {
+  type: "/pryzmatics.server.trade.QueryMatchableBuyOrdersForPairSummaryRequest";
+  value: QueryMatchableBuyOrdersForPairSummaryRequestAmino;
+}
+export interface QueryMatchableBuyOrdersForPairSummaryRequestSDKType {
+  token_in: string;
+  token_out: string;
+  pool_id: bigint;
+  whitelisted_route: boolean;
+  min_price: string;
+  min_remaining_amount: string;
+}
+export interface QueryMatchableBuyOrdersForPairSummaryResponse {
+  totalVolume: string;
+  count: bigint;
+}
+export interface QueryMatchableBuyOrdersForPairSummaryResponseProtoMsg {
+  typeUrl: "/pryzmatics.server.trade.QueryMatchableBuyOrdersForPairSummaryResponse";
+  value: Uint8Array;
+}
+export interface QueryMatchableBuyOrdersForPairSummaryResponseAmino {
+  total_volume?: string;
+  count?: string;
+}
+export interface QueryMatchableBuyOrdersForPairSummaryResponseAminoMsg {
+  type: "/pryzmatics.server.trade.QueryMatchableBuyOrdersForPairSummaryResponse";
+  value: QueryMatchableBuyOrdersForPairSummaryResponseAmino;
+}
+export interface QueryMatchableBuyOrdersForPairSummaryResponseSDKType {
+  total_volume: string;
+  count: bigint;
+}
 export interface QueryOrderPairsToDisableRequest {}
 export interface QueryOrderPairsToDisableRequestProtoMsg {
   typeUrl: "/pryzmatics.server.trade.QueryOrderPairsToDisableRequest";
@@ -1609,6 +1661,256 @@ export const QueryMatchableBuyOrdersForPairResponse = {
   }
 };
 GlobalDecoderRegistry.register(QueryMatchableBuyOrdersForPairResponse.typeUrl, QueryMatchableBuyOrdersForPairResponse);
+function createBaseQueryMatchableBuyOrdersForPairSummaryRequest(): QueryMatchableBuyOrdersForPairSummaryRequest {
+  return {
+    tokenIn: "",
+    tokenOut: "",
+    poolId: BigInt(0),
+    whitelistedRoute: false,
+    minPrice: "",
+    minRemainingAmount: ""
+  };
+}
+export const QueryMatchableBuyOrdersForPairSummaryRequest = {
+  typeUrl: "/pryzmatics.server.trade.QueryMatchableBuyOrdersForPairSummaryRequest",
+  is(o: any): o is QueryMatchableBuyOrdersForPairSummaryRequest {
+    return o && (o.$typeUrl === QueryMatchableBuyOrdersForPairSummaryRequest.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.poolId === "bigint" && typeof o.whitelistedRoute === "boolean" && typeof o.minPrice === "string" && typeof o.minRemainingAmount === "string");
+  },
+  isSDK(o: any): o is QueryMatchableBuyOrdersForPairSummaryRequestSDKType {
+    return o && (o.$typeUrl === QueryMatchableBuyOrdersForPairSummaryRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.pool_id === "bigint" && typeof o.whitelisted_route === "boolean" && typeof o.min_price === "string" && typeof o.min_remaining_amount === "string");
+  },
+  isAmino(o: any): o is QueryMatchableBuyOrdersForPairSummaryRequestAmino {
+    return o && (o.$typeUrl === QueryMatchableBuyOrdersForPairSummaryRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.pool_id === "bigint" && typeof o.whitelisted_route === "boolean" && typeof o.min_price === "string" && typeof o.min_remaining_amount === "string");
+  },
+  encode(message: QueryMatchableBuyOrdersForPairSummaryRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.tokenIn !== "") {
+      writer.uint32(10).string(message.tokenIn);
+    }
+    if (message.tokenOut !== "") {
+      writer.uint32(18).string(message.tokenOut);
+    }
+    if (message.poolId !== BigInt(0)) {
+      writer.uint32(24).uint64(message.poolId);
+    }
+    if (message.whitelistedRoute === true) {
+      writer.uint32(32).bool(message.whitelistedRoute);
+    }
+    if (message.minPrice !== "") {
+      writer.uint32(42).string(Decimal.fromUserInput(message.minPrice, 18).atomics);
+    }
+    if (message.minRemainingAmount !== "") {
+      writer.uint32(50).string(message.minRemainingAmount);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryMatchableBuyOrdersForPairSummaryRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryMatchableBuyOrdersForPairSummaryRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tokenIn = reader.string();
+          break;
+        case 2:
+          message.tokenOut = reader.string();
+          break;
+        case 3:
+          message.poolId = reader.uint64();
+          break;
+        case 4:
+          message.whitelistedRoute = reader.bool();
+          break;
+        case 5:
+          message.minPrice = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 6:
+          message.minRemainingAmount = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryMatchableBuyOrdersForPairSummaryRequest {
+    return {
+      tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
+      tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
+      poolId: isSet(object.poolId) ? BigInt(object.poolId.toString()) : BigInt(0),
+      whitelistedRoute: isSet(object.whitelistedRoute) ? Boolean(object.whitelistedRoute) : false,
+      minPrice: isSet(object.minPrice) ? String(object.minPrice) : "",
+      minRemainingAmount: isSet(object.minRemainingAmount) ? String(object.minRemainingAmount) : ""
+    };
+  },
+  toJSON(message: QueryMatchableBuyOrdersForPairSummaryRequest): unknown {
+    const obj: any = {};
+    message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
+    message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
+    message.poolId !== undefined && (obj.poolId = (message.poolId || BigInt(0)).toString());
+    message.whitelistedRoute !== undefined && (obj.whitelistedRoute = message.whitelistedRoute);
+    message.minPrice !== undefined && (obj.minPrice = message.minPrice);
+    message.minRemainingAmount !== undefined && (obj.minRemainingAmount = message.minRemainingAmount);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryMatchableBuyOrdersForPairSummaryRequest>): QueryMatchableBuyOrdersForPairSummaryRequest {
+    const message = createBaseQueryMatchableBuyOrdersForPairSummaryRequest();
+    message.tokenIn = object.tokenIn ?? "";
+    message.tokenOut = object.tokenOut ?? "";
+    message.poolId = object.poolId !== undefined && object.poolId !== null ? BigInt(object.poolId.toString()) : BigInt(0);
+    message.whitelistedRoute = object.whitelistedRoute ?? false;
+    message.minPrice = object.minPrice ?? "";
+    message.minRemainingAmount = object.minRemainingAmount ?? "";
+    return message;
+  },
+  fromAmino(object: QueryMatchableBuyOrdersForPairSummaryRequestAmino): QueryMatchableBuyOrdersForPairSummaryRequest {
+    const message = createBaseQueryMatchableBuyOrdersForPairSummaryRequest();
+    if (object.token_in !== undefined && object.token_in !== null) {
+      message.tokenIn = object.token_in;
+    }
+    if (object.token_out !== undefined && object.token_out !== null) {
+      message.tokenOut = object.token_out;
+    }
+    if (object.pool_id !== undefined && object.pool_id !== null) {
+      message.poolId = BigInt(object.pool_id);
+    }
+    if (object.whitelisted_route !== undefined && object.whitelisted_route !== null) {
+      message.whitelistedRoute = object.whitelisted_route;
+    }
+    if (object.min_price !== undefined && object.min_price !== null) {
+      message.minPrice = object.min_price;
+    }
+    if (object.min_remaining_amount !== undefined && object.min_remaining_amount !== null) {
+      message.minRemainingAmount = object.min_remaining_amount;
+    }
+    return message;
+  },
+  toAmino(message: QueryMatchableBuyOrdersForPairSummaryRequest, useInterfaces: boolean = true): QueryMatchableBuyOrdersForPairSummaryRequestAmino {
+    const obj: any = {};
+    obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
+    obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
+    obj.pool_id = message.poolId ? message.poolId.toString() : undefined;
+    obj.whitelisted_route = message.whitelistedRoute === false ? undefined : message.whitelistedRoute;
+    obj.min_price = padDecimal(message.minPrice) === "" ? undefined : padDecimal(message.minPrice);
+    obj.min_remaining_amount = message.minRemainingAmount === "" ? undefined : message.minRemainingAmount;
+    return obj;
+  },
+  fromAminoMsg(object: QueryMatchableBuyOrdersForPairSummaryRequestAminoMsg): QueryMatchableBuyOrdersForPairSummaryRequest {
+    return QueryMatchableBuyOrdersForPairSummaryRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryMatchableBuyOrdersForPairSummaryRequestProtoMsg, useInterfaces: boolean = true): QueryMatchableBuyOrdersForPairSummaryRequest {
+    return QueryMatchableBuyOrdersForPairSummaryRequest.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryMatchableBuyOrdersForPairSummaryRequest): Uint8Array {
+    return QueryMatchableBuyOrdersForPairSummaryRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryMatchableBuyOrdersForPairSummaryRequest): QueryMatchableBuyOrdersForPairSummaryRequestProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryMatchableBuyOrdersForPairSummaryRequest",
+      value: QueryMatchableBuyOrdersForPairSummaryRequest.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryMatchableBuyOrdersForPairSummaryRequest.typeUrl, QueryMatchableBuyOrdersForPairSummaryRequest);
+function createBaseQueryMatchableBuyOrdersForPairSummaryResponse(): QueryMatchableBuyOrdersForPairSummaryResponse {
+  return {
+    totalVolume: "",
+    count: BigInt(0)
+  };
+}
+export const QueryMatchableBuyOrdersForPairSummaryResponse = {
+  typeUrl: "/pryzmatics.server.trade.QueryMatchableBuyOrdersForPairSummaryResponse",
+  is(o: any): o is QueryMatchableBuyOrdersForPairSummaryResponse {
+    return o && (o.$typeUrl === QueryMatchableBuyOrdersForPairSummaryResponse.typeUrl || typeof o.totalVolume === "string" && typeof o.count === "bigint");
+  },
+  isSDK(o: any): o is QueryMatchableBuyOrdersForPairSummaryResponseSDKType {
+    return o && (o.$typeUrl === QueryMatchableBuyOrdersForPairSummaryResponse.typeUrl || typeof o.total_volume === "string" && typeof o.count === "bigint");
+  },
+  isAmino(o: any): o is QueryMatchableBuyOrdersForPairSummaryResponseAmino {
+    return o && (o.$typeUrl === QueryMatchableBuyOrdersForPairSummaryResponse.typeUrl || typeof o.total_volume === "string" && typeof o.count === "bigint");
+  },
+  encode(message: QueryMatchableBuyOrdersForPairSummaryResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.totalVolume !== "") {
+      writer.uint32(10).string(message.totalVolume);
+    }
+    if (message.count !== BigInt(0)) {
+      writer.uint32(16).uint64(message.count);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryMatchableBuyOrdersForPairSummaryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryMatchableBuyOrdersForPairSummaryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.totalVolume = reader.string();
+          break;
+        case 2:
+          message.count = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryMatchableBuyOrdersForPairSummaryResponse {
+    return {
+      totalVolume: isSet(object.totalVolume) ? String(object.totalVolume) : "",
+      count: isSet(object.count) ? BigInt(object.count.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: QueryMatchableBuyOrdersForPairSummaryResponse): unknown {
+    const obj: any = {};
+    message.totalVolume !== undefined && (obj.totalVolume = message.totalVolume);
+    message.count !== undefined && (obj.count = (message.count || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<QueryMatchableBuyOrdersForPairSummaryResponse>): QueryMatchableBuyOrdersForPairSummaryResponse {
+    const message = createBaseQueryMatchableBuyOrdersForPairSummaryResponse();
+    message.totalVolume = object.totalVolume ?? "";
+    message.count = object.count !== undefined && object.count !== null ? BigInt(object.count.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: QueryMatchableBuyOrdersForPairSummaryResponseAmino): QueryMatchableBuyOrdersForPairSummaryResponse {
+    const message = createBaseQueryMatchableBuyOrdersForPairSummaryResponse();
+    if (object.total_volume !== undefined && object.total_volume !== null) {
+      message.totalVolume = object.total_volume;
+    }
+    if (object.count !== undefined && object.count !== null) {
+      message.count = BigInt(object.count);
+    }
+    return message;
+  },
+  toAmino(message: QueryMatchableBuyOrdersForPairSummaryResponse, useInterfaces: boolean = true): QueryMatchableBuyOrdersForPairSummaryResponseAmino {
+    const obj: any = {};
+    obj.total_volume = message.totalVolume === "" ? undefined : message.totalVolume;
+    obj.count = message.count ? message.count.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryMatchableBuyOrdersForPairSummaryResponseAminoMsg): QueryMatchableBuyOrdersForPairSummaryResponse {
+    return QueryMatchableBuyOrdersForPairSummaryResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryMatchableBuyOrdersForPairSummaryResponseProtoMsg, useInterfaces: boolean = true): QueryMatchableBuyOrdersForPairSummaryResponse {
+    return QueryMatchableBuyOrdersForPairSummaryResponse.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QueryMatchableBuyOrdersForPairSummaryResponse): Uint8Array {
+    return QueryMatchableBuyOrdersForPairSummaryResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryMatchableBuyOrdersForPairSummaryResponse): QueryMatchableBuyOrdersForPairSummaryResponseProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.trade.QueryMatchableBuyOrdersForPairSummaryResponse",
+      value: QueryMatchableBuyOrdersForPairSummaryResponse.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QueryMatchableBuyOrdersForPairSummaryResponse.typeUrl, QueryMatchableBuyOrdersForPairSummaryResponse);
 function createBaseQueryOrderPairsToDisableRequest(): QueryOrderPairsToDisableRequest {
   return {};
 }

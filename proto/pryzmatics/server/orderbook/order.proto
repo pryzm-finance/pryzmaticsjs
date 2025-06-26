@@ -5,6 +5,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "pryzmatics/database/orderbook/order.proto";
 import "pryzmatics/orderbook/order.proto";
+import "cosmos_proto/cosmos.proto";
 
 option go_package = "github.com/pryzm-finance/pryzmatics/server/orderbook";
 
@@ -19,6 +20,33 @@ message QueryOrderBookOrdersRequest {
 
 message QueryOrderBookOrdersResponse {
   repeated pryzmatics.orderbook.Order orders = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}
+
+message QueryOrderBookSummaryRequest {
+  string token_in = 1;
+  string token_out = 2;
+  string max_price = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message QueryOrderBookSummaryResponse {
+  string volume = 1 [
+    (cosmos_proto.scalar) = "cosmimos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message QueryOrderBookPairsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1 [(gogoproto.nullable) = true];
+}
+
+message QueryOrderBookPairsResponse {
+  repeated pryzmatics.orderbook.Pair pairs = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
 }
 

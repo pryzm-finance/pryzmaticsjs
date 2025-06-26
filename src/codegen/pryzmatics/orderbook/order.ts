@@ -1,9 +1,9 @@
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { Coin, CoinAmino, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../binary";
-import { Decimal } from "@cosmjs/math";
 import { isSet, fromJsonTimestamp, fromTimestamp, padDecimal } from "../../helpers";
 import { GlobalDecoderRegistry } from "../../registry";
+import { Decimal } from "@cosmjs/math";
 export enum OrderEventType {
   ORDER_EVENT_TYPE_UNSPECIFIED = 0,
   ORDER_EVENT_TYPE_SUBMITTED = 1,
@@ -78,6 +78,50 @@ export function orderEventTypeToJSON(object: OrderEventType): string {
       return "UNRECOGNIZED";
   }
 }
+export interface Pair {
+  tokenIn: string;
+  tokenOut: string;
+  totalAmount: string;
+  totalLiveRemainingAmount: string;
+  totalReservableRemainingAmount: string;
+  liveCount: bigint;
+  reservableCount: bigint;
+  totalCount: bigint;
+  totalReserved: string;
+  inTheMoneyVolume: string;
+}
+export interface PairProtoMsg {
+  typeUrl: "/pryzmatics.orderbook.Pair";
+  value: Uint8Array;
+}
+export interface PairAmino {
+  token_in?: string;
+  token_out?: string;
+  total_amount?: string;
+  total_live_remaining_amount?: string;
+  total_reservable_remaining_amount?: string;
+  live_count?: string;
+  reservable_count?: string;
+  total_count?: string;
+  total_reserved?: string;
+  in_the_money_volume?: string;
+}
+export interface PairAminoMsg {
+  type: "/pryzmatics.orderbook.Pair";
+  value: PairAmino;
+}
+export interface PairSDKType {
+  token_in: string;
+  token_out: string;
+  total_amount: string;
+  total_live_remaining_amount: string;
+  total_reservable_remaining_amount: string;
+  live_count: bigint;
+  reservable_count: bigint;
+  total_count: bigint;
+  total_reserved: string;
+  in_the_money_volume: string;
+}
 export interface Order {
   id: bigint;
   owner: string;
@@ -86,7 +130,7 @@ export interface Order {
   price: string;
   totalAmount: string;
   remainingAmount: string;
-  reservedAmount: string;
+  reservationsAmount: string;
   reservationAllowed: boolean;
   live: boolean;
   creationTime: Timestamp;
@@ -104,7 +148,7 @@ export interface OrderAmino {
   price?: string;
   total_amount?: string;
   remaining_amount?: string;
-  reserved_amount?: string;
+  reservations_amount?: string;
   reservation_allowed?: boolean;
   live?: boolean;
   creation_time?: string;
@@ -122,7 +166,7 @@ export interface OrderSDKType {
   price: string;
   total_amount: string;
   remaining_amount: string;
-  reserved_amount: string;
+  reservations_amount: string;
   reservation_allowed: boolean;
   live: boolean;
   creation_time: TimestampSDKType;
@@ -201,7 +245,7 @@ export interface OrderFilledEventData {
   filledAmount: string;
   receivedAmount: string;
   matchPrice: string;
-  fee: Coin[];
+  fee: Coin;
 }
 export interface OrderFilledEventDataProtoMsg {
   typeUrl: "/pryzmatics.orderbook.OrderFilledEventData";
@@ -211,7 +255,7 @@ export interface OrderFilledEventDataAmino {
   filled_amount?: string;
   received_amount?: string;
   match_price?: string;
-  fee?: CoinAmino[];
+  fee?: CoinAmino;
 }
 export interface OrderFilledEventDataAminoMsg {
   type: "/pryzmatics.orderbook.OrderFilledEventData";
@@ -221,7 +265,7 @@ export interface OrderFilledEventDataSDKType {
   filled_amount: string;
   received_amount: string;
   match_price: string;
-  fee: CoinSDKType[];
+  fee: CoinSDKType;
 }
 export interface OrderReservedEventData {
   amount: string;
@@ -265,6 +309,7 @@ export interface OrderReservationFulfillEventDataSDKType {
 }
 export interface OrderReservationExpiredEventData {
   reservationId: bigint;
+  amount: string;
 }
 export interface OrderReservationExpiredEventDataProtoMsg {
   typeUrl: "/pryzmatics.orderbook.OrderReservationExpiredEventData";
@@ -272,6 +317,7 @@ export interface OrderReservationExpiredEventDataProtoMsg {
 }
 export interface OrderReservationExpiredEventDataAmino {
   reservation_id?: string;
+  amount?: string;
 }
 export interface OrderReservationExpiredEventDataAminoMsg {
   type: "/pryzmatics.orderbook.OrderReservationExpiredEventData";
@@ -279,7 +325,217 @@ export interface OrderReservationExpiredEventDataAminoMsg {
 }
 export interface OrderReservationExpiredEventDataSDKType {
   reservation_id: bigint;
+  amount: string;
 }
+function createBasePair(): Pair {
+  return {
+    tokenIn: "",
+    tokenOut: "",
+    totalAmount: "",
+    totalLiveRemainingAmount: "",
+    totalReservableRemainingAmount: "",
+    liveCount: BigInt(0),
+    reservableCount: BigInt(0),
+    totalCount: BigInt(0),
+    totalReserved: "",
+    inTheMoneyVolume: ""
+  };
+}
+export const Pair = {
+  typeUrl: "/pryzmatics.orderbook.Pair",
+  is(o: any): o is Pair {
+    return o && (o.$typeUrl === Pair.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.totalAmount === "string" && typeof o.totalLiveRemainingAmount === "string" && typeof o.totalReservableRemainingAmount === "string" && typeof o.liveCount === "bigint" && typeof o.reservableCount === "bigint" && typeof o.totalCount === "bigint" && typeof o.totalReserved === "string" && typeof o.inTheMoneyVolume === "string");
+  },
+  isSDK(o: any): o is PairSDKType {
+    return o && (o.$typeUrl === Pair.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.total_amount === "string" && typeof o.total_live_remaining_amount === "string" && typeof o.total_reservable_remaining_amount === "string" && typeof o.live_count === "bigint" && typeof o.reservable_count === "bigint" && typeof o.total_count === "bigint" && typeof o.total_reserved === "string" && typeof o.in_the_money_volume === "string");
+  },
+  isAmino(o: any): o is PairAmino {
+    return o && (o.$typeUrl === Pair.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.total_amount === "string" && typeof o.total_live_remaining_amount === "string" && typeof o.total_reservable_remaining_amount === "string" && typeof o.live_count === "bigint" && typeof o.reservable_count === "bigint" && typeof o.total_count === "bigint" && typeof o.total_reserved === "string" && typeof o.in_the_money_volume === "string");
+  },
+  encode(message: Pair, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.tokenIn !== "") {
+      writer.uint32(10).string(message.tokenIn);
+    }
+    if (message.tokenOut !== "") {
+      writer.uint32(18).string(message.tokenOut);
+    }
+    if (message.totalAmount !== "") {
+      writer.uint32(26).string(message.totalAmount);
+    }
+    if (message.totalLiveRemainingAmount !== "") {
+      writer.uint32(34).string(message.totalLiveRemainingAmount);
+    }
+    if (message.totalReservableRemainingAmount !== "") {
+      writer.uint32(42).string(message.totalReservableRemainingAmount);
+    }
+    if (message.liveCount !== BigInt(0)) {
+      writer.uint32(48).uint64(message.liveCount);
+    }
+    if (message.reservableCount !== BigInt(0)) {
+      writer.uint32(56).uint64(message.reservableCount);
+    }
+    if (message.totalCount !== BigInt(0)) {
+      writer.uint32(64).uint64(message.totalCount);
+    }
+    if (message.totalReserved !== "") {
+      writer.uint32(74).string(message.totalReserved);
+    }
+    if (message.inTheMoneyVolume !== "") {
+      writer.uint32(82).string(message.inTheMoneyVolume);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): Pair {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePair();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tokenIn = reader.string();
+          break;
+        case 2:
+          message.tokenOut = reader.string();
+          break;
+        case 3:
+          message.totalAmount = reader.string();
+          break;
+        case 4:
+          message.totalLiveRemainingAmount = reader.string();
+          break;
+        case 5:
+          message.totalReservableRemainingAmount = reader.string();
+          break;
+        case 6:
+          message.liveCount = reader.uint64();
+          break;
+        case 7:
+          message.reservableCount = reader.uint64();
+          break;
+        case 8:
+          message.totalCount = reader.uint64();
+          break;
+        case 9:
+          message.totalReserved = reader.string();
+          break;
+        case 10:
+          message.inTheMoneyVolume = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): Pair {
+    return {
+      tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
+      tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
+      totalAmount: isSet(object.totalAmount) ? String(object.totalAmount) : "",
+      totalLiveRemainingAmount: isSet(object.totalLiveRemainingAmount) ? String(object.totalLiveRemainingAmount) : "",
+      totalReservableRemainingAmount: isSet(object.totalReservableRemainingAmount) ? String(object.totalReservableRemainingAmount) : "",
+      liveCount: isSet(object.liveCount) ? BigInt(object.liveCount.toString()) : BigInt(0),
+      reservableCount: isSet(object.reservableCount) ? BigInt(object.reservableCount.toString()) : BigInt(0),
+      totalCount: isSet(object.totalCount) ? BigInt(object.totalCount.toString()) : BigInt(0),
+      totalReserved: isSet(object.totalReserved) ? String(object.totalReserved) : "",
+      inTheMoneyVolume: isSet(object.inTheMoneyVolume) ? String(object.inTheMoneyVolume) : ""
+    };
+  },
+  toJSON(message: Pair): unknown {
+    const obj: any = {};
+    message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
+    message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
+    message.totalAmount !== undefined && (obj.totalAmount = message.totalAmount);
+    message.totalLiveRemainingAmount !== undefined && (obj.totalLiveRemainingAmount = message.totalLiveRemainingAmount);
+    message.totalReservableRemainingAmount !== undefined && (obj.totalReservableRemainingAmount = message.totalReservableRemainingAmount);
+    message.liveCount !== undefined && (obj.liveCount = (message.liveCount || BigInt(0)).toString());
+    message.reservableCount !== undefined && (obj.reservableCount = (message.reservableCount || BigInt(0)).toString());
+    message.totalCount !== undefined && (obj.totalCount = (message.totalCount || BigInt(0)).toString());
+    message.totalReserved !== undefined && (obj.totalReserved = message.totalReserved);
+    message.inTheMoneyVolume !== undefined && (obj.inTheMoneyVolume = message.inTheMoneyVolume);
+    return obj;
+  },
+  fromPartial(object: Partial<Pair>): Pair {
+    const message = createBasePair();
+    message.tokenIn = object.tokenIn ?? "";
+    message.tokenOut = object.tokenOut ?? "";
+    message.totalAmount = object.totalAmount ?? "";
+    message.totalLiveRemainingAmount = object.totalLiveRemainingAmount ?? "";
+    message.totalReservableRemainingAmount = object.totalReservableRemainingAmount ?? "";
+    message.liveCount = object.liveCount !== undefined && object.liveCount !== null ? BigInt(object.liveCount.toString()) : BigInt(0);
+    message.reservableCount = object.reservableCount !== undefined && object.reservableCount !== null ? BigInt(object.reservableCount.toString()) : BigInt(0);
+    message.totalCount = object.totalCount !== undefined && object.totalCount !== null ? BigInt(object.totalCount.toString()) : BigInt(0);
+    message.totalReserved = object.totalReserved ?? "";
+    message.inTheMoneyVolume = object.inTheMoneyVolume ?? "";
+    return message;
+  },
+  fromAmino(object: PairAmino): Pair {
+    const message = createBasePair();
+    if (object.token_in !== undefined && object.token_in !== null) {
+      message.tokenIn = object.token_in;
+    }
+    if (object.token_out !== undefined && object.token_out !== null) {
+      message.tokenOut = object.token_out;
+    }
+    if (object.total_amount !== undefined && object.total_amount !== null) {
+      message.totalAmount = object.total_amount;
+    }
+    if (object.total_live_remaining_amount !== undefined && object.total_live_remaining_amount !== null) {
+      message.totalLiveRemainingAmount = object.total_live_remaining_amount;
+    }
+    if (object.total_reservable_remaining_amount !== undefined && object.total_reservable_remaining_amount !== null) {
+      message.totalReservableRemainingAmount = object.total_reservable_remaining_amount;
+    }
+    if (object.live_count !== undefined && object.live_count !== null) {
+      message.liveCount = BigInt(object.live_count);
+    }
+    if (object.reservable_count !== undefined && object.reservable_count !== null) {
+      message.reservableCount = BigInt(object.reservable_count);
+    }
+    if (object.total_count !== undefined && object.total_count !== null) {
+      message.totalCount = BigInt(object.total_count);
+    }
+    if (object.total_reserved !== undefined && object.total_reserved !== null) {
+      message.totalReserved = object.total_reserved;
+    }
+    if (object.in_the_money_volume !== undefined && object.in_the_money_volume !== null) {
+      message.inTheMoneyVolume = object.in_the_money_volume;
+    }
+    return message;
+  },
+  toAmino(message: Pair, useInterfaces: boolean = true): PairAmino {
+    const obj: any = {};
+    obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
+    obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
+    obj.total_amount = message.totalAmount === "" ? undefined : message.totalAmount;
+    obj.total_live_remaining_amount = message.totalLiveRemainingAmount === "" ? undefined : message.totalLiveRemainingAmount;
+    obj.total_reservable_remaining_amount = message.totalReservableRemainingAmount === "" ? undefined : message.totalReservableRemainingAmount;
+    obj.live_count = message.liveCount ? message.liveCount.toString() : undefined;
+    obj.reservable_count = message.reservableCount ? message.reservableCount.toString() : undefined;
+    obj.total_count = message.totalCount ? message.totalCount.toString() : undefined;
+    obj.total_reserved = message.totalReserved === "" ? undefined : message.totalReserved;
+    obj.in_the_money_volume = message.inTheMoneyVolume === "" ? undefined : message.inTheMoneyVolume;
+    return obj;
+  },
+  fromAminoMsg(object: PairAminoMsg): Pair {
+    return Pair.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PairProtoMsg, useInterfaces: boolean = true): Pair {
+    return Pair.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: Pair): Uint8Array {
+    return Pair.encode(message).finish();
+  },
+  toProtoMsg(message: Pair): PairProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.orderbook.Pair",
+      value: Pair.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(Pair.typeUrl, Pair);
 function createBaseOrder(): Order {
   return {
     id: BigInt(0),
@@ -289,7 +545,7 @@ function createBaseOrder(): Order {
     price: "",
     totalAmount: "",
     remainingAmount: "",
-    reservedAmount: "",
+    reservationsAmount: "",
     reservationAllowed: false,
     live: false,
     creationTime: Timestamp.fromPartial({}),
@@ -299,13 +555,13 @@ function createBaseOrder(): Order {
 export const Order = {
   typeUrl: "/pryzmatics.orderbook.Order",
   is(o: any): o is Order {
-    return o && (o.$typeUrl === Order.typeUrl || typeof o.id === "bigint" && typeof o.owner === "string" && typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.price === "string" && typeof o.totalAmount === "string" && typeof o.remainingAmount === "string" && typeof o.reservedAmount === "string" && typeof o.reservationAllowed === "boolean" && typeof o.live === "boolean" && Timestamp.is(o.creationTime) && Timestamp.is(o.lastUpdateTime));
+    return o && (o.$typeUrl === Order.typeUrl || typeof o.id === "bigint" && typeof o.owner === "string" && typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.price === "string" && typeof o.totalAmount === "string" && typeof o.remainingAmount === "string" && typeof o.reservationsAmount === "string" && typeof o.reservationAllowed === "boolean" && typeof o.live === "boolean" && Timestamp.is(o.creationTime) && Timestamp.is(o.lastUpdateTime));
   },
   isSDK(o: any): o is OrderSDKType {
-    return o && (o.$typeUrl === Order.typeUrl || typeof o.id === "bigint" && typeof o.owner === "string" && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.price === "string" && typeof o.total_amount === "string" && typeof o.remaining_amount === "string" && typeof o.reserved_amount === "string" && typeof o.reservation_allowed === "boolean" && typeof o.live === "boolean" && Timestamp.isSDK(o.creation_time) && Timestamp.isSDK(o.last_update_time));
+    return o && (o.$typeUrl === Order.typeUrl || typeof o.id === "bigint" && typeof o.owner === "string" && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.price === "string" && typeof o.total_amount === "string" && typeof o.remaining_amount === "string" && typeof o.reservations_amount === "string" && typeof o.reservation_allowed === "boolean" && typeof o.live === "boolean" && Timestamp.isSDK(o.creation_time) && Timestamp.isSDK(o.last_update_time));
   },
   isAmino(o: any): o is OrderAmino {
-    return o && (o.$typeUrl === Order.typeUrl || typeof o.id === "bigint" && typeof o.owner === "string" && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.price === "string" && typeof o.total_amount === "string" && typeof o.remaining_amount === "string" && typeof o.reserved_amount === "string" && typeof o.reservation_allowed === "boolean" && typeof o.live === "boolean" && Timestamp.isAmino(o.creation_time) && Timestamp.isAmino(o.last_update_time));
+    return o && (o.$typeUrl === Order.typeUrl || typeof o.id === "bigint" && typeof o.owner === "string" && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.price === "string" && typeof o.total_amount === "string" && typeof o.remaining_amount === "string" && typeof o.reservations_amount === "string" && typeof o.reservation_allowed === "boolean" && typeof o.live === "boolean" && Timestamp.isAmino(o.creation_time) && Timestamp.isAmino(o.last_update_time));
   },
   encode(message: Order, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
@@ -329,8 +585,8 @@ export const Order = {
     if (message.remainingAmount !== "") {
       writer.uint32(58).string(message.remainingAmount);
     }
-    if (message.reservedAmount !== "") {
-      writer.uint32(66).string(message.reservedAmount);
+    if (message.reservationsAmount !== "") {
+      writer.uint32(66).string(message.reservationsAmount);
     }
     if (message.reservationAllowed === true) {
       writer.uint32(72).bool(message.reservationAllowed);
@@ -375,7 +631,7 @@ export const Order = {
           message.remainingAmount = reader.string();
           break;
         case 8:
-          message.reservedAmount = reader.string();
+          message.reservationsAmount = reader.string();
           break;
         case 9:
           message.reservationAllowed = reader.bool();
@@ -405,7 +661,7 @@ export const Order = {
       price: isSet(object.price) ? String(object.price) : "",
       totalAmount: isSet(object.totalAmount) ? String(object.totalAmount) : "",
       remainingAmount: isSet(object.remainingAmount) ? String(object.remainingAmount) : "",
-      reservedAmount: isSet(object.reservedAmount) ? String(object.reservedAmount) : "",
+      reservationsAmount: isSet(object.reservationsAmount) ? String(object.reservationsAmount) : "",
       reservationAllowed: isSet(object.reservationAllowed) ? Boolean(object.reservationAllowed) : false,
       live: isSet(object.live) ? Boolean(object.live) : false,
       creationTime: isSet(object.creationTime) ? fromJsonTimestamp(object.creationTime) : undefined,
@@ -421,7 +677,7 @@ export const Order = {
     message.price !== undefined && (obj.price = message.price);
     message.totalAmount !== undefined && (obj.totalAmount = message.totalAmount);
     message.remainingAmount !== undefined && (obj.remainingAmount = message.remainingAmount);
-    message.reservedAmount !== undefined && (obj.reservedAmount = message.reservedAmount);
+    message.reservationsAmount !== undefined && (obj.reservationsAmount = message.reservationsAmount);
     message.reservationAllowed !== undefined && (obj.reservationAllowed = message.reservationAllowed);
     message.live !== undefined && (obj.live = message.live);
     message.creationTime !== undefined && (obj.creationTime = fromTimestamp(message.creationTime).toISOString());
@@ -437,7 +693,7 @@ export const Order = {
     message.price = object.price ?? "";
     message.totalAmount = object.totalAmount ?? "";
     message.remainingAmount = object.remainingAmount ?? "";
-    message.reservedAmount = object.reservedAmount ?? "";
+    message.reservationsAmount = object.reservationsAmount ?? "";
     message.reservationAllowed = object.reservationAllowed ?? false;
     message.live = object.live ?? false;
     message.creationTime = object.creationTime !== undefined && object.creationTime !== null ? Timestamp.fromPartial(object.creationTime) : undefined;
@@ -467,8 +723,8 @@ export const Order = {
     if (object.remaining_amount !== undefined && object.remaining_amount !== null) {
       message.remainingAmount = object.remaining_amount;
     }
-    if (object.reserved_amount !== undefined && object.reserved_amount !== null) {
-      message.reservedAmount = object.reserved_amount;
+    if (object.reservations_amount !== undefined && object.reservations_amount !== null) {
+      message.reservationsAmount = object.reservations_amount;
     }
     if (object.reservation_allowed !== undefined && object.reservation_allowed !== null) {
       message.reservationAllowed = object.reservation_allowed;
@@ -493,7 +749,7 @@ export const Order = {
     obj.price = padDecimal(message.price) === "" ? undefined : padDecimal(message.price);
     obj.total_amount = message.totalAmount === "" ? undefined : message.totalAmount;
     obj.remaining_amount = message.remainingAmount === "" ? undefined : message.remainingAmount;
-    obj.reserved_amount = message.reservedAmount === "" ? undefined : message.reservedAmount;
+    obj.reservations_amount = message.reservationsAmount === "" ? undefined : message.reservationsAmount;
     obj.reservation_allowed = message.reservationAllowed === false ? undefined : message.reservationAllowed;
     obj.live = message.live === false ? undefined : message.live;
     obj.creation_time = message.creationTime ? Timestamp.toAmino(message.creationTime, useInterfaces) : undefined;
@@ -855,19 +1111,19 @@ function createBaseOrderFilledEventData(): OrderFilledEventData {
     filledAmount: "",
     receivedAmount: "",
     matchPrice: "",
-    fee: []
+    fee: Coin.fromPartial({})
   };
 }
 export const OrderFilledEventData = {
   typeUrl: "/pryzmatics.orderbook.OrderFilledEventData",
   is(o: any): o is OrderFilledEventData {
-    return o && (o.$typeUrl === OrderFilledEventData.typeUrl || typeof o.filledAmount === "string" && typeof o.receivedAmount === "string" && typeof o.matchPrice === "string" && Array.isArray(o.fee) && (!o.fee.length || Coin.is(o.fee[0])));
+    return o && (o.$typeUrl === OrderFilledEventData.typeUrl || typeof o.filledAmount === "string" && typeof o.receivedAmount === "string" && typeof o.matchPrice === "string" && Coin.is(o.fee));
   },
   isSDK(o: any): o is OrderFilledEventDataSDKType {
-    return o && (o.$typeUrl === OrderFilledEventData.typeUrl || typeof o.filled_amount === "string" && typeof o.received_amount === "string" && typeof o.match_price === "string" && Array.isArray(o.fee) && (!o.fee.length || Coin.isSDK(o.fee[0])));
+    return o && (o.$typeUrl === OrderFilledEventData.typeUrl || typeof o.filled_amount === "string" && typeof o.received_amount === "string" && typeof o.match_price === "string" && Coin.isSDK(o.fee));
   },
   isAmino(o: any): o is OrderFilledEventDataAmino {
-    return o && (o.$typeUrl === OrderFilledEventData.typeUrl || typeof o.filled_amount === "string" && typeof o.received_amount === "string" && typeof o.match_price === "string" && Array.isArray(o.fee) && (!o.fee.length || Coin.isAmino(o.fee[0])));
+    return o && (o.$typeUrl === OrderFilledEventData.typeUrl || typeof o.filled_amount === "string" && typeof o.received_amount === "string" && typeof o.match_price === "string" && Coin.isAmino(o.fee));
   },
   encode(message: OrderFilledEventData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.filledAmount !== "") {
@@ -879,8 +1135,8 @@ export const OrderFilledEventData = {
     if (message.matchPrice !== "") {
       writer.uint32(26).string(Decimal.fromUserInput(message.matchPrice, 18).atomics);
     }
-    for (const v of message.fee) {
-      Coin.encode(v!, writer.uint32(34).fork()).ldelim();
+    if (message.fee !== undefined) {
+      Coin.encode(message.fee, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -901,7 +1157,7 @@ export const OrderFilledEventData = {
           message.matchPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 4:
-          message.fee.push(Coin.decode(reader, reader.uint32(), useInterfaces));
+          message.fee = Coin.decode(reader, reader.uint32(), useInterfaces);
           break;
         default:
           reader.skipType(tag & 7);
@@ -915,7 +1171,7 @@ export const OrderFilledEventData = {
       filledAmount: isSet(object.filledAmount) ? String(object.filledAmount) : "",
       receivedAmount: isSet(object.receivedAmount) ? String(object.receivedAmount) : "",
       matchPrice: isSet(object.matchPrice) ? String(object.matchPrice) : "",
-      fee: Array.isArray(object?.fee) ? object.fee.map((e: any) => Coin.fromJSON(e)) : []
+      fee: isSet(object.fee) ? Coin.fromJSON(object.fee) : undefined
     };
   },
   toJSON(message: OrderFilledEventData): unknown {
@@ -923,11 +1179,7 @@ export const OrderFilledEventData = {
     message.filledAmount !== undefined && (obj.filledAmount = message.filledAmount);
     message.receivedAmount !== undefined && (obj.receivedAmount = message.receivedAmount);
     message.matchPrice !== undefined && (obj.matchPrice = message.matchPrice);
-    if (message.fee) {
-      obj.fee = message.fee.map(e => e ? Coin.toJSON(e) : undefined);
-    } else {
-      obj.fee = [];
-    }
+    message.fee !== undefined && (obj.fee = message.fee ? Coin.toJSON(message.fee) : undefined);
     return obj;
   },
   fromPartial(object: Partial<OrderFilledEventData>): OrderFilledEventData {
@@ -935,7 +1187,7 @@ export const OrderFilledEventData = {
     message.filledAmount = object.filledAmount ?? "";
     message.receivedAmount = object.receivedAmount ?? "";
     message.matchPrice = object.matchPrice ?? "";
-    message.fee = object.fee?.map(e => Coin.fromPartial(e)) || [];
+    message.fee = object.fee !== undefined && object.fee !== null ? Coin.fromPartial(object.fee) : undefined;
     return message;
   },
   fromAmino(object: OrderFilledEventDataAmino): OrderFilledEventData {
@@ -949,7 +1201,9 @@ export const OrderFilledEventData = {
     if (object.match_price !== undefined && object.match_price !== null) {
       message.matchPrice = object.match_price;
     }
-    message.fee = object.fee?.map(e => Coin.fromAmino(e)) || [];
+    if (object.fee !== undefined && object.fee !== null) {
+      message.fee = Coin.fromAmino(object.fee);
+    }
     return message;
   },
   toAmino(message: OrderFilledEventData, useInterfaces: boolean = true): OrderFilledEventDataAmino {
@@ -957,11 +1211,7 @@ export const OrderFilledEventData = {
     obj.filled_amount = message.filledAmount === "" ? undefined : message.filledAmount;
     obj.received_amount = message.receivedAmount === "" ? undefined : message.receivedAmount;
     obj.match_price = padDecimal(message.matchPrice) === "" ? undefined : padDecimal(message.matchPrice);
-    if (message.fee) {
-      obj.fee = message.fee.map(e => e ? Coin.toAmino(e, useInterfaces) : undefined);
-    } else {
-      obj.fee = message.fee;
-    }
+    obj.fee = message.fee ? Coin.toAmino(message.fee, useInterfaces) : undefined;
     return obj;
   },
   fromAminoMsg(object: OrderFilledEventDataAminoMsg): OrderFilledEventData {
@@ -1177,23 +1427,27 @@ export const OrderReservationFulfillEventData = {
 GlobalDecoderRegistry.register(OrderReservationFulfillEventData.typeUrl, OrderReservationFulfillEventData);
 function createBaseOrderReservationExpiredEventData(): OrderReservationExpiredEventData {
   return {
-    reservationId: BigInt(0)
+    reservationId: BigInt(0),
+    amount: ""
   };
 }
 export const OrderReservationExpiredEventData = {
   typeUrl: "/pryzmatics.orderbook.OrderReservationExpiredEventData",
   is(o: any): o is OrderReservationExpiredEventData {
-    return o && (o.$typeUrl === OrderReservationExpiredEventData.typeUrl || typeof o.reservationId === "bigint");
+    return o && (o.$typeUrl === OrderReservationExpiredEventData.typeUrl || typeof o.reservationId === "bigint" && typeof o.amount === "string");
   },
   isSDK(o: any): o is OrderReservationExpiredEventDataSDKType {
-    return o && (o.$typeUrl === OrderReservationExpiredEventData.typeUrl || typeof o.reservation_id === "bigint");
+    return o && (o.$typeUrl === OrderReservationExpiredEventData.typeUrl || typeof o.reservation_id === "bigint" && typeof o.amount === "string");
   },
   isAmino(o: any): o is OrderReservationExpiredEventDataAmino {
-    return o && (o.$typeUrl === OrderReservationExpiredEventData.typeUrl || typeof o.reservation_id === "bigint");
+    return o && (o.$typeUrl === OrderReservationExpiredEventData.typeUrl || typeof o.reservation_id === "bigint" && typeof o.amount === "string");
   },
   encode(message: OrderReservationExpiredEventData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.reservationId !== BigInt(0)) {
       writer.uint32(8).uint64(message.reservationId);
+    }
+    if (message.amount !== "") {
+      writer.uint32(18).string(message.amount);
     }
     return writer;
   },
@@ -1207,6 +1461,9 @@ export const OrderReservationExpiredEventData = {
         case 1:
           message.reservationId = reader.uint64();
           break;
+        case 2:
+          message.amount = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1216,17 +1473,20 @@ export const OrderReservationExpiredEventData = {
   },
   fromJSON(object: any): OrderReservationExpiredEventData {
     return {
-      reservationId: isSet(object.reservationId) ? BigInt(object.reservationId.toString()) : BigInt(0)
+      reservationId: isSet(object.reservationId) ? BigInt(object.reservationId.toString()) : BigInt(0),
+      amount: isSet(object.amount) ? String(object.amount) : ""
     };
   },
   toJSON(message: OrderReservationExpiredEventData): unknown {
     const obj: any = {};
     message.reservationId !== undefined && (obj.reservationId = (message.reservationId || BigInt(0)).toString());
+    message.amount !== undefined && (obj.amount = message.amount);
     return obj;
   },
   fromPartial(object: Partial<OrderReservationExpiredEventData>): OrderReservationExpiredEventData {
     const message = createBaseOrderReservationExpiredEventData();
     message.reservationId = object.reservationId !== undefined && object.reservationId !== null ? BigInt(object.reservationId.toString()) : BigInt(0);
+    message.amount = object.amount ?? "";
     return message;
   },
   fromAmino(object: OrderReservationExpiredEventDataAmino): OrderReservationExpiredEventData {
@@ -1234,11 +1494,15 @@ export const OrderReservationExpiredEventData = {
     if (object.reservation_id !== undefined && object.reservation_id !== null) {
       message.reservationId = BigInt(object.reservation_id);
     }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
     return message;
   },
   toAmino(message: OrderReservationExpiredEventData, useInterfaces: boolean = true): OrderReservationExpiredEventDataAmino {
     const obj: any = {};
     obj.reservation_id = message.reservationId ? message.reservationId.toString() : undefined;
+    obj.amount = message.amount === "" ? undefined : message.amount;
     return obj;
   },
   fromAminoMsg(object: OrderReservationExpiredEventDataAminoMsg): OrderReservationExpiredEventData {

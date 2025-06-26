@@ -8,6 +8,39 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/pryzm-finance/pryzmatics/types/orderbook";
 
+message Pair {
+  string token_in = 1;
+  string token_out = 2;
+  string total_amount = 3 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string total_live_remaining_amount = 4 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string total_reservable_remaining_amount = 5 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  uint64 live_count = 6;
+  uint64 reservable_count = 7;
+  uint64 total_count = 8;
+  string total_reserved = 9 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string in_the_money_volume = 10 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+}
+
 message Order {
   uint64 id = 1;
   string owner = 2;
@@ -28,7 +61,7 @@ message Order {
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
     (gogoproto.nullable) = false
   ];
-  string reserved_amount = 8 [
+  string reservations_amount = 8 [
     (cosmos_proto.scalar) = "cosmos.Int",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
     (gogoproto.nullable) = false
@@ -102,7 +135,7 @@ message OrderFilledEventData {
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-  repeated cosmos.base.v1beta1.Coin fee = 4 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin fee = 4 [(gogoproto.nullable) = false];
 }
 
 message OrderReservedEventData {
@@ -129,9 +162,9 @@ message OrderReservationFulfillEventData {
 
 message OrderReservationExpiredEventData {
   uint64 reservation_id = 1;
-//  string amount = 2 [
-  //    (cosmos_proto.scalar) = "cosmos.Int",
-  //    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
-  //    (gogoproto.nullable) = false
-  //  ];
+  string amount = 2 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
 }

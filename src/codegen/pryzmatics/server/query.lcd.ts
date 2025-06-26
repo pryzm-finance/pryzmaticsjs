@@ -33,7 +33,7 @@ import { QueryExitAllTokensExactLptSimulationRequest, QueryExitAllTokensExactLpt
 import { QueryUserTradeHistoryRequest, QueryUserTradeHistoryResponseSDKType, QueryUserTradeHistorySummaryRequest, QueryUserTradeHistorySummaryResponseSDKType, QueryUserTradeVolumeRequest, QueryUserTradeVolumeResponseSDKType, QueryIntervalUserTradeVolumeRequest, QueryIntervalUserTradeVolumeResponseSDKType } from "./trade/user_trade_history";
 import { QueryTokenTradeVolumeRequest, QueryTokenTradeVolumeResponseSDKType, QueryPoolTradeVolumeRequest, QueryPoolTradeVolumeResponseSDKType, QueryFavoritePairsRequest, QueryFavoritePairsResponseSDKType } from "./trade/trade_volume";
 import { QueryPulseTradablePairsRequest, QueryPulseTradablePairsResponseSDKType, QueryPulseTradablePairPriceRequest, QueryPulseTradablePairPriceResponseSDKType } from "./trade/pulse_tradable_pairs";
-import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType, QueryMatchableBuyOrdersForPairRequest, QueryMatchableBuyOrdersForPairResponseSDKType, QueryOrderPairsToDisableRequest, QueryOrderPairsToDisableResponseSDKType, QueryOrderPairMetricsRequest, QueryOrderPairMetricsResponseSDKType, QueryOrderPairPriceBucketsRequest, QueryOrderPairPriceBucketsResponseSDKType, QueryOrderMetricsRequest, QueryOrderMetricsResponseSDKType } from "./trade/order";
+import { QueryOrderRequest, QueryOrderResponseSDKType, QueryOrdersRequest, QueryOrdersResponseSDKType, QueryMatchableOrderCountsRequest, QueryMatchableOrderCountsResponseSDKType, QueryMatchableOrdersForPairRequest, QueryMatchableOrdersForPairResponseSDKType, QueryMatchableBuyOrdersForPairRequest, QueryMatchableBuyOrdersForPairResponseSDKType, QueryMatchableBuyOrdersForPairSummaryRequest, QueryMatchableBuyOrdersForPairSummaryResponseSDKType, QueryOrderPairsToDisableRequest, QueryOrderPairsToDisableResponseSDKType, QueryOrderPairMetricsRequest, QueryOrderPairMetricsResponseSDKType, QueryOrderPairPriceBucketsRequest, QueryOrderPairPriceBucketsResponseSDKType, QueryOrderMetricsRequest, QueryOrderMetricsResponseSDKType } from "./trade/order";
 import { QueryDirectlyConnectedTokenPairsRequest, QueryDirectlyConnectedTokenPairsResponseSDKType } from "./trade/directly_connected_token_pairs";
 import { QueryTickersRequest, QueryTickersResponseSDKType } from "./trade/tickers";
 import { QueryUserPairTradeVolumeRequest, QueryUserPairTradeVolumeResponseSDKType } from "./trade/user_pair_trade_volume";
@@ -63,7 +63,7 @@ import { QueryUserPulseTradeVolumeRequest, QueryUserPulseTradeVolumeResponseSDKT
 import { QueryUserPryzmClaimHistoryRequest, QueryUserPryzmClaimHistoryResponseSDKType } from "./trade/user_pryzm_claim_history";
 import { QueryPVaultContractsRequest, QueryPVaultContractsResponseSDKType } from "./pvault/contracts";
 import { QueryPurchaseSimulationRequest, QueryPurchaseSimulationResponseSDKType } from "./pvault/purchase_simulation";
-import { QueryOrderBookOrdersRequest, QueryOrderBookOrdersResponseSDKType, QueryOrderBookOrderFeedRequest, QueryOrderBookOrderFeedResponseSDKType } from "./orderbook/order";
+import { QueryOrderBookOrdersRequest, QueryOrderBookOrdersResponseSDKType, QueryOrderBookSummaryRequest, QueryOrderBookSummaryResponseSDKType, QueryOrderBookPairsRequest, QueryOrderBookPairsResponseSDKType, QueryOrderBookOrderFeedRequest, QueryOrderBookOrderFeedResponseSDKType } from "./orderbook/order";
 import { QueryOrderBookReservationsRequest, QueryOrderBookReservationsResponseSDKType } from "./orderbook/reservation";
 import { DenomOwnersRequest, DenomOwnersResponseSDKType } from "./bank/denom_owners";
 export class LCDQueryClient {
@@ -122,6 +122,7 @@ export class LCDQueryClient {
     this.matchableOrderCounts = this.matchableOrderCounts.bind(this);
     this.matchableOrdersForPair = this.matchableOrdersForPair.bind(this);
     this.matchableBuyOrdersForPair = this.matchableBuyOrdersForPair.bind(this);
+    this.matchableBuyOrdersForPairSummary = this.matchableBuyOrdersForPairSummary.bind(this);
     this.orderPairsToDisable = this.orderPairsToDisable.bind(this);
     this.orderPairMetrics = this.orderPairMetrics.bind(this);
     this.orderPairPriceBuckets = this.orderPairPriceBuckets.bind(this);
@@ -165,6 +166,8 @@ export class LCDQueryClient {
     this.pVaultContracts = this.pVaultContracts.bind(this);
     this.pVaultSimulatePurchase = this.pVaultSimulatePurchase.bind(this);
     this.orderBookOrders = this.orderBookOrders.bind(this);
+    this.orderBookSummary = this.orderBookSummary.bind(this);
+    this.orderBookPairs = this.orderBookPairs.bind(this);
     this.orderBookOrderFeed = this.orderBookOrderFeed.bind(this);
     this.orderBookReservations = this.orderBookReservations.bind(this);
     this.denomOwners = this.denomOwners.bind(this);
@@ -897,6 +900,20 @@ export class LCDQueryClient {
     const endpoint = `pryzmatics/trade/matchable_buy_orders_for_pair/${params.tokenIn}/${params.tokenOut}/${params.poolId}/${params.whitelistedRoute}`;
     return await this.req.get<QueryMatchableBuyOrdersForPairResponseSDKType>(endpoint, options);
   }
+  /* MatchableBuyOrdersForPairSummary */
+  async matchableBuyOrdersForPairSummary(params: QueryMatchableBuyOrdersForPairSummaryRequest): Promise<QueryMatchableBuyOrdersForPairSummaryResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.minPrice !== "undefined") {
+      options.params.min_price = params.minPrice;
+    }
+    if (typeof params?.minRemainingAmount !== "undefined") {
+      options.params.min_remaining_amount = params.minRemainingAmount;
+    }
+    const endpoint = `pryzmatics/trade/matchable_buy_orders_for_pair_summary/${params.tokenIn}/${params.tokenOut}/${params.poolId}/${params.whitelistedRoute}`;
+    return await this.req.get<QueryMatchableBuyOrdersForPairSummaryResponseSDKType>(endpoint, options);
+  }
   /* OrderPairsToDisable */
   async orderPairsToDisable(_params: QueryOrderPairsToDisableRequest = {}): Promise<QueryOrderPairsToDisableResponseSDKType> {
     const endpoint = `pryzmatics/trade/order_pairs_to_disable`;
@@ -1524,6 +1541,36 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/orderbook/orders`;
     return await this.req.get<QueryOrderBookOrdersResponseSDKType>(endpoint, options);
+  }
+  /* OrderBookSummary */
+  async orderBookSummary(params: QueryOrderBookSummaryRequest): Promise<QueryOrderBookSummaryResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.tokenIn !== "undefined") {
+      options.params.token_in = params.tokenIn;
+    }
+    if (typeof params?.tokenOut !== "undefined") {
+      options.params.token_out = params.tokenOut;
+    }
+    if (typeof params?.maxPrice !== "undefined") {
+      options.params.max_price = params.maxPrice;
+    }
+    const endpoint = `pryzmatics/orderbook/summary`;
+    return await this.req.get<QueryOrderBookSummaryResponseSDKType>(endpoint, options);
+  }
+  /* OrderBookPairs */
+  async orderBookPairs(params: QueryOrderBookPairsRequest = {
+    pagination: undefined
+  }): Promise<QueryOrderBookPairsResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `pryzmatics/orderbook/pairs`;
+    return await this.req.get<QueryOrderBookPairsResponseSDKType>(endpoint, options);
   }
   /* OrderBookOrderFeed */
   async orderBookOrderFeed(params: QueryOrderBookOrderFeedRequest): Promise<QueryOrderBookOrderFeedResponseSDKType> {

@@ -96,6 +96,32 @@ message QueryMatchableBuyOrdersForPairResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
 }
 
+message QueryMatchableBuyOrdersForPairSummaryRequest {
+  string token_in = 1;
+  string token_out = 2;
+  uint64 pool_id = 3;
+  bool whitelisted_route = 4;
+  string min_price = 5 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string min_remaining_amount = 6 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message QueryMatchableBuyOrdersForPairSummaryResponse {
+  string total_volume = 1 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  uint64 count = 2;
+}
+
 message QueryOrderPairsToDisableRequest {
 }
 
