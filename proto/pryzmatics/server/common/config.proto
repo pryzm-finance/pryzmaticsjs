@@ -29,8 +29,21 @@ message Config {
   YieldReturnConfig yield_return_config = 12 [(gogoproto.nullable) = false];
   FaucetConfig faucet_config = 13 [(gogoproto.nullable) = false];
   map<string, AssetConfig> assets = 14 [(gogoproto.nullable) = false];
-  string pvault_factory_contract_address = 15;
+  string pvault_factory_contract_address = 15 [
+    deprecated = true // use contracts.p_vault_factory instead
+  ];
   repeated string supported_denoms_for_external_price = 16;
+  Contracts contracts = 17 [(gogoproto.nullable) = false];
+}
+
+message Contracts {
+  string pryzm_nexus = 1;
+  string y_launch_factory = 2;
+  string p_vault_factory = 3;
+  string order_book = 4;
+  string pryzm_photon_drop_claim1 = 5;
+  string pryzm_photon_drop_claim2 = 6;
+  string pryzm_stake_drop_claim = 7;
 }
 
 message DatabaseConfig {

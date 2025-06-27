@@ -118,17 +118,15 @@ message TokenStats {
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-  // only set when details requested
   string volume_7d = 5 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = true
+    (gogoproto.nullable) = false
   ];
-  // only set when details requested
   string volume_30d = 6 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = true
+    (gogoproto.nullable) = false
   ];
   string total_volume = 7 [
     (cosmos_proto.scalar) = "cosmos.Dec",
@@ -171,5 +169,5 @@ message Token {
     (gogoproto.nullable) = true
   ];
   google.protobuf.Timestamp supply_fetch_time = 13 [(gogoproto.stdtime) = true, (gogoproto.nullable) = false];
-  TokenStats stats = 14 [(gogoproto.nullable) = false];
+  TokenStats stats = 14 [(gogoproto.nullable) = true]; // only set when details requested
 }

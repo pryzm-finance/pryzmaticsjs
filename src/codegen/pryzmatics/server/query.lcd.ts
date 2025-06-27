@@ -308,9 +308,6 @@ export class LCDQueryClient {
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
-    if (typeof params?.detailedStats !== "undefined") {
-      options.params.detailed_stats = params.detailedStats;
-    }
     const endpoint = `pryzmatics/token`;
     return await this.req.get<QueryTokensResponseSDKType>(endpoint, options);
   }

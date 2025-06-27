@@ -132,10 +132,8 @@ export interface TokenStats {
   supply: Supply;
   ownersCount: bigint;
   volume24h: string;
-  /** only set when details requested */
-  volume7d?: string;
-  /** only set when details requested */
-  volume30d?: string;
+  volume7d: string;
+  volume30d: string;
   totalVolume: string;
 }
 export interface TokenStatsProtoMsg {
@@ -148,9 +146,7 @@ export interface TokenStatsAmino {
   supply?: SupplyAmino;
   owners_count?: string;
   volume_24h?: string;
-  /** only set when details requested */
   volume_7d?: string;
-  /** only set when details requested */
   volume_30d?: string;
   total_volume?: string;
 }
@@ -163,8 +159,8 @@ export interface TokenStatsSDKType {
   supply: SupplySDKType;
   owners_count: bigint;
   volume_24h: string;
-  volume_7d?: string;
-  volume_30d?: string;
+  volume_7d: string;
+  volume_30d: string;
   total_volume: string;
 }
 export interface Token {
@@ -182,7 +178,8 @@ export interface Token {
   supply: string;
   supplyStableCoinTerms?: string;
   supplyFetchTime: Timestamp;
-  stats: TokenStats;
+  /** only set when details requested */
+  stats?: TokenStats;
 }
 export interface TokenProtoMsg {
   typeUrl: "/pryzmatics.pool.Token";
@@ -203,6 +200,7 @@ export interface TokenAmino {
   supply?: string;
   supply_stable_coin_terms?: string;
   supply_fetch_time?: string;
+  /** only set when details requested */
   stats?: TokenStatsAmino;
 }
 export interface TokenAminoMsg {
@@ -223,7 +221,7 @@ export interface TokenSDKType {
   supply: string;
   supply_stable_coin_terms?: string;
   supply_fetch_time: TimestampSDKType;
-  stats: TokenStatsSDKType;
+  stats?: TokenStatsSDKType;
 }
 function createBaseTokenMetrics(): TokenMetrics {
   return {
@@ -538,21 +536,21 @@ function createBaseTokenStats(): TokenStats {
     supply: Supply.fromPartial({}),
     ownersCount: BigInt(0),
     volume24h: "",
-    volume7d: undefined,
-    volume30d: undefined,
+    volume7d: "",
+    volume30d: "",
     totalVolume: ""
   };
 }
 export const TokenStats = {
   typeUrl: "/pryzmatics.pool.TokenStats",
   is(o: any): o is TokenStats {
-    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.is(o.supply) && typeof o.ownersCount === "bigint" && typeof o.volume24h === "string" && typeof o.totalVolume === "string");
+    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.is(o.supply) && typeof o.ownersCount === "bigint" && typeof o.volume24h === "string" && typeof o.volume7d === "string" && typeof o.volume30d === "string" && typeof o.totalVolume === "string");
   },
   isSDK(o: any): o is TokenStatsSDKType {
-    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.isSDK(o.supply) && typeof o.owners_count === "bigint" && typeof o.volume_24h === "string" && typeof o.total_volume === "string");
+    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.isSDK(o.supply) && typeof o.owners_count === "bigint" && typeof o.volume_24h === "string" && typeof o.volume_7d === "string" && typeof o.volume_30d === "string" && typeof o.total_volume === "string");
   },
   isAmino(o: any): o is TokenStatsAmino {
-    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.isAmino(o.supply) && typeof o.owners_count === "bigint" && typeof o.volume_24h === "string" && typeof o.total_volume === "string");
+    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.isAmino(o.supply) && typeof o.owners_count === "bigint" && typeof o.volume_24h === "string" && typeof o.volume_7d === "string" && typeof o.volume_30d === "string" && typeof o.total_volume === "string");
   },
   encode(message: TokenStats, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.marketCap !== undefined) {
@@ -567,10 +565,10 @@ export const TokenStats = {
     if (message.volume24h !== "") {
       writer.uint32(34).string(Decimal.fromUserInput(message.volume24h, 18).atomics);
     }
-    if (message.volume7d !== undefined) {
+    if (message.volume7d !== "") {
       writer.uint32(42).string(Decimal.fromUserInput(message.volume7d, 18).atomics);
     }
-    if (message.volume30d !== undefined) {
+    if (message.volume30d !== "") {
       writer.uint32(50).string(Decimal.fromUserInput(message.volume30d, 18).atomics);
     }
     if (message.totalVolume !== "") {
@@ -619,8 +617,8 @@ export const TokenStats = {
       supply: isSet(object.supply) ? Supply.fromJSON(object.supply) : undefined,
       ownersCount: isSet(object.ownersCount) ? BigInt(object.ownersCount.toString()) : BigInt(0),
       volume24h: isSet(object.volume24h) ? String(object.volume24h) : "",
-      volume7d: isSet(object.volume7d) ? String(object.volume7d) : undefined,
-      volume30d: isSet(object.volume30d) ? String(object.volume30d) : undefined,
+      volume7d: isSet(object.volume7d) ? String(object.volume7d) : "",
+      volume30d: isSet(object.volume30d) ? String(object.volume30d) : "",
       totalVolume: isSet(object.totalVolume) ? String(object.totalVolume) : ""
     };
   },
@@ -641,8 +639,8 @@ export const TokenStats = {
     message.supply = object.supply !== undefined && object.supply !== null ? Supply.fromPartial(object.supply) : undefined;
     message.ownersCount = object.ownersCount !== undefined && object.ownersCount !== null ? BigInt(object.ownersCount.toString()) : BigInt(0);
     message.volume24h = object.volume24h ?? "";
-    message.volume7d = object.volume7d ?? undefined;
-    message.volume30d = object.volume30d ?? undefined;
+    message.volume7d = object.volume7d ?? "";
+    message.volume30d = object.volume30d ?? "";
     message.totalVolume = object.totalVolume ?? "";
     return message;
   },
@@ -677,8 +675,8 @@ export const TokenStats = {
     obj.supply = message.supply ? Supply.toAmino(message.supply, useInterfaces) : undefined;
     obj.owners_count = message.ownersCount ? message.ownersCount.toString() : undefined;
     obj.volume_24h = padDecimal(message.volume24h) === "" ? undefined : padDecimal(message.volume24h);
-    obj.volume_7d = padDecimal(message.volume7d) === null ? undefined : padDecimal(message.volume7d);
-    obj.volume_30d = padDecimal(message.volume30d) === null ? undefined : padDecimal(message.volume30d);
+    obj.volume_7d = padDecimal(message.volume7d) === "" ? undefined : padDecimal(message.volume7d);
+    obj.volume_30d = padDecimal(message.volume30d) === "" ? undefined : padDecimal(message.volume30d);
     obj.total_volume = padDecimal(message.totalVolume) === "" ? undefined : padDecimal(message.totalVolume);
     return obj;
   },
@@ -714,19 +712,19 @@ function createBaseToken(): Token {
     supply: "",
     supplyStableCoinTerms: undefined,
     supplyFetchTime: Timestamp.fromPartial({}),
-    stats: TokenStats.fromPartial({})
+    stats: undefined
   };
 }
 export const Token = {
   typeUrl: "/pryzmatics.pool.Token",
   is(o: any): o is Token {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.underlyingTokenDenom === "string" && typeof o.assetId === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.is(o.supplyFetchTime) && TokenStats.is(o.stats));
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.underlyingTokenDenom === "string" && typeof o.assetId === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.is(o.supplyFetchTime));
   },
   isSDK(o: any): o is TokenSDKType {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isSDK(o.supply_fetch_time) && TokenStats.isSDK(o.stats));
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isSDK(o.supply_fetch_time));
   },
   isAmino(o: any): o is TokenAmino {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isAmino(o.supply_fetch_time) && TokenStats.isAmino(o.stats));
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isAmino(o.supply_fetch_time));
   },
   encode(message: Token, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {

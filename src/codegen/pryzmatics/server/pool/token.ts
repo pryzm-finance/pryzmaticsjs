@@ -47,7 +47,6 @@ export interface QueryTokensRequest {
   tokenType: TokenType;
   tokenIn: string;
   pagination?: PageRequest;
-  detailedStats?: boolean;
 }
 export interface QueryTokensRequestProtoMsg {
   typeUrl: "/pryzmatics.server.pool.QueryTokensRequest";
@@ -57,7 +56,6 @@ export interface QueryTokensRequestAmino {
   token_type?: TokenType;
   token_in?: string;
   pagination?: PageRequestAmino;
-  detailed_stats?: boolean;
 }
 export interface QueryTokensRequestAminoMsg {
   type: "/pryzmatics.server.pool.QueryTokensRequest";
@@ -67,7 +65,6 @@ export interface QueryTokensRequestSDKType {
   token_type: TokenType;
   token_in: string;
   pagination?: PageRequestSDKType;
-  detailed_stats?: boolean;
 }
 export interface QueryTokensResponse {
   tokens: Token[];
@@ -287,8 +284,7 @@ function createBaseQueryTokensRequest(): QueryTokensRequest {
   return {
     tokenType: 0,
     tokenIn: "",
-    pagination: undefined,
-    detailedStats: undefined
+    pagination: undefined
   };
 }
 export const QueryTokensRequest = {
@@ -312,9 +308,6 @@ export const QueryTokensRequest = {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(26).fork()).ldelim();
     }
-    if (message.detailedStats !== undefined) {
-      writer.uint32(32).bool(message.detailedStats);
-    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryTokensRequest {
@@ -333,9 +326,6 @@ export const QueryTokensRequest = {
         case 3:
           message.pagination = PageRequest.decode(reader, reader.uint32(), useInterfaces);
           break;
-        case 4:
-          message.detailedStats = reader.bool();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -347,8 +337,7 @@ export const QueryTokensRequest = {
     return {
       tokenType: isSet(object.tokenType) ? tokenTypeFromJSON(object.tokenType) : -1,
       tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      detailedStats: isSet(object.detailedStats) ? Boolean(object.detailedStats) : undefined
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
   toJSON(message: QueryTokensRequest): unknown {
@@ -356,7 +345,6 @@ export const QueryTokensRequest = {
     message.tokenType !== undefined && (obj.tokenType = tokenTypeToJSON(message.tokenType));
     message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    message.detailedStats !== undefined && (obj.detailedStats = message.detailedStats);
     return obj;
   },
   fromPartial(object: Partial<QueryTokensRequest>): QueryTokensRequest {
@@ -364,7 +352,6 @@ export const QueryTokensRequest = {
     message.tokenType = object.tokenType ?? 0;
     message.tokenIn = object.tokenIn ?? "";
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
-    message.detailedStats = object.detailedStats ?? undefined;
     return message;
   },
   fromAmino(object: QueryTokensRequestAmino): QueryTokensRequest {
@@ -378,9 +365,6 @@ export const QueryTokensRequest = {
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
-    if (object.detailed_stats !== undefined && object.detailed_stats !== null) {
-      message.detailedStats = object.detailed_stats;
-    }
     return message;
   },
   toAmino(message: QueryTokensRequest, useInterfaces: boolean = true): QueryTokensRequestAmino {
@@ -388,7 +372,6 @@ export const QueryTokensRequest = {
     obj.token_type = message.tokenType === 0 ? undefined : message.tokenType;
     obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
-    obj.detailed_stats = message.detailedStats === null ? undefined : message.detailedStats;
     return obj;
   },
   fromAminoMsg(object: QueryTokensRequestAminoMsg): QueryTokensRequest {

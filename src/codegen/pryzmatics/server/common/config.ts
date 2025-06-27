@@ -94,8 +94,10 @@ export interface Config {
   assets: {
     [key: string]: AssetConfig;
   };
+  /** @deprecated */
   pvaultFactoryContractAddress: string;
   supportedDenomsForExternalPrice: string[];
+  contracts: Contracts;
 }
 export interface ConfigProtoMsg {
   typeUrl: "/pryzmatics.server.common.Config";
@@ -120,8 +122,10 @@ export interface ConfigAmino {
   assets?: {
     [key: string]: AssetConfigAmino;
   };
+  /** @deprecated */
   pvault_factory_contract_address?: string;
   supported_denoms_for_external_price?: string[];
+  contracts?: ContractsAmino;
 }
 export interface ConfigAminoMsg {
   type: "/pryzmatics.server.common.Config";
@@ -146,8 +150,45 @@ export interface ConfigSDKType {
   assets: {
     [key: string]: AssetConfigSDKType;
   };
+  /** @deprecated */
   pvault_factory_contract_address: string;
   supported_denoms_for_external_price: string[];
+  contracts: ContractsSDKType;
+}
+export interface Contracts {
+  pryzmNexus: string;
+  yLaunchFactory: string;
+  pVaultFactory: string;
+  orderBook: string;
+  pryzmPhotonDropClaim1: string;
+  pryzmPhotonDropClaim2: string;
+  pryzmStakeDropClaim: string;
+}
+export interface ContractsProtoMsg {
+  typeUrl: "/pryzmatics.server.common.Contracts";
+  value: Uint8Array;
+}
+export interface ContractsAmino {
+  pryzm_nexus?: string;
+  y_launch_factory?: string;
+  p_vault_factory?: string;
+  order_book?: string;
+  pryzm_photon_drop_claim1?: string;
+  pryzm_photon_drop_claim2?: string;
+  pryzm_stake_drop_claim?: string;
+}
+export interface ContractsAminoMsg {
+  type: "/pryzmatics.server.common.Contracts";
+  value: ContractsAmino;
+}
+export interface ContractsSDKType {
+  pryzm_nexus: string;
+  y_launch_factory: string;
+  p_vault_factory: string;
+  order_book: string;
+  pryzm_photon_drop_claim1: string;
+  pryzm_photon_drop_claim2: string;
+  pryzm_stake_drop_claim: string;
 }
 export interface DatabaseConfig {
   poolMinConns: number;
@@ -831,19 +872,20 @@ function createBaseConfig(): Config {
     faucetConfig: FaucetConfig.fromPartial({}),
     assets: {},
     pvaultFactoryContractAddress: "",
-    supportedDenomsForExternalPrice: []
+    supportedDenomsForExternalPrice: [],
+    contracts: Contracts.fromPartial({})
   };
 }
 export const Config = {
   typeUrl: "/pryzmatics.server.common.Config",
   is(o: any): o is Config {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.productionMode === "boolean" && Array.isArray(o.stableCoins) && (!o.stableCoins.length || StableCoinConfig.is(o.stableCoins[0])) && typeof o.favoritePairsMaxCount === "number" && typeof o.metricCalculationIntervalBlocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpcEndpoints) && DatabaseConfig.is(o.databaseConfig) && ChainConfig.is(o.chainConfig) && LoggerConfig.is(o.loggerConfig) && IndexerConfig.is(o.indexerConfig) && ProfilerConfig.is(o.profilerConfig) && YieldReturnConfig.is(o.yieldReturnConfig) && FaucetConfig.is(o.faucetConfig) && isSet(o.assets) && typeof o.pvaultFactoryContractAddress === "string" && Array.isArray(o.supportedDenomsForExternalPrice) && (!o.supportedDenomsForExternalPrice.length || typeof o.supportedDenomsForExternalPrice[0] === "string"));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.productionMode === "boolean" && Array.isArray(o.stableCoins) && (!o.stableCoins.length || StableCoinConfig.is(o.stableCoins[0])) && typeof o.favoritePairsMaxCount === "number" && typeof o.metricCalculationIntervalBlocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpcEndpoints) && DatabaseConfig.is(o.databaseConfig) && ChainConfig.is(o.chainConfig) && LoggerConfig.is(o.loggerConfig) && IndexerConfig.is(o.indexerConfig) && ProfilerConfig.is(o.profilerConfig) && YieldReturnConfig.is(o.yieldReturnConfig) && FaucetConfig.is(o.faucetConfig) && isSet(o.assets) && typeof o.pvaultFactoryContractAddress === "string" && Array.isArray(o.supportedDenomsForExternalPrice) && (!o.supportedDenomsForExternalPrice.length || typeof o.supportedDenomsForExternalPrice[0] === "string") && Contracts.is(o.contracts));
   },
   isSDK(o: any): o is ConfigSDKType {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isSDK(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isSDK(o.database_config) && ChainConfig.isSDK(o.chain_config) && LoggerConfig.isSDK(o.logger_config) && IndexerConfig.isSDK(o.indexer_config) && ProfilerConfig.isSDK(o.profiler_config) && YieldReturnConfig.isSDK(o.yield_return_config) && FaucetConfig.isSDK(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string"));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isSDK(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isSDK(o.database_config) && ChainConfig.isSDK(o.chain_config) && LoggerConfig.isSDK(o.logger_config) && IndexerConfig.isSDK(o.indexer_config) && ProfilerConfig.isSDK(o.profiler_config) && YieldReturnConfig.isSDK(o.yield_return_config) && FaucetConfig.isSDK(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string") && Contracts.isSDK(o.contracts));
   },
   isAmino(o: any): o is ConfigAmino {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isAmino(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isAmino(o.database_config) && ChainConfig.isAmino(o.chain_config) && LoggerConfig.isAmino(o.logger_config) && IndexerConfig.isAmino(o.indexer_config) && ProfilerConfig.isAmino(o.profiler_config) && YieldReturnConfig.isAmino(o.yield_return_config) && FaucetConfig.isAmino(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string"));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isAmino(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isAmino(o.database_config) && ChainConfig.isAmino(o.chain_config) && LoggerConfig.isAmino(o.logger_config) && IndexerConfig.isAmino(o.indexer_config) && ProfilerConfig.isAmino(o.profiler_config) && YieldReturnConfig.isAmino(o.yield_return_config) && FaucetConfig.isAmino(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string") && Contracts.isAmino(o.contracts));
   },
   encode(message: Config, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.productionMode === true) {
@@ -899,6 +941,9 @@ export const Config = {
     }
     for (const v of message.supportedDenomsForExternalPrice) {
       writer.uint32(130).string(v!);
+    }
+    if (message.contracts !== undefined) {
+      Contracts.encode(message.contracts, writer.uint32(138).fork()).ldelim();
     }
     return writer;
   },
@@ -963,6 +1008,9 @@ export const Config = {
         case 16:
           message.supportedDenomsForExternalPrice.push(reader.string());
           break;
+        case 17:
+          message.contracts = Contracts.decode(reader, reader.uint32(), useInterfaces);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -997,7 +1045,8 @@ export const Config = {
         return acc;
       }, {}) : {},
       pvaultFactoryContractAddress: isSet(object.pvaultFactoryContractAddress) ? String(object.pvaultFactoryContractAddress) : "",
-      supportedDenomsForExternalPrice: Array.isArray(object?.supportedDenomsForExternalPrice) ? object.supportedDenomsForExternalPrice.map((e: any) => String(e)) : []
+      supportedDenomsForExternalPrice: Array.isArray(object?.supportedDenomsForExternalPrice) ? object.supportedDenomsForExternalPrice.map((e: any) => String(e)) : [],
+      contracts: isSet(object.contracts) ? Contracts.fromJSON(object.contracts) : undefined
     };
   },
   toJSON(message: Config): unknown {
@@ -1036,6 +1085,7 @@ export const Config = {
     } else {
       obj.supportedDenomsForExternalPrice = [];
     }
+    message.contracts !== undefined && (obj.contracts = message.contracts ? Contracts.toJSON(message.contracts) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Config>): Config {
@@ -1070,6 +1120,7 @@ export const Config = {
     }, {});
     message.pvaultFactoryContractAddress = object.pvaultFactoryContractAddress ?? "";
     message.supportedDenomsForExternalPrice = object.supportedDenomsForExternalPrice?.map(e => e) || [];
+    message.contracts = object.contracts !== undefined && object.contracts !== null ? Contracts.fromPartial(object.contracts) : undefined;
     return message;
   },
   fromAmino(object: ConfigAmino): Config {
@@ -1128,6 +1179,9 @@ export const Config = {
       message.pvaultFactoryContractAddress = object.pvault_factory_contract_address;
     }
     message.supportedDenomsForExternalPrice = object.supported_denoms_for_external_price?.map(e => e) || [];
+    if (object.contracts !== undefined && object.contracts !== null) {
+      message.contracts = Contracts.fromAmino(object.contracts);
+    }
     return message;
   },
   toAmino(message: Config, useInterfaces: boolean = true): ConfigAmino {
@@ -1166,6 +1220,7 @@ export const Config = {
     } else {
       obj.supported_denoms_for_external_price = message.supportedDenomsForExternalPrice;
     }
+    obj.contracts = message.contracts ? Contracts.toAmino(message.contracts, useInterfaces) : undefined;
     return obj;
   },
   fromAminoMsg(object: ConfigAminoMsg): Config {
@@ -1185,6 +1240,173 @@ export const Config = {
   }
 };
 GlobalDecoderRegistry.register(Config.typeUrl, Config);
+function createBaseContracts(): Contracts {
+  return {
+    pryzmNexus: "",
+    yLaunchFactory: "",
+    pVaultFactory: "",
+    orderBook: "",
+    pryzmPhotonDropClaim1: "",
+    pryzmPhotonDropClaim2: "",
+    pryzmStakeDropClaim: ""
+  };
+}
+export const Contracts = {
+  typeUrl: "/pryzmatics.server.common.Contracts",
+  is(o: any): o is Contracts {
+    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzmNexus === "string" && typeof o.yLaunchFactory === "string" && typeof o.pVaultFactory === "string" && typeof o.orderBook === "string" && typeof o.pryzmPhotonDropClaim1 === "string" && typeof o.pryzmPhotonDropClaim2 === "string" && typeof o.pryzmStakeDropClaim === "string");
+  },
+  isSDK(o: any): o is ContractsSDKType {
+    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzm_nexus === "string" && typeof o.y_launch_factory === "string" && typeof o.p_vault_factory === "string" && typeof o.order_book === "string" && typeof o.pryzm_photon_drop_claim1 === "string" && typeof o.pryzm_photon_drop_claim2 === "string" && typeof o.pryzm_stake_drop_claim === "string");
+  },
+  isAmino(o: any): o is ContractsAmino {
+    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzm_nexus === "string" && typeof o.y_launch_factory === "string" && typeof o.p_vault_factory === "string" && typeof o.order_book === "string" && typeof o.pryzm_photon_drop_claim1 === "string" && typeof o.pryzm_photon_drop_claim2 === "string" && typeof o.pryzm_stake_drop_claim === "string");
+  },
+  encode(message: Contracts, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.pryzmNexus !== "") {
+      writer.uint32(10).string(message.pryzmNexus);
+    }
+    if (message.yLaunchFactory !== "") {
+      writer.uint32(18).string(message.yLaunchFactory);
+    }
+    if (message.pVaultFactory !== "") {
+      writer.uint32(26).string(message.pVaultFactory);
+    }
+    if (message.orderBook !== "") {
+      writer.uint32(34).string(message.orderBook);
+    }
+    if (message.pryzmPhotonDropClaim1 !== "") {
+      writer.uint32(42).string(message.pryzmPhotonDropClaim1);
+    }
+    if (message.pryzmPhotonDropClaim2 !== "") {
+      writer.uint32(50).string(message.pryzmPhotonDropClaim2);
+    }
+    if (message.pryzmStakeDropClaim !== "") {
+      writer.uint32(58).string(message.pryzmStakeDropClaim);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): Contracts {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseContracts();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pryzmNexus = reader.string();
+          break;
+        case 2:
+          message.yLaunchFactory = reader.string();
+          break;
+        case 3:
+          message.pVaultFactory = reader.string();
+          break;
+        case 4:
+          message.orderBook = reader.string();
+          break;
+        case 5:
+          message.pryzmPhotonDropClaim1 = reader.string();
+          break;
+        case 6:
+          message.pryzmPhotonDropClaim2 = reader.string();
+          break;
+        case 7:
+          message.pryzmStakeDropClaim = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): Contracts {
+    return {
+      pryzmNexus: isSet(object.pryzmNexus) ? String(object.pryzmNexus) : "",
+      yLaunchFactory: isSet(object.yLaunchFactory) ? String(object.yLaunchFactory) : "",
+      pVaultFactory: isSet(object.pVaultFactory) ? String(object.pVaultFactory) : "",
+      orderBook: isSet(object.orderBook) ? String(object.orderBook) : "",
+      pryzmPhotonDropClaim1: isSet(object.pryzmPhotonDropClaim1) ? String(object.pryzmPhotonDropClaim1) : "",
+      pryzmPhotonDropClaim2: isSet(object.pryzmPhotonDropClaim2) ? String(object.pryzmPhotonDropClaim2) : "",
+      pryzmStakeDropClaim: isSet(object.pryzmStakeDropClaim) ? String(object.pryzmStakeDropClaim) : ""
+    };
+  },
+  toJSON(message: Contracts): unknown {
+    const obj: any = {};
+    message.pryzmNexus !== undefined && (obj.pryzmNexus = message.pryzmNexus);
+    message.yLaunchFactory !== undefined && (obj.yLaunchFactory = message.yLaunchFactory);
+    message.pVaultFactory !== undefined && (obj.pVaultFactory = message.pVaultFactory);
+    message.orderBook !== undefined && (obj.orderBook = message.orderBook);
+    message.pryzmPhotonDropClaim1 !== undefined && (obj.pryzmPhotonDropClaim1 = message.pryzmPhotonDropClaim1);
+    message.pryzmPhotonDropClaim2 !== undefined && (obj.pryzmPhotonDropClaim2 = message.pryzmPhotonDropClaim2);
+    message.pryzmStakeDropClaim !== undefined && (obj.pryzmStakeDropClaim = message.pryzmStakeDropClaim);
+    return obj;
+  },
+  fromPartial(object: Partial<Contracts>): Contracts {
+    const message = createBaseContracts();
+    message.pryzmNexus = object.pryzmNexus ?? "";
+    message.yLaunchFactory = object.yLaunchFactory ?? "";
+    message.pVaultFactory = object.pVaultFactory ?? "";
+    message.orderBook = object.orderBook ?? "";
+    message.pryzmPhotonDropClaim1 = object.pryzmPhotonDropClaim1 ?? "";
+    message.pryzmPhotonDropClaim2 = object.pryzmPhotonDropClaim2 ?? "";
+    message.pryzmStakeDropClaim = object.pryzmStakeDropClaim ?? "";
+    return message;
+  },
+  fromAmino(object: ContractsAmino): Contracts {
+    const message = createBaseContracts();
+    if (object.pryzm_nexus !== undefined && object.pryzm_nexus !== null) {
+      message.pryzmNexus = object.pryzm_nexus;
+    }
+    if (object.y_launch_factory !== undefined && object.y_launch_factory !== null) {
+      message.yLaunchFactory = object.y_launch_factory;
+    }
+    if (object.p_vault_factory !== undefined && object.p_vault_factory !== null) {
+      message.pVaultFactory = object.p_vault_factory;
+    }
+    if (object.order_book !== undefined && object.order_book !== null) {
+      message.orderBook = object.order_book;
+    }
+    if (object.pryzm_photon_drop_claim1 !== undefined && object.pryzm_photon_drop_claim1 !== null) {
+      message.pryzmPhotonDropClaim1 = object.pryzm_photon_drop_claim1;
+    }
+    if (object.pryzm_photon_drop_claim2 !== undefined && object.pryzm_photon_drop_claim2 !== null) {
+      message.pryzmPhotonDropClaim2 = object.pryzm_photon_drop_claim2;
+    }
+    if (object.pryzm_stake_drop_claim !== undefined && object.pryzm_stake_drop_claim !== null) {
+      message.pryzmStakeDropClaim = object.pryzm_stake_drop_claim;
+    }
+    return message;
+  },
+  toAmino(message: Contracts, useInterfaces: boolean = true): ContractsAmino {
+    const obj: any = {};
+    obj.pryzm_nexus = message.pryzmNexus === "" ? undefined : message.pryzmNexus;
+    obj.y_launch_factory = message.yLaunchFactory === "" ? undefined : message.yLaunchFactory;
+    obj.p_vault_factory = message.pVaultFactory === "" ? undefined : message.pVaultFactory;
+    obj.order_book = message.orderBook === "" ? undefined : message.orderBook;
+    obj.pryzm_photon_drop_claim1 = message.pryzmPhotonDropClaim1 === "" ? undefined : message.pryzmPhotonDropClaim1;
+    obj.pryzm_photon_drop_claim2 = message.pryzmPhotonDropClaim2 === "" ? undefined : message.pryzmPhotonDropClaim2;
+    obj.pryzm_stake_drop_claim = message.pryzmStakeDropClaim === "" ? undefined : message.pryzmStakeDropClaim;
+    return obj;
+  },
+  fromAminoMsg(object: ContractsAminoMsg): Contracts {
+    return Contracts.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ContractsProtoMsg, useInterfaces: boolean = true): Contracts {
+    return Contracts.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: Contracts): Uint8Array {
+    return Contracts.encode(message).finish();
+  },
+  toProtoMsg(message: Contracts): ContractsProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.common.Contracts",
+      value: Contracts.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(Contracts.typeUrl, Contracts);
 function createBaseDatabaseConfig(): DatabaseConfig {
   return {
     poolMinConns: 0,

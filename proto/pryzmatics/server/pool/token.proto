@@ -23,7 +23,6 @@ message QueryTokensRequest {
   pryzmatics.pool.TokenType token_type = 1;
   string token_in = 2;
   cosmos.base.query.v1beta1.PageRequest pagination = 3 [(gogoproto.nullable) = true];
-  bool detailed_stats = 4 [(gogoproto.nullable) = true];
 }
 
 message QueryTokensResponse {
