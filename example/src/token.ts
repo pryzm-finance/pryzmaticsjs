@@ -1,7 +1,6 @@
 import { createPryzmaticsClient } from "@pryzm-finance/pryzmaticsjs";
 import * as console from "console";
 import { PRYZMATICS_MAINNET_ENDPOINT } from "./constants";
-import { MarketCapAmino, SupplyAmino } from "../../src/codegen/pryzmatics/statistics/market_cap";
 
 async function main() {
     const pryzmaticsClient = await createPryzmaticsClient({ restEndpoint: PRYZMATICS_MAINNET_ENDPOINT })
@@ -43,7 +42,7 @@ async function main() {
     console.log(token.supply_stable_coin_terms)
     console.log(token.supply_fetch_time)
 
-    console.log(token.stats)
+    console.log(token.stats) // undefined if detailedStats is false in request
 
     console.log(token.stats.supply.fully_diluted)
     console.log(token.stats.supply.circulating)
@@ -54,8 +53,8 @@ async function main() {
     console.log(token.stats.owners_count)
     console.log(token.stats.volume_24h)
     console.log(token.stats.total_volume)
-    console.log(token.stats.volume_7d)  // undefined if detailedStats is false in request
-    console.log(token.stats.volume_30d) // undefined if detailedStats is false in request
+    console.log(token.stats.volume_7d)
+    console.log(token.stats.volume_30d)
 }
 
 main().catch(console.error)

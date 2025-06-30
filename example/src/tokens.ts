@@ -11,8 +11,7 @@ async function main() {
         const result = await pryzmaticsClient.pryzmatics.tokens({
             tokenType: TokenType.TOKEN_TYPE_ANY,
             tokenIn: "",
-            pagination: request,
-            detailedStats: false
+            pagination: request
         })
         return [result.pagination.next_key, result.tokens]
     })
@@ -20,15 +19,13 @@ async function main() {
 
     tokens = (await pryzmaticsClient.pryzmatics.tokens({
         tokenType: TokenType.TOKEN_TYPE_ANY,
-        tokenIn: "",
-        detailedStats: false
+        tokenIn: ""
     })).tokens
     console.log(tokens)
 
     tokens = (await pryzmaticsClient.pryzmatics.tokens({
         tokenType: TokenType.TOKEN_TYPE_P,
         tokenIn: ""
-        // detailedStats: false optional
     })).tokens
     console.log(tokens)
 }
