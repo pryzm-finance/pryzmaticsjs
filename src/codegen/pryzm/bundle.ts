@@ -45,17 +45,17 @@ import * as _192 from "./pgov/v1/reply";
 import * as _193 from "./pgov/v1/staked_p_asset";
 import * as _194 from "./pgov/v1/tx";
 import * as _195 from "./pgov/v1/vote";
-import * as _356 from "./amm/v1/tx.amino";
-import * as _357 from "./amm/v2/tx.amino";
-import * as _358 from "./icstaking/v1/tx.amino";
-import * as _359 from "./pgov/v1/tx.amino";
-import * as _360 from "./amm/v1/tx.registry";
-import * as _361 from "./amm/v2/tx.registry";
-import * as _362 from "./icstaking/v1/tx.registry";
-import * as _363 from "./pgov/v1/tx.registry";
-import * as _364 from "./amm/v1/query.lcd";
-import * as _365 from "./icstaking/v1/query.lcd";
-import * as _366 from "./pgov/v1/query.lcd";
+import * as _358 from "./amm/v1/tx.amino";
+import * as _359 from "./amm/v2/tx.amino";
+import * as _360 from "./icstaking/v1/tx.amino";
+import * as _361 from "./pgov/v1/tx.amino";
+import * as _362 from "./amm/v1/tx.registry";
+import * as _363 from "./amm/v2/tx.registry";
+import * as _364 from "./icstaking/v1/tx.registry";
+import * as _365 from "./pgov/v1/tx.registry";
+import * as _366 from "./amm/v1/query.lcd";
+import * as _367 from "./icstaking/v1/query.lcd";
+import * as _368 from "./pgov/v1/query.lcd";
 export namespace pryzm {
   export namespace amm {
     export const v1 = {
@@ -82,15 +82,15 @@ export namespace pryzm {
       ..._169,
       ..._170,
       ..._171,
-      ..._356,
-      ..._360,
-      ..._364
+      ..._358,
+      ..._362,
+      ..._366
     };
     export const v2 = {
       ..._172,
       ..._173,
-      ..._357,
-      ..._361
+      ..._359,
+      ..._363
     };
   }
   export namespace icstaking {
@@ -108,9 +108,9 @@ export namespace pryzm {
       ..._184,
       ..._185,
       ..._186,
-      ..._358,
-      ..._362,
-      ..._365
+      ..._360,
+      ..._364,
+      ..._367
     };
   }
   export namespace pgov {
@@ -124,9 +124,9 @@ export namespace pryzm {
       ..._193,
       ..._194,
       ..._195,
-      ..._359,
-      ..._363,
-      ..._366
+      ..._361,
+      ..._365,
+      ..._368
     };
   }
 }

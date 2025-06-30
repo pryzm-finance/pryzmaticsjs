@@ -1,0 +1,19 @@
+syntax = "proto3";
+package pryzmatics.server.wasm;
+
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "pryzmatics/wasm/contract_info.proto";
+import "pryzmatics/database/wasm/contract_info.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/wasm";
+
+message QueryContractInfoRequest {
+  pryzmatics.database.wasm.ContractInfoOrderBy order_by = 1 [(gogoproto.nullable) = true];
+  cosmos.base.query.v1beta1.PageRequest pagination = 2 [(gogoproto.nullable) = true];
+}
+
+message QueryContractInfoResponse {
+  repeated pryzmatics.wasm.ContractInfo contracts = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}

@@ -66,6 +66,7 @@ import { QueryPurchaseSimulationRequest, QueryPurchaseSimulationResponseSDKType 
 import { QueryOrderBookOrdersRequest, QueryOrderBookOrdersResponseSDKType, QueryOrderBookSummaryRequest, QueryOrderBookSummaryResponseSDKType, QueryOrderBookPairsRequest, QueryOrderBookPairsResponseSDKType, QueryOrderBookOrderFeedRequest, QueryOrderBookOrderFeedResponseSDKType } from "./orderbook/order";
 import { QueryOrderBookReservationsRequest, QueryOrderBookReservationsResponseSDKType } from "./orderbook/reservation";
 import { DenomOwnersRequest, DenomOwnersResponseSDKType } from "./bank/denom_owners";
+import { QueryContractInfoRequest, QueryContractInfoResponseSDKType } from "./wasm/contract_info";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -171,6 +172,7 @@ export class LCDQueryClient {
     this.orderBookOrderFeed = this.orderBookOrderFeed.bind(this);
     this.orderBookReservations = this.orderBookReservations.bind(this);
     this.denomOwners = this.denomOwners.bind(this);
+    this.contractInfo = this.contractInfo.bind(this);
   }
   /* Asset */
   async asset(params: QueryAssetRequest): Promise<QueryAssetResponseSDKType> {
@@ -1616,5 +1618,19 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/denom_owners/${params.denom}`;
     return await this.req.get<DenomOwnersResponseSDKType>(endpoint, options);
+  }
+  /* ContractInfo */
+  async contractInfo(params: QueryContractInfoRequest): Promise<QueryContractInfoResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `pryzmatics/wasm/contract_info`;
+    return await this.req.get<QueryContractInfoResponseSDKType>(endpoint, options);
   }
 }

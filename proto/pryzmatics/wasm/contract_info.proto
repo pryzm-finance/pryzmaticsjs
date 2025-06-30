@@ -1,0 +1,15 @@
+syntax = "proto3";
+package pryzmatics.wasm;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/wasm";
+
+message ContractInfo {
+  string address = 1;
+  uint64 code_id = 2;
+  string creator = 3;
+  string admin = 4;
+  string label = 5;
+}
