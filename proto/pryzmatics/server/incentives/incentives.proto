@@ -1,0 +1,25 @@
+syntax = "proto3";
+package pryzmatics.server.incentives;
+
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "pryzmatics/incentives/incentives.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/incentives";
+
+message QueryPoolTotalIncentivesRequest {
+  // can be empty, in which case it will return all incentives
+  string bond_denom = 1;
+  string from = 2 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = true
+  ];
+}
+
+message QueryPoolTotalIncentivesResponse {
+  repeated pryzmatics.incentives.PoolTotalIncentives pool_total_incentives = 1 [
+    (gogoproto.nullable) = false
+  ];
+}

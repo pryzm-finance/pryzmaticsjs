@@ -68,7 +68,7 @@ export interface QueryUserTradeHistorySummaryRequest {
   tokenOut: string;
   address: string;
   operationTypes: OperationType[];
-  intervalHours: bigint;
+  intervalSeconds: bigint;
 }
 export interface QueryUserTradeHistorySummaryRequestProtoMsg {
   typeUrl: "/pryzmatics.server.trade.QueryUserTradeHistorySummaryRequest";
@@ -79,7 +79,7 @@ export interface QueryUserTradeHistorySummaryRequestAmino {
   token_out?: string;
   address?: string;
   operation_types?: OperationType[];
-  interval_hours?: string;
+  interval_seconds?: string;
 }
 export interface QueryUserTradeHistorySummaryRequestAminoMsg {
   type: "/pryzmatics.server.trade.QueryUserTradeHistorySummaryRequest";
@@ -90,7 +90,7 @@ export interface QueryUserTradeHistorySummaryRequestSDKType {
   token_out: string;
   address: string;
   operation_types: OperationType[];
-  interval_hours: bigint;
+  interval_seconds: bigint;
 }
 export interface QueryUserTradeHistorySummaryResponse {
   volume: string;
@@ -531,19 +531,19 @@ function createBaseQueryUserTradeHistorySummaryRequest(): QueryUserTradeHistoryS
     tokenOut: "",
     address: "",
     operationTypes: [],
-    intervalHours: BigInt(0)
+    intervalSeconds: BigInt(0)
   };
 }
 export const QueryUserTradeHistorySummaryRequest = {
   typeUrl: "/pryzmatics.server.trade.QueryUserTradeHistorySummaryRequest",
   is(o: any): o is QueryUserTradeHistorySummaryRequest {
-    return o && (o.$typeUrl === QueryUserTradeHistorySummaryRequest.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.address === "string" && Array.isArray(o.operationTypes) && typeof o.intervalHours === "bigint");
+    return o && (o.$typeUrl === QueryUserTradeHistorySummaryRequest.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.address === "string" && Array.isArray(o.operationTypes) && typeof o.intervalSeconds === "bigint");
   },
   isSDK(o: any): o is QueryUserTradeHistorySummaryRequestSDKType {
-    return o && (o.$typeUrl === QueryUserTradeHistorySummaryRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.address === "string" && Array.isArray(o.operation_types) && typeof o.interval_hours === "bigint");
+    return o && (o.$typeUrl === QueryUserTradeHistorySummaryRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.address === "string" && Array.isArray(o.operation_types) && typeof o.interval_seconds === "bigint");
   },
   isAmino(o: any): o is QueryUserTradeHistorySummaryRequestAmino {
-    return o && (o.$typeUrl === QueryUserTradeHistorySummaryRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.address === "string" && Array.isArray(o.operation_types) && typeof o.interval_hours === "bigint");
+    return o && (o.$typeUrl === QueryUserTradeHistorySummaryRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.address === "string" && Array.isArray(o.operation_types) && typeof o.interval_seconds === "bigint");
   },
   encode(message: QueryUserTradeHistorySummaryRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.tokenIn !== "") {
@@ -560,8 +560,8 @@ export const QueryUserTradeHistorySummaryRequest = {
       writer.int32(v);
     }
     writer.ldelim();
-    if (message.intervalHours !== BigInt(0)) {
-      writer.uint32(40).uint64(message.intervalHours);
+    if (message.intervalSeconds !== BigInt(0)) {
+      writer.uint32(40).uint64(message.intervalSeconds);
     }
     return writer;
   },
@@ -592,7 +592,7 @@ export const QueryUserTradeHistorySummaryRequest = {
           }
           break;
         case 5:
-          message.intervalHours = reader.uint64();
+          message.intervalSeconds = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -607,7 +607,7 @@ export const QueryUserTradeHistorySummaryRequest = {
       tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
       address: isSet(object.address) ? String(object.address) : "",
       operationTypes: Array.isArray(object?.operationTypes) ? object.operationTypes.map((e: any) => operationTypeFromJSON(e)) : [],
-      intervalHours: isSet(object.intervalHours) ? BigInt(object.intervalHours.toString()) : BigInt(0)
+      intervalSeconds: isSet(object.intervalSeconds) ? BigInt(object.intervalSeconds.toString()) : BigInt(0)
     };
   },
   toJSON(message: QueryUserTradeHistorySummaryRequest): unknown {
@@ -620,7 +620,7 @@ export const QueryUserTradeHistorySummaryRequest = {
     } else {
       obj.operationTypes = [];
     }
-    message.intervalHours !== undefined && (obj.intervalHours = (message.intervalHours || BigInt(0)).toString());
+    message.intervalSeconds !== undefined && (obj.intervalSeconds = (message.intervalSeconds || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<QueryUserTradeHistorySummaryRequest>): QueryUserTradeHistorySummaryRequest {
@@ -629,7 +629,7 @@ export const QueryUserTradeHistorySummaryRequest = {
     message.tokenOut = object.tokenOut ?? "";
     message.address = object.address ?? "";
     message.operationTypes = object.operationTypes?.map(e => e) || [];
-    message.intervalHours = object.intervalHours !== undefined && object.intervalHours !== null ? BigInt(object.intervalHours.toString()) : BigInt(0);
+    message.intervalSeconds = object.intervalSeconds !== undefined && object.intervalSeconds !== null ? BigInt(object.intervalSeconds.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: QueryUserTradeHistorySummaryRequestAmino): QueryUserTradeHistorySummaryRequest {
@@ -644,8 +644,8 @@ export const QueryUserTradeHistorySummaryRequest = {
       message.address = object.address;
     }
     message.operationTypes = object.operation_types?.map(e => e) || [];
-    if (object.interval_hours !== undefined && object.interval_hours !== null) {
-      message.intervalHours = BigInt(object.interval_hours);
+    if (object.interval_seconds !== undefined && object.interval_seconds !== null) {
+      message.intervalSeconds = BigInt(object.interval_seconds);
     }
     return message;
   },
@@ -659,7 +659,7 @@ export const QueryUserTradeHistorySummaryRequest = {
     } else {
       obj.operation_types = message.operationTypes;
     }
-    obj.interval_hours = message.intervalHours ? message.intervalHours.toString() : undefined;
+    obj.interval_seconds = message.intervalSeconds ? message.intervalSeconds.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryUserTradeHistorySummaryRequestAminoMsg): QueryUserTradeHistorySummaryRequest {

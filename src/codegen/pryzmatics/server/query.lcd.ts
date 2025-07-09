@@ -1,5 +1,6 @@
 import { QueryVoteIntervalReportRequest, QueryVoteIntervalReportResponseSDKType } from "./oracle/vote_interval_report";
 import { QueryAllFlowRequest, QueryAllFlowResponseSDKType, QueryFlowRequest, QueryFlowResponseSDKType } from "./flowtrade/flowtrade";
+import { QueryAddressesByCategoryRequest, QueryAddressesByCategoryResponseSDKType } from "./common/addresses";
 import { setPaginationParams } from "../../helpers";
 import { LCDClient } from "@refractedlabs/cosmology-lcd-fork";
 import { QueryAssetRequest, QueryAssetResponseSDKType, QueryAssetsRequest, QueryAssetsResponseSDKType } from "./asset/asset";
@@ -38,6 +39,7 @@ import { QueryDirectlyConnectedTokenPairsRequest, QueryDirectlyConnectedTokenPai
 import { QueryTickersRequest, QueryTickersResponseSDKType } from "./trade/tickers";
 import { QueryUserPairTradeVolumeRequest, QueryUserPairTradeVolumeResponseSDKType } from "./trade/user_pair_trade_volume";
 import { QueryHostChainUnbondingTimeRequest, QueryHostChainUnbondingTimeResponseSDKType, QueryHostChainRequest, QueryHostChainResponseSDKType, QueryHostChainsRequest, QueryHostChainsResponseSDKType, QueryHostChainByUnderlyingDenomRequest, QueryHostChainByUnderlyingDenomResponseSDKType } from "./icstaking/host_chain";
+import { QueryPoolTotalIncentivesRequest, QueryPoolTotalIncentivesResponseSDKType } from "./incentives/incentives";
 import { QueryValidatorRequest, QueryValidatorResponseSDKType, QueryValidatorsRequest, QueryValidatorsResponseSDKType } from "./oracle/validator";
 import { QueryVoteIntervalsRequest, QueryVoteIntervalsResponseSDKType } from "./oracle/vote_interval";
 import { QuerySlashWindowsRequest, QuerySlashWindowsResponseSDKType } from "./oracle/slash_window";
@@ -135,6 +137,7 @@ export class LCDQueryClient {
     this.hostChain = this.hostChain.bind(this);
     this.hostChains = this.hostChains.bind(this);
     this.hostChainByUnderlyingDenom = this.hostChainByUnderlyingDenom.bind(this);
+    this.poolTotalIncentives = this.poolTotalIncentives.bind(this);
     this.validator = this.validator.bind(this);
     this.validators = this.validators.bind(this);
     this.voteIntervals = this.voteIntervals.bind(this);
@@ -154,6 +157,7 @@ export class LCDQueryClient {
     this.flow = this.flow.bind(this);
     this.flowHistoricalPrice = this.flowHistoricalPrice.bind(this);
     this.config = this.config.bind(this);
+    this.addressesByCategory = this.addressesByCategory.bind(this);
     this.proposal = this.proposal.bind(this);
     this.proposals = this.proposals.bind(this);
     this.proposalVotes = this.proposalVotes.bind(this);
@@ -677,8 +681,8 @@ export class LCDQueryClient {
     if (typeof params?.operationTypes !== "undefined") {
       options.params.operation_types = params.operationTypes;
     }
-    if (typeof params?.intervalHours !== "undefined") {
-      options.params.interval_hours = params.intervalHours;
+    if (typeof params?.intervalSeconds !== "undefined") {
+      options.params.interval_seconds = params.intervalSeconds;
     }
     const endpoint = `pryzmatics/trade/user_trade_history_summary`;
     return await this.req.get<QueryUserTradeHistorySummaryResponseSDKType>(endpoint, options);
@@ -1055,6 +1059,20 @@ export class LCDQueryClient {
     const endpoint = `pryzmatics/icstaking/host_chain_by_underlying_denom/${params.denom}`;
     return await this.req.get<QueryHostChainByUnderlyingDenomResponseSDKType>(endpoint);
   }
+  /* PoolTotalIncentives */
+  async poolTotalIncentives(params: QueryPoolTotalIncentivesRequest): Promise<QueryPoolTotalIncentivesResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.bondDenom !== "undefined") {
+      options.params.bond_denom = params.bondDenom;
+    }
+    if (typeof params?.from !== "undefined") {
+      options.params.from = params.from;
+    }
+    const endpoint = `pryzmatics/incentives/pool_total_incentives`;
+    return await this.req.get<QueryPoolTotalIncentivesResponseSDKType>(endpoint, options);
+  }
   /* Validator */
   async validator(params: QueryValidatorRequest): Promise<QueryValidatorResponseSDKType> {
     const endpoint = `pryzmatics/oracle/validator/${params.operatorAddress}`;
@@ -1364,6 +1382,11 @@ export class LCDQueryClient {
   async config(_params: QueryConfigRequest = {}): Promise<QueryConfigResponseSDKType> {
     const endpoint = `pryzmatics/config`;
     return await this.req.get<QueryConfigResponseSDKType>(endpoint);
+  }
+  /* AddressesByCategory */
+  async addressesByCategory(params: QueryAddressesByCategoryRequest): Promise<QueryAddressesByCategoryResponseSDKType> {
+    const endpoint = `pryzmatics/addresses/${params.category}`;
+    return await this.req.get<QueryAddressesByCategoryResponseSDKType>(endpoint);
   }
   /* Proposal */
   async proposal(params: QueryProposalRequest): Promise<QueryProposalResponseSDKType> {

@@ -47,6 +47,8 @@ import "pryzmatics/server/trade/user_pair_trade_volume.proto";
 
 import "pryzmatics/server/icstaking/host_chain.proto";
 
+import "pryzmatics/server/incentives/incentives.proto";
+
 import "pryzmatics/server/oracle/validator.proto";
 import "pryzmatics/server/oracle/vote_interval.proto";
 import "pryzmatics/server/oracle/slash_window.proto";
@@ -68,6 +70,7 @@ import "pryzmatics/server/flowtrade/flowtrade.proto";
 import "pryzmatics/server/flowtrade/flow_historical_price.proto";
 
 import "pryzmatics/server/common/config.proto";
+import "pryzmatics/server/common/addresses.proto";
 
 import "pryzmatics/server/gov/proposal.proto";
 import "pryzmatics/server/gov/vote.proto";
@@ -346,6 +349,10 @@ service Query {
     option (google.api.http).get = "/pryzmatics/icstaking/host_chain_by_underlying_denom/{denom}";
   }
 
+  rpc PoolTotalIncentives(pryzmatics.server.incentives.QueryPoolTotalIncentivesRequest) returns (pryzmatics.server.incentives.QueryPoolTotalIncentivesResponse) {
+    option (google.api.http).get = "/pryzmatics/incentives/pool_total_incentives";
+  }
+
   rpc Validator(pryzmatics.server.oracle.QueryValidatorRequest) returns (pryzmatics.server.oracle.QueryValidatorResponse) {
     option (google.api.http).get = "/pryzmatics/oracle/validator/{operator_address}";
   }
@@ -420,6 +427,10 @@ service Query {
 
   rpc Config(pryzmatics.server.common.QueryConfigRequest) returns (pryzmatics.server.common.QueryConfigResponse) {
     option (google.api.http).get = "/pryzmatics/config";
+  }
+
+  rpc AddressesByCategory(pryzmatics.server.common.QueryAddressesByCategoryRequest) returns (pryzmatics.server.common.QueryAddressesByCategoryResponse) {
+    option (google.api.http).get = "/pryzmatics/addresses/{category}";
   }
 
   rpc Proposal(pryzmatics.server.gov.QueryProposalRequest) returns (pryzmatics.server.gov.QueryProposalResponse) {

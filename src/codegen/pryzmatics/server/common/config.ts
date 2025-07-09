@@ -98,6 +98,7 @@ export interface Config {
   pvaultFactoryContractAddress: string;
   supportedDenomsForExternalPrice: string[];
   contracts: Contracts;
+  incentives: Incentives;
 }
 export interface ConfigProtoMsg {
   typeUrl: "/pryzmatics.server.common.Config";
@@ -126,6 +127,7 @@ export interface ConfigAmino {
   pvault_factory_contract_address?: string;
   supported_denoms_for_external_price?: string[];
   contracts?: ContractsAmino;
+  incentives?: IncentivesAmino;
 }
 export interface ConfigAminoMsg {
   type: "/pryzmatics.server.common.Config";
@@ -154,6 +156,7 @@ export interface ConfigSDKType {
   pvault_factory_contract_address: string;
   supported_denoms_for_external_price: string[];
   contracts: ContractsSDKType;
+  incentives: IncentivesSDKType;
 }
 export interface Contracts {
   pryzmNexus: string;
@@ -189,6 +192,46 @@ export interface ContractsSDKType {
   pryzm_photon_drop_claim1: string;
   pryzm_photon_drop_claim2: string;
   pryzm_stake_drop_claim: string;
+}
+export interface Incentives {
+  pools: IncentivesPool[];
+}
+export interface IncentivesProtoMsg {
+  typeUrl: "/pryzmatics.server.common.Incentives";
+  value: Uint8Array;
+}
+export interface IncentivesAmino {
+  pools?: IncentivesPoolAmino[];
+}
+export interface IncentivesAminoMsg {
+  type: "/pryzmatics.server.common.Incentives";
+  value: IncentivesAmino;
+}
+export interface IncentivesSDKType {
+  pools: IncentivesPoolSDKType[];
+}
+export interface IncentivesPool {
+  apr: number;
+  bondedToken: string;
+  rewardToken: string;
+}
+export interface IncentivesPoolProtoMsg {
+  typeUrl: "/pryzmatics.server.common.IncentivesPool";
+  value: Uint8Array;
+}
+export interface IncentivesPoolAmino {
+  apr?: number;
+  bonded_token?: string;
+  reward_token?: string;
+}
+export interface IncentivesPoolAminoMsg {
+  type: "/pryzmatics.server.common.IncentivesPool";
+  value: IncentivesPoolAmino;
+}
+export interface IncentivesPoolSDKType {
+  apr: number;
+  bonded_token: string;
+  reward_token: string;
 }
 export interface DatabaseConfig {
   poolMinConns: number;
@@ -873,19 +916,20 @@ function createBaseConfig(): Config {
     assets: {},
     pvaultFactoryContractAddress: "",
     supportedDenomsForExternalPrice: [],
-    contracts: Contracts.fromPartial({})
+    contracts: Contracts.fromPartial({}),
+    incentives: Incentives.fromPartial({})
   };
 }
 export const Config = {
   typeUrl: "/pryzmatics.server.common.Config",
   is(o: any): o is Config {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.productionMode === "boolean" && Array.isArray(o.stableCoins) && (!o.stableCoins.length || StableCoinConfig.is(o.stableCoins[0])) && typeof o.favoritePairsMaxCount === "number" && typeof o.metricCalculationIntervalBlocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpcEndpoints) && DatabaseConfig.is(o.databaseConfig) && ChainConfig.is(o.chainConfig) && LoggerConfig.is(o.loggerConfig) && IndexerConfig.is(o.indexerConfig) && ProfilerConfig.is(o.profilerConfig) && YieldReturnConfig.is(o.yieldReturnConfig) && FaucetConfig.is(o.faucetConfig) && isSet(o.assets) && typeof o.pvaultFactoryContractAddress === "string" && Array.isArray(o.supportedDenomsForExternalPrice) && (!o.supportedDenomsForExternalPrice.length || typeof o.supportedDenomsForExternalPrice[0] === "string") && Contracts.is(o.contracts));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.productionMode === "boolean" && Array.isArray(o.stableCoins) && (!o.stableCoins.length || StableCoinConfig.is(o.stableCoins[0])) && typeof o.favoritePairsMaxCount === "number" && typeof o.metricCalculationIntervalBlocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpcEndpoints) && DatabaseConfig.is(o.databaseConfig) && ChainConfig.is(o.chainConfig) && LoggerConfig.is(o.loggerConfig) && IndexerConfig.is(o.indexerConfig) && ProfilerConfig.is(o.profilerConfig) && YieldReturnConfig.is(o.yieldReturnConfig) && FaucetConfig.is(o.faucetConfig) && isSet(o.assets) && typeof o.pvaultFactoryContractAddress === "string" && Array.isArray(o.supportedDenomsForExternalPrice) && (!o.supportedDenomsForExternalPrice.length || typeof o.supportedDenomsForExternalPrice[0] === "string") && Contracts.is(o.contracts) && Incentives.is(o.incentives));
   },
   isSDK(o: any): o is ConfigSDKType {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isSDK(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isSDK(o.database_config) && ChainConfig.isSDK(o.chain_config) && LoggerConfig.isSDK(o.logger_config) && IndexerConfig.isSDK(o.indexer_config) && ProfilerConfig.isSDK(o.profiler_config) && YieldReturnConfig.isSDK(o.yield_return_config) && FaucetConfig.isSDK(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string") && Contracts.isSDK(o.contracts));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isSDK(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isSDK(o.database_config) && ChainConfig.isSDK(o.chain_config) && LoggerConfig.isSDK(o.logger_config) && IndexerConfig.isSDK(o.indexer_config) && ProfilerConfig.isSDK(o.profiler_config) && YieldReturnConfig.isSDK(o.yield_return_config) && FaucetConfig.isSDK(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string") && Contracts.isSDK(o.contracts) && Incentives.isSDK(o.incentives));
   },
   isAmino(o: any): o is ConfigAmino {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isAmino(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isAmino(o.database_config) && ChainConfig.isAmino(o.chain_config) && LoggerConfig.isAmino(o.logger_config) && IndexerConfig.isAmino(o.indexer_config) && ProfilerConfig.isAmino(o.profiler_config) && YieldReturnConfig.isAmino(o.yield_return_config) && FaucetConfig.isAmino(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string") && Contracts.isAmino(o.contracts));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isAmino(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isAmino(o.database_config) && ChainConfig.isAmino(o.chain_config) && LoggerConfig.isAmino(o.logger_config) && IndexerConfig.isAmino(o.indexer_config) && ProfilerConfig.isAmino(o.profiler_config) && YieldReturnConfig.isAmino(o.yield_return_config) && FaucetConfig.isAmino(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string") && Contracts.isAmino(o.contracts) && Incentives.isAmino(o.incentives));
   },
   encode(message: Config, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.productionMode === true) {
@@ -944,6 +988,9 @@ export const Config = {
     }
     if (message.contracts !== undefined) {
       Contracts.encode(message.contracts, writer.uint32(138).fork()).ldelim();
+    }
+    if (message.incentives !== undefined) {
+      Incentives.encode(message.incentives, writer.uint32(146).fork()).ldelim();
     }
     return writer;
   },
@@ -1011,6 +1058,9 @@ export const Config = {
         case 17:
           message.contracts = Contracts.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 18:
+          message.incentives = Incentives.decode(reader, reader.uint32(), useInterfaces);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1046,7 +1096,8 @@ export const Config = {
       }, {}) : {},
       pvaultFactoryContractAddress: isSet(object.pvaultFactoryContractAddress) ? String(object.pvaultFactoryContractAddress) : "",
       supportedDenomsForExternalPrice: Array.isArray(object?.supportedDenomsForExternalPrice) ? object.supportedDenomsForExternalPrice.map((e: any) => String(e)) : [],
-      contracts: isSet(object.contracts) ? Contracts.fromJSON(object.contracts) : undefined
+      contracts: isSet(object.contracts) ? Contracts.fromJSON(object.contracts) : undefined,
+      incentives: isSet(object.incentives) ? Incentives.fromJSON(object.incentives) : undefined
     };
   },
   toJSON(message: Config): unknown {
@@ -1086,6 +1137,7 @@ export const Config = {
       obj.supportedDenomsForExternalPrice = [];
     }
     message.contracts !== undefined && (obj.contracts = message.contracts ? Contracts.toJSON(message.contracts) : undefined);
+    message.incentives !== undefined && (obj.incentives = message.incentives ? Incentives.toJSON(message.incentives) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Config>): Config {
@@ -1121,6 +1173,7 @@ export const Config = {
     message.pvaultFactoryContractAddress = object.pvaultFactoryContractAddress ?? "";
     message.supportedDenomsForExternalPrice = object.supportedDenomsForExternalPrice?.map(e => e) || [];
     message.contracts = object.contracts !== undefined && object.contracts !== null ? Contracts.fromPartial(object.contracts) : undefined;
+    message.incentives = object.incentives !== undefined && object.incentives !== null ? Incentives.fromPartial(object.incentives) : undefined;
     return message;
   },
   fromAmino(object: ConfigAmino): Config {
@@ -1182,6 +1235,9 @@ export const Config = {
     if (object.contracts !== undefined && object.contracts !== null) {
       message.contracts = Contracts.fromAmino(object.contracts);
     }
+    if (object.incentives !== undefined && object.incentives !== null) {
+      message.incentives = Incentives.fromAmino(object.incentives);
+    }
     return message;
   },
   toAmino(message: Config, useInterfaces: boolean = true): ConfigAmino {
@@ -1221,6 +1277,7 @@ export const Config = {
       obj.supported_denoms_for_external_price = message.supportedDenomsForExternalPrice;
     }
     obj.contracts = message.contracts ? Contracts.toAmino(message.contracts, useInterfaces) : undefined;
+    obj.incentives = message.incentives ? Incentives.toAmino(message.incentives, useInterfaces) : undefined;
     return obj;
   },
   fromAminoMsg(object: ConfigAminoMsg): Config {
@@ -1407,6 +1464,206 @@ export const Contracts = {
   }
 };
 GlobalDecoderRegistry.register(Contracts.typeUrl, Contracts);
+function createBaseIncentives(): Incentives {
+  return {
+    pools: []
+  };
+}
+export const Incentives = {
+  typeUrl: "/pryzmatics.server.common.Incentives",
+  is(o: any): o is Incentives {
+    return o && (o.$typeUrl === Incentives.typeUrl || Array.isArray(o.pools) && (!o.pools.length || IncentivesPool.is(o.pools[0])));
+  },
+  isSDK(o: any): o is IncentivesSDKType {
+    return o && (o.$typeUrl === Incentives.typeUrl || Array.isArray(o.pools) && (!o.pools.length || IncentivesPool.isSDK(o.pools[0])));
+  },
+  isAmino(o: any): o is IncentivesAmino {
+    return o && (o.$typeUrl === Incentives.typeUrl || Array.isArray(o.pools) && (!o.pools.length || IncentivesPool.isAmino(o.pools[0])));
+  },
+  encode(message: Incentives, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    for (const v of message.pools) {
+      IncentivesPool.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): Incentives {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseIncentives();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pools.push(IncentivesPool.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): Incentives {
+    return {
+      pools: Array.isArray(object?.pools) ? object.pools.map((e: any) => IncentivesPool.fromJSON(e)) : []
+    };
+  },
+  toJSON(message: Incentives): unknown {
+    const obj: any = {};
+    if (message.pools) {
+      obj.pools = message.pools.map(e => e ? IncentivesPool.toJSON(e) : undefined);
+    } else {
+      obj.pools = [];
+    }
+    return obj;
+  },
+  fromPartial(object: Partial<Incentives>): Incentives {
+    const message = createBaseIncentives();
+    message.pools = object.pools?.map(e => IncentivesPool.fromPartial(e)) || [];
+    return message;
+  },
+  fromAmino(object: IncentivesAmino): Incentives {
+    const message = createBaseIncentives();
+    message.pools = object.pools?.map(e => IncentivesPool.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: Incentives, useInterfaces: boolean = true): IncentivesAmino {
+    const obj: any = {};
+    if (message.pools) {
+      obj.pools = message.pools.map(e => e ? IncentivesPool.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.pools = message.pools;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: IncentivesAminoMsg): Incentives {
+    return Incentives.fromAmino(object.value);
+  },
+  fromProtoMsg(message: IncentivesProtoMsg, useInterfaces: boolean = true): Incentives {
+    return Incentives.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: Incentives): Uint8Array {
+    return Incentives.encode(message).finish();
+  },
+  toProtoMsg(message: Incentives): IncentivesProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.common.Incentives",
+      value: Incentives.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(Incentives.typeUrl, Incentives);
+function createBaseIncentivesPool(): IncentivesPool {
+  return {
+    apr: 0,
+    bondedToken: "",
+    rewardToken: ""
+  };
+}
+export const IncentivesPool = {
+  typeUrl: "/pryzmatics.server.common.IncentivesPool",
+  is(o: any): o is IncentivesPool {
+    return o && (o.$typeUrl === IncentivesPool.typeUrl || typeof o.apr === "number" && typeof o.bondedToken === "string" && typeof o.rewardToken === "string");
+  },
+  isSDK(o: any): o is IncentivesPoolSDKType {
+    return o && (o.$typeUrl === IncentivesPool.typeUrl || typeof o.apr === "number" && typeof o.bonded_token === "string" && typeof o.reward_token === "string");
+  },
+  isAmino(o: any): o is IncentivesPoolAmino {
+    return o && (o.$typeUrl === IncentivesPool.typeUrl || typeof o.apr === "number" && typeof o.bonded_token === "string" && typeof o.reward_token === "string");
+  },
+  encode(message: IncentivesPool, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.apr !== 0) {
+      writer.uint32(13).float(message.apr);
+    }
+    if (message.bondedToken !== "") {
+      writer.uint32(18).string(message.bondedToken);
+    }
+    if (message.rewardToken !== "") {
+      writer.uint32(26).string(message.rewardToken);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): IncentivesPool {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseIncentivesPool();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.apr = reader.float();
+          break;
+        case 2:
+          message.bondedToken = reader.string();
+          break;
+        case 3:
+          message.rewardToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): IncentivesPool {
+    return {
+      apr: isSet(object.apr) ? Number(object.apr) : 0,
+      bondedToken: isSet(object.bondedToken) ? String(object.bondedToken) : "",
+      rewardToken: isSet(object.rewardToken) ? String(object.rewardToken) : ""
+    };
+  },
+  toJSON(message: IncentivesPool): unknown {
+    const obj: any = {};
+    message.apr !== undefined && (obj.apr = message.apr);
+    message.bondedToken !== undefined && (obj.bondedToken = message.bondedToken);
+    message.rewardToken !== undefined && (obj.rewardToken = message.rewardToken);
+    return obj;
+  },
+  fromPartial(object: Partial<IncentivesPool>): IncentivesPool {
+    const message = createBaseIncentivesPool();
+    message.apr = object.apr ?? 0;
+    message.bondedToken = object.bondedToken ?? "";
+    message.rewardToken = object.rewardToken ?? "";
+    return message;
+  },
+  fromAmino(object: IncentivesPoolAmino): IncentivesPool {
+    const message = createBaseIncentivesPool();
+    if (object.apr !== undefined && object.apr !== null) {
+      message.apr = object.apr;
+    }
+    if (object.bonded_token !== undefined && object.bonded_token !== null) {
+      message.bondedToken = object.bonded_token;
+    }
+    if (object.reward_token !== undefined && object.reward_token !== null) {
+      message.rewardToken = object.reward_token;
+    }
+    return message;
+  },
+  toAmino(message: IncentivesPool, useInterfaces: boolean = true): IncentivesPoolAmino {
+    const obj: any = {};
+    obj.apr = message.apr === 0 ? undefined : message.apr;
+    obj.bonded_token = message.bondedToken === "" ? undefined : message.bondedToken;
+    obj.reward_token = message.rewardToken === "" ? undefined : message.rewardToken;
+    return obj;
+  },
+  fromAminoMsg(object: IncentivesPoolAminoMsg): IncentivesPool {
+    return IncentivesPool.fromAmino(object.value);
+  },
+  fromProtoMsg(message: IncentivesPoolProtoMsg, useInterfaces: boolean = true): IncentivesPool {
+    return IncentivesPool.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: IncentivesPool): Uint8Array {
+    return IncentivesPool.encode(message).finish();
+  },
+  toProtoMsg(message: IncentivesPool): IncentivesPoolProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.common.IncentivesPool",
+      value: IncentivesPool.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(IncentivesPool.typeUrl, IncentivesPool);
 function createBaseDatabaseConfig(): DatabaseConfig {
   return {
     poolMinConns: 0,

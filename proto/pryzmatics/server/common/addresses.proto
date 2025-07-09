@@ -1,0 +1,19 @@
+syntax = "proto3";
+package pryzmatics.server.common;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/common";
+
+enum AddressCategory {
+  option (gogoproto.goproto_enum_prefix) = false;
+  exclude_from_denom_owners = 0 [(gogoproto.enumvalue_customname) = "ExcludeFromDenomOwners"];
+}
+
+message QueryAddressesByCategoryRequest {
+  AddressCategory category = 1;
+}
+
+message QueryAddressesByCategoryResponse {
+  repeated string addresses = 1;
+}

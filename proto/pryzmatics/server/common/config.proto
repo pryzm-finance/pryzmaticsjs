@@ -34,6 +34,7 @@ message Config {
   ];
   repeated string supported_denoms_for_external_price = 16;
   Contracts contracts = 17 [(gogoproto.nullable) = false];
+  Incentives incentives = 18 [(gogoproto.nullable) = false];
 }
 
 message Contracts {
@@ -44,6 +45,16 @@ message Contracts {
   string pryzm_photon_drop_claim1 = 5;
   string pryzm_photon_drop_claim2 = 6;
   string pryzm_stake_drop_claim = 7;
+}
+
+message Incentives {
+  repeated IncentivesPool pools = 1 [(gogoproto.nullable) = false];
+}
+
+message IncentivesPool {
+  float apr = 1;
+  string bonded_token = 2;
+  string reward_token = 3;
 }
 
 message DatabaseConfig {

@@ -34,7 +34,7 @@ message QueryUserTradeHistorySummaryRequest {
   string token_out = 2;
   string address = 3;
   repeated pryzmatics.trade.OperationType operation_types = 4;
-  uint64 interval_hours = 5;
+  uint64 interval_seconds = 5;
 }
 
 message QueryUserTradeHistorySummaryResponse {
