@@ -181,7 +181,7 @@ async function main() {
     }])
 
     correctFile('./src/codegen/pryzmatics/server/query.lcd.ts', [{
-        regex: /pryzmatics\.server\.\S+?\./gm,
+        regex: /pryzmatics\.server(?:\.\w+)*\./gm,
         subst: ``
     }])
 

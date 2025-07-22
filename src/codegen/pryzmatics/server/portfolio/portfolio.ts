@@ -255,6 +255,7 @@ export interface PortfolioIcstakingUnbonding {
   completionTime: Timestamp;
   exchangeRate: string;
   token: PortfolioToken;
+  started: boolean;
 }
 export interface PortfolioIcstakingUnbondingProtoMsg {
   typeUrl: "/pryzmatics.server.portfolio.PortfolioIcstakingUnbonding";
@@ -268,6 +269,7 @@ export interface PortfolioIcstakingUnbondingAmino {
   completion_time?: string;
   exchange_rate?: string;
   token?: PortfolioTokenAmino;
+  started?: boolean;
 }
 export interface PortfolioIcstakingUnbondingAminoMsg {
   type: "/pryzmatics.server.portfolio.PortfolioIcstakingUnbonding";
@@ -281,6 +283,7 @@ export interface PortfolioIcstakingUnbondingSDKType {
   completion_time: TimestampSDKType;
   exchange_rate: string;
   token: PortfolioTokenSDKType;
+  started: boolean;
 }
 export interface QueryPortfolioResponse {
   walletTokens: PortfolioToken[];
@@ -1569,19 +1572,20 @@ function createBasePortfolioIcstakingUnbonding(): PortfolioIcstakingUnbonding {
     received: false,
     completionTime: Timestamp.fromPartial({}),
     exchangeRate: "",
-    token: PortfolioToken.fromPartial({})
+    token: PortfolioToken.fromPartial({}),
+    started: false
   };
 }
 export const PortfolioIcstakingUnbonding = {
   typeUrl: "/pryzmatics.server.portfolio.PortfolioIcstakingUnbonding",
   is(o: any): o is PortfolioIcstakingUnbonding {
-    return o && (o.$typeUrl === PortfolioIcstakingUnbonding.typeUrl || typeof o.hostChainId === "string" && typeof o.epoch === "bigint" && typeof o.transferChannel === "string" && typeof o.received === "boolean" && Timestamp.is(o.completionTime) && typeof o.exchangeRate === "string" && PortfolioToken.is(o.token));
+    return o && (o.$typeUrl === PortfolioIcstakingUnbonding.typeUrl || typeof o.hostChainId === "string" && typeof o.epoch === "bigint" && typeof o.transferChannel === "string" && typeof o.received === "boolean" && Timestamp.is(o.completionTime) && typeof o.exchangeRate === "string" && PortfolioToken.is(o.token) && typeof o.started === "boolean");
   },
   isSDK(o: any): o is PortfolioIcstakingUnbondingSDKType {
-    return o && (o.$typeUrl === PortfolioIcstakingUnbonding.typeUrl || typeof o.host_chain_id === "string" && typeof o.epoch === "bigint" && typeof o.transfer_channel === "string" && typeof o.received === "boolean" && Timestamp.isSDK(o.completion_time) && typeof o.exchange_rate === "string" && PortfolioToken.isSDK(o.token));
+    return o && (o.$typeUrl === PortfolioIcstakingUnbonding.typeUrl || typeof o.host_chain_id === "string" && typeof o.epoch === "bigint" && typeof o.transfer_channel === "string" && typeof o.received === "boolean" && Timestamp.isSDK(o.completion_time) && typeof o.exchange_rate === "string" && PortfolioToken.isSDK(o.token) && typeof o.started === "boolean");
   },
   isAmino(o: any): o is PortfolioIcstakingUnbondingAmino {
-    return o && (o.$typeUrl === PortfolioIcstakingUnbonding.typeUrl || typeof o.host_chain_id === "string" && typeof o.epoch === "bigint" && typeof o.transfer_channel === "string" && typeof o.received === "boolean" && Timestamp.isAmino(o.completion_time) && typeof o.exchange_rate === "string" && PortfolioToken.isAmino(o.token));
+    return o && (o.$typeUrl === PortfolioIcstakingUnbonding.typeUrl || typeof o.host_chain_id === "string" && typeof o.epoch === "bigint" && typeof o.transfer_channel === "string" && typeof o.received === "boolean" && Timestamp.isAmino(o.completion_time) && typeof o.exchange_rate === "string" && PortfolioToken.isAmino(o.token) && typeof o.started === "boolean");
   },
   encode(message: PortfolioIcstakingUnbonding, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.hostChainId !== "") {
@@ -1604,6 +1608,9 @@ export const PortfolioIcstakingUnbonding = {
     }
     if (message.token !== undefined) {
       PortfolioToken.encode(message.token, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.started === true) {
+      writer.uint32(64).bool(message.started);
     }
     return writer;
   },
@@ -1635,6 +1642,9 @@ export const PortfolioIcstakingUnbonding = {
         case 7:
           message.token = PortfolioToken.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 8:
+          message.started = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1650,7 +1660,8 @@ export const PortfolioIcstakingUnbonding = {
       received: isSet(object.received) ? Boolean(object.received) : false,
       completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined,
       exchangeRate: isSet(object.exchangeRate) ? String(object.exchangeRate) : "",
-      token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined
+      token: isSet(object.token) ? PortfolioToken.fromJSON(object.token) : undefined,
+      started: isSet(object.started) ? Boolean(object.started) : false
     };
   },
   toJSON(message: PortfolioIcstakingUnbonding): unknown {
@@ -1662,6 +1673,7 @@ export const PortfolioIcstakingUnbonding = {
     message.completionTime !== undefined && (obj.completionTime = fromTimestamp(message.completionTime).toISOString());
     message.exchangeRate !== undefined && (obj.exchangeRate = message.exchangeRate);
     message.token !== undefined && (obj.token = message.token ? PortfolioToken.toJSON(message.token) : undefined);
+    message.started !== undefined && (obj.started = message.started);
     return obj;
   },
   fromPartial(object: Partial<PortfolioIcstakingUnbonding>): PortfolioIcstakingUnbonding {
@@ -1673,6 +1685,7 @@ export const PortfolioIcstakingUnbonding = {
     message.completionTime = object.completionTime !== undefined && object.completionTime !== null ? Timestamp.fromPartial(object.completionTime) : undefined;
     message.exchangeRate = object.exchangeRate ?? "";
     message.token = object.token !== undefined && object.token !== null ? PortfolioToken.fromPartial(object.token) : undefined;
+    message.started = object.started ?? false;
     return message;
   },
   fromAmino(object: PortfolioIcstakingUnbondingAmino): PortfolioIcstakingUnbonding {
@@ -1698,6 +1711,9 @@ export const PortfolioIcstakingUnbonding = {
     if (object.token !== undefined && object.token !== null) {
       message.token = PortfolioToken.fromAmino(object.token);
     }
+    if (object.started !== undefined && object.started !== null) {
+      message.started = object.started;
+    }
     return message;
   },
   toAmino(message: PortfolioIcstakingUnbonding, useInterfaces: boolean = true): PortfolioIcstakingUnbondingAmino {
@@ -1709,6 +1725,7 @@ export const PortfolioIcstakingUnbonding = {
     obj.completion_time = message.completionTime ? Timestamp.toAmino(message.completionTime, useInterfaces) : undefined;
     obj.exchange_rate = padDecimal(message.exchangeRate) === "" ? undefined : padDecimal(message.exchangeRate);
     obj.token = message.token ? PortfolioToken.toAmino(message.token, useInterfaces) : undefined;
+    obj.started = message.started === false ? undefined : message.started;
     return obj;
   },
   fromAminoMsg(object: PortfolioIcstakingUnbondingAminoMsg): PortfolioIcstakingUnbonding {

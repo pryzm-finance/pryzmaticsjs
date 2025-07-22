@@ -122,6 +122,7 @@ message PortfolioIcstakingUnbonding {
     (gogoproto.nullable) = false
   ];
   PortfolioToken token = 7 [(gogoproto.nullable) = false];
+  bool started = 8;
 }
 
 message QueryPortfolioResponse {

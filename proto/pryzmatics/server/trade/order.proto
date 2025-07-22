@@ -89,6 +89,7 @@ message QueryMatchableBuyOrdersForPairRequest {
   ];
   cosmos.base.query.v1beta1.PageRequest pagination = 7 [(gogoproto.nullable) = true];
   pryzmatics.database.trade.MatchableOrderOrderBy order_by = 8 [(gogoproto.nullable) = true];
+  bool allow_insufficient_funds = 9 [(gogoproto.nullable) = true];
 }
 
 message QueryMatchableBuyOrdersForPairResponse {

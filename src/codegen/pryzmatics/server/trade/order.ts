@@ -202,6 +202,7 @@ export interface QueryMatchableBuyOrdersForPairRequest {
   minRemainingAmount: string;
   pagination?: PageRequest;
   orderBy?: MatchableOrderOrderBy;
+  allowInsufficientFunds?: boolean;
 }
 export interface QueryMatchableBuyOrdersForPairRequestProtoMsg {
   typeUrl: "/pryzmatics.server.trade.QueryMatchableBuyOrdersForPairRequest";
@@ -216,6 +217,7 @@ export interface QueryMatchableBuyOrdersForPairRequestAmino {
   min_remaining_amount?: string;
   pagination?: PageRequestAmino;
   order_by?: MatchableOrderOrderByAmino;
+  allow_insufficient_funds?: boolean;
 }
 export interface QueryMatchableBuyOrdersForPairRequestAminoMsg {
   type: "/pryzmatics.server.trade.QueryMatchableBuyOrdersForPairRequest";
@@ -230,6 +232,7 @@ export interface QueryMatchableBuyOrdersForPairRequestSDKType {
   min_remaining_amount: string;
   pagination?: PageRequestSDKType;
   order_by?: MatchableOrderOrderBySDKType;
+  allow_insufficient_funds?: boolean;
 }
 export interface QueryMatchableBuyOrdersForPairResponse {
   orders: MatchableOrder[];
@@ -1386,7 +1389,8 @@ function createBaseQueryMatchableBuyOrdersForPairRequest(): QueryMatchableBuyOrd
     minPrice: "",
     minRemainingAmount: "",
     pagination: undefined,
-    orderBy: undefined
+    orderBy: undefined,
+    allowInsufficientFunds: undefined
   };
 }
 export const QueryMatchableBuyOrdersForPairRequest = {
@@ -1425,6 +1429,9 @@ export const QueryMatchableBuyOrdersForPairRequest = {
     if (message.orderBy !== undefined) {
       MatchableOrderOrderBy.encode(message.orderBy, writer.uint32(66).fork()).ldelim();
     }
+    if (message.allowInsufficientFunds !== undefined) {
+      writer.uint32(72).bool(message.allowInsufficientFunds);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryMatchableBuyOrdersForPairRequest {
@@ -1458,6 +1465,9 @@ export const QueryMatchableBuyOrdersForPairRequest = {
         case 8:
           message.orderBy = MatchableOrderOrderBy.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 9:
+          message.allowInsufficientFunds = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1474,7 +1484,8 @@ export const QueryMatchableBuyOrdersForPairRequest = {
       minPrice: isSet(object.minPrice) ? String(object.minPrice) : "",
       minRemainingAmount: isSet(object.minRemainingAmount) ? String(object.minRemainingAmount) : "",
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      orderBy: isSet(object.orderBy) ? MatchableOrderOrderBy.fromJSON(object.orderBy) : undefined
+      orderBy: isSet(object.orderBy) ? MatchableOrderOrderBy.fromJSON(object.orderBy) : undefined,
+      allowInsufficientFunds: isSet(object.allowInsufficientFunds) ? Boolean(object.allowInsufficientFunds) : undefined
     };
   },
   toJSON(message: QueryMatchableBuyOrdersForPairRequest): unknown {
@@ -1487,6 +1498,7 @@ export const QueryMatchableBuyOrdersForPairRequest = {
     message.minRemainingAmount !== undefined && (obj.minRemainingAmount = message.minRemainingAmount);
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.orderBy !== undefined && (obj.orderBy = message.orderBy ? MatchableOrderOrderBy.toJSON(message.orderBy) : undefined);
+    message.allowInsufficientFunds !== undefined && (obj.allowInsufficientFunds = message.allowInsufficientFunds);
     return obj;
   },
   fromPartial(object: Partial<QueryMatchableBuyOrdersForPairRequest>): QueryMatchableBuyOrdersForPairRequest {
@@ -1499,6 +1511,7 @@ export const QueryMatchableBuyOrdersForPairRequest = {
     message.minRemainingAmount = object.minRemainingAmount ?? "";
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.orderBy = object.orderBy !== undefined && object.orderBy !== null ? MatchableOrderOrderBy.fromPartial(object.orderBy) : undefined;
+    message.allowInsufficientFunds = object.allowInsufficientFunds ?? undefined;
     return message;
   },
   fromAmino(object: QueryMatchableBuyOrdersForPairRequestAmino): QueryMatchableBuyOrdersForPairRequest {
@@ -1527,6 +1540,9 @@ export const QueryMatchableBuyOrdersForPairRequest = {
     if (object.order_by !== undefined && object.order_by !== null) {
       message.orderBy = MatchableOrderOrderBy.fromAmino(object.order_by);
     }
+    if (object.allow_insufficient_funds !== undefined && object.allow_insufficient_funds !== null) {
+      message.allowInsufficientFunds = object.allow_insufficient_funds;
+    }
     return message;
   },
   toAmino(message: QueryMatchableBuyOrdersForPairRequest, useInterfaces: boolean = true): QueryMatchableBuyOrdersForPairRequestAmino {
@@ -1539,6 +1555,7 @@ export const QueryMatchableBuyOrdersForPairRequest = {
     obj.min_remaining_amount = message.minRemainingAmount === "" ? undefined : message.minRemainingAmount;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
     obj.order_by = message.orderBy ? MatchableOrderOrderBy.toAmino(message.orderBy, useInterfaces) : undefined;
+    obj.allow_insufficient_funds = message.allowInsufficientFunds === null ? undefined : message.allowInsufficientFunds;
     return obj;
   },
   fromAminoMsg(object: QueryMatchableBuyOrdersForPairRequestAminoMsg): QueryMatchableBuyOrdersForPairRequest {

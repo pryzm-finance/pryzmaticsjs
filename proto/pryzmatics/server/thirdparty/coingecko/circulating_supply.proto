@@ -1,0 +1,18 @@
+syntax = "proto3";
+package pryzmatics.server.thirdparty.coingecko;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/thirdparty/coingecko";
+
+message QueryCirculatingSupplyRequest {
+}
+
+message QueryCirculatingSupplyResponse {
+  string result = 6 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+}

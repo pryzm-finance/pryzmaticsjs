@@ -4,7 +4,7 @@ import { isSet } from "../../../helpers";
 import { GlobalDecoderRegistry } from "../../../registry";
 export interface QueryPoolTotalIncentivesRequest {
   /** can be empty, in which case it will return all incentives */
-  bondDenom: string;
+  bondDenom?: string;
   from?: string;
 }
 export interface QueryPoolTotalIncentivesRequestProtoMsg {
@@ -21,7 +21,7 @@ export interface QueryPoolTotalIncentivesRequestAminoMsg {
   value: QueryPoolTotalIncentivesRequestAmino;
 }
 export interface QueryPoolTotalIncentivesRequestSDKType {
-  bond_denom: string;
+  bond_denom?: string;
   from?: string;
 }
 export interface QueryPoolTotalIncentivesResponse {
@@ -43,23 +43,23 @@ export interface QueryPoolTotalIncentivesResponseSDKType {
 }
 function createBaseQueryPoolTotalIncentivesRequest(): QueryPoolTotalIncentivesRequest {
   return {
-    bondDenom: "",
+    bondDenom: undefined,
     from: undefined
   };
 }
 export const QueryPoolTotalIncentivesRequest = {
   typeUrl: "/pryzmatics.server.incentives.QueryPoolTotalIncentivesRequest",
   is(o: any): o is QueryPoolTotalIncentivesRequest {
-    return o && (o.$typeUrl === QueryPoolTotalIncentivesRequest.typeUrl || typeof o.bondDenom === "string");
+    return o && o.$typeUrl === QueryPoolTotalIncentivesRequest.typeUrl;
   },
   isSDK(o: any): o is QueryPoolTotalIncentivesRequestSDKType {
-    return o && (o.$typeUrl === QueryPoolTotalIncentivesRequest.typeUrl || typeof o.bond_denom === "string");
+    return o && o.$typeUrl === QueryPoolTotalIncentivesRequest.typeUrl;
   },
   isAmino(o: any): o is QueryPoolTotalIncentivesRequestAmino {
-    return o && (o.$typeUrl === QueryPoolTotalIncentivesRequest.typeUrl || typeof o.bond_denom === "string");
+    return o && o.$typeUrl === QueryPoolTotalIncentivesRequest.typeUrl;
   },
   encode(message: QueryPoolTotalIncentivesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.bondDenom !== "") {
+    if (message.bondDenom !== undefined) {
       writer.uint32(10).string(message.bondDenom);
     }
     if (message.from !== undefined) {
@@ -89,7 +89,7 @@ export const QueryPoolTotalIncentivesRequest = {
   },
   fromJSON(object: any): QueryPoolTotalIncentivesRequest {
     return {
-      bondDenom: isSet(object.bondDenom) ? String(object.bondDenom) : "",
+      bondDenom: isSet(object.bondDenom) ? String(object.bondDenom) : undefined,
       from: isSet(object.from) ? String(object.from) : undefined
     };
   },
@@ -101,7 +101,7 @@ export const QueryPoolTotalIncentivesRequest = {
   },
   fromPartial(object: Partial<QueryPoolTotalIncentivesRequest>): QueryPoolTotalIncentivesRequest {
     const message = createBaseQueryPoolTotalIncentivesRequest();
-    message.bondDenom = object.bondDenom ?? "";
+    message.bondDenom = object.bondDenom ?? undefined;
     message.from = object.from ?? undefined;
     return message;
   },
@@ -117,7 +117,7 @@ export const QueryPoolTotalIncentivesRequest = {
   },
   toAmino(message: QueryPoolTotalIncentivesRequest, useInterfaces: boolean = true): QueryPoolTotalIncentivesRequestAmino {
     const obj: any = {};
-    obj.bond_denom = message.bondDenom === "" ? undefined : message.bondDenom;
+    obj.bond_denom = message.bondDenom === null ? undefined : message.bondDenom;
     obj.from = message.from === null ? undefined : message.from;
     return obj;
   },

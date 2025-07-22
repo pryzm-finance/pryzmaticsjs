@@ -10,7 +10,7 @@ option go_package = "github.com/pryzm-finance/pryzmatics/server/incentives";
 
 message QueryPoolTotalIncentivesRequest {
   // can be empty, in which case it will return all incentives
-  string bond_denom = 1;
+   string bond_denom = 1 [(gogoproto.nullable) = true];
   string from = 2 [
     (cosmos_proto.scalar) = "cosmos.Int",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",

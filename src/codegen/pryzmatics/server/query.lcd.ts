@@ -69,6 +69,7 @@ import { QueryOrderBookOrdersRequest, QueryOrderBookOrdersResponseSDKType, Query
 import { QueryOrderBookReservationsRequest, QueryOrderBookReservationsResponseSDKType } from "./orderbook/reservation";
 import { DenomOwnersRequest, DenomOwnersResponseSDKType } from "./bank/denom_owners";
 import { QueryContractInfoRequest, QueryContractInfoResponseSDKType } from "./wasm/contract_info";
+import { QueryCirculatingSupplyRequest, QueryCirculatingSupplyResponseSDKType } from "./thirdparty/coingecko/circulating_supply";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -177,6 +178,7 @@ export class LCDQueryClient {
     this.orderBookReservations = this.orderBookReservations.bind(this);
     this.denomOwners = this.denomOwners.bind(this);
     this.contractInfo = this.contractInfo.bind(this);
+    this.circulatingSupply = this.circulatingSupply.bind(this);
   }
   /* Asset */
   async asset(params: QueryAssetRequest): Promise<QueryAssetResponseSDKType> {
@@ -905,6 +907,9 @@ export class LCDQueryClient {
     }
     if (typeof params?.orderBy !== "undefined") {
       options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.allowInsufficientFunds !== "undefined") {
+      options.params.allow_insufficient_funds = params.allowInsufficientFunds;
     }
     const endpoint = `pryzmatics/trade/matchable_buy_orders_for_pair/${params.tokenIn}/${params.tokenOut}/${params.poolId}/${params.whitelistedRoute}`;
     return await this.req.get<QueryMatchableBuyOrdersForPairResponseSDKType>(endpoint, options);
@@ -1655,5 +1660,10 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/wasm/contract_info`;
     return await this.req.get<QueryContractInfoResponseSDKType>(endpoint, options);
+  }
+  /* CirculatingSupply */
+  async circulatingSupply(_params: QueryCirculatingSupplyRequest = {}): Promise<QueryCirculatingSupplyResponseSDKType> {
+    const endpoint = `pryzmatics/coingecko/circulating_supply`;
+    return await this.req.get<QueryCirculatingSupplyResponseSDKType>(endpoint);
   }
 }

@@ -94,6 +94,8 @@ import "pryzmatics/server/bank/denom_owners.proto";
 
 import "pryzmatics/server/wasm/contract_info.proto";
 
+import "pryzmatics/server/thirdparty/coingecko/circulating_supply.proto";
+
 option go_package = "github.com/pryzm-finance/pryzmatics/server";
 
 service Query {
@@ -507,5 +509,9 @@ service Query {
 
   rpc ContractInfo(pryzmatics.server.wasm.QueryContractInfoRequest) returns (pryzmatics.server.wasm.QueryContractInfoResponse) {
     option (google.api.http).get = "/pryzmatics/wasm/contract_info";
+  }
+
+  rpc CirculatingSupply(pryzmatics.server.thirdparty.coingecko.QueryCirculatingSupplyRequest) returns (pryzmatics.server.thirdparty.coingecko.QueryCirculatingSupplyResponse) {
+    option (google.api.http).get = "/pryzmatics/coingecko/circulating_supply";
   }
 }
