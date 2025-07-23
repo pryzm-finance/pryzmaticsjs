@@ -22,6 +22,7 @@ message AssetDetails {
 
 message QueryAssetsDetailsRequest {
   string asset_id = 1; // optional
+  bool token_stats = 2 [(gogoproto.nullable) = true];
 }
 
 message QueryAssetsDetailsResponse {

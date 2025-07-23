@@ -44,6 +44,7 @@ export interface AssetDetailsSDKType {
 export interface QueryAssetsDetailsRequest {
   /** optional */
   assetId: string;
+  tokenStats?: boolean;
 }
 export interface QueryAssetsDetailsRequestProtoMsg {
   typeUrl: "/pryzmatics.server.asset.QueryAssetsDetailsRequest";
@@ -52,6 +53,7 @@ export interface QueryAssetsDetailsRequestProtoMsg {
 export interface QueryAssetsDetailsRequestAmino {
   /** optional */
   asset_id?: string;
+  token_stats?: boolean;
 }
 export interface QueryAssetsDetailsRequestAminoMsg {
   type: "/pryzmatics.server.asset.QueryAssetsDetailsRequest";
@@ -59,6 +61,7 @@ export interface QueryAssetsDetailsRequestAminoMsg {
 }
 export interface QueryAssetsDetailsRequestSDKType {
   asset_id: string;
+  token_stats?: boolean;
 }
 export interface QueryAssetsDetailsResponse {
   assets: AssetDetails[];
@@ -272,7 +275,8 @@ export const AssetDetails = {
 GlobalDecoderRegistry.register(AssetDetails.typeUrl, AssetDetails);
 function createBaseQueryAssetsDetailsRequest(): QueryAssetsDetailsRequest {
   return {
-    assetId: ""
+    assetId: "",
+    tokenStats: undefined
   };
 }
 export const QueryAssetsDetailsRequest = {
@@ -290,6 +294,9 @@ export const QueryAssetsDetailsRequest = {
     if (message.assetId !== "") {
       writer.uint32(10).string(message.assetId);
     }
+    if (message.tokenStats !== undefined) {
+      writer.uint32(16).bool(message.tokenStats);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QueryAssetsDetailsRequest {
@@ -302,6 +309,9 @@ export const QueryAssetsDetailsRequest = {
         case 1:
           message.assetId = reader.string();
           break;
+        case 2:
+          message.tokenStats = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -311,17 +321,20 @@ export const QueryAssetsDetailsRequest = {
   },
   fromJSON(object: any): QueryAssetsDetailsRequest {
     return {
-      assetId: isSet(object.assetId) ? String(object.assetId) : ""
+      assetId: isSet(object.assetId) ? String(object.assetId) : "",
+      tokenStats: isSet(object.tokenStats) ? Boolean(object.tokenStats) : undefined
     };
   },
   toJSON(message: QueryAssetsDetailsRequest): unknown {
     const obj: any = {};
     message.assetId !== undefined && (obj.assetId = message.assetId);
+    message.tokenStats !== undefined && (obj.tokenStats = message.tokenStats);
     return obj;
   },
   fromPartial(object: Partial<QueryAssetsDetailsRequest>): QueryAssetsDetailsRequest {
     const message = createBaseQueryAssetsDetailsRequest();
     message.assetId = object.assetId ?? "";
+    message.tokenStats = object.tokenStats ?? undefined;
     return message;
   },
   fromAmino(object: QueryAssetsDetailsRequestAmino): QueryAssetsDetailsRequest {
@@ -329,11 +342,15 @@ export const QueryAssetsDetailsRequest = {
     if (object.asset_id !== undefined && object.asset_id !== null) {
       message.assetId = object.asset_id;
     }
+    if (object.token_stats !== undefined && object.token_stats !== null) {
+      message.tokenStats = object.token_stats;
+    }
     return message;
   },
   toAmino(message: QueryAssetsDetailsRequest, useInterfaces: boolean = true): QueryAssetsDetailsRequestAmino {
     const obj: any = {};
     obj.asset_id = message.assetId === "" ? undefined : message.assetId;
+    obj.token_stats = message.tokenStats === null ? undefined : message.tokenStats;
     return obj;
   },
   fromAminoMsg(object: QueryAssetsDetailsRequestAminoMsg): QueryAssetsDetailsRequest {

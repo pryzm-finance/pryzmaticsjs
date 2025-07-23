@@ -198,6 +198,9 @@ export class LCDQueryClient {
     if (typeof params?.assetId !== "undefined") {
       options.params.asset_id = params.assetId;
     }
+    if (typeof params?.tokenStats !== "undefined") {
+      options.params.token_stats = params.tokenStats;
+    }
     const endpoint = `pryzmatics/asset_details`;
     return await this.req.get<QueryAssetsDetailsResponseSDKType>(endpoint, options);
   }
