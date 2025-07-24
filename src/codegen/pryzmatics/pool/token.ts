@@ -180,6 +180,7 @@ export interface Token {
   supplyFetchTime: Timestamp;
   /** only set when details requested */
   stats?: TokenStats;
+  creationTime: Timestamp;
 }
 export interface TokenProtoMsg {
   typeUrl: "/pryzmatics.pool.Token";
@@ -202,6 +203,7 @@ export interface TokenAmino {
   supply_fetch_time?: string;
   /** only set when details requested */
   stats?: TokenStatsAmino;
+  creation_time?: string;
 }
 export interface TokenAminoMsg {
   type: "/pryzmatics.pool.Token";
@@ -222,6 +224,7 @@ export interface TokenSDKType {
   supply_stable_coin_terms?: string;
   supply_fetch_time: TimestampSDKType;
   stats?: TokenStatsSDKType;
+  creation_time: TimestampSDKType;
 }
 function createBaseTokenMetrics(): TokenMetrics {
   return {
@@ -712,19 +715,20 @@ function createBaseToken(): Token {
     supply: "",
     supplyStableCoinTerms: undefined,
     supplyFetchTime: Timestamp.fromPartial({}),
-    stats: undefined
+    stats: undefined,
+    creationTime: Timestamp.fromPartial({})
   };
 }
 export const Token = {
   typeUrl: "/pryzmatics.pool.Token",
   is(o: any): o is Token {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.underlyingTokenDenom === "string" && typeof o.assetId === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.is(o.supplyFetchTime));
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.is(o.metrics) && typeof o.underlyingTokenDenom === "string" && typeof o.assetId === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.is(o.supplyFetchTime) && Timestamp.is(o.creationTime));
   },
   isSDK(o: any): o is TokenSDKType {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isSDK(o.supply_fetch_time));
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isSDK(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isSDK(o.supply_fetch_time) && Timestamp.isSDK(o.creation_time));
   },
   isAmino(o: any): o is TokenAmino {
-    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isAmino(o.supply_fetch_time));
+    return o && (o.$typeUrl === Token.typeUrl || typeof o.denom === "string" && isSet(o.type) && TokenMetrics.isAmino(o.metrics) && typeof o.underlying_token_denom === "string" && typeof o.asset_id === "string" && typeof o.error === "string" && typeof o.supply === "string" && Timestamp.isAmino(o.supply_fetch_time) && Timestamp.isAmino(o.creation_time));
   },
   encode(message: Token, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
@@ -768,6 +772,9 @@ export const Token = {
     }
     if (message.stats !== undefined) {
       TokenStats.encode(message.stats, writer.uint32(114).fork()).ldelim();
+    }
+    if (message.creationTime !== undefined) {
+      Timestamp.encode(message.creationTime, writer.uint32(122).fork()).ldelim();
     }
     return writer;
   },
@@ -820,6 +827,9 @@ export const Token = {
         case 14:
           message.stats = TokenStats.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 15:
+          message.creationTime = Timestamp.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -842,7 +852,8 @@ export const Token = {
       supply: isSet(object.supply) ? String(object.supply) : "",
       supplyStableCoinTerms: isSet(object.supplyStableCoinTerms) ? String(object.supplyStableCoinTerms) : undefined,
       supplyFetchTime: isSet(object.supplyFetchTime) ? fromJsonTimestamp(object.supplyFetchTime) : undefined,
-      stats: isSet(object.stats) ? TokenStats.fromJSON(object.stats) : undefined
+      stats: isSet(object.stats) ? TokenStats.fromJSON(object.stats) : undefined,
+      creationTime: isSet(object.creationTime) ? fromJsonTimestamp(object.creationTime) : undefined
     };
   },
   toJSON(message: Token): unknown {
@@ -861,6 +872,7 @@ export const Token = {
     message.supplyStableCoinTerms !== undefined && (obj.supplyStableCoinTerms = message.supplyStableCoinTerms);
     message.supplyFetchTime !== undefined && (obj.supplyFetchTime = fromTimestamp(message.supplyFetchTime).toISOString());
     message.stats !== undefined && (obj.stats = message.stats ? TokenStats.toJSON(message.stats) : undefined);
+    message.creationTime !== undefined && (obj.creationTime = fromTimestamp(message.creationTime).toISOString());
     return obj;
   },
   fromPartial(object: Partial<Token>): Token {
@@ -879,6 +891,7 @@ export const Token = {
     message.supplyStableCoinTerms = object.supplyStableCoinTerms ?? undefined;
     message.supplyFetchTime = object.supplyFetchTime !== undefined && object.supplyFetchTime !== null ? Timestamp.fromPartial(object.supplyFetchTime) : undefined;
     message.stats = object.stats !== undefined && object.stats !== null ? TokenStats.fromPartial(object.stats) : undefined;
+    message.creationTime = object.creationTime !== undefined && object.creationTime !== null ? Timestamp.fromPartial(object.creationTime) : undefined;
     return message;
   },
   fromAmino(object: TokenAmino): Token {
@@ -925,6 +938,9 @@ export const Token = {
     if (object.stats !== undefined && object.stats !== null) {
       message.stats = TokenStats.fromAmino(object.stats);
     }
+    if (object.creation_time !== undefined && object.creation_time !== null) {
+      message.creationTime = Timestamp.fromAmino(object.creation_time);
+    }
     return message;
   },
   toAmino(message: Token, useInterfaces: boolean = true): TokenAmino {
@@ -943,6 +959,7 @@ export const Token = {
     obj.supply_stable_coin_terms = padDecimal(message.supplyStableCoinTerms) === null ? undefined : padDecimal(message.supplyStableCoinTerms);
     obj.supply_fetch_time = message.supplyFetchTime ? Timestamp.toAmino(message.supplyFetchTime, useInterfaces) : undefined;
     obj.stats = message.stats ? TokenStats.toAmino(message.stats, useInterfaces) : undefined;
+    obj.creation_time = message.creationTime ? Timestamp.toAmino(message.creationTime, useInterfaces) : undefined;
     return obj;
   },
   fromAminoMsg(object: TokenAminoMsg): Token {

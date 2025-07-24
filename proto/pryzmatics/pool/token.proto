@@ -170,4 +170,5 @@ message Token {
   ];
   google.protobuf.Timestamp supply_fetch_time = 13 [(gogoproto.stdtime) = true, (gogoproto.nullable) = false];
   TokenStats stats = 14 [(gogoproto.nullable) = true]; // only set when details requested
+  google.protobuf.Timestamp creation_time = 15 [(gogoproto.stdtime) = true, (gogoproto.nullable) = false];
 }
