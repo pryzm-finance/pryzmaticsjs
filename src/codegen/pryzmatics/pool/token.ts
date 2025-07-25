@@ -135,6 +135,7 @@ export interface TokenStats {
   volume7d: string;
   volume30d: string;
   totalVolume: string;
+  incentivesBondsCount: bigint;
 }
 export interface TokenStatsProtoMsg {
   typeUrl: "/pryzmatics.pool.TokenStats";
@@ -149,6 +150,7 @@ export interface TokenStatsAmino {
   volume_7d?: string;
   volume_30d?: string;
   total_volume?: string;
+  incentives_bonds_count?: string;
 }
 export interface TokenStatsAminoMsg {
   type: "/pryzmatics.pool.TokenStats";
@@ -162,6 +164,7 @@ export interface TokenStatsSDKType {
   volume_7d: string;
   volume_30d: string;
   total_volume: string;
+  incentives_bonds_count: bigint;
 }
 export interface Token {
   denom: string;
@@ -541,19 +544,20 @@ function createBaseTokenStats(): TokenStats {
     volume24h: "",
     volume7d: "",
     volume30d: "",
-    totalVolume: ""
+    totalVolume: "",
+    incentivesBondsCount: BigInt(0)
   };
 }
 export const TokenStats = {
   typeUrl: "/pryzmatics.pool.TokenStats",
   is(o: any): o is TokenStats {
-    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.is(o.supply) && typeof o.ownersCount === "bigint" && typeof o.volume24h === "string" && typeof o.volume7d === "string" && typeof o.volume30d === "string" && typeof o.totalVolume === "string");
+    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.is(o.supply) && typeof o.ownersCount === "bigint" && typeof o.volume24h === "string" && typeof o.volume7d === "string" && typeof o.volume30d === "string" && typeof o.totalVolume === "string" && typeof o.incentivesBondsCount === "bigint");
   },
   isSDK(o: any): o is TokenStatsSDKType {
-    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.isSDK(o.supply) && typeof o.owners_count === "bigint" && typeof o.volume_24h === "string" && typeof o.volume_7d === "string" && typeof o.volume_30d === "string" && typeof o.total_volume === "string");
+    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.isSDK(o.supply) && typeof o.owners_count === "bigint" && typeof o.volume_24h === "string" && typeof o.volume_7d === "string" && typeof o.volume_30d === "string" && typeof o.total_volume === "string" && typeof o.incentives_bonds_count === "bigint");
   },
   isAmino(o: any): o is TokenStatsAmino {
-    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.isAmino(o.supply) && typeof o.owners_count === "bigint" && typeof o.volume_24h === "string" && typeof o.volume_7d === "string" && typeof o.volume_30d === "string" && typeof o.total_volume === "string");
+    return o && (o.$typeUrl === TokenStats.typeUrl || Supply.isAmino(o.supply) && typeof o.owners_count === "bigint" && typeof o.volume_24h === "string" && typeof o.volume_7d === "string" && typeof o.volume_30d === "string" && typeof o.total_volume === "string" && typeof o.incentives_bonds_count === "bigint");
   },
   encode(message: TokenStats, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.marketCap !== undefined) {
@@ -576,6 +580,9 @@ export const TokenStats = {
     }
     if (message.totalVolume !== "") {
       writer.uint32(58).string(Decimal.fromUserInput(message.totalVolume, 18).atomics);
+    }
+    if (message.incentivesBondsCount !== BigInt(0)) {
+      writer.uint32(64).uint64(message.incentivesBondsCount);
     }
     return writer;
   },
@@ -607,6 +614,9 @@ export const TokenStats = {
         case 7:
           message.totalVolume = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
+        case 8:
+          message.incentivesBondsCount = reader.uint64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -622,7 +632,8 @@ export const TokenStats = {
       volume24h: isSet(object.volume24h) ? String(object.volume24h) : "",
       volume7d: isSet(object.volume7d) ? String(object.volume7d) : "",
       volume30d: isSet(object.volume30d) ? String(object.volume30d) : "",
-      totalVolume: isSet(object.totalVolume) ? String(object.totalVolume) : ""
+      totalVolume: isSet(object.totalVolume) ? String(object.totalVolume) : "",
+      incentivesBondsCount: isSet(object.incentivesBondsCount) ? BigInt(object.incentivesBondsCount.toString()) : BigInt(0)
     };
   },
   toJSON(message: TokenStats): unknown {
@@ -634,6 +645,7 @@ export const TokenStats = {
     message.volume7d !== undefined && (obj.volume7d = message.volume7d);
     message.volume30d !== undefined && (obj.volume30d = message.volume30d);
     message.totalVolume !== undefined && (obj.totalVolume = message.totalVolume);
+    message.incentivesBondsCount !== undefined && (obj.incentivesBondsCount = (message.incentivesBondsCount || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<TokenStats>): TokenStats {
@@ -645,6 +657,7 @@ export const TokenStats = {
     message.volume7d = object.volume7d ?? "";
     message.volume30d = object.volume30d ?? "";
     message.totalVolume = object.totalVolume ?? "";
+    message.incentivesBondsCount = object.incentivesBondsCount !== undefined && object.incentivesBondsCount !== null ? BigInt(object.incentivesBondsCount.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: TokenStatsAmino): TokenStats {
@@ -670,6 +683,9 @@ export const TokenStats = {
     if (object.total_volume !== undefined && object.total_volume !== null) {
       message.totalVolume = object.total_volume;
     }
+    if (object.incentives_bonds_count !== undefined && object.incentives_bonds_count !== null) {
+      message.incentivesBondsCount = BigInt(object.incentives_bonds_count);
+    }
     return message;
   },
   toAmino(message: TokenStats, useInterfaces: boolean = true): TokenStatsAmino {
@@ -681,6 +697,7 @@ export const TokenStats = {
     obj.volume_7d = padDecimal(message.volume7d) === "" ? undefined : padDecimal(message.volume7d);
     obj.volume_30d = padDecimal(message.volume30d) === "" ? undefined : padDecimal(message.volume30d);
     obj.total_volume = padDecimal(message.totalVolume) === "" ? undefined : padDecimal(message.totalVolume);
+    obj.incentives_bonds_count = message.incentivesBondsCount ? message.incentivesBondsCount.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: TokenStatsAminoMsg): TokenStats {
