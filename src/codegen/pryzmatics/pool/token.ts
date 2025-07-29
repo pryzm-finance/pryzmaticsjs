@@ -79,6 +79,7 @@ export interface TokenMetrics {
   priceUnderlyingTermsChangePercentage24h?: string;
   priceUnderlyingTermsChangePercentage7d?: string;
   priceUnderlyingTermsChangePercentage30d?: string;
+  tradeVolumeChangePercentage24h: string;
 }
 export interface TokenMetricsProtoMsg {
   typeUrl: "/pryzmatics.pool.TokenMetrics";
@@ -102,6 +103,7 @@ export interface TokenMetricsAmino {
   price_underlying_terms_change_percentage_24h?: string;
   price_underlying_terms_change_percentage_7d?: string;
   price_underlying_terms_change_percentage_30d?: string;
+  trade_volume_change_percentage_24h?: string;
 }
 export interface TokenMetricsAminoMsg {
   type: "/pryzmatics.pool.TokenMetrics";
@@ -125,6 +127,7 @@ export interface TokenMetricsSDKType {
   price_underlying_terms_change_percentage_24h?: string;
   price_underlying_terms_change_percentage_7d?: string;
   price_underlying_terms_change_percentage_30d?: string;
+  trade_volume_change_percentage_24h: string;
 }
 export interface TokenStats {
   /** null if token does not have price */
@@ -247,19 +250,20 @@ function createBaseTokenMetrics(): TokenMetrics {
     priceUnderlyingTermsChangePercentage1h: undefined,
     priceUnderlyingTermsChangePercentage24h: undefined,
     priceUnderlyingTermsChangePercentage7d: undefined,
-    priceUnderlyingTermsChangePercentage30d: undefined
+    priceUnderlyingTermsChangePercentage30d: undefined,
+    tradeVolumeChangePercentage24h: ""
   };
 }
 export const TokenMetrics = {
   typeUrl: "/pryzmatics.pool.TokenMetrics",
   is(o: any): o is TokenMetrics {
-    return o && (o.$typeUrl === TokenMetrics.typeUrl || typeof o.tradeVolume1h === "string" && typeof o.tradeVolume24h === "string" && typeof o.tradeVolume7d === "string" && typeof o.tradeVolume30d === "string");
+    return o && (o.$typeUrl === TokenMetrics.typeUrl || typeof o.tradeVolume1h === "string" && typeof o.tradeVolume24h === "string" && typeof o.tradeVolume7d === "string" && typeof o.tradeVolume30d === "string" && typeof o.tradeVolumeChangePercentage24h === "string");
   },
   isSDK(o: any): o is TokenMetricsSDKType {
-    return o && (o.$typeUrl === TokenMetrics.typeUrl || typeof o.trade_volume_1h === "string" && typeof o.trade_volume_24h === "string" && typeof o.trade_volume_7d === "string" && typeof o.trade_volume_30d === "string");
+    return o && (o.$typeUrl === TokenMetrics.typeUrl || typeof o.trade_volume_1h === "string" && typeof o.trade_volume_24h === "string" && typeof o.trade_volume_7d === "string" && typeof o.trade_volume_30d === "string" && typeof o.trade_volume_change_percentage_24h === "string");
   },
   isAmino(o: any): o is TokenMetricsAmino {
-    return o && (o.$typeUrl === TokenMetrics.typeUrl || typeof o.trade_volume_1h === "string" && typeof o.trade_volume_24h === "string" && typeof o.trade_volume_7d === "string" && typeof o.trade_volume_30d === "string");
+    return o && (o.$typeUrl === TokenMetrics.typeUrl || typeof o.trade_volume_1h === "string" && typeof o.trade_volume_24h === "string" && typeof o.trade_volume_7d === "string" && typeof o.trade_volume_30d === "string" && typeof o.trade_volume_change_percentage_24h === "string");
   },
   encode(message: TokenMetrics, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.priceChangePercentage1h !== undefined) {
@@ -312,6 +316,9 @@ export const TokenMetrics = {
     }
     if (message.priceUnderlyingTermsChangePercentage30d !== undefined) {
       writer.uint32(138).string(Decimal.fromUserInput(message.priceUnderlyingTermsChangePercentage30d, 18).atomics);
+    }
+    if (message.tradeVolumeChangePercentage24h !== "") {
+      writer.uint32(146).string(Decimal.fromUserInput(message.tradeVolumeChangePercentage24h, 18).atomics);
     }
     return writer;
   },
@@ -373,6 +380,9 @@ export const TokenMetrics = {
         case 17:
           message.priceUnderlyingTermsChangePercentage30d = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
+        case 18:
+          message.tradeVolumeChangePercentage24h = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -398,7 +408,8 @@ export const TokenMetrics = {
       priceUnderlyingTermsChangePercentage1h: isSet(object.priceUnderlyingTermsChangePercentage1h) ? String(object.priceUnderlyingTermsChangePercentage1h) : undefined,
       priceUnderlyingTermsChangePercentage24h: isSet(object.priceUnderlyingTermsChangePercentage24h) ? String(object.priceUnderlyingTermsChangePercentage24h) : undefined,
       priceUnderlyingTermsChangePercentage7d: isSet(object.priceUnderlyingTermsChangePercentage7d) ? String(object.priceUnderlyingTermsChangePercentage7d) : undefined,
-      priceUnderlyingTermsChangePercentage30d: isSet(object.priceUnderlyingTermsChangePercentage30d) ? String(object.priceUnderlyingTermsChangePercentage30d) : undefined
+      priceUnderlyingTermsChangePercentage30d: isSet(object.priceUnderlyingTermsChangePercentage30d) ? String(object.priceUnderlyingTermsChangePercentage30d) : undefined,
+      tradeVolumeChangePercentage24h: isSet(object.tradeVolumeChangePercentage24h) ? String(object.tradeVolumeChangePercentage24h) : ""
     };
   },
   toJSON(message: TokenMetrics): unknown {
@@ -420,6 +431,7 @@ export const TokenMetrics = {
     message.priceUnderlyingTermsChangePercentage24h !== undefined && (obj.priceUnderlyingTermsChangePercentage24h = message.priceUnderlyingTermsChangePercentage24h);
     message.priceUnderlyingTermsChangePercentage7d !== undefined && (obj.priceUnderlyingTermsChangePercentage7d = message.priceUnderlyingTermsChangePercentage7d);
     message.priceUnderlyingTermsChangePercentage30d !== undefined && (obj.priceUnderlyingTermsChangePercentage30d = message.priceUnderlyingTermsChangePercentage30d);
+    message.tradeVolumeChangePercentage24h !== undefined && (obj.tradeVolumeChangePercentage24h = message.tradeVolumeChangePercentage24h);
     return obj;
   },
   fromPartial(object: Partial<TokenMetrics>): TokenMetrics {
@@ -441,6 +453,7 @@ export const TokenMetrics = {
     message.priceUnderlyingTermsChangePercentage24h = object.priceUnderlyingTermsChangePercentage24h ?? undefined;
     message.priceUnderlyingTermsChangePercentage7d = object.priceUnderlyingTermsChangePercentage7d ?? undefined;
     message.priceUnderlyingTermsChangePercentage30d = object.priceUnderlyingTermsChangePercentage30d ?? undefined;
+    message.tradeVolumeChangePercentage24h = object.tradeVolumeChangePercentage24h ?? "";
     return message;
   },
   fromAmino(object: TokenMetricsAmino): TokenMetrics {
@@ -496,6 +509,9 @@ export const TokenMetrics = {
     if (object.price_underlying_terms_change_percentage_30d !== undefined && object.price_underlying_terms_change_percentage_30d !== null) {
       message.priceUnderlyingTermsChangePercentage30d = object.price_underlying_terms_change_percentage_30d;
     }
+    if (object.trade_volume_change_percentage_24h !== undefined && object.trade_volume_change_percentage_24h !== null) {
+      message.tradeVolumeChangePercentage24h = object.trade_volume_change_percentage_24h;
+    }
     return message;
   },
   toAmino(message: TokenMetrics, useInterfaces: boolean = true): TokenMetricsAmino {
@@ -517,6 +533,7 @@ export const TokenMetrics = {
     obj.price_underlying_terms_change_percentage_24h = padDecimal(message.priceUnderlyingTermsChangePercentage24h) === null ? undefined : padDecimal(message.priceUnderlyingTermsChangePercentage24h);
     obj.price_underlying_terms_change_percentage_7d = padDecimal(message.priceUnderlyingTermsChangePercentage7d) === null ? undefined : padDecimal(message.priceUnderlyingTermsChangePercentage7d);
     obj.price_underlying_terms_change_percentage_30d = padDecimal(message.priceUnderlyingTermsChangePercentage30d) === null ? undefined : padDecimal(message.priceUnderlyingTermsChangePercentage30d);
+    obj.trade_volume_change_percentage_24h = padDecimal(message.tradeVolumeChangePercentage24h) === "" ? undefined : padDecimal(message.tradeVolumeChangePercentage24h);
     return obj;
   },
   fromAminoMsg(object: TokenMetricsAminoMsg): TokenMetrics {
