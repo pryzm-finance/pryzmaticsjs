@@ -1596,12 +1596,13 @@ export class LCDQueryClient {
     return await this.req.get<QueryOrderBookSummaryResponseSDKType>(endpoint, options);
   }
   /* OrderBookPairs */
-  async orderBookPairs(params: QueryOrderBookPairsRequest = {
-    pagination: undefined
-  }): Promise<QueryOrderBookPairsResponseSDKType> {
+  async orderBookPairs(params: QueryOrderBookPairsRequest): Promise<QueryOrderBookPairsResponseSDKType> {
     const options: any = {
       params: {}
     };
+    if (typeof params?.reservableOnly !== "undefined") {
+      options.params.reservable_only = params.reservableOnly;
+    }
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }

@@ -98,6 +98,7 @@ export interface QueryOrderBookSummaryResponseSDKType {
   volume: string;
 }
 export interface QueryOrderBookPairsRequest {
+  reservableOnly: boolean;
   pagination?: PageRequest;
 }
 export interface QueryOrderBookPairsRequestProtoMsg {
@@ -105,6 +106,7 @@ export interface QueryOrderBookPairsRequestProtoMsg {
   value: Uint8Array;
 }
 export interface QueryOrderBookPairsRequestAmino {
+  reservable_only?: boolean;
   pagination?: PageRequestAmino;
 }
 export interface QueryOrderBookPairsRequestAminoMsg {
@@ -112,6 +114,7 @@ export interface QueryOrderBookPairsRequestAminoMsg {
   value: QueryOrderBookPairsRequestAmino;
 }
 export interface QueryOrderBookPairsRequestSDKType {
+  reservable_only: boolean;
   pagination?: PageRequestSDKType;
 }
 export interface QueryOrderBookPairsResponse {
@@ -629,23 +632,27 @@ export const QueryOrderBookSummaryResponse = {
 GlobalDecoderRegistry.register(QueryOrderBookSummaryResponse.typeUrl, QueryOrderBookSummaryResponse);
 function createBaseQueryOrderBookPairsRequest(): QueryOrderBookPairsRequest {
   return {
+    reservableOnly: false,
     pagination: undefined
   };
 }
 export const QueryOrderBookPairsRequest = {
   typeUrl: "/pryzmatics.server.orderbook.QueryOrderBookPairsRequest",
   is(o: any): o is QueryOrderBookPairsRequest {
-    return o && o.$typeUrl === QueryOrderBookPairsRequest.typeUrl;
+    return o && (o.$typeUrl === QueryOrderBookPairsRequest.typeUrl || typeof o.reservableOnly === "boolean");
   },
   isSDK(o: any): o is QueryOrderBookPairsRequestSDKType {
-    return o && o.$typeUrl === QueryOrderBookPairsRequest.typeUrl;
+    return o && (o.$typeUrl === QueryOrderBookPairsRequest.typeUrl || typeof o.reservable_only === "boolean");
   },
   isAmino(o: any): o is QueryOrderBookPairsRequestAmino {
-    return o && o.$typeUrl === QueryOrderBookPairsRequest.typeUrl;
+    return o && (o.$typeUrl === QueryOrderBookPairsRequest.typeUrl || typeof o.reservable_only === "boolean");
   },
   encode(message: QueryOrderBookPairsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.reservableOnly === true) {
+      writer.uint32(8).bool(message.reservableOnly);
+    }
     if (message.pagination !== undefined) {
-      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+      PageRequest.encode(message.pagination, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -657,6 +664,9 @@ export const QueryOrderBookPairsRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          message.reservableOnly = reader.bool();
+          break;
+        case 2:
           message.pagination = PageRequest.decode(reader, reader.uint32(), useInterfaces);
           break;
         default:
@@ -668,21 +678,27 @@ export const QueryOrderBookPairsRequest = {
   },
   fromJSON(object: any): QueryOrderBookPairsRequest {
     return {
+      reservableOnly: isSet(object.reservableOnly) ? Boolean(object.reservableOnly) : false,
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
   toJSON(message: QueryOrderBookPairsRequest): unknown {
     const obj: any = {};
+    message.reservableOnly !== undefined && (obj.reservableOnly = message.reservableOnly);
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryOrderBookPairsRequest>): QueryOrderBookPairsRequest {
     const message = createBaseQueryOrderBookPairsRequest();
+    message.reservableOnly = object.reservableOnly ?? false;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
   },
   fromAmino(object: QueryOrderBookPairsRequestAmino): QueryOrderBookPairsRequest {
     const message = createBaseQueryOrderBookPairsRequest();
+    if (object.reservable_only !== undefined && object.reservable_only !== null) {
+      message.reservableOnly = object.reservable_only;
+    }
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
@@ -690,6 +706,7 @@ export const QueryOrderBookPairsRequest = {
   },
   toAmino(message: QueryOrderBookPairsRequest, useInterfaces: boolean = true): QueryOrderBookPairsRequestAmino {
     const obj: any = {};
+    obj.reservable_only = message.reservableOnly === false ? undefined : message.reservableOnly;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
     return obj;
   },

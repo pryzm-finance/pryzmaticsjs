@@ -1,9 +1,9 @@
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { Coin, CoinAmino, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, fromJsonTimestamp, fromTimestamp, padDecimal } from "../../helpers";
-import { GlobalDecoderRegistry } from "../../registry";
 import { Decimal } from "@cosmjs/math";
+import { isSet, padDecimal, fromJsonTimestamp, fromTimestamp } from "../../helpers";
+import { GlobalDecoderRegistry } from "../../registry";
 export enum OrderEventType {
   ORDER_EVENT_TYPE_UNSPECIFIED = 0,
   ORDER_EVENT_TYPE_SUBMITTED = 1,
@@ -82,13 +82,15 @@ export interface Pair {
   tokenIn: string;
   tokenOut: string;
   totalAmount: string;
-  totalLiveRemainingAmount: string;
+  totalRemainingAmount: string;
   totalReservableRemainingAmount: string;
-  liveCount: bigint;
-  reservableCount: bigint;
   totalCount: bigint;
+  reservableCount: bigint;
   totalReserved: string;
   inTheMoneyVolume: string;
+  minPrice: string;
+  maxPrice: string;
+  avgPrice: string;
 }
 export interface PairProtoMsg {
   typeUrl: "/pryzmatics.orderbook.Pair";
@@ -98,13 +100,15 @@ export interface PairAmino {
   token_in?: string;
   token_out?: string;
   total_amount?: string;
-  total_live_remaining_amount?: string;
+  total_remaining_amount?: string;
   total_reservable_remaining_amount?: string;
-  live_count?: string;
-  reservable_count?: string;
   total_count?: string;
+  reservable_count?: string;
   total_reserved?: string;
   in_the_money_volume?: string;
+  min_price?: string;
+  max_price?: string;
+  avg_price?: string;
 }
 export interface PairAminoMsg {
   type: "/pryzmatics.orderbook.Pair";
@@ -114,13 +118,15 @@ export interface PairSDKType {
   token_in: string;
   token_out: string;
   total_amount: string;
-  total_live_remaining_amount: string;
+  total_remaining_amount: string;
   total_reservable_remaining_amount: string;
-  live_count: bigint;
-  reservable_count: bigint;
   total_count: bigint;
+  reservable_count: bigint;
   total_reserved: string;
   in_the_money_volume: string;
+  min_price: string;
+  max_price: string;
+  avg_price: string;
 }
 export interface Order {
   id: bigint;
@@ -332,25 +338,27 @@ function createBasePair(): Pair {
     tokenIn: "",
     tokenOut: "",
     totalAmount: "",
-    totalLiveRemainingAmount: "",
+    totalRemainingAmount: "",
     totalReservableRemainingAmount: "",
-    liveCount: BigInt(0),
-    reservableCount: BigInt(0),
     totalCount: BigInt(0),
+    reservableCount: BigInt(0),
     totalReserved: "",
-    inTheMoneyVolume: ""
+    inTheMoneyVolume: "",
+    minPrice: "",
+    maxPrice: "",
+    avgPrice: ""
   };
 }
 export const Pair = {
   typeUrl: "/pryzmatics.orderbook.Pair",
   is(o: any): o is Pair {
-    return o && (o.$typeUrl === Pair.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.totalAmount === "string" && typeof o.totalLiveRemainingAmount === "string" && typeof o.totalReservableRemainingAmount === "string" && typeof o.liveCount === "bigint" && typeof o.reservableCount === "bigint" && typeof o.totalCount === "bigint" && typeof o.totalReserved === "string" && typeof o.inTheMoneyVolume === "string");
+    return o && (o.$typeUrl === Pair.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.totalAmount === "string" && typeof o.totalRemainingAmount === "string" && typeof o.totalReservableRemainingAmount === "string" && typeof o.totalCount === "bigint" && typeof o.reservableCount === "bigint" && typeof o.totalReserved === "string" && typeof o.inTheMoneyVolume === "string" && typeof o.minPrice === "string" && typeof o.maxPrice === "string" && typeof o.avgPrice === "string");
   },
   isSDK(o: any): o is PairSDKType {
-    return o && (o.$typeUrl === Pair.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.total_amount === "string" && typeof o.total_live_remaining_amount === "string" && typeof o.total_reservable_remaining_amount === "string" && typeof o.live_count === "bigint" && typeof o.reservable_count === "bigint" && typeof o.total_count === "bigint" && typeof o.total_reserved === "string" && typeof o.in_the_money_volume === "string");
+    return o && (o.$typeUrl === Pair.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.total_amount === "string" && typeof o.total_remaining_amount === "string" && typeof o.total_reservable_remaining_amount === "string" && typeof o.total_count === "bigint" && typeof o.reservable_count === "bigint" && typeof o.total_reserved === "string" && typeof o.in_the_money_volume === "string" && typeof o.min_price === "string" && typeof o.max_price === "string" && typeof o.avg_price === "string");
   },
   isAmino(o: any): o is PairAmino {
-    return o && (o.$typeUrl === Pair.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.total_amount === "string" && typeof o.total_live_remaining_amount === "string" && typeof o.total_reservable_remaining_amount === "string" && typeof o.live_count === "bigint" && typeof o.reservable_count === "bigint" && typeof o.total_count === "bigint" && typeof o.total_reserved === "string" && typeof o.in_the_money_volume === "string");
+    return o && (o.$typeUrl === Pair.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.total_amount === "string" && typeof o.total_remaining_amount === "string" && typeof o.total_reservable_remaining_amount === "string" && typeof o.total_count === "bigint" && typeof o.reservable_count === "bigint" && typeof o.total_reserved === "string" && typeof o.in_the_money_volume === "string" && typeof o.min_price === "string" && typeof o.max_price === "string" && typeof o.avg_price === "string");
   },
   encode(message: Pair, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.tokenIn !== "") {
@@ -362,26 +370,32 @@ export const Pair = {
     if (message.totalAmount !== "") {
       writer.uint32(26).string(message.totalAmount);
     }
-    if (message.totalLiveRemainingAmount !== "") {
-      writer.uint32(34).string(message.totalLiveRemainingAmount);
+    if (message.totalRemainingAmount !== "") {
+      writer.uint32(34).string(message.totalRemainingAmount);
     }
     if (message.totalReservableRemainingAmount !== "") {
       writer.uint32(42).string(message.totalReservableRemainingAmount);
     }
-    if (message.liveCount !== BigInt(0)) {
-      writer.uint32(48).uint64(message.liveCount);
+    if (message.totalCount !== BigInt(0)) {
+      writer.uint32(48).uint64(message.totalCount);
     }
     if (message.reservableCount !== BigInt(0)) {
       writer.uint32(56).uint64(message.reservableCount);
     }
-    if (message.totalCount !== BigInt(0)) {
-      writer.uint32(64).uint64(message.totalCount);
-    }
     if (message.totalReserved !== "") {
-      writer.uint32(74).string(message.totalReserved);
+      writer.uint32(66).string(message.totalReserved);
     }
     if (message.inTheMoneyVolume !== "") {
-      writer.uint32(82).string(message.inTheMoneyVolume);
+      writer.uint32(74).string(message.inTheMoneyVolume);
+    }
+    if (message.minPrice !== "") {
+      writer.uint32(82).string(Decimal.fromUserInput(message.minPrice, 18).atomics);
+    }
+    if (message.maxPrice !== "") {
+      writer.uint32(90).string(Decimal.fromUserInput(message.maxPrice, 18).atomics);
+    }
+    if (message.avgPrice !== "") {
+      writer.uint32(98).string(Decimal.fromUserInput(message.avgPrice, 18).atomics);
     }
     return writer;
   },
@@ -402,25 +416,31 @@ export const Pair = {
           message.totalAmount = reader.string();
           break;
         case 4:
-          message.totalLiveRemainingAmount = reader.string();
+          message.totalRemainingAmount = reader.string();
           break;
         case 5:
           message.totalReservableRemainingAmount = reader.string();
           break;
         case 6:
-          message.liveCount = reader.uint64();
+          message.totalCount = reader.uint64();
           break;
         case 7:
           message.reservableCount = reader.uint64();
           break;
         case 8:
-          message.totalCount = reader.uint64();
-          break;
-        case 9:
           message.totalReserved = reader.string();
           break;
-        case 10:
+        case 9:
           message.inTheMoneyVolume = reader.string();
+          break;
+        case 10:
+          message.minPrice = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 11:
+          message.maxPrice = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 12:
+          message.avgPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -434,13 +454,15 @@ export const Pair = {
       tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
       tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
       totalAmount: isSet(object.totalAmount) ? String(object.totalAmount) : "",
-      totalLiveRemainingAmount: isSet(object.totalLiveRemainingAmount) ? String(object.totalLiveRemainingAmount) : "",
+      totalRemainingAmount: isSet(object.totalRemainingAmount) ? String(object.totalRemainingAmount) : "",
       totalReservableRemainingAmount: isSet(object.totalReservableRemainingAmount) ? String(object.totalReservableRemainingAmount) : "",
-      liveCount: isSet(object.liveCount) ? BigInt(object.liveCount.toString()) : BigInt(0),
-      reservableCount: isSet(object.reservableCount) ? BigInt(object.reservableCount.toString()) : BigInt(0),
       totalCount: isSet(object.totalCount) ? BigInt(object.totalCount.toString()) : BigInt(0),
+      reservableCount: isSet(object.reservableCount) ? BigInt(object.reservableCount.toString()) : BigInt(0),
       totalReserved: isSet(object.totalReserved) ? String(object.totalReserved) : "",
-      inTheMoneyVolume: isSet(object.inTheMoneyVolume) ? String(object.inTheMoneyVolume) : ""
+      inTheMoneyVolume: isSet(object.inTheMoneyVolume) ? String(object.inTheMoneyVolume) : "",
+      minPrice: isSet(object.minPrice) ? String(object.minPrice) : "",
+      maxPrice: isSet(object.maxPrice) ? String(object.maxPrice) : "",
+      avgPrice: isSet(object.avgPrice) ? String(object.avgPrice) : ""
     };
   },
   toJSON(message: Pair): unknown {
@@ -448,13 +470,15 @@ export const Pair = {
     message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
     message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
     message.totalAmount !== undefined && (obj.totalAmount = message.totalAmount);
-    message.totalLiveRemainingAmount !== undefined && (obj.totalLiveRemainingAmount = message.totalLiveRemainingAmount);
+    message.totalRemainingAmount !== undefined && (obj.totalRemainingAmount = message.totalRemainingAmount);
     message.totalReservableRemainingAmount !== undefined && (obj.totalReservableRemainingAmount = message.totalReservableRemainingAmount);
-    message.liveCount !== undefined && (obj.liveCount = (message.liveCount || BigInt(0)).toString());
-    message.reservableCount !== undefined && (obj.reservableCount = (message.reservableCount || BigInt(0)).toString());
     message.totalCount !== undefined && (obj.totalCount = (message.totalCount || BigInt(0)).toString());
+    message.reservableCount !== undefined && (obj.reservableCount = (message.reservableCount || BigInt(0)).toString());
     message.totalReserved !== undefined && (obj.totalReserved = message.totalReserved);
     message.inTheMoneyVolume !== undefined && (obj.inTheMoneyVolume = message.inTheMoneyVolume);
+    message.minPrice !== undefined && (obj.minPrice = message.minPrice);
+    message.maxPrice !== undefined && (obj.maxPrice = message.maxPrice);
+    message.avgPrice !== undefined && (obj.avgPrice = message.avgPrice);
     return obj;
   },
   fromPartial(object: Partial<Pair>): Pair {
@@ -462,13 +486,15 @@ export const Pair = {
     message.tokenIn = object.tokenIn ?? "";
     message.tokenOut = object.tokenOut ?? "";
     message.totalAmount = object.totalAmount ?? "";
-    message.totalLiveRemainingAmount = object.totalLiveRemainingAmount ?? "";
+    message.totalRemainingAmount = object.totalRemainingAmount ?? "";
     message.totalReservableRemainingAmount = object.totalReservableRemainingAmount ?? "";
-    message.liveCount = object.liveCount !== undefined && object.liveCount !== null ? BigInt(object.liveCount.toString()) : BigInt(0);
-    message.reservableCount = object.reservableCount !== undefined && object.reservableCount !== null ? BigInt(object.reservableCount.toString()) : BigInt(0);
     message.totalCount = object.totalCount !== undefined && object.totalCount !== null ? BigInt(object.totalCount.toString()) : BigInt(0);
+    message.reservableCount = object.reservableCount !== undefined && object.reservableCount !== null ? BigInt(object.reservableCount.toString()) : BigInt(0);
     message.totalReserved = object.totalReserved ?? "";
     message.inTheMoneyVolume = object.inTheMoneyVolume ?? "";
+    message.minPrice = object.minPrice ?? "";
+    message.maxPrice = object.maxPrice ?? "";
+    message.avgPrice = object.avgPrice ?? "";
     return message;
   },
   fromAmino(object: PairAmino): Pair {
@@ -482,26 +508,32 @@ export const Pair = {
     if (object.total_amount !== undefined && object.total_amount !== null) {
       message.totalAmount = object.total_amount;
     }
-    if (object.total_live_remaining_amount !== undefined && object.total_live_remaining_amount !== null) {
-      message.totalLiveRemainingAmount = object.total_live_remaining_amount;
+    if (object.total_remaining_amount !== undefined && object.total_remaining_amount !== null) {
+      message.totalRemainingAmount = object.total_remaining_amount;
     }
     if (object.total_reservable_remaining_amount !== undefined && object.total_reservable_remaining_amount !== null) {
       message.totalReservableRemainingAmount = object.total_reservable_remaining_amount;
     }
-    if (object.live_count !== undefined && object.live_count !== null) {
-      message.liveCount = BigInt(object.live_count);
+    if (object.total_count !== undefined && object.total_count !== null) {
+      message.totalCount = BigInt(object.total_count);
     }
     if (object.reservable_count !== undefined && object.reservable_count !== null) {
       message.reservableCount = BigInt(object.reservable_count);
-    }
-    if (object.total_count !== undefined && object.total_count !== null) {
-      message.totalCount = BigInt(object.total_count);
     }
     if (object.total_reserved !== undefined && object.total_reserved !== null) {
       message.totalReserved = object.total_reserved;
     }
     if (object.in_the_money_volume !== undefined && object.in_the_money_volume !== null) {
       message.inTheMoneyVolume = object.in_the_money_volume;
+    }
+    if (object.min_price !== undefined && object.min_price !== null) {
+      message.minPrice = object.min_price;
+    }
+    if (object.max_price !== undefined && object.max_price !== null) {
+      message.maxPrice = object.max_price;
+    }
+    if (object.avg_price !== undefined && object.avg_price !== null) {
+      message.avgPrice = object.avg_price;
     }
     return message;
   },
@@ -510,13 +542,15 @@ export const Pair = {
     obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
     obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
     obj.total_amount = message.totalAmount === "" ? undefined : message.totalAmount;
-    obj.total_live_remaining_amount = message.totalLiveRemainingAmount === "" ? undefined : message.totalLiveRemainingAmount;
+    obj.total_remaining_amount = message.totalRemainingAmount === "" ? undefined : message.totalRemainingAmount;
     obj.total_reservable_remaining_amount = message.totalReservableRemainingAmount === "" ? undefined : message.totalReservableRemainingAmount;
-    obj.live_count = message.liveCount ? message.liveCount.toString() : undefined;
-    obj.reservable_count = message.reservableCount ? message.reservableCount.toString() : undefined;
     obj.total_count = message.totalCount ? message.totalCount.toString() : undefined;
+    obj.reservable_count = message.reservableCount ? message.reservableCount.toString() : undefined;
     obj.total_reserved = message.totalReserved === "" ? undefined : message.totalReserved;
     obj.in_the_money_volume = message.inTheMoneyVolume === "" ? undefined : message.inTheMoneyVolume;
+    obj.min_price = padDecimal(message.minPrice) === "" ? undefined : padDecimal(message.minPrice);
+    obj.max_price = padDecimal(message.maxPrice) === "" ? undefined : padDecimal(message.maxPrice);
+    obj.avg_price = padDecimal(message.avgPrice) === "" ? undefined : padDecimal(message.avgPrice);
     return obj;
   },
   fromAminoMsg(object: PairAminoMsg): Pair {

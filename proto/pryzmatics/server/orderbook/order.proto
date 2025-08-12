@@ -42,7 +42,8 @@ message QueryOrderBookSummaryResponse {
 }
 
 message QueryOrderBookPairsRequest {
-  cosmos.base.query.v1beta1.PageRequest pagination = 1 [(gogoproto.nullable) = true];
+  bool reservable_only = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2 [(gogoproto.nullable) = true];
 }
 
 message QueryOrderBookPairsResponse {
