@@ -1,0 +1,65 @@
+syntax = "proto3";
+package pryzmatics.seal;
+
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "pryzmatics/seal/order.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/seal";
+
+message Reservation {
+  uint64 id = 1;
+  string reserver = 2;
+  uint64 order_id = 3;
+  string total_amount = 4 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string remaining_amount = 5 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  google.protobuf.Timestamp expiration_time = 6 [
+    (gogoproto.stdtime) = true,
+    (gogoproto.nullable) = false
+  ];
+  string reservation_deposit_denom = 7;
+  string reservation_deposit_total_amount = 8 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string reservation_deposit_remaining_amount = 9 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string protocol_reservation_deposit_denom = 10;
+  string protocol_reservation_deposit_total_amount = 11 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = true
+  ];
+  string protocol_reservation_deposit_remaining_amount = 12 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = true
+  ];
+  bool live = 13;
+  google.protobuf.Timestamp creation_time = 14 [
+    (gogoproto.stdtime) = true,
+    (gogoproto.nullable) = false
+  ];
+  google.protobuf.Timestamp last_update_time = 15 [
+    (gogoproto.stdtime) = true,
+    (gogoproto.nullable) = false
+  ];
+}
+
+message ReservationWithOrder {
+  Reservation reservation = 1 [(gogoproto.nullable) = false];
+  Order order = 2 [(gogoproto.nullable) = false];
+}

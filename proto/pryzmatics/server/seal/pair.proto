@@ -1,0 +1,41 @@
+syntax = "proto3";
+package pryzmatics.server.seal;
+
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "pryzmatics/database/seal/order.proto";
+import "pryzmatics/seal/order.proto";
+import "pryzmatics/seal/pair.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/seal";
+
+message QuerySealPairsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1 [(gogoproto.nullable) = true];
+  bool reservable_only = 2;
+  string token_in = 3;
+  string token_out = 4;
+}
+
+message QuerySealPairsResponse {
+  repeated pryzmatics.seal.PairInfo pairs = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}
+
+message QuerySealPairSummaryRequest {
+  string token_in = 1;
+  string token_out = 2;
+  string max_price = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message QuerySealPairSummaryResponse {
+  string reservable_volume = 1 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+}

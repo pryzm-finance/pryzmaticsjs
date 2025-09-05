@@ -1,0 +1,25 @@
+syntax = "proto3";
+package pryzmatics.server.seal;
+
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "pryzmatics/database/seal/order.proto";
+import "pryzmatics/seal/order.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/seal";
+
+message QuerySealOrdersRequest {
+  pryzmatics.database.seal.SealOrderOrderBy order_by = 1 [(gogoproto.nullable) = true];
+  cosmos.base.query.v1beta1.PageRequest pagination = 2 [(gogoproto.nullable) = true];
+  string live = 3; // boolean, string type purpose is handling nullability
+  string owner = 4;
+  string token_in = 5;
+  string token_out = 6;
+  string reservation_allowed = 7; // boolean, string type purpose is handling nullability
+}
+
+message QuerySealOrdersResponse {
+  repeated pryzmatics.seal.OrderInfo orders = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}

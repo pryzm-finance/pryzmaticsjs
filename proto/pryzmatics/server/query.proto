@@ -87,8 +87,10 @@ import "pryzmatics/server/icns/icns.proto";
 import "pryzmatics/server/pvault/purchase_simulation.proto";
 import "pryzmatics/server/pvault/contracts.proto";
 
-import "pryzmatics/server/orderbook/order.proto";
-import "pryzmatics/server/orderbook/reservation.proto";
+import "pryzmatics/server/seal/activity.proto";
+import "pryzmatics/server/seal/order.proto";
+import "pryzmatics/server/seal/pair.proto";
+import "pryzmatics/server/seal/reservation.proto";
 
 import "pryzmatics/server/bank/denom_owners.proto";
 
@@ -483,24 +485,24 @@ service Query {
     option (google.api.http).get = "/pryzmatics/pvault/simulate_purchase";
   }
 
-  rpc OrderBookOrders(pryzmatics.server.orderbook.QueryOrderBookOrdersRequest) returns (pryzmatics.server.orderbook.QueryOrderBookOrdersResponse) {
-    option (google.api.http).get = "/pryzmatics/orderbook/orders";
+  rpc SealOrders(pryzmatics.server.seal.QuerySealOrdersRequest) returns (pryzmatics.server.seal.QuerySealOrdersResponse) {
+    option (google.api.http).get = "/pryzmatics/seal/orders";
   }
 
-  rpc OrderBookSummary(pryzmatics.server.orderbook.QueryOrderBookSummaryRequest) returns (pryzmatics.server.orderbook.QueryOrderBookSummaryResponse) {
-    option (google.api.http).get = "/pryzmatics/orderbook/summary";
+  rpc SealPairs(pryzmatics.server.seal.QuerySealPairsRequest) returns (pryzmatics.server.seal.QuerySealPairsResponse) {
+    option (google.api.http).get = "/pryzmatics/seal/pairs";
   }
 
-  rpc OrderBookPairs(pryzmatics.server.orderbook.QueryOrderBookPairsRequest) returns (pryzmatics.server.orderbook.QueryOrderBookPairsResponse) {
-    option (google.api.http).get = "/pryzmatics/orderbook/pairs";
+  rpc SealPairSummary(pryzmatics.server.seal.QuerySealPairSummaryRequest) returns (pryzmatics.server.seal.QuerySealPairSummaryResponse) {
+    option (google.api.http).get = "/pryzmatics/seal/pair_summary";
   }
 
-  rpc OrderBookOrderFeed(pryzmatics.server.orderbook.QueryOrderBookOrderFeedRequest) returns (pryzmatics.server.orderbook.QueryOrderBookOrderFeedResponse) {
-    option (google.api.http).get = "/pryzmatics/orderbook/order/{order_id}/feed";
+  rpc SealReservations(pryzmatics.server.seal.QuerySealReservationsRequest) returns (pryzmatics.server.seal.QuerySealReservationsResponse) {
+    option (google.api.http).get = "/pryzmatics/seal/reservations";
   }
 
-  rpc OrderBookReservations(pryzmatics.server.orderbook.QueryOrderBookReservationsRequest) returns (pryzmatics.server.orderbook.QueryOrderBookReservationsResponse) {
-    option (google.api.http).get = "/pryzmatics/orderbook/reservations";
+  rpc SealOrderActivities(pryzmatics.server.seal.QuerySealOrderActivitiesRequest) returns (pryzmatics.server.seal.QuerySealOrderActivitiesResponse) {
+    option (google.api.http).get = "/pryzmatics/seal/activities";
   }
 
   rpc DenomOwners(pryzmatics.server.bank.DenomOwnersRequest) returns (pryzmatics.server.bank.DenomOwnersResponse) {

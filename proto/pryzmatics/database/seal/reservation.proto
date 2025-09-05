@@ -1,0 +1,16 @@
+syntax = "proto3";
+package pryzmatics.database.seal;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/database/seal";
+
+enum SealReservationOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  ORDER_BY_PROPERTY_RESERVATION_ID = 0;
+}
+
+message SealReservationOrderBy {
+  SealReservationOrderByProperty property = 1;
+  bool descending = 2;
+}

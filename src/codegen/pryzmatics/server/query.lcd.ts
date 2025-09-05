@@ -65,8 +65,10 @@ import { QueryUserPulseTradeVolumeRequest, QueryUserPulseTradeVolumeResponseSDKT
 import { QueryUserPryzmClaimHistoryRequest, QueryUserPryzmClaimHistoryResponseSDKType } from "./trade/user_pryzm_claim_history";
 import { QueryPVaultContractsRequest, QueryPVaultContractsResponseSDKType } from "./pvault/contracts";
 import { QueryPurchaseSimulationRequest, QueryPurchaseSimulationResponseSDKType } from "./pvault/purchase_simulation";
-import { QueryOrderBookOrdersRequest, QueryOrderBookOrdersResponseSDKType, QueryOrderBookSummaryRequest, QueryOrderBookSummaryResponseSDKType, QueryOrderBookPairsRequest, QueryOrderBookPairsResponseSDKType, QueryOrderBookOrderFeedRequest, QueryOrderBookOrderFeedResponseSDKType } from "./orderbook/order";
-import { QueryOrderBookReservationsRequest, QueryOrderBookReservationsResponseSDKType } from "./orderbook/reservation";
+import { QuerySealOrdersRequest, QuerySealOrdersResponseSDKType } from "./seal/order";
+import { QuerySealPairsRequest, QuerySealPairsResponseSDKType, QuerySealPairSummaryRequest, QuerySealPairSummaryResponseSDKType } from "./seal/pair";
+import { QuerySealReservationsRequest, QuerySealReservationsResponseSDKType } from "./seal/reservation";
+import { QuerySealOrderActivitiesRequest, QuerySealOrderActivitiesResponseSDKType } from "./seal/activity";
 import { DenomOwnersRequest, DenomOwnersResponseSDKType } from "./bank/denom_owners";
 import { QueryContractInfoRequest, QueryContractInfoResponseSDKType } from "./wasm/contract_info";
 import { QueryCirculatingSupplyRequest, QueryCirculatingSupplyResponseSDKType } from "./thirdparty/coingecko/circulating_supply";
@@ -171,11 +173,11 @@ export class LCDQueryClient {
     this.userPryzmClaimHistory = this.userPryzmClaimHistory.bind(this);
     this.pVaultContracts = this.pVaultContracts.bind(this);
     this.pVaultSimulatePurchase = this.pVaultSimulatePurchase.bind(this);
-    this.orderBookOrders = this.orderBookOrders.bind(this);
-    this.orderBookSummary = this.orderBookSummary.bind(this);
-    this.orderBookPairs = this.orderBookPairs.bind(this);
-    this.orderBookOrderFeed = this.orderBookOrderFeed.bind(this);
-    this.orderBookReservations = this.orderBookReservations.bind(this);
+    this.sealOrders = this.sealOrders.bind(this);
+    this.sealPairs = this.sealPairs.bind(this);
+    this.sealPairSummary = this.sealPairSummary.bind(this);
+    this.sealReservations = this.sealReservations.bind(this);
+    this.sealOrderActivities = this.sealOrderActivities.bind(this);
     this.denomOwners = this.denomOwners.bind(this);
     this.contractInfo = this.contractInfo.bind(this);
     this.circulatingSupply = this.circulatingSupply.bind(this);
@@ -1552,8 +1554,8 @@ export class LCDQueryClient {
     const endpoint = `pryzmatics/pvault/simulate_purchase`;
     return await this.req.get<QueryPurchaseSimulationResponseSDKType>(endpoint, options);
   }
-  /* OrderBookOrders */
-  async orderBookOrders(params: QueryOrderBookOrdersRequest): Promise<QueryOrderBookOrdersResponseSDKType> {
+  /* SealOrders */
+  async sealOrders(params: QuerySealOrdersRequest): Promise<QuerySealOrdersResponseSDKType> {
     const options: any = {
       params: {}
     };
@@ -1569,17 +1571,40 @@ export class LCDQueryClient {
     if (typeof params?.owner !== "undefined") {
       options.params.owner = params.owner;
     }
-    if (typeof params?.tokenInDenom !== "undefined") {
-      options.params.token_in_denom = params.tokenInDenom;
+    if (typeof params?.tokenIn !== "undefined") {
+      options.params.token_in = params.tokenIn;
     }
-    if (typeof params?.tokenOutDenom !== "undefined") {
-      options.params.token_out_denom = params.tokenOutDenom;
+    if (typeof params?.tokenOut !== "undefined") {
+      options.params.token_out = params.tokenOut;
     }
-    const endpoint = `pryzmatics/orderbook/orders`;
-    return await this.req.get<QueryOrderBookOrdersResponseSDKType>(endpoint, options);
+    if (typeof params?.reservationAllowed !== "undefined") {
+      options.params.reservation_allowed = params.reservationAllowed;
+    }
+    const endpoint = `pryzmatics/seal/orders`;
+    return await this.req.get<QuerySealOrdersResponseSDKType>(endpoint, options);
   }
-  /* OrderBookSummary */
-  async orderBookSummary(params: QueryOrderBookSummaryRequest): Promise<QueryOrderBookSummaryResponseSDKType> {
+  /* SealPairs */
+  async sealPairs(params: QuerySealPairsRequest): Promise<QuerySealPairsResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    if (typeof params?.reservableOnly !== "undefined") {
+      options.params.reservable_only = params.reservableOnly;
+    }
+    if (typeof params?.tokenIn !== "undefined") {
+      options.params.token_in = params.tokenIn;
+    }
+    if (typeof params?.tokenOut !== "undefined") {
+      options.params.token_out = params.tokenOut;
+    }
+    const endpoint = `pryzmatics/seal/pairs`;
+    return await this.req.get<QuerySealPairsResponseSDKType>(endpoint, options);
+  }
+  /* SealPairSummary */
+  async sealPairSummary(params: QuerySealPairSummaryRequest): Promise<QuerySealPairSummaryResponseSDKType> {
     const options: any = {
       params: {}
     };
@@ -1592,25 +1617,11 @@ export class LCDQueryClient {
     if (typeof params?.maxPrice !== "undefined") {
       options.params.max_price = params.maxPrice;
     }
-    const endpoint = `pryzmatics/orderbook/summary`;
-    return await this.req.get<QueryOrderBookSummaryResponseSDKType>(endpoint, options);
+    const endpoint = `pryzmatics/seal/pair_summary`;
+    return await this.req.get<QuerySealPairSummaryResponseSDKType>(endpoint, options);
   }
-  /* OrderBookPairs */
-  async orderBookPairs(params: QueryOrderBookPairsRequest): Promise<QueryOrderBookPairsResponseSDKType> {
-    const options: any = {
-      params: {}
-    };
-    if (typeof params?.reservableOnly !== "undefined") {
-      options.params.reservable_only = params.reservableOnly;
-    }
-    if (typeof params?.pagination !== "undefined") {
-      setPaginationParams(options, params.pagination);
-    }
-    const endpoint = `pryzmatics/orderbook/pairs`;
-    return await this.req.get<QueryOrderBookPairsResponseSDKType>(endpoint, options);
-  }
-  /* OrderBookOrderFeed */
-  async orderBookOrderFeed(params: QueryOrderBookOrderFeedRequest): Promise<QueryOrderBookOrderFeedResponseSDKType> {
+  /* SealReservations */
+  async sealReservations(params: QuerySealReservationsRequest): Promise<QuerySealReservationsResponseSDKType> {
     const options: any = {
       params: {}
     };
@@ -1620,11 +1631,20 @@ export class LCDQueryClient {
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
-    const endpoint = `pryzmatics/orderbook/order/${params.orderId}/feed`;
-    return await this.req.get<QueryOrderBookOrderFeedResponseSDKType>(endpoint, options);
+    if (typeof params?.live !== "undefined") {
+      options.params.live = params.live;
+    }
+    if (typeof params?.orderId !== "undefined") {
+      options.params.order_id = params.orderId;
+    }
+    if (typeof params?.reserver !== "undefined") {
+      options.params.reserver = params.reserver;
+    }
+    const endpoint = `pryzmatics/seal/reservations`;
+    return await this.req.get<QuerySealReservationsResponseSDKType>(endpoint, options);
   }
-  /* OrderBookReservations */
-  async orderBookReservations(params: QueryOrderBookReservationsRequest): Promise<QueryOrderBookReservationsResponseSDKType> {
+  /* SealOrderActivities */
+  async sealOrderActivities(params: QuerySealOrderActivitiesRequest): Promise<QuerySealOrderActivitiesResponseSDKType> {
     const options: any = {
       params: {}
     };
@@ -1634,8 +1654,14 @@ export class LCDQueryClient {
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
-    const endpoint = `pryzmatics/orderbook/reservations`;
-    return await this.req.get<QueryOrderBookReservationsResponseSDKType>(endpoint, options);
+    if (typeof params?.orderId !== "undefined") {
+      options.params.order_id = params.orderId;
+    }
+    if (typeof params?.user !== "undefined") {
+      options.params.user = params.user;
+    }
+    const endpoint = `pryzmatics/seal/activities`;
+    return await this.req.get<QuerySealOrderActivitiesResponseSDKType>(endpoint, options);
   }
   /* DenomOwners */
   async denomOwners(params: DenomOwnersRequest): Promise<DenomOwnersResponseSDKType> {

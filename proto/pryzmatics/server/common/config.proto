@@ -41,7 +41,7 @@ message Contracts {
   string pryzm_nexus = 1;
   string y_launch_factory = 2;
   string p_vault_factory = 3;
-  string order_book = 4;
+  string seal = 4;
   string pryzm_photon_drop_claim1 = 5;
   string pryzm_photon_drop_claim2 = 6;
   string pryzm_stake_drop_claim = 7;

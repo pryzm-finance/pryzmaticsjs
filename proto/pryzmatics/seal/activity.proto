@@ -1,0 +1,129 @@
+syntax = "proto3";
+package pryzmatics.seal;
+
+import "cosmos/base/v1beta1/coin.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
+import "pryzmatics/seal/order.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/seal";
+
+message OrderActivity {
+  uint64 id = 1;
+  uint64 order_id = 2;
+  string actor = 3;
+  google.protobuf.Timestamp time = 4 [
+    (gogoproto.stdtime) = true,
+    (gogoproto.nullable) = false
+  ];
+  OrderActivityType type = 5;
+  string data = 6;
+  string tx_hash = 7;
+}
+
+message OrderActivityWithOrder {
+  OrderActivity activity = 1 [(gogoproto.nullable) = false];
+  Order order = 2 [(gogoproto.nullable) = false];
+}
+
+enum OrderActivityType {
+  ORDER_ACTIVITY_TYPE_UNSPECIFIED = 0;
+  ORDER_ACTIVITY_TYPE_SUBMITTED = 1;
+  ORDER_ACTIVITY_TYPE_CANCELED = 2;
+  ORDER_ACTIVITY_TYPE_EXPIRED = 3;
+  ORDER_ACTIVITY_TYPE_SETTLED = 4;
+  ORDER_ACTIVITY_TYPE_BOUGHT = 5;
+  ORDER_ACTIVITY_TYPE_RESERVED = 6;
+  ORDER_ACTIVITY_TYPE_RESERVATION_SETTLED = 7;
+  ORDER_ACTIVITY_TYPE_RESERVATION_EXPIRED = 8;
+  ORDER_ACTIVITY_TYPE_EXPIRED_RESERVATION_DEPOSIT_PAID = 9;
+}
+
+message OrderCancelledActivityData {
+  string cancelled_amount = 1 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  bool reservation_allowed = 2;
+}
+
+message OrderSettledActivityData {
+  string settled_amount = 1 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string received_amount = 2 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  cosmos.base.v1beta1.Coin fee = 3 [(gogoproto.nullable) = false];
+}
+
+message OrderBoughtActivityData {
+  string order_amount = 1 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string paid_amount = 2 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  cosmos.base.v1beta1.Coin maker_received = 3 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin buyer_received = 4 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin maker_fee = 5 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin buyer_fee = 6 [(gogoproto.nullable) = false];
+}
+
+message OrderReservedActivityData {
+  uint64 reservation_id = 1;
+  string amount = 2 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  google.protobuf.Timestamp expiration_time = 3 [
+    (gogoproto.stdtime) = true,
+    (gogoproto.nullable) = false
+  ];
+}
+
+message ReservationSettledActivityData {
+  uint64 reservation_id = 1;
+  string order_amount = 2 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string paid_amount = 3 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  cosmos.base.v1beta1.Coin maker_received = 4 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin reserver_received = 5 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin maker_fee = 6 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin reserver_fee = 7 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin deposit_payback = 8 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin protocol_deposit_payback = 9 [(gogoproto.nullable) = true];
+}
+
+message ReservationExpiredActivityData {
+  uint64 reservation_id = 1;
+}
+
+message ExpiredReservationDepositPaidActivityData {
+  uint64 reservation_id = 1;
+  string expired_amount = 2 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  cosmos.base.v1beta1.Coin paid_deposit = 3 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin paid_protocol_deposit = 4 [(gogoproto.nullable) = true];
+}

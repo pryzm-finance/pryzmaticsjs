@@ -1,0 +1,22 @@
+syntax = "proto3";
+package pryzmatics.server.seal;
+
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "pryzmatics/database/seal/activity.proto";
+import "pryzmatics/seal/activity.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/server/seal";
+
+message QuerySealOrderActivitiesRequest {
+  pryzmatics.database.seal.SealOrderActivityOrderBy order_by = 1 [(gogoproto.nullable) = true];
+  cosmos.base.query.v1beta1.PageRequest pagination = 2 [(gogoproto.nullable) = true];
+  uint64 order_id = 3;
+  string user = 4; // either the order owner or the actor
+}
+
+message QuerySealOrderActivitiesResponse {
+  repeated pryzmatics.seal.OrderActivityWithOrder activities = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}

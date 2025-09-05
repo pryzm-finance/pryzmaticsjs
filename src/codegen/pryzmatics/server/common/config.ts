@@ -162,7 +162,7 @@ export interface Contracts {
   pryzmNexus: string;
   yLaunchFactory: string;
   pVaultFactory: string;
-  orderBook: string;
+  seal: string;
   pryzmPhotonDropClaim1: string;
   pryzmPhotonDropClaim2: string;
   pryzmStakeDropClaim: string;
@@ -175,7 +175,7 @@ export interface ContractsAmino {
   pryzm_nexus?: string;
   y_launch_factory?: string;
   p_vault_factory?: string;
-  order_book?: string;
+  seal?: string;
   pryzm_photon_drop_claim1?: string;
   pryzm_photon_drop_claim2?: string;
   pryzm_stake_drop_claim?: string;
@@ -188,7 +188,7 @@ export interface ContractsSDKType {
   pryzm_nexus: string;
   y_launch_factory: string;
   p_vault_factory: string;
-  order_book: string;
+  seal: string;
   pryzm_photon_drop_claim1: string;
   pryzm_photon_drop_claim2: string;
   pryzm_stake_drop_claim: string;
@@ -1302,7 +1302,7 @@ function createBaseContracts(): Contracts {
     pryzmNexus: "",
     yLaunchFactory: "",
     pVaultFactory: "",
-    orderBook: "",
+    seal: "",
     pryzmPhotonDropClaim1: "",
     pryzmPhotonDropClaim2: "",
     pryzmStakeDropClaim: ""
@@ -1311,13 +1311,13 @@ function createBaseContracts(): Contracts {
 export const Contracts = {
   typeUrl: "/pryzmatics.server.common.Contracts",
   is(o: any): o is Contracts {
-    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzmNexus === "string" && typeof o.yLaunchFactory === "string" && typeof o.pVaultFactory === "string" && typeof o.orderBook === "string" && typeof o.pryzmPhotonDropClaim1 === "string" && typeof o.pryzmPhotonDropClaim2 === "string" && typeof o.pryzmStakeDropClaim === "string");
+    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzmNexus === "string" && typeof o.yLaunchFactory === "string" && typeof o.pVaultFactory === "string" && typeof o.seal === "string" && typeof o.pryzmPhotonDropClaim1 === "string" && typeof o.pryzmPhotonDropClaim2 === "string" && typeof o.pryzmStakeDropClaim === "string");
   },
   isSDK(o: any): o is ContractsSDKType {
-    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzm_nexus === "string" && typeof o.y_launch_factory === "string" && typeof o.p_vault_factory === "string" && typeof o.order_book === "string" && typeof o.pryzm_photon_drop_claim1 === "string" && typeof o.pryzm_photon_drop_claim2 === "string" && typeof o.pryzm_stake_drop_claim === "string");
+    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzm_nexus === "string" && typeof o.y_launch_factory === "string" && typeof o.p_vault_factory === "string" && typeof o.seal === "string" && typeof o.pryzm_photon_drop_claim1 === "string" && typeof o.pryzm_photon_drop_claim2 === "string" && typeof o.pryzm_stake_drop_claim === "string");
   },
   isAmino(o: any): o is ContractsAmino {
-    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzm_nexus === "string" && typeof o.y_launch_factory === "string" && typeof o.p_vault_factory === "string" && typeof o.order_book === "string" && typeof o.pryzm_photon_drop_claim1 === "string" && typeof o.pryzm_photon_drop_claim2 === "string" && typeof o.pryzm_stake_drop_claim === "string");
+    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzm_nexus === "string" && typeof o.y_launch_factory === "string" && typeof o.p_vault_factory === "string" && typeof o.seal === "string" && typeof o.pryzm_photon_drop_claim1 === "string" && typeof o.pryzm_photon_drop_claim2 === "string" && typeof o.pryzm_stake_drop_claim === "string");
   },
   encode(message: Contracts, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pryzmNexus !== "") {
@@ -1329,8 +1329,8 @@ export const Contracts = {
     if (message.pVaultFactory !== "") {
       writer.uint32(26).string(message.pVaultFactory);
     }
-    if (message.orderBook !== "") {
-      writer.uint32(34).string(message.orderBook);
+    if (message.seal !== "") {
+      writer.uint32(34).string(message.seal);
     }
     if (message.pryzmPhotonDropClaim1 !== "") {
       writer.uint32(42).string(message.pryzmPhotonDropClaim1);
@@ -1360,7 +1360,7 @@ export const Contracts = {
           message.pVaultFactory = reader.string();
           break;
         case 4:
-          message.orderBook = reader.string();
+          message.seal = reader.string();
           break;
         case 5:
           message.pryzmPhotonDropClaim1 = reader.string();
@@ -1383,7 +1383,7 @@ export const Contracts = {
       pryzmNexus: isSet(object.pryzmNexus) ? String(object.pryzmNexus) : "",
       yLaunchFactory: isSet(object.yLaunchFactory) ? String(object.yLaunchFactory) : "",
       pVaultFactory: isSet(object.pVaultFactory) ? String(object.pVaultFactory) : "",
-      orderBook: isSet(object.orderBook) ? String(object.orderBook) : "",
+      seal: isSet(object.seal) ? String(object.seal) : "",
       pryzmPhotonDropClaim1: isSet(object.pryzmPhotonDropClaim1) ? String(object.pryzmPhotonDropClaim1) : "",
       pryzmPhotonDropClaim2: isSet(object.pryzmPhotonDropClaim2) ? String(object.pryzmPhotonDropClaim2) : "",
       pryzmStakeDropClaim: isSet(object.pryzmStakeDropClaim) ? String(object.pryzmStakeDropClaim) : ""
@@ -1394,7 +1394,7 @@ export const Contracts = {
     message.pryzmNexus !== undefined && (obj.pryzmNexus = message.pryzmNexus);
     message.yLaunchFactory !== undefined && (obj.yLaunchFactory = message.yLaunchFactory);
     message.pVaultFactory !== undefined && (obj.pVaultFactory = message.pVaultFactory);
-    message.orderBook !== undefined && (obj.orderBook = message.orderBook);
+    message.seal !== undefined && (obj.seal = message.seal);
     message.pryzmPhotonDropClaim1 !== undefined && (obj.pryzmPhotonDropClaim1 = message.pryzmPhotonDropClaim1);
     message.pryzmPhotonDropClaim2 !== undefined && (obj.pryzmPhotonDropClaim2 = message.pryzmPhotonDropClaim2);
     message.pryzmStakeDropClaim !== undefined && (obj.pryzmStakeDropClaim = message.pryzmStakeDropClaim);
@@ -1405,7 +1405,7 @@ export const Contracts = {
     message.pryzmNexus = object.pryzmNexus ?? "";
     message.yLaunchFactory = object.yLaunchFactory ?? "";
     message.pVaultFactory = object.pVaultFactory ?? "";
-    message.orderBook = object.orderBook ?? "";
+    message.seal = object.seal ?? "";
     message.pryzmPhotonDropClaim1 = object.pryzmPhotonDropClaim1 ?? "";
     message.pryzmPhotonDropClaim2 = object.pryzmPhotonDropClaim2 ?? "";
     message.pryzmStakeDropClaim = object.pryzmStakeDropClaim ?? "";
@@ -1422,8 +1422,8 @@ export const Contracts = {
     if (object.p_vault_factory !== undefined && object.p_vault_factory !== null) {
       message.pVaultFactory = object.p_vault_factory;
     }
-    if (object.order_book !== undefined && object.order_book !== null) {
-      message.orderBook = object.order_book;
+    if (object.seal !== undefined && object.seal !== null) {
+      message.seal = object.seal;
     }
     if (object.pryzm_photon_drop_claim1 !== undefined && object.pryzm_photon_drop_claim1 !== null) {
       message.pryzmPhotonDropClaim1 = object.pryzm_photon_drop_claim1;
@@ -1441,7 +1441,7 @@ export const Contracts = {
     obj.pryzm_nexus = message.pryzmNexus === "" ? undefined : message.pryzmNexus;
     obj.y_launch_factory = message.yLaunchFactory === "" ? undefined : message.yLaunchFactory;
     obj.p_vault_factory = message.pVaultFactory === "" ? undefined : message.pVaultFactory;
-    obj.order_book = message.orderBook === "" ? undefined : message.orderBook;
+    obj.seal = message.seal === "" ? undefined : message.seal;
     obj.pryzm_photon_drop_claim1 = message.pryzmPhotonDropClaim1 === "" ? undefined : message.pryzmPhotonDropClaim1;
     obj.pryzm_photon_drop_claim2 = message.pryzmPhotonDropClaim2 === "" ? undefined : message.pryzmPhotonDropClaim2;
     obj.pryzm_stake_drop_claim = message.pryzmStakeDropClaim === "" ? undefined : message.pryzmStakeDropClaim;
