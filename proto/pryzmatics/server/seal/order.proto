@@ -17,6 +17,24 @@ message QuerySealOrdersRequest {
   string token_in = 5;
   string token_out = 6;
   string reservation_allowed = 7; // boolean, string type purpose is handling nullability
+  string min_price_margin = 8 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
+  string max_min_partial_matchable_amount = 9 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = true
+  ];
+  string reservation_deposit_denom = 10;
+  string max_reservation_deposit_per_stable = 11 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
+  // set to zero to disable limit
+  uint64 min_reservation_period_seconds = 12;
 }
 
 message QuerySealOrdersResponse {

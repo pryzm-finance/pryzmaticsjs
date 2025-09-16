@@ -45,6 +45,7 @@ message Contracts {
   string pryzm_photon_drop_claim1 = 5;
   string pryzm_photon_drop_claim2 = 6;
   string pryzm_stake_drop_claim = 7;
+  string pryzm_photon_drop_claim3 = 8;
 }
 
 message Incentives {

@@ -38,6 +38,7 @@ enum OrderActivityType {
   ORDER_ACTIVITY_TYPE_RESERVATION_SETTLED = 7;
   ORDER_ACTIVITY_TYPE_RESERVATION_EXPIRED = 8;
   ORDER_ACTIVITY_TYPE_EXPIRED_RESERVATION_DEPOSIT_PAID = 9;
+  ORDER_ACTIVITY_TYPE_EXPIRED_ORDER_REFUNDED = 10;
 }
 
 message OrderCancelledActivityData {
@@ -126,4 +127,12 @@ message ExpiredReservationDepositPaidActivityData {
   ];
   cosmos.base.v1beta1.Coin paid_deposit = 3 [(gogoproto.nullable) = false];
   cosmos.base.v1beta1.Coin paid_protocol_deposit = 4 [(gogoproto.nullable) = true];
+}
+
+message ExpiredOrderRefundedActivityData {
+  string amount = 1 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
 }

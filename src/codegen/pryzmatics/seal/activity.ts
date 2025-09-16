@@ -15,6 +15,7 @@ export enum OrderActivityType {
   ORDER_ACTIVITY_TYPE_RESERVATION_SETTLED = 7,
   ORDER_ACTIVITY_TYPE_RESERVATION_EXPIRED = 8,
   ORDER_ACTIVITY_TYPE_EXPIRED_RESERVATION_DEPOSIT_PAID = 9,
+  ORDER_ACTIVITY_TYPE_EXPIRED_ORDER_REFUNDED = 10,
   UNRECOGNIZED = -1,
 }
 export const OrderActivityTypeSDKType = OrderActivityType;
@@ -51,6 +52,9 @@ export function orderActivityTypeFromJSON(object: any): OrderActivityType {
     case 9:
     case "ORDER_ACTIVITY_TYPE_EXPIRED_RESERVATION_DEPOSIT_PAID":
       return OrderActivityType.ORDER_ACTIVITY_TYPE_EXPIRED_RESERVATION_DEPOSIT_PAID;
+    case 10:
+    case "ORDER_ACTIVITY_TYPE_EXPIRED_ORDER_REFUNDED":
+      return OrderActivityType.ORDER_ACTIVITY_TYPE_EXPIRED_ORDER_REFUNDED;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -79,6 +83,8 @@ export function orderActivityTypeToJSON(object: OrderActivityType): string {
       return "ORDER_ACTIVITY_TYPE_RESERVATION_EXPIRED";
     case OrderActivityType.ORDER_ACTIVITY_TYPE_EXPIRED_RESERVATION_DEPOSIT_PAID:
       return "ORDER_ACTIVITY_TYPE_EXPIRED_RESERVATION_DEPOSIT_PAID";
+    case OrderActivityType.ORDER_ACTIVITY_TYPE_EXPIRED_ORDER_REFUNDED:
+      return "ORDER_ACTIVITY_TYPE_EXPIRED_ORDER_REFUNDED";
     case OrderActivityType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -320,6 +326,23 @@ export interface ExpiredReservationDepositPaidActivityDataSDKType {
   expired_amount: string;
   paid_deposit: CoinSDKType;
   paid_protocol_deposit?: CoinSDKType;
+}
+export interface ExpiredOrderRefundedActivityData {
+  amount: string;
+}
+export interface ExpiredOrderRefundedActivityDataProtoMsg {
+  typeUrl: "/pryzmatics.seal.ExpiredOrderRefundedActivityData";
+  value: Uint8Array;
+}
+export interface ExpiredOrderRefundedActivityDataAmino {
+  amount?: string;
+}
+export interface ExpiredOrderRefundedActivityDataAminoMsg {
+  type: "/pryzmatics.seal.ExpiredOrderRefundedActivityData";
+  value: ExpiredOrderRefundedActivityDataAmino;
+}
+export interface ExpiredOrderRefundedActivityDataSDKType {
+  amount: string;
 }
 function createBaseOrderActivity(): OrderActivity {
   return {
@@ -1460,3 +1483,86 @@ export const ExpiredReservationDepositPaidActivityData = {
   }
 };
 GlobalDecoderRegistry.register(ExpiredReservationDepositPaidActivityData.typeUrl, ExpiredReservationDepositPaidActivityData);
+function createBaseExpiredOrderRefundedActivityData(): ExpiredOrderRefundedActivityData {
+  return {
+    amount: ""
+  };
+}
+export const ExpiredOrderRefundedActivityData = {
+  typeUrl: "/pryzmatics.seal.ExpiredOrderRefundedActivityData",
+  is(o: any): o is ExpiredOrderRefundedActivityData {
+    return o && (o.$typeUrl === ExpiredOrderRefundedActivityData.typeUrl || typeof o.amount === "string");
+  },
+  isSDK(o: any): o is ExpiredOrderRefundedActivityDataSDKType {
+    return o && (o.$typeUrl === ExpiredOrderRefundedActivityData.typeUrl || typeof o.amount === "string");
+  },
+  isAmino(o: any): o is ExpiredOrderRefundedActivityDataAmino {
+    return o && (o.$typeUrl === ExpiredOrderRefundedActivityData.typeUrl || typeof o.amount === "string");
+  },
+  encode(message: ExpiredOrderRefundedActivityData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.amount !== "") {
+      writer.uint32(10).string(message.amount);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): ExpiredOrderRefundedActivityData {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseExpiredOrderRefundedActivityData();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.amount = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): ExpiredOrderRefundedActivityData {
+    return {
+      amount: isSet(object.amount) ? String(object.amount) : ""
+    };
+  },
+  toJSON(message: ExpiredOrderRefundedActivityData): unknown {
+    const obj: any = {};
+    message.amount !== undefined && (obj.amount = message.amount);
+    return obj;
+  },
+  fromPartial(object: Partial<ExpiredOrderRefundedActivityData>): ExpiredOrderRefundedActivityData {
+    const message = createBaseExpiredOrderRefundedActivityData();
+    message.amount = object.amount ?? "";
+    return message;
+  },
+  fromAmino(object: ExpiredOrderRefundedActivityDataAmino): ExpiredOrderRefundedActivityData {
+    const message = createBaseExpiredOrderRefundedActivityData();
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    return message;
+  },
+  toAmino(message: ExpiredOrderRefundedActivityData, useInterfaces: boolean = true): ExpiredOrderRefundedActivityDataAmino {
+    const obj: any = {};
+    obj.amount = message.amount === "" ? undefined : message.amount;
+    return obj;
+  },
+  fromAminoMsg(object: ExpiredOrderRefundedActivityDataAminoMsg): ExpiredOrderRefundedActivityData {
+    return ExpiredOrderRefundedActivityData.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ExpiredOrderRefundedActivityDataProtoMsg, useInterfaces: boolean = true): ExpiredOrderRefundedActivityData {
+    return ExpiredOrderRefundedActivityData.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: ExpiredOrderRefundedActivityData): Uint8Array {
+    return ExpiredOrderRefundedActivityData.encode(message).finish();
+  },
+  toProtoMsg(message: ExpiredOrderRefundedActivityData): ExpiredOrderRefundedActivityDataProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.seal.ExpiredOrderRefundedActivityData",
+      value: ExpiredOrderRefundedActivityData.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(ExpiredOrderRefundedActivityData.typeUrl, ExpiredOrderRefundedActivityData);

@@ -1,8 +1,9 @@
 import { SealOrderActivityOrderBy, SealOrderActivityOrderByAmino, SealOrderActivityOrderBySDKType } from "../../database/seal/activity";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
-import { OrderActivityWithOrder, OrderActivityWithOrderAmino, OrderActivityWithOrderSDKType } from "../../seal/activity";
-import { BinaryReader, BinaryWriter } from "../../../binary";
+import { OrderActivityType, OrderActivityWithOrder, OrderActivityWithOrderAmino, OrderActivityWithOrderSDKType, OrderActivity, OrderActivityAmino, OrderActivitySDKType, orderActivityTypeFromJSON, orderActivityTypeToJSON } from "../../seal/activity";
+import { Order, OrderAmino, OrderSDKType } from "../../seal/order";
 import { isSet } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { GlobalDecoderRegistry } from "../../../registry";
 export interface QuerySealOrderActivitiesRequest {
   orderBy?: SealOrderActivityOrderBy;
@@ -10,6 +11,7 @@ export interface QuerySealOrderActivitiesRequest {
   orderId: bigint;
   /** either the order owner or the actor */
   user: string;
+  type: OrderActivityType;
 }
 export interface QuerySealOrderActivitiesRequestProtoMsg {
   typeUrl: "/pryzmatics.server.seal.QuerySealOrderActivitiesRequest";
@@ -21,6 +23,7 @@ export interface QuerySealOrderActivitiesRequestAmino {
   order_id?: string;
   /** either the order owner or the actor */
   user?: string;
+  type?: OrderActivityType;
 }
 export interface QuerySealOrderActivitiesRequestAminoMsg {
   type: "/pryzmatics.server.seal.QuerySealOrderActivitiesRequest";
@@ -31,6 +34,7 @@ export interface QuerySealOrderActivitiesRequestSDKType {
   pagination?: PageRequestSDKType;
   order_id: bigint;
   user: string;
+  type: OrderActivityType;
 }
 export interface QuerySealOrderActivitiesResponse {
   activities: OrderActivityWithOrder[];
@@ -52,24 +56,71 @@ export interface QuerySealOrderActivitiesResponseSDKType {
   activities: OrderActivityWithOrderSDKType[];
   pagination?: PageResponseSDKType;
 }
+export interface QuerySealReservationSettlementActivitiesRequest {
+  reservationId: bigint;
+  orderBy?: SealOrderActivityOrderBy;
+  pagination?: PageRequest;
+}
+export interface QuerySealReservationSettlementActivitiesRequestProtoMsg {
+  typeUrl: "/pryzmatics.server.seal.QuerySealReservationSettlementActivitiesRequest";
+  value: Uint8Array;
+}
+export interface QuerySealReservationSettlementActivitiesRequestAmino {
+  reservation_id?: string;
+  order_by?: SealOrderActivityOrderByAmino;
+  pagination?: PageRequestAmino;
+}
+export interface QuerySealReservationSettlementActivitiesRequestAminoMsg {
+  type: "/pryzmatics.server.seal.QuerySealReservationSettlementActivitiesRequest";
+  value: QuerySealReservationSettlementActivitiesRequestAmino;
+}
+export interface QuerySealReservationSettlementActivitiesRequestSDKType {
+  reservation_id: bigint;
+  order_by?: SealOrderActivityOrderBySDKType;
+  pagination?: PageRequestSDKType;
+}
+export interface QuerySealReservationSettlementActivitiesResponse {
+  activities: OrderActivity[];
+  order: Order;
+  pagination?: PageResponse;
+}
+export interface QuerySealReservationSettlementActivitiesResponseProtoMsg {
+  typeUrl: "/pryzmatics.server.seal.QuerySealReservationSettlementActivitiesResponse";
+  value: Uint8Array;
+}
+export interface QuerySealReservationSettlementActivitiesResponseAmino {
+  activities?: OrderActivityAmino[];
+  order?: OrderAmino;
+  pagination?: PageResponseAmino;
+}
+export interface QuerySealReservationSettlementActivitiesResponseAminoMsg {
+  type: "/pryzmatics.server.seal.QuerySealReservationSettlementActivitiesResponse";
+  value: QuerySealReservationSettlementActivitiesResponseAmino;
+}
+export interface QuerySealReservationSettlementActivitiesResponseSDKType {
+  activities: OrderActivitySDKType[];
+  order: OrderSDKType;
+  pagination?: PageResponseSDKType;
+}
 function createBaseQuerySealOrderActivitiesRequest(): QuerySealOrderActivitiesRequest {
   return {
     orderBy: undefined,
     pagination: undefined,
     orderId: BigInt(0),
-    user: ""
+    user: "",
+    type: 0
   };
 }
 export const QuerySealOrderActivitiesRequest = {
   typeUrl: "/pryzmatics.server.seal.QuerySealOrderActivitiesRequest",
   is(o: any): o is QuerySealOrderActivitiesRequest {
-    return o && (o.$typeUrl === QuerySealOrderActivitiesRequest.typeUrl || typeof o.orderId === "bigint" && typeof o.user === "string");
+    return o && (o.$typeUrl === QuerySealOrderActivitiesRequest.typeUrl || typeof o.orderId === "bigint" && typeof o.user === "string" && isSet(o.type));
   },
   isSDK(o: any): o is QuerySealOrderActivitiesRequestSDKType {
-    return o && (o.$typeUrl === QuerySealOrderActivitiesRequest.typeUrl || typeof o.order_id === "bigint" && typeof o.user === "string");
+    return o && (o.$typeUrl === QuerySealOrderActivitiesRequest.typeUrl || typeof o.order_id === "bigint" && typeof o.user === "string" && isSet(o.type));
   },
   isAmino(o: any): o is QuerySealOrderActivitiesRequestAmino {
-    return o && (o.$typeUrl === QuerySealOrderActivitiesRequest.typeUrl || typeof o.order_id === "bigint" && typeof o.user === "string");
+    return o && (o.$typeUrl === QuerySealOrderActivitiesRequest.typeUrl || typeof o.order_id === "bigint" && typeof o.user === "string" && isSet(o.type));
   },
   encode(message: QuerySealOrderActivitiesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.orderBy !== undefined) {
@@ -83,6 +134,9 @@ export const QuerySealOrderActivitiesRequest = {
     }
     if (message.user !== "") {
       writer.uint32(34).string(message.user);
+    }
+    if (message.type !== 0) {
+      writer.uint32(40).int32(message.type);
     }
     return writer;
   },
@@ -105,6 +159,9 @@ export const QuerySealOrderActivitiesRequest = {
         case 4:
           message.user = reader.string();
           break;
+        case 5:
+          message.type = (reader.int32() as any);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -117,7 +174,8 @@ export const QuerySealOrderActivitiesRequest = {
       orderBy: isSet(object.orderBy) ? SealOrderActivityOrderBy.fromJSON(object.orderBy) : undefined,
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
       orderId: isSet(object.orderId) ? BigInt(object.orderId.toString()) : BigInt(0),
-      user: isSet(object.user) ? String(object.user) : ""
+      user: isSet(object.user) ? String(object.user) : "",
+      type: isSet(object.type) ? orderActivityTypeFromJSON(object.type) : -1
     };
   },
   toJSON(message: QuerySealOrderActivitiesRequest): unknown {
@@ -126,6 +184,7 @@ export const QuerySealOrderActivitiesRequest = {
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.orderId !== undefined && (obj.orderId = (message.orderId || BigInt(0)).toString());
     message.user !== undefined && (obj.user = message.user);
+    message.type !== undefined && (obj.type = orderActivityTypeToJSON(message.type));
     return obj;
   },
   fromPartial(object: Partial<QuerySealOrderActivitiesRequest>): QuerySealOrderActivitiesRequest {
@@ -134,6 +193,7 @@ export const QuerySealOrderActivitiesRequest = {
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.orderId = object.orderId !== undefined && object.orderId !== null ? BigInt(object.orderId.toString()) : BigInt(0);
     message.user = object.user ?? "";
+    message.type = object.type ?? 0;
     return message;
   },
   fromAmino(object: QuerySealOrderActivitiesRequestAmino): QuerySealOrderActivitiesRequest {
@@ -150,6 +210,9 @@ export const QuerySealOrderActivitiesRequest = {
     if (object.user !== undefined && object.user !== null) {
       message.user = object.user;
     }
+    if (object.type !== undefined && object.type !== null) {
+      message.type = object.type;
+    }
     return message;
   },
   toAmino(message: QuerySealOrderActivitiesRequest, useInterfaces: boolean = true): QuerySealOrderActivitiesRequestAmino {
@@ -158,6 +221,7 @@ export const QuerySealOrderActivitiesRequest = {
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
     obj.order_id = message.orderId ? message.orderId.toString() : undefined;
     obj.user = message.user === "" ? undefined : message.user;
+    obj.type = message.type === 0 ? undefined : message.type;
     return obj;
   },
   fromAminoMsg(object: QuerySealOrderActivitiesRequestAminoMsg): QuerySealOrderActivitiesRequest {
@@ -280,3 +344,231 @@ export const QuerySealOrderActivitiesResponse = {
   }
 };
 GlobalDecoderRegistry.register(QuerySealOrderActivitiesResponse.typeUrl, QuerySealOrderActivitiesResponse);
+function createBaseQuerySealReservationSettlementActivitiesRequest(): QuerySealReservationSettlementActivitiesRequest {
+  return {
+    reservationId: BigInt(0),
+    orderBy: undefined,
+    pagination: undefined
+  };
+}
+export const QuerySealReservationSettlementActivitiesRequest = {
+  typeUrl: "/pryzmatics.server.seal.QuerySealReservationSettlementActivitiesRequest",
+  is(o: any): o is QuerySealReservationSettlementActivitiesRequest {
+    return o && (o.$typeUrl === QuerySealReservationSettlementActivitiesRequest.typeUrl || typeof o.reservationId === "bigint");
+  },
+  isSDK(o: any): o is QuerySealReservationSettlementActivitiesRequestSDKType {
+    return o && (o.$typeUrl === QuerySealReservationSettlementActivitiesRequest.typeUrl || typeof o.reservation_id === "bigint");
+  },
+  isAmino(o: any): o is QuerySealReservationSettlementActivitiesRequestAmino {
+    return o && (o.$typeUrl === QuerySealReservationSettlementActivitiesRequest.typeUrl || typeof o.reservation_id === "bigint");
+  },
+  encode(message: QuerySealReservationSettlementActivitiesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.reservationId !== BigInt(0)) {
+      writer.uint32(8).uint64(message.reservationId);
+    }
+    if (message.orderBy !== undefined) {
+      SealOrderActivityOrderBy.encode(message.orderBy, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QuerySealReservationSettlementActivitiesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySealReservationSettlementActivitiesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.reservationId = reader.uint64();
+          break;
+        case 2:
+          message.orderBy = SealOrderActivityOrderBy.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 3:
+          message.pagination = PageRequest.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySealReservationSettlementActivitiesRequest {
+    return {
+      reservationId: isSet(object.reservationId) ? BigInt(object.reservationId.toString()) : BigInt(0),
+      orderBy: isSet(object.orderBy) ? SealOrderActivityOrderBy.fromJSON(object.orderBy) : undefined,
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
+    };
+  },
+  toJSON(message: QuerySealReservationSettlementActivitiesRequest): unknown {
+    const obj: any = {};
+    message.reservationId !== undefined && (obj.reservationId = (message.reservationId || BigInt(0)).toString());
+    message.orderBy !== undefined && (obj.orderBy = message.orderBy ? SealOrderActivityOrderBy.toJSON(message.orderBy) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<QuerySealReservationSettlementActivitiesRequest>): QuerySealReservationSettlementActivitiesRequest {
+    const message = createBaseQuerySealReservationSettlementActivitiesRequest();
+    message.reservationId = object.reservationId !== undefined && object.reservationId !== null ? BigInt(object.reservationId.toString()) : BigInt(0);
+    message.orderBy = object.orderBy !== undefined && object.orderBy !== null ? SealOrderActivityOrderBy.fromPartial(object.orderBy) : undefined;
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    return message;
+  },
+  fromAmino(object: QuerySealReservationSettlementActivitiesRequestAmino): QuerySealReservationSettlementActivitiesRequest {
+    const message = createBaseQuerySealReservationSettlementActivitiesRequest();
+    if (object.reservation_id !== undefined && object.reservation_id !== null) {
+      message.reservationId = BigInt(object.reservation_id);
+    }
+    if (object.order_by !== undefined && object.order_by !== null) {
+      message.orderBy = SealOrderActivityOrderBy.fromAmino(object.order_by);
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QuerySealReservationSettlementActivitiesRequest, useInterfaces: boolean = true): QuerySealReservationSettlementActivitiesRequestAmino {
+    const obj: any = {};
+    obj.reservation_id = message.reservationId ? message.reservationId.toString() : undefined;
+    obj.order_by = message.orderBy ? SealOrderActivityOrderBy.toAmino(message.orderBy, useInterfaces) : undefined;
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySealReservationSettlementActivitiesRequestAminoMsg): QuerySealReservationSettlementActivitiesRequest {
+    return QuerySealReservationSettlementActivitiesRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySealReservationSettlementActivitiesRequestProtoMsg, useInterfaces: boolean = true): QuerySealReservationSettlementActivitiesRequest {
+    return QuerySealReservationSettlementActivitiesRequest.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QuerySealReservationSettlementActivitiesRequest): Uint8Array {
+    return QuerySealReservationSettlementActivitiesRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySealReservationSettlementActivitiesRequest): QuerySealReservationSettlementActivitiesRequestProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.seal.QuerySealReservationSettlementActivitiesRequest",
+      value: QuerySealReservationSettlementActivitiesRequest.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QuerySealReservationSettlementActivitiesRequest.typeUrl, QuerySealReservationSettlementActivitiesRequest);
+function createBaseQuerySealReservationSettlementActivitiesResponse(): QuerySealReservationSettlementActivitiesResponse {
+  return {
+    activities: [],
+    order: Order.fromPartial({}),
+    pagination: undefined
+  };
+}
+export const QuerySealReservationSettlementActivitiesResponse = {
+  typeUrl: "/pryzmatics.server.seal.QuerySealReservationSettlementActivitiesResponse",
+  is(o: any): o is QuerySealReservationSettlementActivitiesResponse {
+    return o && (o.$typeUrl === QuerySealReservationSettlementActivitiesResponse.typeUrl || Array.isArray(o.activities) && (!o.activities.length || OrderActivity.is(o.activities[0])) && Order.is(o.order));
+  },
+  isSDK(o: any): o is QuerySealReservationSettlementActivitiesResponseSDKType {
+    return o && (o.$typeUrl === QuerySealReservationSettlementActivitiesResponse.typeUrl || Array.isArray(o.activities) && (!o.activities.length || OrderActivity.isSDK(o.activities[0])) && Order.isSDK(o.order));
+  },
+  isAmino(o: any): o is QuerySealReservationSettlementActivitiesResponseAmino {
+    return o && (o.$typeUrl === QuerySealReservationSettlementActivitiesResponse.typeUrl || Array.isArray(o.activities) && (!o.activities.length || OrderActivity.isAmino(o.activities[0])) && Order.isAmino(o.order));
+  },
+  encode(message: QuerySealReservationSettlementActivitiesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    for (const v of message.activities) {
+      OrderActivity.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.order !== undefined) {
+      Order.encode(message.order, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QuerySealReservationSettlementActivitiesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySealReservationSettlementActivitiesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.activities.push(OrderActivity.decode(reader, reader.uint32(), useInterfaces));
+          break;
+        case 2:
+          message.order = Order.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        case 3:
+          message.pagination = PageResponse.decode(reader, reader.uint32(), useInterfaces);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySealReservationSettlementActivitiesResponse {
+    return {
+      activities: Array.isArray(object?.activities) ? object.activities.map((e: any) => OrderActivity.fromJSON(e)) : [],
+      order: isSet(object.order) ? Order.fromJSON(object.order) : undefined,
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
+    };
+  },
+  toJSON(message: QuerySealReservationSettlementActivitiesResponse): unknown {
+    const obj: any = {};
+    if (message.activities) {
+      obj.activities = message.activities.map(e => e ? OrderActivity.toJSON(e) : undefined);
+    } else {
+      obj.activities = [];
+    }
+    message.order !== undefined && (obj.order = message.order ? Order.toJSON(message.order) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<QuerySealReservationSettlementActivitiesResponse>): QuerySealReservationSettlementActivitiesResponse {
+    const message = createBaseQuerySealReservationSettlementActivitiesResponse();
+    message.activities = object.activities?.map(e => OrderActivity.fromPartial(e)) || [];
+    message.order = object.order !== undefined && object.order !== null ? Order.fromPartial(object.order) : undefined;
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
+    return message;
+  },
+  fromAmino(object: QuerySealReservationSettlementActivitiesResponseAmino): QuerySealReservationSettlementActivitiesResponse {
+    const message = createBaseQuerySealReservationSettlementActivitiesResponse();
+    message.activities = object.activities?.map(e => OrderActivity.fromAmino(e)) || [];
+    if (object.order !== undefined && object.order !== null) {
+      message.order = Order.fromAmino(object.order);
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QuerySealReservationSettlementActivitiesResponse, useInterfaces: boolean = true): QuerySealReservationSettlementActivitiesResponseAmino {
+    const obj: any = {};
+    if (message.activities) {
+      obj.activities = message.activities.map(e => e ? OrderActivity.toAmino(e, useInterfaces) : undefined);
+    } else {
+      obj.activities = message.activities;
+    }
+    obj.order = message.order ? Order.toAmino(message.order, useInterfaces) : undefined;
+    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination, useInterfaces) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySealReservationSettlementActivitiesResponseAminoMsg): QuerySealReservationSettlementActivitiesResponse {
+    return QuerySealReservationSettlementActivitiesResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySealReservationSettlementActivitiesResponseProtoMsg, useInterfaces: boolean = true): QuerySealReservationSettlementActivitiesResponse {
+    return QuerySealReservationSettlementActivitiesResponse.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QuerySealReservationSettlementActivitiesResponse): Uint8Array {
+    return QuerySealReservationSettlementActivitiesResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySealReservationSettlementActivitiesResponse): QuerySealReservationSettlementActivitiesResponseProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.seal.QuerySealReservationSettlementActivitiesResponse",
+      value: QuerySealReservationSettlementActivitiesResponse.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QuerySealReservationSettlementActivitiesResponse.typeUrl, QuerySealReservationSettlementActivitiesResponse);

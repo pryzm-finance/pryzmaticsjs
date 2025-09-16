@@ -68,7 +68,7 @@ import { QueryPurchaseSimulationRequest, QueryPurchaseSimulationResponseSDKType 
 import { QuerySealOrdersRequest, QuerySealOrdersResponseSDKType } from "./seal/order";
 import { QuerySealPairsRequest, QuerySealPairsResponseSDKType, QuerySealPairSummaryRequest, QuerySealPairSummaryResponseSDKType } from "./seal/pair";
 import { QuerySealReservationsRequest, QuerySealReservationsResponseSDKType } from "./seal/reservation";
-import { QuerySealOrderActivitiesRequest, QuerySealOrderActivitiesResponseSDKType } from "./seal/activity";
+import { QuerySealOrderActivitiesRequest, QuerySealOrderActivitiesResponseSDKType, QuerySealReservationSettlementActivitiesRequest, QuerySealReservationSettlementActivitiesResponseSDKType } from "./seal/activity";
 import { DenomOwnersRequest, DenomOwnersResponseSDKType } from "./bank/denom_owners";
 import { QueryContractInfoRequest, QueryContractInfoResponseSDKType } from "./wasm/contract_info";
 import { QueryCirculatingSupplyRequest, QueryCirculatingSupplyResponseSDKType } from "./thirdparty/coingecko/circulating_supply";
@@ -178,6 +178,7 @@ export class LCDQueryClient {
     this.sealPairSummary = this.sealPairSummary.bind(this);
     this.sealReservations = this.sealReservations.bind(this);
     this.sealOrderActivities = this.sealOrderActivities.bind(this);
+    this.sealReservationSettlementActivities = this.sealReservationSettlementActivities.bind(this);
     this.denomOwners = this.denomOwners.bind(this);
     this.contractInfo = this.contractInfo.bind(this);
     this.circulatingSupply = this.circulatingSupply.bind(this);
@@ -1580,6 +1581,21 @@ export class LCDQueryClient {
     if (typeof params?.reservationAllowed !== "undefined") {
       options.params.reservation_allowed = params.reservationAllowed;
     }
+    if (typeof params?.minPriceMargin !== "undefined") {
+      options.params.min_price_margin = params.minPriceMargin;
+    }
+    if (typeof params?.maxMinPartialMatchableAmount !== "undefined") {
+      options.params.max_min_partial_matchable_amount = params.maxMinPartialMatchableAmount;
+    }
+    if (typeof params?.reservationDepositDenom !== "undefined") {
+      options.params.reservation_deposit_denom = params.reservationDepositDenom;
+    }
+    if (typeof params?.maxReservationDepositPerStable !== "undefined") {
+      options.params.max_reservation_deposit_per_stable = params.maxReservationDepositPerStable;
+    }
+    if (typeof params?.minReservationPeriodSeconds !== "undefined") {
+      options.params.min_reservation_period_seconds = params.minReservationPeriodSeconds;
+    }
     const endpoint = `pryzmatics/seal/orders`;
     return await this.req.get<QuerySealOrdersResponseSDKType>(endpoint, options);
   }
@@ -1660,8 +1676,25 @@ export class LCDQueryClient {
     if (typeof params?.user !== "undefined") {
       options.params.user = params.user;
     }
+    if (typeof params?.type !== "undefined") {
+      options.params.type = params.type;
+    }
     const endpoint = `pryzmatics/seal/activities`;
     return await this.req.get<QuerySealOrderActivitiesResponseSDKType>(endpoint, options);
+  }
+  /* SealReservationSettlementActivities */
+  async sealReservationSettlementActivities(params: QuerySealReservationSettlementActivitiesRequest): Promise<QuerySealReservationSettlementActivitiesResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
+    }
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    const endpoint = `pryzmatics/seal/reservation_settlement_activities/${params.reservationId}`;
+    return await this.req.get<QuerySealReservationSettlementActivitiesResponseSDKType>(endpoint, options);
   }
   /* DenomOwners */
   async denomOwners(params: DenomOwnersRequest): Promise<DenomOwnersResponseSDKType> {

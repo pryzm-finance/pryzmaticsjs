@@ -166,6 +166,7 @@ export interface Contracts {
   pryzmPhotonDropClaim1: string;
   pryzmPhotonDropClaim2: string;
   pryzmStakeDropClaim: string;
+  pryzmPhotonDropClaim3: string;
 }
 export interface ContractsProtoMsg {
   typeUrl: "/pryzmatics.server.common.Contracts";
@@ -179,6 +180,7 @@ export interface ContractsAmino {
   pryzm_photon_drop_claim1?: string;
   pryzm_photon_drop_claim2?: string;
   pryzm_stake_drop_claim?: string;
+  pryzm_photon_drop_claim3?: string;
 }
 export interface ContractsAminoMsg {
   type: "/pryzmatics.server.common.Contracts";
@@ -192,6 +194,7 @@ export interface ContractsSDKType {
   pryzm_photon_drop_claim1: string;
   pryzm_photon_drop_claim2: string;
   pryzm_stake_drop_claim: string;
+  pryzm_photon_drop_claim3: string;
 }
 export interface Incentives {
   pools: IncentivesPool[];
@@ -1305,19 +1308,20 @@ function createBaseContracts(): Contracts {
     seal: "",
     pryzmPhotonDropClaim1: "",
     pryzmPhotonDropClaim2: "",
-    pryzmStakeDropClaim: ""
+    pryzmStakeDropClaim: "",
+    pryzmPhotonDropClaim3: ""
   };
 }
 export const Contracts = {
   typeUrl: "/pryzmatics.server.common.Contracts",
   is(o: any): o is Contracts {
-    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzmNexus === "string" && typeof o.yLaunchFactory === "string" && typeof o.pVaultFactory === "string" && typeof o.seal === "string" && typeof o.pryzmPhotonDropClaim1 === "string" && typeof o.pryzmPhotonDropClaim2 === "string" && typeof o.pryzmStakeDropClaim === "string");
+    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzmNexus === "string" && typeof o.yLaunchFactory === "string" && typeof o.pVaultFactory === "string" && typeof o.seal === "string" && typeof o.pryzmPhotonDropClaim1 === "string" && typeof o.pryzmPhotonDropClaim2 === "string" && typeof o.pryzmStakeDropClaim === "string" && typeof o.pryzmPhotonDropClaim3 === "string");
   },
   isSDK(o: any): o is ContractsSDKType {
-    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzm_nexus === "string" && typeof o.y_launch_factory === "string" && typeof o.p_vault_factory === "string" && typeof o.seal === "string" && typeof o.pryzm_photon_drop_claim1 === "string" && typeof o.pryzm_photon_drop_claim2 === "string" && typeof o.pryzm_stake_drop_claim === "string");
+    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzm_nexus === "string" && typeof o.y_launch_factory === "string" && typeof o.p_vault_factory === "string" && typeof o.seal === "string" && typeof o.pryzm_photon_drop_claim1 === "string" && typeof o.pryzm_photon_drop_claim2 === "string" && typeof o.pryzm_stake_drop_claim === "string" && typeof o.pryzm_photon_drop_claim3 === "string");
   },
   isAmino(o: any): o is ContractsAmino {
-    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzm_nexus === "string" && typeof o.y_launch_factory === "string" && typeof o.p_vault_factory === "string" && typeof o.seal === "string" && typeof o.pryzm_photon_drop_claim1 === "string" && typeof o.pryzm_photon_drop_claim2 === "string" && typeof o.pryzm_stake_drop_claim === "string");
+    return o && (o.$typeUrl === Contracts.typeUrl || typeof o.pryzm_nexus === "string" && typeof o.y_launch_factory === "string" && typeof o.p_vault_factory === "string" && typeof o.seal === "string" && typeof o.pryzm_photon_drop_claim1 === "string" && typeof o.pryzm_photon_drop_claim2 === "string" && typeof o.pryzm_stake_drop_claim === "string" && typeof o.pryzm_photon_drop_claim3 === "string");
   },
   encode(message: Contracts, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pryzmNexus !== "") {
@@ -1340,6 +1344,9 @@ export const Contracts = {
     }
     if (message.pryzmStakeDropClaim !== "") {
       writer.uint32(58).string(message.pryzmStakeDropClaim);
+    }
+    if (message.pryzmPhotonDropClaim3 !== "") {
+      writer.uint32(66).string(message.pryzmPhotonDropClaim3);
     }
     return writer;
   },
@@ -1371,6 +1378,9 @@ export const Contracts = {
         case 7:
           message.pryzmStakeDropClaim = reader.string();
           break;
+        case 8:
+          message.pryzmPhotonDropClaim3 = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1386,7 +1396,8 @@ export const Contracts = {
       seal: isSet(object.seal) ? String(object.seal) : "",
       pryzmPhotonDropClaim1: isSet(object.pryzmPhotonDropClaim1) ? String(object.pryzmPhotonDropClaim1) : "",
       pryzmPhotonDropClaim2: isSet(object.pryzmPhotonDropClaim2) ? String(object.pryzmPhotonDropClaim2) : "",
-      pryzmStakeDropClaim: isSet(object.pryzmStakeDropClaim) ? String(object.pryzmStakeDropClaim) : ""
+      pryzmStakeDropClaim: isSet(object.pryzmStakeDropClaim) ? String(object.pryzmStakeDropClaim) : "",
+      pryzmPhotonDropClaim3: isSet(object.pryzmPhotonDropClaim3) ? String(object.pryzmPhotonDropClaim3) : ""
     };
   },
   toJSON(message: Contracts): unknown {
@@ -1398,6 +1409,7 @@ export const Contracts = {
     message.pryzmPhotonDropClaim1 !== undefined && (obj.pryzmPhotonDropClaim1 = message.pryzmPhotonDropClaim1);
     message.pryzmPhotonDropClaim2 !== undefined && (obj.pryzmPhotonDropClaim2 = message.pryzmPhotonDropClaim2);
     message.pryzmStakeDropClaim !== undefined && (obj.pryzmStakeDropClaim = message.pryzmStakeDropClaim);
+    message.pryzmPhotonDropClaim3 !== undefined && (obj.pryzmPhotonDropClaim3 = message.pryzmPhotonDropClaim3);
     return obj;
   },
   fromPartial(object: Partial<Contracts>): Contracts {
@@ -1409,6 +1421,7 @@ export const Contracts = {
     message.pryzmPhotonDropClaim1 = object.pryzmPhotonDropClaim1 ?? "";
     message.pryzmPhotonDropClaim2 = object.pryzmPhotonDropClaim2 ?? "";
     message.pryzmStakeDropClaim = object.pryzmStakeDropClaim ?? "";
+    message.pryzmPhotonDropClaim3 = object.pryzmPhotonDropClaim3 ?? "";
     return message;
   },
   fromAmino(object: ContractsAmino): Contracts {
@@ -1434,6 +1447,9 @@ export const Contracts = {
     if (object.pryzm_stake_drop_claim !== undefined && object.pryzm_stake_drop_claim !== null) {
       message.pryzmStakeDropClaim = object.pryzm_stake_drop_claim;
     }
+    if (object.pryzm_photon_drop_claim3 !== undefined && object.pryzm_photon_drop_claim3 !== null) {
+      message.pryzmPhotonDropClaim3 = object.pryzm_photon_drop_claim3;
+    }
     return message;
   },
   toAmino(message: Contracts, useInterfaces: boolean = true): ContractsAmino {
@@ -1445,6 +1461,7 @@ export const Contracts = {
     obj.pryzm_photon_drop_claim1 = message.pryzmPhotonDropClaim1 === "" ? undefined : message.pryzmPhotonDropClaim1;
     obj.pryzm_photon_drop_claim2 = message.pryzmPhotonDropClaim2 === "" ? undefined : message.pryzmPhotonDropClaim2;
     obj.pryzm_stake_drop_claim = message.pryzmStakeDropClaim === "" ? undefined : message.pryzmStakeDropClaim;
+    obj.pryzm_photon_drop_claim3 = message.pryzmPhotonDropClaim3 === "" ? undefined : message.pryzmPhotonDropClaim3;
     return obj;
   },
   fromAminoMsg(object: ContractsAminoMsg): Contracts {

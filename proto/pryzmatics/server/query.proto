@@ -505,6 +505,10 @@ service Query {
     option (google.api.http).get = "/pryzmatics/seal/activities";
   }
 
+  rpc SealReservationSettlementActivities(pryzmatics.server.seal.QuerySealReservationSettlementActivitiesRequest) returns (pryzmatics.server.seal.QuerySealReservationSettlementActivitiesResponse) {
+    option (google.api.http).get = "/pryzmatics/seal/reservation_settlement_activities/{reservation_id}";
+  }
+
   rpc DenomOwners(pryzmatics.server.bank.DenomOwnersRequest) returns (pryzmatics.server.bank.DenomOwnersResponse) {
     option (google.api.http).get = "/pryzmatics/denom_owners/{denom}";
   }

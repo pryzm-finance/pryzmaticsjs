@@ -5,6 +5,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "pryzmatics/database/seal/activity.proto";
 import "pryzmatics/seal/activity.proto";
+import "pryzmatics/seal/order.proto";
 import "cosmos_proto/cosmos.proto";
 
 option go_package = "github.com/pryzm-finance/pryzmatics/server/seal";
@@ -14,9 +15,22 @@ message QuerySealOrderActivitiesRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 2 [(gogoproto.nullable) = true];
   uint64 order_id = 3;
   string user = 4; // either the order owner or the actor
+  pryzmatics.seal.OrderActivityType type = 5;
 }
 
 message QuerySealOrderActivitiesResponse {
   repeated pryzmatics.seal.OrderActivityWithOrder activities = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2 [(gogoproto.nullable) = true];
+}
+
+message QuerySealReservationSettlementActivitiesRequest {
+  uint64 reservation_id = 1;
+  pryzmatics.database.seal.SealOrderActivityOrderBy order_by = 2 [(gogoproto.nullable) = true];
+  cosmos.base.query.v1beta1.PageRequest pagination = 3 [(gogoproto.nullable) = true];
+}
+
+message QuerySealReservationSettlementActivitiesResponse {
+  repeated pryzmatics.seal.OrderActivity activities = 1 [(gogoproto.nullable) = false];
+  pryzmatics.seal.Order order = 2 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 3 [(gogoproto.nullable) = true];
 }
