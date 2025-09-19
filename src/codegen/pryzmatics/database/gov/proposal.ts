@@ -2,7 +2,8 @@ import { isSet } from "../../../helpers";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { GlobalDecoderRegistry } from "../../../registry";
 export enum ProposalOrderByProperty {
-  ORDER_BY_PROPERTY_VOTING_END_TIME = 0,
+  ORDER_BY_PROPERTY_PROPOSAL_ID = 0,
+  ORDER_BY_PROPERTY_VOTING_END_TIME = 1,
   UNRECOGNIZED = -1,
 }
 export const ProposalOrderByPropertySDKType = ProposalOrderByProperty;
@@ -10,6 +11,9 @@ export const ProposalOrderByPropertyAmino = ProposalOrderByProperty;
 export function proposalOrderByPropertyFromJSON(object: any): ProposalOrderByProperty {
   switch (object) {
     case 0:
+    case "ORDER_BY_PROPERTY_PROPOSAL_ID":
+      return ProposalOrderByProperty.ORDER_BY_PROPERTY_PROPOSAL_ID;
+    case 1:
     case "ORDER_BY_PROPERTY_VOTING_END_TIME":
       return ProposalOrderByProperty.ORDER_BY_PROPERTY_VOTING_END_TIME;
     case -1:
@@ -20,6 +24,8 @@ export function proposalOrderByPropertyFromJSON(object: any): ProposalOrderByPro
 }
 export function proposalOrderByPropertyToJSON(object: ProposalOrderByProperty): string {
   switch (object) {
+    case ProposalOrderByProperty.ORDER_BY_PROPERTY_PROPOSAL_ID:
+      return "ORDER_BY_PROPERTY_PROPOSAL_ID";
     case ProposalOrderByProperty.ORDER_BY_PROPERTY_VOTING_END_TIME:
       return "ORDER_BY_PROPERTY_VOTING_END_TIME";
     case ProposalOrderByProperty.UNRECOGNIZED:

@@ -3,8 +3,7 @@ package pryzmatics.server.seal;
 
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
-import "pryzmatics/database/seal/order.proto";
-import "pryzmatics/seal/order.proto";
+import "pryzmatics/database/seal/pair.proto";
 import "pryzmatics/seal/pair.proto";
 import "cosmos_proto/cosmos.proto";
 
@@ -15,6 +14,8 @@ message QuerySealPairsRequest {
   bool reservable_only = 2;
   string token_in = 3;
   string token_out = 4;
+  bool exclude_empty = 5;
+  pryzmatics.database.seal.SealPairOrderBy order_by = 6 [(gogoproto.nullable) = true];
 }
 
 message QuerySealPairsResponse {

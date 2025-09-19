@@ -7,7 +7,8 @@ option go_package = "github.com/pryzm-finance/pryzmatics/types/database/gov";
 
 enum ProposalOrderByProperty {
   option (gogoproto.goproto_enum_prefix) = false;
-  ORDER_BY_PROPERTY_VOTING_END_TIME = 0;
+  ORDER_BY_PROPERTY_PROPOSAL_ID = 0;
+  ORDER_BY_PROPERTY_VOTING_END_TIME = 1;
 }
 
 message ProposalOrderBy {

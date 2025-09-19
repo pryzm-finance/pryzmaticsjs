@@ -1,0 +1,16 @@
+syntax = "proto3";
+package pryzmatics.database.seal;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/pryzm-finance/pryzmatics/types/database/seal";
+
+enum SealPairOrderByProperty {
+  option (gogoproto.goproto_enum_prefix) = false;
+  ORDER_BY_PROPERTY_PAIR_TOTAL_COUNT = 0;
+}
+
+message SealPairOrderBy {
+  SealPairOrderByProperty property = 1;
+  bool descending = 2;
+}

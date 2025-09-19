@@ -1596,6 +1596,9 @@ export class LCDQueryClient {
     if (typeof params?.minReservationPeriodSeconds !== "undefined") {
       options.params.min_reservation_period_seconds = params.minReservationPeriodSeconds;
     }
+    if (typeof params?.minRemainingAmountStableTerms !== "undefined") {
+      options.params.min_remaining_amount_stable_terms = params.minRemainingAmountStableTerms;
+    }
     const endpoint = `pryzmatics/seal/orders`;
     return await this.req.get<QuerySealOrdersResponseSDKType>(endpoint, options);
   }
@@ -1615,6 +1618,12 @@ export class LCDQueryClient {
     }
     if (typeof params?.tokenOut !== "undefined") {
       options.params.token_out = params.tokenOut;
+    }
+    if (typeof params?.excludeEmpty !== "undefined") {
+      options.params.exclude_empty = params.excludeEmpty;
+    }
+    if (typeof params?.orderBy !== "undefined") {
+      options.params.order_by = params.orderBy;
     }
     const endpoint = `pryzmatics/seal/pairs`;
     return await this.req.get<QuerySealPairsResponseSDKType>(endpoint, options);

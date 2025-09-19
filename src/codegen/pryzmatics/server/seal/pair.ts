@@ -1,4 +1,5 @@
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
+import { SealPairOrderBy, SealPairOrderByAmino, SealPairOrderBySDKType } from "../../database/seal/pair";
 import { PairInfo, PairInfoAmino, PairInfoSDKType } from "../../seal/pair";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, padDecimal } from "../../../helpers";
@@ -9,6 +10,8 @@ export interface QuerySealPairsRequest {
   reservableOnly: boolean;
   tokenIn: string;
   tokenOut: string;
+  excludeEmpty: boolean;
+  orderBy?: SealPairOrderBy;
 }
 export interface QuerySealPairsRequestProtoMsg {
   typeUrl: "/pryzmatics.server.seal.QuerySealPairsRequest";
@@ -19,6 +22,8 @@ export interface QuerySealPairsRequestAmino {
   reservable_only?: boolean;
   token_in?: string;
   token_out?: string;
+  exclude_empty?: boolean;
+  order_by?: SealPairOrderByAmino;
 }
 export interface QuerySealPairsRequestAminoMsg {
   type: "/pryzmatics.server.seal.QuerySealPairsRequest";
@@ -29,6 +34,8 @@ export interface QuerySealPairsRequestSDKType {
   reservable_only: boolean;
   token_in: string;
   token_out: string;
+  exclude_empty: boolean;
+  order_by?: SealPairOrderBySDKType;
 }
 export interface QuerySealPairsResponse {
   pairs: PairInfo[];
@@ -95,19 +102,21 @@ function createBaseQuerySealPairsRequest(): QuerySealPairsRequest {
     pagination: undefined,
     reservableOnly: false,
     tokenIn: "",
-    tokenOut: ""
+    tokenOut: "",
+    excludeEmpty: false,
+    orderBy: undefined
   };
 }
 export const QuerySealPairsRequest = {
   typeUrl: "/pryzmatics.server.seal.QuerySealPairsRequest",
   is(o: any): o is QuerySealPairsRequest {
-    return o && (o.$typeUrl === QuerySealPairsRequest.typeUrl || typeof o.reservableOnly === "boolean" && typeof o.tokenIn === "string" && typeof o.tokenOut === "string");
+    return o && (o.$typeUrl === QuerySealPairsRequest.typeUrl || typeof o.reservableOnly === "boolean" && typeof o.tokenIn === "string" && typeof o.tokenOut === "string" && typeof o.excludeEmpty === "boolean");
   },
   isSDK(o: any): o is QuerySealPairsRequestSDKType {
-    return o && (o.$typeUrl === QuerySealPairsRequest.typeUrl || typeof o.reservable_only === "boolean" && typeof o.token_in === "string" && typeof o.token_out === "string");
+    return o && (o.$typeUrl === QuerySealPairsRequest.typeUrl || typeof o.reservable_only === "boolean" && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.exclude_empty === "boolean");
   },
   isAmino(o: any): o is QuerySealPairsRequestAmino {
-    return o && (o.$typeUrl === QuerySealPairsRequest.typeUrl || typeof o.reservable_only === "boolean" && typeof o.token_in === "string" && typeof o.token_out === "string");
+    return o && (o.$typeUrl === QuerySealPairsRequest.typeUrl || typeof o.reservable_only === "boolean" && typeof o.token_in === "string" && typeof o.token_out === "string" && typeof o.exclude_empty === "boolean");
   },
   encode(message: QuerySealPairsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
@@ -121,6 +130,12 @@ export const QuerySealPairsRequest = {
     }
     if (message.tokenOut !== "") {
       writer.uint32(34).string(message.tokenOut);
+    }
+    if (message.excludeEmpty === true) {
+      writer.uint32(40).bool(message.excludeEmpty);
+    }
+    if (message.orderBy !== undefined) {
+      SealPairOrderBy.encode(message.orderBy, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -143,6 +158,12 @@ export const QuerySealPairsRequest = {
         case 4:
           message.tokenOut = reader.string();
           break;
+        case 5:
+          message.excludeEmpty = reader.bool();
+          break;
+        case 6:
+          message.orderBy = SealPairOrderBy.decode(reader, reader.uint32(), useInterfaces);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -155,7 +176,9 @@ export const QuerySealPairsRequest = {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
       reservableOnly: isSet(object.reservableOnly) ? Boolean(object.reservableOnly) : false,
       tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
-      tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : ""
+      tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : "",
+      excludeEmpty: isSet(object.excludeEmpty) ? Boolean(object.excludeEmpty) : false,
+      orderBy: isSet(object.orderBy) ? SealPairOrderBy.fromJSON(object.orderBy) : undefined
     };
   },
   toJSON(message: QuerySealPairsRequest): unknown {
@@ -164,6 +187,8 @@ export const QuerySealPairsRequest = {
     message.reservableOnly !== undefined && (obj.reservableOnly = message.reservableOnly);
     message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
     message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
+    message.excludeEmpty !== undefined && (obj.excludeEmpty = message.excludeEmpty);
+    message.orderBy !== undefined && (obj.orderBy = message.orderBy ? SealPairOrderBy.toJSON(message.orderBy) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QuerySealPairsRequest>): QuerySealPairsRequest {
@@ -172,6 +197,8 @@ export const QuerySealPairsRequest = {
     message.reservableOnly = object.reservableOnly ?? false;
     message.tokenIn = object.tokenIn ?? "";
     message.tokenOut = object.tokenOut ?? "";
+    message.excludeEmpty = object.excludeEmpty ?? false;
+    message.orderBy = object.orderBy !== undefined && object.orderBy !== null ? SealPairOrderBy.fromPartial(object.orderBy) : undefined;
     return message;
   },
   fromAmino(object: QuerySealPairsRequestAmino): QuerySealPairsRequest {
@@ -188,6 +215,12 @@ export const QuerySealPairsRequest = {
     if (object.token_out !== undefined && object.token_out !== null) {
       message.tokenOut = object.token_out;
     }
+    if (object.exclude_empty !== undefined && object.exclude_empty !== null) {
+      message.excludeEmpty = object.exclude_empty;
+    }
+    if (object.order_by !== undefined && object.order_by !== null) {
+      message.orderBy = SealPairOrderBy.fromAmino(object.order_by);
+    }
     return message;
   },
   toAmino(message: QuerySealPairsRequest, useInterfaces: boolean = true): QuerySealPairsRequestAmino {
@@ -196,6 +229,8 @@ export const QuerySealPairsRequest = {
     obj.reservable_only = message.reservableOnly === false ? undefined : message.reservableOnly;
     obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
     obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
+    obj.exclude_empty = message.excludeEmpty === false ? undefined : message.excludeEmpty;
+    obj.order_by = message.orderBy ? SealPairOrderBy.toAmino(message.orderBy, useInterfaces) : undefined;
     return obj;
   },
   fromAminoMsg(object: QuerySealPairsRequestAminoMsg): QuerySealPairsRequest {

@@ -35,6 +35,11 @@ message QuerySealOrdersRequest {
   ];
   // set to zero to disable limit
   uint64 min_reservation_period_seconds = 12;
+  string min_remaining_amount_stable_terms = 13 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
 }
 
 message QuerySealOrdersResponse {
