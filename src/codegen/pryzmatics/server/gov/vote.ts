@@ -9,6 +9,7 @@ export interface QueryProposalVotesRequest {
   voter: string;
   orderBy?: ProposalVoteOrderBy;
   pagination?: PageRequest;
+  excludeVoters: string[];
 }
 export interface QueryProposalVotesRequestProtoMsg {
   typeUrl: "/pryzmatics.server.gov.QueryProposalVotesRequest";
@@ -19,6 +20,7 @@ export interface QueryProposalVotesRequestAmino {
   voter?: string;
   order_by?: ProposalVoteOrderByAmino;
   pagination?: PageRequestAmino;
+  exclude_voters?: string[];
 }
 export interface QueryProposalVotesRequestAminoMsg {
   type: "/pryzmatics.server.gov.QueryProposalVotesRequest";
@@ -29,6 +31,7 @@ export interface QueryProposalVotesRequestSDKType {
   voter: string;
   order_by?: ProposalVoteOrderBySDKType;
   pagination?: PageRequestSDKType;
+  exclude_voters: string[];
 }
 export interface QueryProposalVotesResponse {
   votes: ProposalVote[];
@@ -55,19 +58,20 @@ function createBaseQueryProposalVotesRequest(): QueryProposalVotesRequest {
     proposalId: BigInt(0),
     voter: "",
     orderBy: undefined,
-    pagination: undefined
+    pagination: undefined,
+    excludeVoters: []
   };
 }
 export const QueryProposalVotesRequest = {
   typeUrl: "/pryzmatics.server.gov.QueryProposalVotesRequest",
   is(o: any): o is QueryProposalVotesRequest {
-    return o && (o.$typeUrl === QueryProposalVotesRequest.typeUrl || typeof o.proposalId === "bigint" && typeof o.voter === "string");
+    return o && (o.$typeUrl === QueryProposalVotesRequest.typeUrl || typeof o.proposalId === "bigint" && typeof o.voter === "string" && Array.isArray(o.excludeVoters) && (!o.excludeVoters.length || typeof o.excludeVoters[0] === "string"));
   },
   isSDK(o: any): o is QueryProposalVotesRequestSDKType {
-    return o && (o.$typeUrl === QueryProposalVotesRequest.typeUrl || typeof o.proposal_id === "bigint" && typeof o.voter === "string");
+    return o && (o.$typeUrl === QueryProposalVotesRequest.typeUrl || typeof o.proposal_id === "bigint" && typeof o.voter === "string" && Array.isArray(o.exclude_voters) && (!o.exclude_voters.length || typeof o.exclude_voters[0] === "string"));
   },
   isAmino(o: any): o is QueryProposalVotesRequestAmino {
-    return o && (o.$typeUrl === QueryProposalVotesRequest.typeUrl || typeof o.proposal_id === "bigint" && typeof o.voter === "string");
+    return o && (o.$typeUrl === QueryProposalVotesRequest.typeUrl || typeof o.proposal_id === "bigint" && typeof o.voter === "string" && Array.isArray(o.exclude_voters) && (!o.exclude_voters.length || typeof o.exclude_voters[0] === "string"));
   },
   encode(message: QueryProposalVotesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
@@ -81,6 +85,9 @@ export const QueryProposalVotesRequest = {
     }
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.excludeVoters) {
+      writer.uint32(42).string(v!);
     }
     return writer;
   },
@@ -103,6 +110,9 @@ export const QueryProposalVotesRequest = {
         case 4:
           message.pagination = PageRequest.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 5:
+          message.excludeVoters.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -115,7 +125,8 @@ export const QueryProposalVotesRequest = {
       proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt(0),
       voter: isSet(object.voter) ? String(object.voter) : "",
       orderBy: isSet(object.orderBy) ? ProposalVoteOrderBy.fromJSON(object.orderBy) : undefined,
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
+      excludeVoters: Array.isArray(object?.excludeVoters) ? object.excludeVoters.map((e: any) => String(e)) : []
     };
   },
   toJSON(message: QueryProposalVotesRequest): unknown {
@@ -124,6 +135,11 @@ export const QueryProposalVotesRequest = {
     message.voter !== undefined && (obj.voter = message.voter);
     message.orderBy !== undefined && (obj.orderBy = message.orderBy ? ProposalVoteOrderBy.toJSON(message.orderBy) : undefined);
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    if (message.excludeVoters) {
+      obj.excludeVoters = message.excludeVoters.map(e => e);
+    } else {
+      obj.excludeVoters = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<QueryProposalVotesRequest>): QueryProposalVotesRequest {
@@ -132,6 +148,7 @@ export const QueryProposalVotesRequest = {
     message.voter = object.voter ?? "";
     message.orderBy = object.orderBy !== undefined && object.orderBy !== null ? ProposalVoteOrderBy.fromPartial(object.orderBy) : undefined;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    message.excludeVoters = object.excludeVoters?.map(e => e) || [];
     return message;
   },
   fromAmino(object: QueryProposalVotesRequestAmino): QueryProposalVotesRequest {
@@ -148,6 +165,7 @@ export const QueryProposalVotesRequest = {
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
+    message.excludeVoters = object.exclude_voters?.map(e => e) || [];
     return message;
   },
   toAmino(message: QueryProposalVotesRequest, useInterfaces: boolean = true): QueryProposalVotesRequestAmino {
@@ -156,6 +174,11 @@ export const QueryProposalVotesRequest = {
     obj.voter = message.voter === "" ? undefined : message.voter;
     obj.order_by = message.orderBy ? ProposalVoteOrderBy.toAmino(message.orderBy, useInterfaces) : undefined;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination, useInterfaces) : undefined;
+    if (message.excludeVoters) {
+      obj.exclude_voters = message.excludeVoters.map(e => e);
+    } else {
+      obj.exclude_voters = message.excludeVoters;
+    }
     return obj;
   },
   fromAminoMsg(object: QueryProposalVotesRequestAminoMsg): QueryProposalVotesRequest {

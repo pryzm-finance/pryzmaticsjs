@@ -1442,6 +1442,9 @@ export class LCDQueryClient {
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
+    if (typeof params?.excludeVoters !== "undefined") {
+      options.params.exclude_voters = params.excludeVoters;
+    }
     const endpoint = `pryzmatics/gov/vote/${params.proposalId}`;
     return await this.req.get<QueryProposalVotesResponseSDKType>(endpoint, options);
   }

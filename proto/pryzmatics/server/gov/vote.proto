@@ -16,6 +16,7 @@ message QueryProposalVotesRequest {
   string voter = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
   pryzmatics.database.gov.ProposalVoteOrderBy order_by = 3 [(gogoproto.nullable) = true];
   cosmos.base.query.v1beta1.PageRequest pagination = 4 [(gogoproto.nullable) = true];
+  repeated string exclude_voters = 5;
 }
 
 message QueryProposalVotesResponse {
