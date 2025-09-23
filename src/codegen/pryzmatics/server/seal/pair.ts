@@ -97,6 +97,52 @@ export interface QuerySealPairSummaryResponseAminoMsg {
 export interface QuerySealPairSummaryResponseSDKType {
   reservable_volume: string;
 }
+export interface QuerySealPairPriceRequest {
+  tokenIn: string;
+  tokenOut: string;
+}
+export interface QuerySealPairPriceRequestProtoMsg {
+  typeUrl: "/pryzmatics.server.seal.QuerySealPairPriceRequest";
+  value: Uint8Array;
+}
+export interface QuerySealPairPriceRequestAmino {
+  token_in?: string;
+  token_out?: string;
+}
+export interface QuerySealPairPriceRequestAminoMsg {
+  type: "/pryzmatics.server.seal.QuerySealPairPriceRequest";
+  value: QuerySealPairPriceRequestAmino;
+}
+export interface QuerySealPairPriceRequestSDKType {
+  token_in: string;
+  token_out: string;
+}
+export interface QuerySealPairPriceResponse {
+  tokenInPrice?: string;
+  tokenOutPrice?: string;
+  tokenInPriceInTermsOfTokenOut?: string;
+  tokenOutPriceInTermsOfTokenIn?: string;
+}
+export interface QuerySealPairPriceResponseProtoMsg {
+  typeUrl: "/pryzmatics.server.seal.QuerySealPairPriceResponse";
+  value: Uint8Array;
+}
+export interface QuerySealPairPriceResponseAmino {
+  token_in_price?: string;
+  token_out_price?: string;
+  token_in_price_in_terms_of_token_out?: string;
+  token_out_price_in_terms_of_token_in?: string;
+}
+export interface QuerySealPairPriceResponseAminoMsg {
+  type: "/pryzmatics.server.seal.QuerySealPairPriceResponse";
+  value: QuerySealPairPriceResponseAmino;
+}
+export interface QuerySealPairPriceResponseSDKType {
+  token_in_price?: string;
+  token_out_price?: string;
+  token_in_price_in_terms_of_token_out?: string;
+  token_out_price_in_terms_of_token_in?: string;
+}
 function createBaseQuerySealPairsRequest(): QuerySealPairsRequest {
   return {
     pagination: undefined,
@@ -547,3 +593,225 @@ export const QuerySealPairSummaryResponse = {
   }
 };
 GlobalDecoderRegistry.register(QuerySealPairSummaryResponse.typeUrl, QuerySealPairSummaryResponse);
+function createBaseQuerySealPairPriceRequest(): QuerySealPairPriceRequest {
+  return {
+    tokenIn: "",
+    tokenOut: ""
+  };
+}
+export const QuerySealPairPriceRequest = {
+  typeUrl: "/pryzmatics.server.seal.QuerySealPairPriceRequest",
+  is(o: any): o is QuerySealPairPriceRequest {
+    return o && (o.$typeUrl === QuerySealPairPriceRequest.typeUrl || typeof o.tokenIn === "string" && typeof o.tokenOut === "string");
+  },
+  isSDK(o: any): o is QuerySealPairPriceRequestSDKType {
+    return o && (o.$typeUrl === QuerySealPairPriceRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string");
+  },
+  isAmino(o: any): o is QuerySealPairPriceRequestAmino {
+    return o && (o.$typeUrl === QuerySealPairPriceRequest.typeUrl || typeof o.token_in === "string" && typeof o.token_out === "string");
+  },
+  encode(message: QuerySealPairPriceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.tokenIn !== "") {
+      writer.uint32(10).string(message.tokenIn);
+    }
+    if (message.tokenOut !== "") {
+      writer.uint32(18).string(message.tokenOut);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QuerySealPairPriceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySealPairPriceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tokenIn = reader.string();
+          break;
+        case 2:
+          message.tokenOut = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySealPairPriceRequest {
+    return {
+      tokenIn: isSet(object.tokenIn) ? String(object.tokenIn) : "",
+      tokenOut: isSet(object.tokenOut) ? String(object.tokenOut) : ""
+    };
+  },
+  toJSON(message: QuerySealPairPriceRequest): unknown {
+    const obj: any = {};
+    message.tokenIn !== undefined && (obj.tokenIn = message.tokenIn);
+    message.tokenOut !== undefined && (obj.tokenOut = message.tokenOut);
+    return obj;
+  },
+  fromPartial(object: Partial<QuerySealPairPriceRequest>): QuerySealPairPriceRequest {
+    const message = createBaseQuerySealPairPriceRequest();
+    message.tokenIn = object.tokenIn ?? "";
+    message.tokenOut = object.tokenOut ?? "";
+    return message;
+  },
+  fromAmino(object: QuerySealPairPriceRequestAmino): QuerySealPairPriceRequest {
+    const message = createBaseQuerySealPairPriceRequest();
+    if (object.token_in !== undefined && object.token_in !== null) {
+      message.tokenIn = object.token_in;
+    }
+    if (object.token_out !== undefined && object.token_out !== null) {
+      message.tokenOut = object.token_out;
+    }
+    return message;
+  },
+  toAmino(message: QuerySealPairPriceRequest, useInterfaces: boolean = true): QuerySealPairPriceRequestAmino {
+    const obj: any = {};
+    obj.token_in = message.tokenIn === "" ? undefined : message.tokenIn;
+    obj.token_out = message.tokenOut === "" ? undefined : message.tokenOut;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySealPairPriceRequestAminoMsg): QuerySealPairPriceRequest {
+    return QuerySealPairPriceRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySealPairPriceRequestProtoMsg, useInterfaces: boolean = true): QuerySealPairPriceRequest {
+    return QuerySealPairPriceRequest.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QuerySealPairPriceRequest): Uint8Array {
+    return QuerySealPairPriceRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySealPairPriceRequest): QuerySealPairPriceRequestProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.seal.QuerySealPairPriceRequest",
+      value: QuerySealPairPriceRequest.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QuerySealPairPriceRequest.typeUrl, QuerySealPairPriceRequest);
+function createBaseQuerySealPairPriceResponse(): QuerySealPairPriceResponse {
+  return {
+    tokenInPrice: undefined,
+    tokenOutPrice: undefined,
+    tokenInPriceInTermsOfTokenOut: undefined,
+    tokenOutPriceInTermsOfTokenIn: undefined
+  };
+}
+export const QuerySealPairPriceResponse = {
+  typeUrl: "/pryzmatics.server.seal.QuerySealPairPriceResponse",
+  is(o: any): o is QuerySealPairPriceResponse {
+    return o && o.$typeUrl === QuerySealPairPriceResponse.typeUrl;
+  },
+  isSDK(o: any): o is QuerySealPairPriceResponseSDKType {
+    return o && o.$typeUrl === QuerySealPairPriceResponse.typeUrl;
+  },
+  isAmino(o: any): o is QuerySealPairPriceResponseAmino {
+    return o && o.$typeUrl === QuerySealPairPriceResponse.typeUrl;
+  },
+  encode(message: QuerySealPairPriceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.tokenInPrice !== undefined) {
+      writer.uint32(10).string(Decimal.fromUserInput(message.tokenInPrice, 18).atomics);
+    }
+    if (message.tokenOutPrice !== undefined) {
+      writer.uint32(18).string(Decimal.fromUserInput(message.tokenOutPrice, 18).atomics);
+    }
+    if (message.tokenInPriceInTermsOfTokenOut !== undefined) {
+      writer.uint32(26).string(Decimal.fromUserInput(message.tokenInPriceInTermsOfTokenOut, 18).atomics);
+    }
+    if (message.tokenOutPriceInTermsOfTokenIn !== undefined) {
+      writer.uint32(34).string(Decimal.fromUserInput(message.tokenOutPriceInTermsOfTokenIn, 18).atomics);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QuerySealPairPriceResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySealPairPriceResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tokenInPrice = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 2:
+          message.tokenOutPrice = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 3:
+          message.tokenInPriceInTermsOfTokenOut = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        case 4:
+          message.tokenOutPriceInTermsOfTokenIn = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySealPairPriceResponse {
+    return {
+      tokenInPrice: isSet(object.tokenInPrice) ? String(object.tokenInPrice) : undefined,
+      tokenOutPrice: isSet(object.tokenOutPrice) ? String(object.tokenOutPrice) : undefined,
+      tokenInPriceInTermsOfTokenOut: isSet(object.tokenInPriceInTermsOfTokenOut) ? String(object.tokenInPriceInTermsOfTokenOut) : undefined,
+      tokenOutPriceInTermsOfTokenIn: isSet(object.tokenOutPriceInTermsOfTokenIn) ? String(object.tokenOutPriceInTermsOfTokenIn) : undefined
+    };
+  },
+  toJSON(message: QuerySealPairPriceResponse): unknown {
+    const obj: any = {};
+    message.tokenInPrice !== undefined && (obj.tokenInPrice = message.tokenInPrice);
+    message.tokenOutPrice !== undefined && (obj.tokenOutPrice = message.tokenOutPrice);
+    message.tokenInPriceInTermsOfTokenOut !== undefined && (obj.tokenInPriceInTermsOfTokenOut = message.tokenInPriceInTermsOfTokenOut);
+    message.tokenOutPriceInTermsOfTokenIn !== undefined && (obj.tokenOutPriceInTermsOfTokenIn = message.tokenOutPriceInTermsOfTokenIn);
+    return obj;
+  },
+  fromPartial(object: Partial<QuerySealPairPriceResponse>): QuerySealPairPriceResponse {
+    const message = createBaseQuerySealPairPriceResponse();
+    message.tokenInPrice = object.tokenInPrice ?? undefined;
+    message.tokenOutPrice = object.tokenOutPrice ?? undefined;
+    message.tokenInPriceInTermsOfTokenOut = object.tokenInPriceInTermsOfTokenOut ?? undefined;
+    message.tokenOutPriceInTermsOfTokenIn = object.tokenOutPriceInTermsOfTokenIn ?? undefined;
+    return message;
+  },
+  fromAmino(object: QuerySealPairPriceResponseAmino): QuerySealPairPriceResponse {
+    const message = createBaseQuerySealPairPriceResponse();
+    if (object.token_in_price !== undefined && object.token_in_price !== null) {
+      message.tokenInPrice = object.token_in_price;
+    }
+    if (object.token_out_price !== undefined && object.token_out_price !== null) {
+      message.tokenOutPrice = object.token_out_price;
+    }
+    if (object.token_in_price_in_terms_of_token_out !== undefined && object.token_in_price_in_terms_of_token_out !== null) {
+      message.tokenInPriceInTermsOfTokenOut = object.token_in_price_in_terms_of_token_out;
+    }
+    if (object.token_out_price_in_terms_of_token_in !== undefined && object.token_out_price_in_terms_of_token_in !== null) {
+      message.tokenOutPriceInTermsOfTokenIn = object.token_out_price_in_terms_of_token_in;
+    }
+    return message;
+  },
+  toAmino(message: QuerySealPairPriceResponse, useInterfaces: boolean = true): QuerySealPairPriceResponseAmino {
+    const obj: any = {};
+    obj.token_in_price = padDecimal(message.tokenInPrice) === null ? undefined : padDecimal(message.tokenInPrice);
+    obj.token_out_price = padDecimal(message.tokenOutPrice) === null ? undefined : padDecimal(message.tokenOutPrice);
+    obj.token_in_price_in_terms_of_token_out = padDecimal(message.tokenInPriceInTermsOfTokenOut) === null ? undefined : padDecimal(message.tokenInPriceInTermsOfTokenOut);
+    obj.token_out_price_in_terms_of_token_in = padDecimal(message.tokenOutPriceInTermsOfTokenIn) === null ? undefined : padDecimal(message.tokenOutPriceInTermsOfTokenIn);
+    return obj;
+  },
+  fromAminoMsg(object: QuerySealPairPriceResponseAminoMsg): QuerySealPairPriceResponse {
+    return QuerySealPairPriceResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySealPairPriceResponseProtoMsg, useInterfaces: boolean = true): QuerySealPairPriceResponse {
+    return QuerySealPairPriceResponse.decode(message.value, undefined, useInterfaces);
+  },
+  toProto(message: QuerySealPairPriceResponse): Uint8Array {
+    return QuerySealPairPriceResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySealPairPriceResponse): QuerySealPairPriceResponseProtoMsg {
+    return {
+      typeUrl: "/pryzmatics.server.seal.QuerySealPairPriceResponse",
+      value: QuerySealPairPriceResponse.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(QuerySealPairPriceResponse.typeUrl, QuerySealPairPriceResponse);

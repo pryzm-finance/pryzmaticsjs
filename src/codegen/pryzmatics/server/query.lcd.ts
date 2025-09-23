@@ -66,7 +66,7 @@ import { QueryUserPryzmClaimHistoryRequest, QueryUserPryzmClaimHistoryResponseSD
 import { QueryPVaultContractsRequest, QueryPVaultContractsResponseSDKType } from "./pvault/contracts";
 import { QueryPurchaseSimulationRequest, QueryPurchaseSimulationResponseSDKType } from "./pvault/purchase_simulation";
 import { QuerySealOrdersRequest, QuerySealOrdersResponseSDKType } from "./seal/order";
-import { QuerySealPairsRequest, QuerySealPairsResponseSDKType, QuerySealPairSummaryRequest, QuerySealPairSummaryResponseSDKType } from "./seal/pair";
+import { QuerySealPairsRequest, QuerySealPairsResponseSDKType, QuerySealPairSummaryRequest, QuerySealPairSummaryResponseSDKType, QuerySealPairPriceRequest, QuerySealPairPriceResponseSDKType } from "./seal/pair";
 import { QuerySealReservationsRequest, QuerySealReservationsResponseSDKType } from "./seal/reservation";
 import { QuerySealOrderActivitiesRequest, QuerySealOrderActivitiesResponseSDKType, QuerySealReservationSettlementActivitiesRequest, QuerySealReservationSettlementActivitiesResponseSDKType } from "./seal/activity";
 import { DenomOwnersRequest, DenomOwnersResponseSDKType } from "./bank/denom_owners";
@@ -179,6 +179,7 @@ export class LCDQueryClient {
     this.sealReservations = this.sealReservations.bind(this);
     this.sealOrderActivities = this.sealOrderActivities.bind(this);
     this.sealReservationSettlementActivities = this.sealReservationSettlementActivities.bind(this);
+    this.sealPairPrice = this.sealPairPrice.bind(this);
     this.denomOwners = this.denomOwners.bind(this);
     this.contractInfo = this.contractInfo.bind(this);
     this.circulatingSupply = this.circulatingSupply.bind(this);
@@ -1704,6 +1705,20 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/seal/reservation_settlement_activities/${params.reservationId}`;
     return await this.req.get<QuerySealReservationSettlementActivitiesResponseSDKType>(endpoint, options);
+  }
+  /* SealPairPrice */
+  async sealPairPrice(params: QuerySealPairPriceRequest): Promise<QuerySealPairPriceResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.tokenIn !== "undefined") {
+      options.params.token_in = params.tokenIn;
+    }
+    if (typeof params?.tokenOut !== "undefined") {
+      options.params.token_out = params.tokenOut;
+    }
+    const endpoint = `pryzmatics/seal/pair_price`;
+    return await this.req.get<QuerySealPairPriceResponseSDKType>(endpoint, options);
   }
   /* DenomOwners */
   async denomOwners(params: DenomOwnersRequest): Promise<DenomOwnersResponseSDKType> {
