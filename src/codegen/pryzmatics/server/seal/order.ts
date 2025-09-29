@@ -22,6 +22,7 @@ export interface QuerySealOrdersRequest {
   /** set to zero to disable limit */
   minReservationPeriodSeconds: bigint;
   minRemainingAmountStableTerms?: string;
+  minRemainingAmount?: string;
 }
 export interface QuerySealOrdersRequestProtoMsg {
   typeUrl: "/pryzmatics.server.seal.QuerySealOrdersRequest";
@@ -44,6 +45,7 @@ export interface QuerySealOrdersRequestAmino {
   /** set to zero to disable limit */
   min_reservation_period_seconds?: string;
   min_remaining_amount_stable_terms?: string;
+  min_remaining_amount?: string;
 }
 export interface QuerySealOrdersRequestAminoMsg {
   type: "/pryzmatics.server.seal.QuerySealOrdersRequest";
@@ -63,6 +65,7 @@ export interface QuerySealOrdersRequestSDKType {
   max_reservation_deposit_per_stable?: string;
   min_reservation_period_seconds: bigint;
   min_remaining_amount_stable_terms?: string;
+  min_remaining_amount?: string;
 }
 export interface QuerySealOrdersResponse {
   orders: OrderInfo[];
@@ -98,7 +101,8 @@ function createBaseQuerySealOrdersRequest(): QuerySealOrdersRequest {
     reservationDepositDenom: "",
     maxReservationDepositPerStable: undefined,
     minReservationPeriodSeconds: BigInt(0),
-    minRemainingAmountStableTerms: undefined
+    minRemainingAmountStableTerms: undefined,
+    minRemainingAmount: undefined
   };
 }
 export const QuerySealOrdersRequest = {
@@ -152,6 +156,9 @@ export const QuerySealOrdersRequest = {
     if (message.minRemainingAmountStableTerms !== undefined) {
       writer.uint32(106).string(Decimal.fromUserInput(message.minRemainingAmountStableTerms, 18).atomics);
     }
+    if (message.minRemainingAmount !== undefined) {
+      writer.uint32(114).string(message.minRemainingAmount);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QuerySealOrdersRequest {
@@ -200,6 +207,9 @@ export const QuerySealOrdersRequest = {
         case 13:
           message.minRemainingAmountStableTerms = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
+        case 14:
+          message.minRemainingAmount = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -221,7 +231,8 @@ export const QuerySealOrdersRequest = {
       reservationDepositDenom: isSet(object.reservationDepositDenom) ? String(object.reservationDepositDenom) : "",
       maxReservationDepositPerStable: isSet(object.maxReservationDepositPerStable) ? String(object.maxReservationDepositPerStable) : undefined,
       minReservationPeriodSeconds: isSet(object.minReservationPeriodSeconds) ? BigInt(object.minReservationPeriodSeconds.toString()) : BigInt(0),
-      minRemainingAmountStableTerms: isSet(object.minRemainingAmountStableTerms) ? String(object.minRemainingAmountStableTerms) : undefined
+      minRemainingAmountStableTerms: isSet(object.minRemainingAmountStableTerms) ? String(object.minRemainingAmountStableTerms) : undefined,
+      minRemainingAmount: isSet(object.minRemainingAmount) ? String(object.minRemainingAmount) : undefined
     };
   },
   toJSON(message: QuerySealOrdersRequest): unknown {
@@ -239,6 +250,7 @@ export const QuerySealOrdersRequest = {
     message.maxReservationDepositPerStable !== undefined && (obj.maxReservationDepositPerStable = message.maxReservationDepositPerStable);
     message.minReservationPeriodSeconds !== undefined && (obj.minReservationPeriodSeconds = (message.minReservationPeriodSeconds || BigInt(0)).toString());
     message.minRemainingAmountStableTerms !== undefined && (obj.minRemainingAmountStableTerms = message.minRemainingAmountStableTerms);
+    message.minRemainingAmount !== undefined && (obj.minRemainingAmount = message.minRemainingAmount);
     return obj;
   },
   fromPartial(object: Partial<QuerySealOrdersRequest>): QuerySealOrdersRequest {
@@ -256,6 +268,7 @@ export const QuerySealOrdersRequest = {
     message.maxReservationDepositPerStable = object.maxReservationDepositPerStable ?? undefined;
     message.minReservationPeriodSeconds = object.minReservationPeriodSeconds !== undefined && object.minReservationPeriodSeconds !== null ? BigInt(object.minReservationPeriodSeconds.toString()) : BigInt(0);
     message.minRemainingAmountStableTerms = object.minRemainingAmountStableTerms ?? undefined;
+    message.minRemainingAmount = object.minRemainingAmount ?? undefined;
     return message;
   },
   fromAmino(object: QuerySealOrdersRequestAmino): QuerySealOrdersRequest {
@@ -299,6 +312,9 @@ export const QuerySealOrdersRequest = {
     if (object.min_remaining_amount_stable_terms !== undefined && object.min_remaining_amount_stable_terms !== null) {
       message.minRemainingAmountStableTerms = object.min_remaining_amount_stable_terms;
     }
+    if (object.min_remaining_amount !== undefined && object.min_remaining_amount !== null) {
+      message.minRemainingAmount = object.min_remaining_amount;
+    }
     return message;
   },
   toAmino(message: QuerySealOrdersRequest, useInterfaces: boolean = true): QuerySealOrdersRequestAmino {
@@ -316,6 +332,7 @@ export const QuerySealOrdersRequest = {
     obj.max_reservation_deposit_per_stable = padDecimal(message.maxReservationDepositPerStable) === null ? undefined : padDecimal(message.maxReservationDepositPerStable);
     obj.min_reservation_period_seconds = message.minReservationPeriodSeconds ? message.minReservationPeriodSeconds.toString() : undefined;
     obj.min_remaining_amount_stable_terms = padDecimal(message.minRemainingAmountStableTerms) === null ? undefined : padDecimal(message.minRemainingAmountStableTerms);
+    obj.min_remaining_amount = message.minRemainingAmount === null ? undefined : message.minRemainingAmount;
     return obj;
   },
   fromAminoMsg(object: QuerySealOrdersRequestAminoMsg): QuerySealOrdersRequest {

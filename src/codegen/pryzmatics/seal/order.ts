@@ -83,6 +83,7 @@ export interface OrderInfo {
   tokenInPriceUpdateTime?: Timestamp;
   tokenOutPrice?: string;
   tokenOutPriceUpdateTime?: Timestamp;
+  priceMargin?: string;
 }
 export interface OrderInfoProtoMsg {
   typeUrl: "/pryzmatics.seal.OrderInfo";
@@ -94,6 +95,7 @@ export interface OrderInfoAmino {
   token_in_price_update_time?: string;
   token_out_price?: string;
   token_out_price_update_time?: string;
+  price_margin?: string;
 }
 export interface OrderInfoAminoMsg {
   type: "/pryzmatics.seal.OrderInfo";
@@ -105,6 +107,7 @@ export interface OrderInfoSDKType {
   token_in_price_update_time?: TimestampSDKType;
   token_out_price?: string;
   token_out_price_update_time?: TimestampSDKType;
+  price_margin?: string;
 }
 function createBaseOrder(): Order {
   return {
@@ -461,7 +464,8 @@ function createBaseOrderInfo(): OrderInfo {
     tokenInPrice: undefined,
     tokenInPriceUpdateTime: undefined,
     tokenOutPrice: undefined,
-    tokenOutPriceUpdateTime: undefined
+    tokenOutPriceUpdateTime: undefined,
+    priceMargin: undefined
   };
 }
 export const OrderInfo = {
@@ -491,6 +495,9 @@ export const OrderInfo = {
     if (message.tokenOutPriceUpdateTime !== undefined) {
       Timestamp.encode(message.tokenOutPriceUpdateTime, writer.uint32(42).fork()).ldelim();
     }
+    if (message.priceMargin !== undefined) {
+      writer.uint32(50).string(Decimal.fromUserInput(message.priceMargin, 18).atomics);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): OrderInfo {
@@ -515,6 +522,9 @@ export const OrderInfo = {
         case 5:
           message.tokenOutPriceUpdateTime = Timestamp.decode(reader, reader.uint32());
           break;
+        case 6:
+          message.priceMargin = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -528,7 +538,8 @@ export const OrderInfo = {
       tokenInPrice: isSet(object.tokenInPrice) ? String(object.tokenInPrice) : undefined,
       tokenInPriceUpdateTime: isSet(object.tokenInPriceUpdateTime) ? fromJsonTimestamp(object.tokenInPriceUpdateTime) : undefined,
       tokenOutPrice: isSet(object.tokenOutPrice) ? String(object.tokenOutPrice) : undefined,
-      tokenOutPriceUpdateTime: isSet(object.tokenOutPriceUpdateTime) ? fromJsonTimestamp(object.tokenOutPriceUpdateTime) : undefined
+      tokenOutPriceUpdateTime: isSet(object.tokenOutPriceUpdateTime) ? fromJsonTimestamp(object.tokenOutPriceUpdateTime) : undefined,
+      priceMargin: isSet(object.priceMargin) ? String(object.priceMargin) : undefined
     };
   },
   toJSON(message: OrderInfo): unknown {
@@ -538,6 +549,7 @@ export const OrderInfo = {
     message.tokenInPriceUpdateTime !== undefined && (obj.tokenInPriceUpdateTime = fromTimestamp(message.tokenInPriceUpdateTime).toISOString());
     message.tokenOutPrice !== undefined && (obj.tokenOutPrice = message.tokenOutPrice);
     message.tokenOutPriceUpdateTime !== undefined && (obj.tokenOutPriceUpdateTime = fromTimestamp(message.tokenOutPriceUpdateTime).toISOString());
+    message.priceMargin !== undefined && (obj.priceMargin = message.priceMargin);
     return obj;
   },
   fromPartial(object: Partial<OrderInfo>): OrderInfo {
@@ -547,6 +559,7 @@ export const OrderInfo = {
     message.tokenInPriceUpdateTime = object.tokenInPriceUpdateTime !== undefined && object.tokenInPriceUpdateTime !== null ? Timestamp.fromPartial(object.tokenInPriceUpdateTime) : undefined;
     message.tokenOutPrice = object.tokenOutPrice ?? undefined;
     message.tokenOutPriceUpdateTime = object.tokenOutPriceUpdateTime !== undefined && object.tokenOutPriceUpdateTime !== null ? Timestamp.fromPartial(object.tokenOutPriceUpdateTime) : undefined;
+    message.priceMargin = object.priceMargin ?? undefined;
     return message;
   },
   fromAmino(object: OrderInfoAmino): OrderInfo {
@@ -566,6 +579,9 @@ export const OrderInfo = {
     if (object.token_out_price_update_time !== undefined && object.token_out_price_update_time !== null) {
       message.tokenOutPriceUpdateTime = Timestamp.fromAmino(object.token_out_price_update_time);
     }
+    if (object.price_margin !== undefined && object.price_margin !== null) {
+      message.priceMargin = object.price_margin;
+    }
     return message;
   },
   toAmino(message: OrderInfo, useInterfaces: boolean = true): OrderInfoAmino {
@@ -575,6 +591,7 @@ export const OrderInfo = {
     obj.token_in_price_update_time = message.tokenInPriceUpdateTime ? Timestamp.toAmino(message.tokenInPriceUpdateTime, useInterfaces) : undefined;
     obj.token_out_price = padDecimal(message.tokenOutPrice) === null ? undefined : padDecimal(message.tokenOutPrice);
     obj.token_out_price_update_time = message.tokenOutPriceUpdateTime ? Timestamp.toAmino(message.tokenOutPriceUpdateTime, useInterfaces) : undefined;
+    obj.price_margin = padDecimal(message.priceMargin) === null ? undefined : padDecimal(message.priceMargin);
     return obj;
   },
   fromAminoMsg(object: OrderInfoAminoMsg): OrderInfo {

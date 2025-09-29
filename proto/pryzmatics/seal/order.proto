@@ -92,4 +92,9 @@ message OrderInfo {
     (gogoproto.stdtime) = true,
     (gogoproto.nullable) = true
   ];
+  string price_margin = 6 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
 }

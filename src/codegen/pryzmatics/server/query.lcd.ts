@@ -1603,6 +1603,9 @@ export class LCDQueryClient {
     if (typeof params?.minRemainingAmountStableTerms !== "undefined") {
       options.params.min_remaining_amount_stable_terms = params.minRemainingAmountStableTerms;
     }
+    if (typeof params?.minRemainingAmount !== "undefined") {
+      options.params.min_remaining_amount = params.minRemainingAmount;
+    }
     const endpoint = `pryzmatics/seal/orders`;
     return await this.req.get<QuerySealOrdersResponseSDKType>(endpoint, options);
   }
