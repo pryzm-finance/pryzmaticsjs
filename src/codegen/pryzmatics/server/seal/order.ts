@@ -23,6 +23,7 @@ export interface QuerySealOrdersRequest {
   minReservationPeriodSeconds: bigint;
   minRemainingAmountStableTerms?: string;
   minRemainingAmount?: string;
+  maxPriceMargin?: string;
 }
 export interface QuerySealOrdersRequestProtoMsg {
   typeUrl: "/pryzmatics.server.seal.QuerySealOrdersRequest";
@@ -46,6 +47,7 @@ export interface QuerySealOrdersRequestAmino {
   min_reservation_period_seconds?: string;
   min_remaining_amount_stable_terms?: string;
   min_remaining_amount?: string;
+  max_price_margin?: string;
 }
 export interface QuerySealOrdersRequestAminoMsg {
   type: "/pryzmatics.server.seal.QuerySealOrdersRequest";
@@ -66,6 +68,7 @@ export interface QuerySealOrdersRequestSDKType {
   min_reservation_period_seconds: bigint;
   min_remaining_amount_stable_terms?: string;
   min_remaining_amount?: string;
+  max_price_margin?: string;
 }
 export interface QuerySealOrdersResponse {
   orders: OrderInfo[];
@@ -102,7 +105,8 @@ function createBaseQuerySealOrdersRequest(): QuerySealOrdersRequest {
     maxReservationDepositPerStable: undefined,
     minReservationPeriodSeconds: BigInt(0),
     minRemainingAmountStableTerms: undefined,
-    minRemainingAmount: undefined
+    minRemainingAmount: undefined,
+    maxPriceMargin: undefined
   };
 }
 export const QuerySealOrdersRequest = {
@@ -159,6 +163,9 @@ export const QuerySealOrdersRequest = {
     if (message.minRemainingAmount !== undefined) {
       writer.uint32(114).string(message.minRemainingAmount);
     }
+    if (message.maxPriceMargin !== undefined) {
+      writer.uint32(122).string(Decimal.fromUserInput(message.maxPriceMargin, 18).atomics);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QuerySealOrdersRequest {
@@ -210,6 +217,9 @@ export const QuerySealOrdersRequest = {
         case 14:
           message.minRemainingAmount = reader.string();
           break;
+        case 15:
+          message.maxPriceMargin = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -232,7 +242,8 @@ export const QuerySealOrdersRequest = {
       maxReservationDepositPerStable: isSet(object.maxReservationDepositPerStable) ? String(object.maxReservationDepositPerStable) : undefined,
       minReservationPeriodSeconds: isSet(object.minReservationPeriodSeconds) ? BigInt(object.minReservationPeriodSeconds.toString()) : BigInt(0),
       minRemainingAmountStableTerms: isSet(object.minRemainingAmountStableTerms) ? String(object.minRemainingAmountStableTerms) : undefined,
-      minRemainingAmount: isSet(object.minRemainingAmount) ? String(object.minRemainingAmount) : undefined
+      minRemainingAmount: isSet(object.minRemainingAmount) ? String(object.minRemainingAmount) : undefined,
+      maxPriceMargin: isSet(object.maxPriceMargin) ? String(object.maxPriceMargin) : undefined
     };
   },
   toJSON(message: QuerySealOrdersRequest): unknown {
@@ -251,6 +262,7 @@ export const QuerySealOrdersRequest = {
     message.minReservationPeriodSeconds !== undefined && (obj.minReservationPeriodSeconds = (message.minReservationPeriodSeconds || BigInt(0)).toString());
     message.minRemainingAmountStableTerms !== undefined && (obj.minRemainingAmountStableTerms = message.minRemainingAmountStableTerms);
     message.minRemainingAmount !== undefined && (obj.minRemainingAmount = message.minRemainingAmount);
+    message.maxPriceMargin !== undefined && (obj.maxPriceMargin = message.maxPriceMargin);
     return obj;
   },
   fromPartial(object: Partial<QuerySealOrdersRequest>): QuerySealOrdersRequest {
@@ -269,6 +281,7 @@ export const QuerySealOrdersRequest = {
     message.minReservationPeriodSeconds = object.minReservationPeriodSeconds !== undefined && object.minReservationPeriodSeconds !== null ? BigInt(object.minReservationPeriodSeconds.toString()) : BigInt(0);
     message.minRemainingAmountStableTerms = object.minRemainingAmountStableTerms ?? undefined;
     message.minRemainingAmount = object.minRemainingAmount ?? undefined;
+    message.maxPriceMargin = object.maxPriceMargin ?? undefined;
     return message;
   },
   fromAmino(object: QuerySealOrdersRequestAmino): QuerySealOrdersRequest {
@@ -315,6 +328,9 @@ export const QuerySealOrdersRequest = {
     if (object.min_remaining_amount !== undefined && object.min_remaining_amount !== null) {
       message.minRemainingAmount = object.min_remaining_amount;
     }
+    if (object.max_price_margin !== undefined && object.max_price_margin !== null) {
+      message.maxPriceMargin = object.max_price_margin;
+    }
     return message;
   },
   toAmino(message: QuerySealOrdersRequest, useInterfaces: boolean = true): QuerySealOrdersRequestAmino {
@@ -333,6 +349,7 @@ export const QuerySealOrdersRequest = {
     obj.min_reservation_period_seconds = message.minReservationPeriodSeconds ? message.minReservationPeriodSeconds.toString() : undefined;
     obj.min_remaining_amount_stable_terms = padDecimal(message.minRemainingAmountStableTerms) === null ? undefined : padDecimal(message.minRemainingAmountStableTerms);
     obj.min_remaining_amount = message.minRemainingAmount === null ? undefined : message.minRemainingAmount;
+    obj.max_price_margin = padDecimal(message.maxPriceMargin) === null ? undefined : padDecimal(message.maxPriceMargin);
     return obj;
   },
   fromAminoMsg(object: QuerySealOrdersRequestAminoMsg): QuerySealOrdersRequest {
