@@ -22,33 +22,31 @@ export interface SyncStateSDKType {
   block_height: bigint;
   block_time: TimestampSDKType;
 }
-export interface QuerySyncStateRequest {}
-export interface QuerySyncStateRequestProtoMsg {
-  typeUrl: "/cosmatics.QuerySyncStateRequest";
+export interface SyncStatistics {
+  totalBlocks: bigint;
+  avgSyncDelaySeconds: bigint;
+  avgIndexerBlockTimeSeconds: bigint;
+  avgIndexerBlocksPerSecond: number;
+}
+export interface SyncStatisticsProtoMsg {
+  typeUrl: "/cosmatics.SyncStatistics";
   value: Uint8Array;
 }
-export interface QuerySyncStateRequestAmino {}
-export interface QuerySyncStateRequestAminoMsg {
-  type: "/cosmatics.QuerySyncStateRequest";
-  value: QuerySyncStateRequestAmino;
+export interface SyncStatisticsAmino {
+  total_blocks?: string;
+  avg_sync_delay_seconds?: string;
+  avg_indexer_block_time_seconds?: string;
+  avg_indexer_blocks_per_second?: number;
 }
-export interface QuerySyncStateRequestSDKType {}
-export interface QuerySyncStateResponse {
-  syncState: SyncState;
+export interface SyncStatisticsAminoMsg {
+  type: "/cosmatics.SyncStatistics";
+  value: SyncStatisticsAmino;
 }
-export interface QuerySyncStateResponseProtoMsg {
-  typeUrl: "/cosmatics.QuerySyncStateResponse";
-  value: Uint8Array;
-}
-export interface QuerySyncStateResponseAmino {
-  sync_state?: SyncStateAmino;
-}
-export interface QuerySyncStateResponseAminoMsg {
-  type: "/cosmatics.QuerySyncStateResponse";
-  value: QuerySyncStateResponseAmino;
-}
-export interface QuerySyncStateResponseSDKType {
-  sync_state: SyncStateSDKType;
+export interface SyncStatisticsSDKType {
+  total_blocks: bigint;
+  avg_sync_delay_seconds: bigint;
+  avg_indexer_block_time_seconds: bigint;
+  avg_indexer_blocks_per_second: number;
 }
 function createBaseSyncState(): SyncState {
   return {
@@ -147,104 +145,58 @@ export const SyncState = {
   }
 };
 GlobalDecoderRegistry.register(SyncState.typeUrl, SyncState);
-function createBaseQuerySyncStateRequest(): QuerySyncStateRequest {
-  return {};
-}
-export const QuerySyncStateRequest = {
-  typeUrl: "/cosmatics.QuerySyncStateRequest",
-  is(o: any): o is QuerySyncStateRequest {
-    return o && o.$typeUrl === QuerySyncStateRequest.typeUrl;
-  },
-  isSDK(o: any): o is QuerySyncStateRequestSDKType {
-    return o && o.$typeUrl === QuerySyncStateRequest.typeUrl;
-  },
-  isAmino(o: any): o is QuerySyncStateRequestAmino {
-    return o && o.$typeUrl === QuerySyncStateRequest.typeUrl;
-  },
-  encode(_: QuerySyncStateRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    return writer;
-  },
-  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QuerySyncStateRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerySyncStateRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(_: any): QuerySyncStateRequest {
-    return {};
-  },
-  toJSON(_: QuerySyncStateRequest): unknown {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<QuerySyncStateRequest>): QuerySyncStateRequest {
-    const message = createBaseQuerySyncStateRequest();
-    return message;
-  },
-  fromAmino(_: QuerySyncStateRequestAmino): QuerySyncStateRequest {
-    const message = createBaseQuerySyncStateRequest();
-    return message;
-  },
-  toAmino(_: QuerySyncStateRequest, useInterfaces: boolean = true): QuerySyncStateRequestAmino {
-    const obj: any = {};
-    return obj;
-  },
-  fromAminoMsg(object: QuerySyncStateRequestAminoMsg): QuerySyncStateRequest {
-    return QuerySyncStateRequest.fromAmino(object.value);
-  },
-  fromProtoMsg(message: QuerySyncStateRequestProtoMsg, useInterfaces: boolean = true): QuerySyncStateRequest {
-    return QuerySyncStateRequest.decode(message.value, undefined, useInterfaces);
-  },
-  toProto(message: QuerySyncStateRequest): Uint8Array {
-    return QuerySyncStateRequest.encode(message).finish();
-  },
-  toProtoMsg(message: QuerySyncStateRequest): QuerySyncStateRequestProtoMsg {
-    return {
-      typeUrl: "/cosmatics.QuerySyncStateRequest",
-      value: QuerySyncStateRequest.encode(message).finish()
-    };
-  }
-};
-GlobalDecoderRegistry.register(QuerySyncStateRequest.typeUrl, QuerySyncStateRequest);
-function createBaseQuerySyncStateResponse(): QuerySyncStateResponse {
+function createBaseSyncStatistics(): SyncStatistics {
   return {
-    syncState: SyncState.fromPartial({})
+    totalBlocks: BigInt(0),
+    avgSyncDelaySeconds: BigInt(0),
+    avgIndexerBlockTimeSeconds: BigInt(0),
+    avgIndexerBlocksPerSecond: 0
   };
 }
-export const QuerySyncStateResponse = {
-  typeUrl: "/cosmatics.QuerySyncStateResponse",
-  is(o: any): o is QuerySyncStateResponse {
-    return o && (o.$typeUrl === QuerySyncStateResponse.typeUrl || SyncState.is(o.syncState));
+export const SyncStatistics = {
+  typeUrl: "/cosmatics.SyncStatistics",
+  is(o: any): o is SyncStatistics {
+    return o && (o.$typeUrl === SyncStatistics.typeUrl || typeof o.totalBlocks === "bigint" && typeof o.avgSyncDelaySeconds === "bigint" && typeof o.avgIndexerBlockTimeSeconds === "bigint" && typeof o.avgIndexerBlocksPerSecond === "number");
   },
-  isSDK(o: any): o is QuerySyncStateResponseSDKType {
-    return o && (o.$typeUrl === QuerySyncStateResponse.typeUrl || SyncState.isSDK(o.sync_state));
+  isSDK(o: any): o is SyncStatisticsSDKType {
+    return o && (o.$typeUrl === SyncStatistics.typeUrl || typeof o.total_blocks === "bigint" && typeof o.avg_sync_delay_seconds === "bigint" && typeof o.avg_indexer_block_time_seconds === "bigint" && typeof o.avg_indexer_blocks_per_second === "number");
   },
-  isAmino(o: any): o is QuerySyncStateResponseAmino {
-    return o && (o.$typeUrl === QuerySyncStateResponse.typeUrl || SyncState.isAmino(o.sync_state));
+  isAmino(o: any): o is SyncStatisticsAmino {
+    return o && (o.$typeUrl === SyncStatistics.typeUrl || typeof o.total_blocks === "bigint" && typeof o.avg_sync_delay_seconds === "bigint" && typeof o.avg_indexer_block_time_seconds === "bigint" && typeof o.avg_indexer_blocks_per_second === "number");
   },
-  encode(message: QuerySyncStateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.syncState !== undefined) {
-      SyncState.encode(message.syncState, writer.uint32(10).fork()).ldelim();
+  encode(message: SyncStatistics, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.totalBlocks !== BigInt(0)) {
+      writer.uint32(8).uint64(message.totalBlocks);
+    }
+    if (message.avgSyncDelaySeconds !== BigInt(0)) {
+      writer.uint32(16).uint64(message.avgSyncDelaySeconds);
+    }
+    if (message.avgIndexerBlockTimeSeconds !== BigInt(0)) {
+      writer.uint32(24).uint64(message.avgIndexerBlockTimeSeconds);
+    }
+    if (message.avgIndexerBlocksPerSecond !== 0) {
+      writer.uint32(37).float(message.avgIndexerBlocksPerSecond);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): QuerySyncStateResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): SyncStatistics {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerySyncStateResponse();
+    const message = createBaseSyncStatistics();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.syncState = SyncState.decode(reader, reader.uint32(), useInterfaces);
+          message.totalBlocks = reader.uint64();
+          break;
+        case 2:
+          message.avgSyncDelaySeconds = reader.uint64();
+          break;
+        case 3:
+          message.avgIndexerBlockTimeSeconds = reader.uint64();
+          break;
+        case 4:
+          message.avgIndexerBlocksPerSecond = reader.float();
           break;
         default:
           reader.skipType(tag & 7);
@@ -253,47 +205,68 @@ export const QuerySyncStateResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QuerySyncStateResponse {
+  fromJSON(object: any): SyncStatistics {
     return {
-      syncState: isSet(object.syncState) ? SyncState.fromJSON(object.syncState) : undefined
+      totalBlocks: isSet(object.totalBlocks) ? BigInt(object.totalBlocks.toString()) : BigInt(0),
+      avgSyncDelaySeconds: isSet(object.avgSyncDelaySeconds) ? BigInt(object.avgSyncDelaySeconds.toString()) : BigInt(0),
+      avgIndexerBlockTimeSeconds: isSet(object.avgIndexerBlockTimeSeconds) ? BigInt(object.avgIndexerBlockTimeSeconds.toString()) : BigInt(0),
+      avgIndexerBlocksPerSecond: isSet(object.avgIndexerBlocksPerSecond) ? Number(object.avgIndexerBlocksPerSecond) : 0
     };
   },
-  toJSON(message: QuerySyncStateResponse): unknown {
+  toJSON(message: SyncStatistics): unknown {
     const obj: any = {};
-    message.syncState !== undefined && (obj.syncState = message.syncState ? SyncState.toJSON(message.syncState) : undefined);
+    message.totalBlocks !== undefined && (obj.totalBlocks = (message.totalBlocks || BigInt(0)).toString());
+    message.avgSyncDelaySeconds !== undefined && (obj.avgSyncDelaySeconds = (message.avgSyncDelaySeconds || BigInt(0)).toString());
+    message.avgIndexerBlockTimeSeconds !== undefined && (obj.avgIndexerBlockTimeSeconds = (message.avgIndexerBlockTimeSeconds || BigInt(0)).toString());
+    message.avgIndexerBlocksPerSecond !== undefined && (obj.avgIndexerBlocksPerSecond = message.avgIndexerBlocksPerSecond);
     return obj;
   },
-  fromPartial(object: Partial<QuerySyncStateResponse>): QuerySyncStateResponse {
-    const message = createBaseQuerySyncStateResponse();
-    message.syncState = object.syncState !== undefined && object.syncState !== null ? SyncState.fromPartial(object.syncState) : undefined;
+  fromPartial(object: Partial<SyncStatistics>): SyncStatistics {
+    const message = createBaseSyncStatistics();
+    message.totalBlocks = object.totalBlocks !== undefined && object.totalBlocks !== null ? BigInt(object.totalBlocks.toString()) : BigInt(0);
+    message.avgSyncDelaySeconds = object.avgSyncDelaySeconds !== undefined && object.avgSyncDelaySeconds !== null ? BigInt(object.avgSyncDelaySeconds.toString()) : BigInt(0);
+    message.avgIndexerBlockTimeSeconds = object.avgIndexerBlockTimeSeconds !== undefined && object.avgIndexerBlockTimeSeconds !== null ? BigInt(object.avgIndexerBlockTimeSeconds.toString()) : BigInt(0);
+    message.avgIndexerBlocksPerSecond = object.avgIndexerBlocksPerSecond ?? 0;
     return message;
   },
-  fromAmino(object: QuerySyncStateResponseAmino): QuerySyncStateResponse {
-    const message = createBaseQuerySyncStateResponse();
-    if (object.sync_state !== undefined && object.sync_state !== null) {
-      message.syncState = SyncState.fromAmino(object.sync_state);
+  fromAmino(object: SyncStatisticsAmino): SyncStatistics {
+    const message = createBaseSyncStatistics();
+    if (object.total_blocks !== undefined && object.total_blocks !== null) {
+      message.totalBlocks = BigInt(object.total_blocks);
+    }
+    if (object.avg_sync_delay_seconds !== undefined && object.avg_sync_delay_seconds !== null) {
+      message.avgSyncDelaySeconds = BigInt(object.avg_sync_delay_seconds);
+    }
+    if (object.avg_indexer_block_time_seconds !== undefined && object.avg_indexer_block_time_seconds !== null) {
+      message.avgIndexerBlockTimeSeconds = BigInt(object.avg_indexer_block_time_seconds);
+    }
+    if (object.avg_indexer_blocks_per_second !== undefined && object.avg_indexer_blocks_per_second !== null) {
+      message.avgIndexerBlocksPerSecond = object.avg_indexer_blocks_per_second;
     }
     return message;
   },
-  toAmino(message: QuerySyncStateResponse, useInterfaces: boolean = true): QuerySyncStateResponseAmino {
+  toAmino(message: SyncStatistics, useInterfaces: boolean = true): SyncStatisticsAmino {
     const obj: any = {};
-    obj.sync_state = message.syncState ? SyncState.toAmino(message.syncState, useInterfaces) : undefined;
+    obj.total_blocks = message.totalBlocks ? message.totalBlocks.toString() : undefined;
+    obj.avg_sync_delay_seconds = message.avgSyncDelaySeconds ? message.avgSyncDelaySeconds.toString() : undefined;
+    obj.avg_indexer_block_time_seconds = message.avgIndexerBlockTimeSeconds ? message.avgIndexerBlockTimeSeconds.toString() : undefined;
+    obj.avg_indexer_blocks_per_second = message.avgIndexerBlocksPerSecond === 0 ? undefined : message.avgIndexerBlocksPerSecond;
     return obj;
   },
-  fromAminoMsg(object: QuerySyncStateResponseAminoMsg): QuerySyncStateResponse {
-    return QuerySyncStateResponse.fromAmino(object.value);
+  fromAminoMsg(object: SyncStatisticsAminoMsg): SyncStatistics {
+    return SyncStatistics.fromAmino(object.value);
   },
-  fromProtoMsg(message: QuerySyncStateResponseProtoMsg, useInterfaces: boolean = true): QuerySyncStateResponse {
-    return QuerySyncStateResponse.decode(message.value, undefined, useInterfaces);
+  fromProtoMsg(message: SyncStatisticsProtoMsg, useInterfaces: boolean = true): SyncStatistics {
+    return SyncStatistics.decode(message.value, undefined, useInterfaces);
   },
-  toProto(message: QuerySyncStateResponse): Uint8Array {
-    return QuerySyncStateResponse.encode(message).finish();
+  toProto(message: SyncStatistics): Uint8Array {
+    return SyncStatistics.encode(message).finish();
   },
-  toProtoMsg(message: QuerySyncStateResponse): QuerySyncStateResponseProtoMsg {
+  toProtoMsg(message: SyncStatistics): SyncStatisticsProtoMsg {
     return {
-      typeUrl: "/cosmatics.QuerySyncStateResponse",
-      value: QuerySyncStateResponse.encode(message).finish()
+      typeUrl: "/cosmatics.SyncStatistics",
+      value: SyncStatistics.encode(message).finish()
     };
   }
 };
-GlobalDecoderRegistry.register(QuerySyncStateResponse.typeUrl, QuerySyncStateResponse);
+GlobalDecoderRegistry.register(SyncStatistics.typeUrl, SyncStatistics);

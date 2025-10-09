@@ -1,18 +1,19 @@
 syntax = "proto3";
-package cosmatics;
+package cosmatics.server;
 
 import "google/api/annotations.proto";
-import "cosmatics/sync_state.proto";
-import "cosmatics/metric.proto";
-import "cosmatics/health_check.proto";
-import "cosmatics/block_sync_failure.proto";
-import "cosmatics/post_process_failure.proto";
+import "cosmatics/server/sync_state.proto";
+import "cosmatics/server/metric.proto";
+import "cosmatics/server/transaction.proto";
+import "cosmatics/server/health_check.proto";
+import "cosmatics/server/block_sync_failure.proto";
+import "cosmatics/server/post_process_failure.proto";
 import "tendermint/types/block.proto";
 import "tendermint/blocksync/types.proto";
 import "cosmos/tx/v1beta1/service.proto";
 
 
-option go_package = "github.com/refractedlabs/cosmatics/types";
+option go_package = "github.com/refractedlabs/cosmatics/server";
 
 service Query {
   rpc SyncState(QuerySyncStateRequest) returns (QuerySyncStateResponse) {
@@ -25,6 +26,10 @@ service Query {
 
   rpc Transaction(cosmos.tx.v1beta1.GetTxRequest) returns (cosmos.tx.v1beta1.GetTxResponse) {
     option (google.api.http).get = "/cosmatics/transaction/{hash}";
+  }
+
+  rpc TransactionStatus(QueryTransactionStatusRequest) returns (QueryTransactionStatusResponse) {
+    option (google.api.http).get = "/cosmatics/transaction_status/{hash}";
   }
 
   rpc TransactionByEvent(cosmos.tx.v1beta1.GetTxsEventRequest) returns (cosmos.tx.v1beta1.GetTxsEventResponse) {

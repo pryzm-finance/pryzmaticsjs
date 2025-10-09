@@ -1,10 +1,11 @@
-import { GetTxRequest, GetTxResponseSDKType, GetTxsEventRequest, GetTxsEventResponseSDKType } from "../cosmos/tx/v1beta1/service";
-import { QueryMetricsRequest, QueryMetricsResponseSDKType } from "./metric";
-import { setPaginationParams } from "../helpers";
+import { GetTxRequest, GetTxResponseSDKType, GetTxsEventRequest, GetTxsEventResponseSDKType } from "../../cosmos/tx/v1beta1/service";
+import { setPaginationParams } from "../../helpers";
 import { LCDClient } from "@refractedlabs/cosmology-lcd-fork";
 import { QuerySyncStateRequest, QuerySyncStateResponseSDKType } from "./sync_state";
-import { BlockRequest } from "../tendermint/blocksync/types";
-import { BlockSDKType } from "../tendermint/types/block";
+import { BlockRequest } from "../../tendermint/blocksync/types";
+import { BlockSDKType } from "../../tendermint/types/block";
+import { QueryTransactionStatusRequest, QueryTransactionStatusResponseSDKType } from "./transaction";
+import { QueryMetricsRequest, QueryMetricsResponseSDKType } from "./metric";
 import { QueryHealthCheckRequest, QueryHealthCheckResponseSDKType } from "./health_check";
 import { QueryBlockSyncFailuresRequest, QueryBlockSyncFailuresResponseSDKType } from "./block_sync_failure";
 import { QueryPostProcessFailuresRequest, QueryPostProcessFailuresResponseSDKType } from "./post_process_failure";
@@ -19,6 +20,7 @@ export class LCDQueryClient {
     this.syncState = this.syncState.bind(this);
     this.block = this.block.bind(this);
     this.transaction = this.transaction.bind(this);
+    this.transactionStatus = this.transactionStatus.bind(this);
     this.transactionByEvent = this.transactionByEvent.bind(this);
     this.metrics = this.metrics.bind(this);
     this.healthCheck = this.healthCheck.bind(this);
@@ -39,6 +41,17 @@ export class LCDQueryClient {
   async transaction(params: GetTxRequest): Promise<GetTxResponseSDKType> {
     const endpoint = `cosmatics/transaction/${params.hash}`;
     return await this.req.get<GetTxResponseSDKType>(endpoint);
+  }
+  /* TransactionStatus */
+  async transactionStatus(params: QueryTransactionStatusRequest): Promise<QueryTransactionStatusResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.timeoutBlock !== "undefined") {
+      options.params.timeout_block = params.timeoutBlock;
+    }
+    const endpoint = `cosmatics/transaction_status/${params.hash}`;
+    return await this.req.get<QueryTransactionStatusResponseSDKType>(endpoint, options);
   }
   /* TransactionByEvent */
   async transactionByEvent(params: GetTxsEventRequest): Promise<GetTxsEventResponseSDKType> {

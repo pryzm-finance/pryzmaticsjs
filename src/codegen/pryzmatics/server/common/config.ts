@@ -99,6 +99,7 @@ export interface Config {
   supportedDenomsForExternalPrice: string[];
   contracts: Contracts;
   incentives: Incentives;
+  orderPairMetricsCalculationIntervalBlocks: number;
 }
 export interface ConfigProtoMsg {
   typeUrl: "/pryzmatics.server.common.Config";
@@ -128,6 +129,7 @@ export interface ConfigAmino {
   supported_denoms_for_external_price?: string[];
   contracts?: ContractsAmino;
   incentives?: IncentivesAmino;
+  order_pair_metrics_calculation_interval_blocks?: number;
 }
 export interface ConfigAminoMsg {
   type: "/pryzmatics.server.common.Config";
@@ -157,6 +159,7 @@ export interface ConfigSDKType {
   supported_denoms_for_external_price: string[];
   contracts: ContractsSDKType;
   incentives: IncentivesSDKType;
+  order_pair_metrics_calculation_interval_blocks: number;
 }
 export interface Contracts {
   pryzmNexus: string;
@@ -920,19 +923,20 @@ function createBaseConfig(): Config {
     pvaultFactoryContractAddress: "",
     supportedDenomsForExternalPrice: [],
     contracts: Contracts.fromPartial({}),
-    incentives: Incentives.fromPartial({})
+    incentives: Incentives.fromPartial({}),
+    orderPairMetricsCalculationIntervalBlocks: 0
   };
 }
 export const Config = {
   typeUrl: "/pryzmatics.server.common.Config",
   is(o: any): o is Config {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.productionMode === "boolean" && Array.isArray(o.stableCoins) && (!o.stableCoins.length || StableCoinConfig.is(o.stableCoins[0])) && typeof o.favoritePairsMaxCount === "number" && typeof o.metricCalculationIntervalBlocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpcEndpoints) && DatabaseConfig.is(o.databaseConfig) && ChainConfig.is(o.chainConfig) && LoggerConfig.is(o.loggerConfig) && IndexerConfig.is(o.indexerConfig) && ProfilerConfig.is(o.profilerConfig) && YieldReturnConfig.is(o.yieldReturnConfig) && FaucetConfig.is(o.faucetConfig) && isSet(o.assets) && typeof o.pvaultFactoryContractAddress === "string" && Array.isArray(o.supportedDenomsForExternalPrice) && (!o.supportedDenomsForExternalPrice.length || typeof o.supportedDenomsForExternalPrice[0] === "string") && Contracts.is(o.contracts) && Incentives.is(o.incentives));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.productionMode === "boolean" && Array.isArray(o.stableCoins) && (!o.stableCoins.length || StableCoinConfig.is(o.stableCoins[0])) && typeof o.favoritePairsMaxCount === "number" && typeof o.metricCalculationIntervalBlocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpcEndpoints) && DatabaseConfig.is(o.databaseConfig) && ChainConfig.is(o.chainConfig) && LoggerConfig.is(o.loggerConfig) && IndexerConfig.is(o.indexerConfig) && ProfilerConfig.is(o.profilerConfig) && YieldReturnConfig.is(o.yieldReturnConfig) && FaucetConfig.is(o.faucetConfig) && isSet(o.assets) && typeof o.pvaultFactoryContractAddress === "string" && Array.isArray(o.supportedDenomsForExternalPrice) && (!o.supportedDenomsForExternalPrice.length || typeof o.supportedDenomsForExternalPrice[0] === "string") && Contracts.is(o.contracts) && Incentives.is(o.incentives) && typeof o.orderPairMetricsCalculationIntervalBlocks === "number");
   },
   isSDK(o: any): o is ConfigSDKType {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isSDK(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isSDK(o.database_config) && ChainConfig.isSDK(o.chain_config) && LoggerConfig.isSDK(o.logger_config) && IndexerConfig.isSDK(o.indexer_config) && ProfilerConfig.isSDK(o.profiler_config) && YieldReturnConfig.isSDK(o.yield_return_config) && FaucetConfig.isSDK(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string") && Contracts.isSDK(o.contracts) && Incentives.isSDK(o.incentives));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isSDK(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isSDK(o.database_config) && ChainConfig.isSDK(o.chain_config) && LoggerConfig.isSDK(o.logger_config) && IndexerConfig.isSDK(o.indexer_config) && ProfilerConfig.isSDK(o.profiler_config) && YieldReturnConfig.isSDK(o.yield_return_config) && FaucetConfig.isSDK(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string") && Contracts.isSDK(o.contracts) && Incentives.isSDK(o.incentives) && typeof o.order_pair_metrics_calculation_interval_blocks === "number");
   },
   isAmino(o: any): o is ConfigAmino {
-    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isAmino(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isAmino(o.database_config) && ChainConfig.isAmino(o.chain_config) && LoggerConfig.isAmino(o.logger_config) && IndexerConfig.isAmino(o.indexer_config) && ProfilerConfig.isAmino(o.profiler_config) && YieldReturnConfig.isAmino(o.yield_return_config) && FaucetConfig.isAmino(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string") && Contracts.isAmino(o.contracts) && Incentives.isAmino(o.incentives));
+    return o && (o.$typeUrl === Config.typeUrl || typeof o.production_mode === "boolean" && Array.isArray(o.stable_coins) && (!o.stable_coins.length || StableCoinConfig.isAmino(o.stable_coins[0])) && typeof o.favorite_pairs_max_count === "number" && typeof o.metric_calculation_interval_blocks === "number" && typeof o.enableFakePriceGenerator === "boolean" && isSet(o.rpc_endpoints) && DatabaseConfig.isAmino(o.database_config) && ChainConfig.isAmino(o.chain_config) && LoggerConfig.isAmino(o.logger_config) && IndexerConfig.isAmino(o.indexer_config) && ProfilerConfig.isAmino(o.profiler_config) && YieldReturnConfig.isAmino(o.yield_return_config) && FaucetConfig.isAmino(o.faucet_config) && isSet(o.assets) && typeof o.pvault_factory_contract_address === "string" && Array.isArray(o.supported_denoms_for_external_price) && (!o.supported_denoms_for_external_price.length || typeof o.supported_denoms_for_external_price[0] === "string") && Contracts.isAmino(o.contracts) && Incentives.isAmino(o.incentives) && typeof o.order_pair_metrics_calculation_interval_blocks === "number");
   },
   encode(message: Config, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.productionMode === true) {
@@ -994,6 +998,9 @@ export const Config = {
     }
     if (message.incentives !== undefined) {
       Incentives.encode(message.incentives, writer.uint32(146).fork()).ldelim();
+    }
+    if (message.orderPairMetricsCalculationIntervalBlocks !== 0) {
+      writer.uint32(152).uint32(message.orderPairMetricsCalculationIntervalBlocks);
     }
     return writer;
   },
@@ -1064,6 +1071,9 @@ export const Config = {
         case 18:
           message.incentives = Incentives.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 19:
+          message.orderPairMetricsCalculationIntervalBlocks = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1100,7 +1110,8 @@ export const Config = {
       pvaultFactoryContractAddress: isSet(object.pvaultFactoryContractAddress) ? String(object.pvaultFactoryContractAddress) : "",
       supportedDenomsForExternalPrice: Array.isArray(object?.supportedDenomsForExternalPrice) ? object.supportedDenomsForExternalPrice.map((e: any) => String(e)) : [],
       contracts: isSet(object.contracts) ? Contracts.fromJSON(object.contracts) : undefined,
-      incentives: isSet(object.incentives) ? Incentives.fromJSON(object.incentives) : undefined
+      incentives: isSet(object.incentives) ? Incentives.fromJSON(object.incentives) : undefined,
+      orderPairMetricsCalculationIntervalBlocks: isSet(object.orderPairMetricsCalculationIntervalBlocks) ? Number(object.orderPairMetricsCalculationIntervalBlocks) : 0
     };
   },
   toJSON(message: Config): unknown {
@@ -1141,6 +1152,7 @@ export const Config = {
     }
     message.contracts !== undefined && (obj.contracts = message.contracts ? Contracts.toJSON(message.contracts) : undefined);
     message.incentives !== undefined && (obj.incentives = message.incentives ? Incentives.toJSON(message.incentives) : undefined);
+    message.orderPairMetricsCalculationIntervalBlocks !== undefined && (obj.orderPairMetricsCalculationIntervalBlocks = Math.round(message.orderPairMetricsCalculationIntervalBlocks));
     return obj;
   },
   fromPartial(object: Partial<Config>): Config {
@@ -1177,6 +1189,7 @@ export const Config = {
     message.supportedDenomsForExternalPrice = object.supportedDenomsForExternalPrice?.map(e => e) || [];
     message.contracts = object.contracts !== undefined && object.contracts !== null ? Contracts.fromPartial(object.contracts) : undefined;
     message.incentives = object.incentives !== undefined && object.incentives !== null ? Incentives.fromPartial(object.incentives) : undefined;
+    message.orderPairMetricsCalculationIntervalBlocks = object.orderPairMetricsCalculationIntervalBlocks ?? 0;
     return message;
   },
   fromAmino(object: ConfigAmino): Config {
@@ -1241,6 +1254,9 @@ export const Config = {
     if (object.incentives !== undefined && object.incentives !== null) {
       message.incentives = Incentives.fromAmino(object.incentives);
     }
+    if (object.order_pair_metrics_calculation_interval_blocks !== undefined && object.order_pair_metrics_calculation_interval_blocks !== null) {
+      message.orderPairMetricsCalculationIntervalBlocks = object.order_pair_metrics_calculation_interval_blocks;
+    }
     return message;
   },
   toAmino(message: Config, useInterfaces: boolean = true): ConfigAmino {
@@ -1281,6 +1297,7 @@ export const Config = {
     }
     obj.contracts = message.contracts ? Contracts.toAmino(message.contracts, useInterfaces) : undefined;
     obj.incentives = message.incentives ? Incentives.toAmino(message.incentives, useInterfaces) : undefined;
+    obj.order_pair_metrics_calculation_interval_blocks = message.orderPairMetricsCalculationIntervalBlocks === 0 ? undefined : message.orderPairMetricsCalculationIntervalBlocks;
     return obj;
   },
   fromAminoMsg(object: ConfigAminoMsg): Config {

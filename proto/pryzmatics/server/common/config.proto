@@ -35,6 +35,7 @@ message Config {
   repeated string supported_denoms_for_external_price = 16;
   Contracts contracts = 17 [(gogoproto.nullable) = false];
   Incentives incentives = 18 [(gogoproto.nullable) = false];
+  uint32 order_pair_metrics_calculation_interval_blocks = 19;
 }
 
 message Contracts {

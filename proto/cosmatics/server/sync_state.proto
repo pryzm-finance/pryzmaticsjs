@@ -1,0 +1,15 @@
+syntax = "proto3";
+package cosmatics.server;
+
+import "gogoproto/gogo.proto";
+import "cosmatics/sync_state.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/refractedlabs/cosmatics/server";
+
+message QuerySyncStateRequest {
+}
+
+message QuerySyncStateResponse {
+  cosmatics.SyncState sync_state = 1 [(gogoproto.nullable) = false];
+}
