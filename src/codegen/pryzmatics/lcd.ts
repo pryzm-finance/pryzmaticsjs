@@ -8,6 +8,9 @@ export const createClient = async ({
     restEndpoint
   });
   return {
+    cosmatics: new (await import("../cosmatics/server/query.lcd")).LCDQueryClient({
+      requestClient
+    }),
     pryzmatics: new (await import("./server/query.lcd")).LCDQueryClient({ requestClient })
   };
 };
