@@ -185,7 +185,7 @@ async function main() {
         subst: ``
     }])
 
-    correctFile('./src/codegen/cosmatics/query.lcd.ts', [{
+    correctFile('./src/codegen/cosmatics/server/query.lcd.ts', [{
         regex: /cosmos\.tx\.v1beta1\./gm,
         subst: ``
     }, {

@@ -1,9 +1,9 @@
 syntax = "proto3";
-package cosmatics;
+package cosmatics.server;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/refractedlabs/cosmatics/types";
+option go_package = "github.com/refractedlabs/cosmatics/server";
 
 
 message QueryHealthCheckRequest {
@@ -11,4 +11,6 @@ message QueryHealthCheckRequest {
 
 message QueryHealthCheckResponse {
   int64 block_difference = 1;
+  string uptime = 2;
+  uint64 estimatedSyncDurationSeconds = 3;
 }

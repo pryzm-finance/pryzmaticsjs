@@ -1,39 +1,45 @@
-import { BinaryReader, BinaryWriter } from "../binary";
-import { GlobalDecoderRegistry } from "../registry";
-import { isSet } from "../helpers";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { GlobalDecoderRegistry } from "../../registry";
+import { isSet } from "../../helpers";
 export interface QueryHealthCheckRequest {}
 export interface QueryHealthCheckRequestProtoMsg {
-  typeUrl: "/cosmatics.QueryHealthCheckRequest";
+  typeUrl: "/cosmatics.server.QueryHealthCheckRequest";
   value: Uint8Array;
 }
 export interface QueryHealthCheckRequestAmino {}
 export interface QueryHealthCheckRequestAminoMsg {
-  type: "/cosmatics.QueryHealthCheckRequest";
+  type: "/cosmatics.server.QueryHealthCheckRequest";
   value: QueryHealthCheckRequestAmino;
 }
 export interface QueryHealthCheckRequestSDKType {}
 export interface QueryHealthCheckResponse {
   blockDifference: bigint;
+  uptime: string;
+  estimatedSyncDurationSeconds: bigint;
 }
 export interface QueryHealthCheckResponseProtoMsg {
-  typeUrl: "/cosmatics.QueryHealthCheckResponse";
+  typeUrl: "/cosmatics.server.QueryHealthCheckResponse";
   value: Uint8Array;
 }
 export interface QueryHealthCheckResponseAmino {
   block_difference?: string;
+  uptime?: string;
+  estimatedSyncDurationSeconds?: string;
 }
 export interface QueryHealthCheckResponseAminoMsg {
-  type: "/cosmatics.QueryHealthCheckResponse";
+  type: "/cosmatics.server.QueryHealthCheckResponse";
   value: QueryHealthCheckResponseAmino;
 }
 export interface QueryHealthCheckResponseSDKType {
   block_difference: bigint;
+  uptime: string;
+  estimatedSyncDurationSeconds: bigint;
 }
 function createBaseQueryHealthCheckRequest(): QueryHealthCheckRequest {
   return {};
 }
 export const QueryHealthCheckRequest = {
-  typeUrl: "/cosmatics.QueryHealthCheckRequest",
+  typeUrl: "/cosmatics.server.QueryHealthCheckRequest",
   is(o: any): o is QueryHealthCheckRequest {
     return o && o.$typeUrl === QueryHealthCheckRequest.typeUrl;
   },
@@ -90,7 +96,7 @@ export const QueryHealthCheckRequest = {
   },
   toProtoMsg(message: QueryHealthCheckRequest): QueryHealthCheckRequestProtoMsg {
     return {
-      typeUrl: "/cosmatics.QueryHealthCheckRequest",
+      typeUrl: "/cosmatics.server.QueryHealthCheckRequest",
       value: QueryHealthCheckRequest.encode(message).finish()
     };
   }
@@ -98,23 +104,31 @@ export const QueryHealthCheckRequest = {
 GlobalDecoderRegistry.register(QueryHealthCheckRequest.typeUrl, QueryHealthCheckRequest);
 function createBaseQueryHealthCheckResponse(): QueryHealthCheckResponse {
   return {
-    blockDifference: BigInt(0)
+    blockDifference: BigInt(0),
+    uptime: "",
+    estimatedSyncDurationSeconds: BigInt(0)
   };
 }
 export const QueryHealthCheckResponse = {
-  typeUrl: "/cosmatics.QueryHealthCheckResponse",
+  typeUrl: "/cosmatics.server.QueryHealthCheckResponse",
   is(o: any): o is QueryHealthCheckResponse {
-    return o && (o.$typeUrl === QueryHealthCheckResponse.typeUrl || typeof o.blockDifference === "bigint");
+    return o && (o.$typeUrl === QueryHealthCheckResponse.typeUrl || typeof o.blockDifference === "bigint" && typeof o.uptime === "string" && typeof o.estimatedSyncDurationSeconds === "bigint");
   },
   isSDK(o: any): o is QueryHealthCheckResponseSDKType {
-    return o && (o.$typeUrl === QueryHealthCheckResponse.typeUrl || typeof o.block_difference === "bigint");
+    return o && (o.$typeUrl === QueryHealthCheckResponse.typeUrl || typeof o.block_difference === "bigint" && typeof o.uptime === "string" && typeof o.estimatedSyncDurationSeconds === "bigint");
   },
   isAmino(o: any): o is QueryHealthCheckResponseAmino {
-    return o && (o.$typeUrl === QueryHealthCheckResponse.typeUrl || typeof o.block_difference === "bigint");
+    return o && (o.$typeUrl === QueryHealthCheckResponse.typeUrl || typeof o.block_difference === "bigint" && typeof o.uptime === "string" && typeof o.estimatedSyncDurationSeconds === "bigint");
   },
   encode(message: QueryHealthCheckResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.blockDifference !== BigInt(0)) {
       writer.uint32(8).int64(message.blockDifference);
+    }
+    if (message.uptime !== "") {
+      writer.uint32(18).string(message.uptime);
+    }
+    if (message.estimatedSyncDurationSeconds !== BigInt(0)) {
+      writer.uint32(24).uint64(message.estimatedSyncDurationSeconds);
     }
     return writer;
   },
@@ -128,6 +142,12 @@ export const QueryHealthCheckResponse = {
         case 1:
           message.blockDifference = reader.int64();
           break;
+        case 2:
+          message.uptime = reader.string();
+          break;
+        case 3:
+          message.estimatedSyncDurationSeconds = reader.uint64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -137,17 +157,23 @@ export const QueryHealthCheckResponse = {
   },
   fromJSON(object: any): QueryHealthCheckResponse {
     return {
-      blockDifference: isSet(object.blockDifference) ? BigInt(object.blockDifference.toString()) : BigInt(0)
+      blockDifference: isSet(object.blockDifference) ? BigInt(object.blockDifference.toString()) : BigInt(0),
+      uptime: isSet(object.uptime) ? String(object.uptime) : "",
+      estimatedSyncDurationSeconds: isSet(object.estimatedSyncDurationSeconds) ? BigInt(object.estimatedSyncDurationSeconds.toString()) : BigInt(0)
     };
   },
   toJSON(message: QueryHealthCheckResponse): unknown {
     const obj: any = {};
     message.blockDifference !== undefined && (obj.blockDifference = (message.blockDifference || BigInt(0)).toString());
+    message.uptime !== undefined && (obj.uptime = message.uptime);
+    message.estimatedSyncDurationSeconds !== undefined && (obj.estimatedSyncDurationSeconds = (message.estimatedSyncDurationSeconds || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<QueryHealthCheckResponse>): QueryHealthCheckResponse {
     const message = createBaseQueryHealthCheckResponse();
     message.blockDifference = object.blockDifference !== undefined && object.blockDifference !== null ? BigInt(object.blockDifference.toString()) : BigInt(0);
+    message.uptime = object.uptime ?? "";
+    message.estimatedSyncDurationSeconds = object.estimatedSyncDurationSeconds !== undefined && object.estimatedSyncDurationSeconds !== null ? BigInt(object.estimatedSyncDurationSeconds.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: QueryHealthCheckResponseAmino): QueryHealthCheckResponse {
@@ -155,11 +181,19 @@ export const QueryHealthCheckResponse = {
     if (object.block_difference !== undefined && object.block_difference !== null) {
       message.blockDifference = BigInt(object.block_difference);
     }
+    if (object.uptime !== undefined && object.uptime !== null) {
+      message.uptime = object.uptime;
+    }
+    if (object.estimatedSyncDurationSeconds !== undefined && object.estimatedSyncDurationSeconds !== null) {
+      message.estimatedSyncDurationSeconds = BigInt(object.estimatedSyncDurationSeconds);
+    }
     return message;
   },
   toAmino(message: QueryHealthCheckResponse, useInterfaces: boolean = true): QueryHealthCheckResponseAmino {
     const obj: any = {};
     obj.block_difference = message.blockDifference ? message.blockDifference.toString() : undefined;
+    obj.uptime = message.uptime === "" ? undefined : message.uptime;
+    obj.estimatedSyncDurationSeconds = message.estimatedSyncDurationSeconds ? message.estimatedSyncDurationSeconds.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryHealthCheckResponseAminoMsg): QueryHealthCheckResponse {
@@ -173,7 +207,7 @@ export const QueryHealthCheckResponse = {
   },
   toProtoMsg(message: QueryHealthCheckResponse): QueryHealthCheckResponseProtoMsg {
     return {
-      typeUrl: "/cosmatics.QueryHealthCheckResponse",
+      typeUrl: "/cosmatics.server.QueryHealthCheckResponse",
       value: QueryHealthCheckResponse.encode(message).finish()
     };
   }

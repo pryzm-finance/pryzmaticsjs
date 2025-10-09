@@ -12,9 +12,9 @@ message SyncState {
   google.protobuf.Timestamp block_time = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = false];
 }
 
-message QuerySyncStateRequest {
-}
-
-message QuerySyncStateResponse {
-  SyncState sync_state = 1 [(gogoproto.nullable) = false];
+message SyncStatistics {
+  uint64 total_blocks = 1;
+  uint64 avg_sync_delay_seconds = 2;
+  uint64 avg_indexer_block_time_seconds = 3;
+  float avg_indexer_blocks_per_second = 4;
 }

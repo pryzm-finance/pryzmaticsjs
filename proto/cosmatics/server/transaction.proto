@@ -1,0 +1,20 @@
+syntax = "proto3";
+package cosmatics.server;
+
+import "gogoproto/gogo.proto";
+import "cosmos/tx/v1beta1/service.proto";
+
+option go_package = "github.com/refractedlabs/cosmatics/server";
+
+message QueryTransactionStatusRequest {
+  string hash = 1;
+  int64 timeout_block = 2;
+}
+
+message QueryTransactionStatusResponse {
+  bool found = 1;
+  bool timed_out = 2;
+  cosmos.tx.v1beta1.GetTxResponse response = 3 [
+    (gogoproto.nullable) = true
+  ];
+}
