@@ -36,6 +36,7 @@ import "pryzmatics/server/trade/zero_impact_join_asset_to_yamm_simulation.proto"
 import "pryzmatics/server/trade/exit_token_exact_lpt_simulation.proto";
 import "pryzmatics/server/trade/exit_exact_tokens_simulation.proto";
 import "pryzmatics/server/trade/exit_all_tokens_exact_lpt_simulation.proto";
+import "pryzmatics/server/trade/recovery_exit_simulation.proto";
 import "pryzmatics/server/trade/trade_volume.proto";
 import "pryzmatics/server/trade/user_pulse_trade_volume.proto";
 import "pryzmatics/server/trade/user_trade_history.proto";
@@ -210,6 +211,10 @@ service Query {
 
   rpc JoinAllTokensExactLptSimulation(pryzmatics.server.trade.QueryJoinAllTokensExactLptSimulationRequest) returns (pryzmatics.server.trade.QueryJoinAllTokensExactLptSimulationResponse) {
     option (google.api.http).get = "/pryzmatics/trade/join_all_tokens_exact_lpt_simulation/{pool_id}";
+  }
+
+  rpc RecoveryExitSimulation(pryzmatics.server.trade.QueryRecoveryExitSimulationRequest) returns (pryzmatics.server.trade.QueryRecoveryExitSimulationResponse) {
+    option (google.api.http).get = "/pryzmatics/trade/recovery_exit_simulation/{pool_id}";
   }
 
   rpc JoinExactTokensSimulation(pryzmatics.server.trade.QueryJoinExactTokensSimulationRequest) returns (pryzmatics.server.trade.QueryJoinExactTokensSimulationResponse) {

@@ -23,6 +23,7 @@ import { QueryPriceBoundsRequest, QueryPriceBoundsResponseSDKType } from "./pric
 import { QueryTradeSimulationRequest, QueryTradeSimulationResponseSDKType } from "./trade/trade_simulation";
 import { QuerySwapStepsRequest, QuerySwapStepsResponseSDKType } from "./trade/swap_steps";
 import { QueryJoinAllTokensExactLptSimulationRequest, QueryJoinAllTokensExactLptSimulationResponseSDKType } from "./trade/join_all_tokens_exact_lpt_simulation";
+import { QueryRecoveryExitSimulationRequest, QueryRecoveryExitSimulationResponseSDKType } from "./trade/recovery_exit_simulation";
 import { QueryJoinExactTokensSimulationRequest, QueryJoinExactTokensSimulationResponseSDKType } from "./trade/join_exact_tokens_simulation";
 import { QueryJoinTokenExactLptSimulationRequest, QueryJoinTokenExactLptSimulationResponseSDKType } from "./trade/join_token_exact_lpt_simulation";
 import { QueryZeroImpactJoinYammSimulationRequest, QueryZeroImpactJoinYammSimulationResponseSDKType } from "./trade/zero_impact_join_yamm_simulation";
@@ -106,6 +107,7 @@ export class LCDQueryClient {
     this.tradeSimulation = this.tradeSimulation.bind(this);
     this.swapSteps = this.swapSteps.bind(this);
     this.joinAllTokensExactLptSimulation = this.joinAllTokensExactLptSimulation.bind(this);
+    this.recoveryExitSimulation = this.recoveryExitSimulation.bind(this);
     this.joinExactTokensSimulation = this.joinExactTokensSimulation.bind(this);
     this.joinTokenExactLptSimulation = this.joinTokenExactLptSimulation.bind(this);
     this.zeroImpactJoinYammSimulation = this.zeroImpactJoinYammSimulation.bind(this);
@@ -531,6 +533,17 @@ export class LCDQueryClient {
     }
     const endpoint = `pryzmatics/trade/join_all_tokens_exact_lpt_simulation/${params.poolId}`;
     return await this.req.get<QueryJoinAllTokensExactLptSimulationResponseSDKType>(endpoint, options);
+  }
+  /* RecoveryExitSimulation */
+  async recoveryExitSimulation(params: QueryRecoveryExitSimulationRequest): Promise<QueryRecoveryExitSimulationResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.lptInAmount !== "undefined") {
+      options.params.lpt_in_amount = params.lptInAmount;
+    }
+    const endpoint = `pryzmatics/trade/recovery_exit_simulation/${params.poolId}`;
+    return await this.req.get<QueryRecoveryExitSimulationResponseSDKType>(endpoint, options);
   }
   /* JoinExactTokensSimulation */
   async joinExactTokensSimulation(params: QueryJoinExactTokensSimulationRequest): Promise<QueryJoinExactTokensSimulationResponseSDKType> {

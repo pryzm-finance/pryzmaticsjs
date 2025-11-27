@@ -25,6 +25,7 @@ export interface Asset {
   decimals: bigint;
   underlyingDecimals: bigint;
   dailyYieldPerYAssetStableCoinTerms?: string;
+  delisted: boolean;
 }
 export interface AssetProtoMsg {
   typeUrl: "/pryzmatics.asset.Asset";
@@ -52,6 +53,7 @@ export interface AssetAmino {
   decimals?: string;
   underlying_decimals?: string;
   daily_yield_per_y_asset_stable_coin_terms?: string;
+  delisted?: boolean;
 }
 export interface AssetAminoMsg {
   type: "/pryzmatics.asset.Asset";
@@ -77,6 +79,7 @@ export interface AssetSDKType {
   decimals: bigint;
   underlying_decimals: bigint;
   daily_yield_per_y_asset_stable_coin_terms?: string;
+  delisted: boolean;
 }
 function createBaseAsset(): Asset {
   return {
@@ -98,19 +101,20 @@ function createBaseAsset(): Asset {
     displayName: "",
     decimals: BigInt(0),
     underlyingDecimals: BigInt(0),
-    dailyYieldPerYAssetStableCoinTerms: undefined
+    dailyYieldPerYAssetStableCoinTerms: undefined,
+    delisted: false
   };
 }
 export const Asset = {
   typeUrl: "/pryzmatics.asset.Asset",
   is(o: any): o is Asset {
-    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.is(o.cAssetToken) && typeof o.totalRefractedCAsset === "string" && typeof o.totalPAsset === "string" && typeof o.error === "string" && typeof o.hostChainId === "string" && typeof o.yieldError === "string" && typeof o.displayName === "string" && typeof o.decimals === "bigint" && typeof o.underlyingDecimals === "bigint");
+    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.is(o.cAssetToken) && typeof o.totalRefractedCAsset === "string" && typeof o.totalPAsset === "string" && typeof o.error === "string" && typeof o.hostChainId === "string" && typeof o.yieldError === "string" && typeof o.displayName === "string" && typeof o.decimals === "bigint" && typeof o.underlyingDecimals === "bigint" && typeof o.delisted === "boolean");
   },
   isSDK(o: any): o is AssetSDKType {
-    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isSDK(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.yield_error === "string" && typeof o.display_name === "string" && typeof o.decimals === "bigint" && typeof o.underlying_decimals === "bigint");
+    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isSDK(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.yield_error === "string" && typeof o.display_name === "string" && typeof o.decimals === "bigint" && typeof o.underlying_decimals === "bigint" && typeof o.delisted === "boolean");
   },
   isAmino(o: any): o is AssetAmino {
-    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isAmino(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.yield_error === "string" && typeof o.display_name === "string" && typeof o.decimals === "bigint" && typeof o.underlying_decimals === "bigint");
+    return o && (o.$typeUrl === Asset.typeUrl || typeof o.id === "string" && Token.isAmino(o.c_asset_token) && typeof o.total_refracted_c_asset === "string" && typeof o.total_p_asset === "string" && typeof o.error === "string" && typeof o.host_chain_id === "string" && typeof o.yield_error === "string" && typeof o.display_name === "string" && typeof o.decimals === "bigint" && typeof o.underlying_decimals === "bigint" && typeof o.delisted === "boolean");
   },
   encode(message: Asset, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== "") {
@@ -169,6 +173,9 @@ export const Asset = {
     }
     if (message.dailyYieldPerYAssetStableCoinTerms !== undefined) {
       writer.uint32(154).string(Decimal.fromUserInput(message.dailyYieldPerYAssetStableCoinTerms, 18).atomics);
+    }
+    if (message.delisted === true) {
+      writer.uint32(160).bool(message.delisted);
     }
     return writer;
   },
@@ -236,6 +243,9 @@ export const Asset = {
         case 19:
           message.dailyYieldPerYAssetStableCoinTerms = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
+        case 20:
+          message.delisted = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -263,7 +273,8 @@ export const Asset = {
       displayName: isSet(object.displayName) ? String(object.displayName) : "",
       decimals: isSet(object.decimals) ? BigInt(object.decimals.toString()) : BigInt(0),
       underlyingDecimals: isSet(object.underlyingDecimals) ? BigInt(object.underlyingDecimals.toString()) : BigInt(0),
-      dailyYieldPerYAssetStableCoinTerms: isSet(object.dailyYieldPerYAssetStableCoinTerms) ? String(object.dailyYieldPerYAssetStableCoinTerms) : undefined
+      dailyYieldPerYAssetStableCoinTerms: isSet(object.dailyYieldPerYAssetStableCoinTerms) ? String(object.dailyYieldPerYAssetStableCoinTerms) : undefined,
+      delisted: isSet(object.delisted) ? Boolean(object.delisted) : false
     };
   },
   toJSON(message: Asset): unknown {
@@ -287,6 +298,7 @@ export const Asset = {
     message.decimals !== undefined && (obj.decimals = (message.decimals || BigInt(0)).toString());
     message.underlyingDecimals !== undefined && (obj.underlyingDecimals = (message.underlyingDecimals || BigInt(0)).toString());
     message.dailyYieldPerYAssetStableCoinTerms !== undefined && (obj.dailyYieldPerYAssetStableCoinTerms = message.dailyYieldPerYAssetStableCoinTerms);
+    message.delisted !== undefined && (obj.delisted = message.delisted);
     return obj;
   },
   fromPartial(object: Partial<Asset>): Asset {
@@ -310,6 +322,7 @@ export const Asset = {
     message.decimals = object.decimals !== undefined && object.decimals !== null ? BigInt(object.decimals.toString()) : BigInt(0);
     message.underlyingDecimals = object.underlyingDecimals !== undefined && object.underlyingDecimals !== null ? BigInt(object.underlyingDecimals.toString()) : BigInt(0);
     message.dailyYieldPerYAssetStableCoinTerms = object.dailyYieldPerYAssetStableCoinTerms ?? undefined;
+    message.delisted = object.delisted ?? false;
     return message;
   },
   fromAmino(object: AssetAmino): Asset {
@@ -371,6 +384,9 @@ export const Asset = {
     if (object.daily_yield_per_y_asset_stable_coin_terms !== undefined && object.daily_yield_per_y_asset_stable_coin_terms !== null) {
       message.dailyYieldPerYAssetStableCoinTerms = object.daily_yield_per_y_asset_stable_coin_terms;
     }
+    if (object.delisted !== undefined && object.delisted !== null) {
+      message.delisted = object.delisted;
+    }
     return message;
   },
   toAmino(message: Asset, useInterfaces: boolean = true): AssetAmino {
@@ -394,6 +410,7 @@ export const Asset = {
     obj.decimals = message.decimals ? message.decimals.toString() : undefined;
     obj.underlying_decimals = message.underlyingDecimals ? message.underlyingDecimals.toString() : undefined;
     obj.daily_yield_per_y_asset_stable_coin_terms = padDecimal(message.dailyYieldPerYAssetStableCoinTerms) === null ? undefined : padDecimal(message.dailyYieldPerYAssetStableCoinTerms);
+    obj.delisted = message.delisted === false ? undefined : message.delisted;
     return obj;
   },
   fromAminoMsg(object: AssetAminoMsg): Asset {

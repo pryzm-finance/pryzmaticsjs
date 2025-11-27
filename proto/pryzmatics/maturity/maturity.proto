@@ -65,4 +65,9 @@ message Maturity {
   ];
   pryzmatics.pool.Token y_token = 17 [ (gogoproto.nullable) = true ];
   pryzmatics.pool.Token p_token = 18 [ (gogoproto.nullable) = true ];
+  string delisted_p_price_underlying_terms = 19 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = true
+  ];
 }

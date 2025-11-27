@@ -70,4 +70,5 @@ message Asset {
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = true
   ];
+  bool delisted = 20;
 }

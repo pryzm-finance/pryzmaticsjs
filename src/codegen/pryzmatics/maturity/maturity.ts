@@ -32,6 +32,7 @@ export interface Maturity {
   pRoi?: string;
   yToken?: Token;
   pToken?: Token;
+  delistedPPriceUnderlyingTerms?: string;
 }
 export interface MaturityProtoMsg {
   typeUrl: "/pryzmatics.maturity.Maturity";
@@ -65,6 +66,7 @@ export interface MaturityAmino {
   p_roi?: string;
   y_token?: TokenAmino;
   p_token?: TokenAmino;
+  delisted_p_price_underlying_terms?: string;
 }
 export interface MaturityAminoMsg {
   type: "/pryzmatics.maturity.Maturity";
@@ -97,6 +99,7 @@ export interface MaturitySDKType {
   p_roi?: string;
   y_token?: TokenSDKType;
   p_token?: TokenSDKType;
+  delisted_p_price_underlying_terms?: string;
 }
 function createBaseMaturity(): Maturity {
   return {
@@ -117,7 +120,8 @@ function createBaseMaturity(): Maturity {
     yRoi: undefined,
     pRoi: undefined,
     yToken: undefined,
-    pToken: undefined
+    pToken: undefined,
+    delistedPPriceUnderlyingTerms: undefined
   };
 }
 export const Maturity = {
@@ -186,6 +190,9 @@ export const Maturity = {
     if (message.pToken !== undefined) {
       Token.encode(message.pToken, writer.uint32(146).fork()).ldelim();
     }
+    if (message.delistedPPriceUnderlyingTerms !== undefined) {
+      writer.uint32(154).string(Decimal.fromUserInput(message.delistedPPriceUnderlyingTerms, 18).atomics);
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number, useInterfaces: boolean = true): Maturity {
@@ -249,6 +256,9 @@ export const Maturity = {
         case 18:
           message.pToken = Token.decode(reader, reader.uint32(), useInterfaces);
           break;
+        case 19:
+          message.delistedPPriceUnderlyingTerms = Decimal.fromAtomics(reader.string(), 18).toString();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -275,7 +285,8 @@ export const Maturity = {
       yRoi: isSet(object.yRoi) ? String(object.yRoi) : undefined,
       pRoi: isSet(object.pRoi) ? String(object.pRoi) : undefined,
       yToken: isSet(object.yToken) ? Token.fromJSON(object.yToken) : undefined,
-      pToken: isSet(object.pToken) ? Token.fromJSON(object.pToken) : undefined
+      pToken: isSet(object.pToken) ? Token.fromJSON(object.pToken) : undefined,
+      delistedPPriceUnderlyingTerms: isSet(object.delistedPPriceUnderlyingTerms) ? String(object.delistedPPriceUnderlyingTerms) : undefined
     };
   },
   toJSON(message: Maturity): unknown {
@@ -298,6 +309,7 @@ export const Maturity = {
     message.pRoi !== undefined && (obj.pRoi = message.pRoi);
     message.yToken !== undefined && (obj.yToken = message.yToken ? Token.toJSON(message.yToken) : undefined);
     message.pToken !== undefined && (obj.pToken = message.pToken ? Token.toJSON(message.pToken) : undefined);
+    message.delistedPPriceUnderlyingTerms !== undefined && (obj.delistedPPriceUnderlyingTerms = message.delistedPPriceUnderlyingTerms);
     return obj;
   },
   fromPartial(object: Partial<Maturity>): Maturity {
@@ -320,6 +332,7 @@ export const Maturity = {
     message.pRoi = object.pRoi ?? undefined;
     message.yToken = object.yToken !== undefined && object.yToken !== null ? Token.fromPartial(object.yToken) : undefined;
     message.pToken = object.pToken !== undefined && object.pToken !== null ? Token.fromPartial(object.pToken) : undefined;
+    message.delistedPPriceUnderlyingTerms = object.delistedPPriceUnderlyingTerms ?? undefined;
     return message;
   },
   fromAmino(object: MaturityAmino): Maturity {
@@ -378,6 +391,9 @@ export const Maturity = {
     if (object.p_token !== undefined && object.p_token !== null) {
       message.pToken = Token.fromAmino(object.p_token);
     }
+    if (object.delisted_p_price_underlying_terms !== undefined && object.delisted_p_price_underlying_terms !== null) {
+      message.delistedPPriceUnderlyingTerms = object.delisted_p_price_underlying_terms;
+    }
     return message;
   },
   toAmino(message: Maturity, useInterfaces: boolean = true): MaturityAmino {
@@ -400,6 +416,7 @@ export const Maturity = {
     obj.p_roi = padDecimal(message.pRoi) === null ? undefined : padDecimal(message.pRoi);
     obj.y_token = message.yToken ? Token.toAmino(message.yToken, useInterfaces) : undefined;
     obj.p_token = message.pToken ? Token.toAmino(message.pToken, useInterfaces) : undefined;
+    obj.delisted_p_price_underlying_terms = padDecimal(message.delistedPPriceUnderlyingTerms) === null ? undefined : padDecimal(message.delistedPPriceUnderlyingTerms);
     return obj;
   },
   fromAminoMsg(object: MaturityAminoMsg): Maturity {
